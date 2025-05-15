@@ -12,6 +12,9 @@ import de.oliver.fancyanalytics.logger.appender.Appender;
 import de.oliver.fancyanalytics.logger.appender.ConsoleAppender;
 import de.oliver.fancyanalytics.logger.appender.JsonAppender;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
+import de.oliver.fancylib.translations.Language;
+import de.oliver.fancylib.translations.TextConfig;
+import de.oliver.fancylib.translations.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +31,7 @@ public class FancyDialogsPlugin extends JavaPlugin {
     private final ExtendedFancyLogger fancyLogger;
 
     private FancyDialogsConfig fdConfig;
+    private Translator translator;
     private DialogRegistry dialogRegistry;
     private DialogStorage dialogStorage;
 
@@ -57,6 +61,13 @@ public class FancyDialogsPlugin extends JavaPlugin {
     public void onLoad() {
         fdConfig = new FancyDialogsConfig();
         fdConfig.load();
+
+        translator = new Translator(new TextConfig("#32e347", "#35ad1d", "#81E366", "#E3CA66", "#E36666", ""));
+        translator.loadLanguages(getDataFolder().getAbsolutePath());
+        final Language selectedLanguage = translator.getLanguages().stream()
+                .filter(language -> language.getLanguageName().equals(fdConfig.getLanguage()))
+                .findFirst().orElse(translator.getFallbackLanguage());
+        translator.setSelectedLanguage(selectedLanguage);
 
         dialogStorage = new JsonDialogStorage();
         Collection<Dialog> dialogs = dialogStorage.loadAll();
@@ -95,6 +106,10 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
     public ExtendedFancyLogger getFancyLogger() {
         return fancyLogger;
+    }
+
+    public Translator getTranslator() {
+        return translator;
     }
 
     public FancyDialogsConfig getFancyDialogsConfig() {

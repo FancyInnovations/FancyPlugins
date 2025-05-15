@@ -1,5 +1,6 @@
 package com.fancyinnovations.fancydialogs;
 
+import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
@@ -7,7 +8,6 @@ import de.oliver.fancyanalytics.logger.appender.ConsoleAppender;
 import de.oliver.fancyanalytics.logger.appender.JsonAppender;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -19,6 +19,8 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
     private static FancyDialogsPlugin INSTANCE;
     private final ExtendedFancyLogger fancyLogger;
+
+    private DialogRegistry dialogRegistry;
 
     public FancyDialogsPlugin() {
         INSTANCE = this;
@@ -40,6 +42,8 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        dialogRegistry = new DialogRegistry();
+
         fancyLogger.info("Successfully loaded FancyDialogs version %s".formatted(getDescription().getVersion()));
     }
 

@@ -1,5 +1,6 @@
 package com.fancyinnovations.fancydialogs;
 
+import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
 import com.fancyinnovations.fancydialogs.storage.DialogStorage;
@@ -24,6 +25,7 @@ public class FancyDialogsPlugin extends JavaPlugin {
     private static FancyDialogsPlugin INSTANCE;
     private final ExtendedFancyLogger fancyLogger;
 
+    private FancyDialogsConfig fdConfig;
     private DialogRegistry dialogRegistry;
     private DialogStorage dialogStorage;
 
@@ -51,6 +53,9 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        fdConfig = new FancyDialogsConfig();
+        fdConfig.load();
+
         dialogRegistry = new DialogRegistry();
         dialogStorage = new JsonDialogStorage();
 
@@ -85,6 +90,10 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
     public ExtendedFancyLogger getFancyLogger() {
         return fancyLogger;
+    }
+
+    public FancyDialogsConfig getFancyDialogsConfig() {
+        return fdConfig;
     }
 
     public DialogRegistry getDialogRegistry() {

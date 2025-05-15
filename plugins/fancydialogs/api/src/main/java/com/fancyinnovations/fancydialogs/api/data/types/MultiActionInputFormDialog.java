@@ -9,6 +9,6 @@ public record MultiActionInputFormDialog(
         @NotNull DialogData common,
         @NotNull List<InputFormDialog.Input> inputs,
         @NotNull List<InputFormDialog.SubmitAction> actions
-) implements Dialog{
+) implements DialogType {
 
 }

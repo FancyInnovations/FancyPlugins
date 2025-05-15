@@ -13,6 +13,6 @@ public record MultiActionDialog(
         @NotNull List<ClickAction> actions,
         @Nullable ClickEvent onCancel,
         int columns
-) implements Dialog{
+) implements DialogType {
 
 }

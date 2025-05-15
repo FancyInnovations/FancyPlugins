@@ -7,5 +7,5 @@ import org.jetbrains.annotations.NotNull;
 public record NoticeDialog(
         @NotNull DialogData common,
         @NotNull ClickAction button
-) implements Dialog {
+) implements DialogType {
 }

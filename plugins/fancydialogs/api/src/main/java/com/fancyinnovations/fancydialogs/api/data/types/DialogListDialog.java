@@ -9,9 +9,9 @@ import java.util.List;
 
 public record DialogListDialog(
         @NotNull DialogData common,
-        @NotNull List<Dialog> dialogs,
+        @NotNull List<DialogType> dialogs,
         @Nullable ClickEvent onCancel,
         int columns,
         int buttonWidth
-) implements Dialog {
+) implements DialogType {
 }

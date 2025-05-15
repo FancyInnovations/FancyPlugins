@@ -9,6 +9,6 @@ public record SimpleInputFormDialog(
         @NotNull DialogData common,
         @NotNull List<InputFormDialog.Input> inputs,
         @NotNull InputFormDialog.SubmitAction action
-) implements Dialog{
+) implements DialogType {
 
 }

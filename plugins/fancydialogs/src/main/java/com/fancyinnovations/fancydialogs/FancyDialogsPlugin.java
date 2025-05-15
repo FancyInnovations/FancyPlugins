@@ -1,6 +1,7 @@
 package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.api.Dialog;
+import com.fancyinnovations.fancydialogs.commands.CloudCommandManager;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
@@ -91,6 +92,11 @@ public class FancyDialogsPlugin extends JavaPlugin {
         }
 
         registerListeners();
+
+        new CloudCommandManager(this, false)
+                .registerArguments()
+                .registerExceptionHandlers()
+                .registerCommands();
 
         fancyLogger.info("Successfully enabled FancyDialogs version %s".formatted(getDescription().getVersion()));
     }

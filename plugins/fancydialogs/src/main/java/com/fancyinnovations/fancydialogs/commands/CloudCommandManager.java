@@ -143,7 +143,7 @@ public class CloudCommandManager {
      * Registers plugin commands to the {@link LegacyPaperCommandManager}.
      */
     public @NotNull CloudCommandManager registerCommands() {
-//        annotationParser.parse(AttributeCMD.INSTANCE);
+        annotationParser.parse(TutorialCMD.INSTANCE);
 
         return this;
     }

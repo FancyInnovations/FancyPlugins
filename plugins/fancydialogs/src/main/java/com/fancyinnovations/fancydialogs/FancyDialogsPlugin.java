@@ -1,5 +1,6 @@
 package com.fancyinnovations.fancydialogs;
 
+import com.fancyinnovations.fancydialogs.api.Dialog;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
@@ -17,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -56,8 +58,11 @@ public class FancyDialogsPlugin extends JavaPlugin {
         fdConfig = new FancyDialogsConfig();
         fdConfig.load();
 
-        dialogRegistry = new DialogRegistry();
         dialogStorage = new JsonDialogStorage();
+        Collection<Dialog> dialogs = dialogStorage.loadAll();
+
+        dialogRegistry = new DialogRegistry();
+        dialogs.forEach(dialogRegistry::register);
 
         fancyLogger.info("Successfully loaded FancyDialogs version %s".formatted(getDescription().getVersion()));
     }

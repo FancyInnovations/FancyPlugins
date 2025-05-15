@@ -29,6 +29,8 @@ include(":plugins:fancyholograms:implementation_1_19_4")
 
 include(":plugins:fancyvisuals")
 
+include(":plugins:fancydialogs")
+
 include(":libraries:common")
 include(":libraries:jdb")
 include(":libraries:plugin-tests")

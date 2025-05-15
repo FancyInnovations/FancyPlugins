@@ -1,0 +1,16 @@
+{
+  "project_name": "FancyDialogs",
+  "project_id": "TODO",
+  "plugin_jar_path": "../../../../plugins/fancydialogs/build/libs/FancyDialogs-%VERSION%.jar",
+  "changelog_path": "../../../../plugins/fancydialogs/CHANGELOG.md",
+  "version_path": "../../../../plugins/fancydialogs/VERSION",
+  "supported_versions":[
+    "1.21.5"
+  ],
+  "channel": "RELEASE",
+  "loaders": [
+    "paper",
+    "folia"
+  ],
+  "featured": false
+}

@@ -1,8 +1,8 @@
-package com.fancyinnovations.fancydialogs.api.types;
+package com.fancyinnovations.fancydialogs.api.data.types;
 
-import com.fancyinnovations.fancydialogs.api.DialogData;
-import com.fancyinnovations.fancydialogs.api.click.ClickAction;
-import com.fancyinnovations.fancydialogs.api.click.ClickEvent;
+import com.fancyinnovations.fancydialogs.api.data.DialogData;
+import com.fancyinnovations.fancydialogs.api.data.click.ClickAction;
+import com.fancyinnovations.fancydialogs.api.data.click.ClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

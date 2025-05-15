@@ -1,6 +1,6 @@
-package com.fancyinnovations.fancydialogs.api.types;
+package com.fancyinnovations.fancydialogs.api.data.types;
 
-import com.fancyinnovations.fancydialogs.api.DialogData;
+import com.fancyinnovations.fancydialogs.api.data.DialogData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

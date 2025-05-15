@@ -10,5 +10,5 @@ public record ServerLinksDialog(
         @Nullable ClickEvent onCancel,
         int columns,
         int buttonWidth
-) implements Dialog {
+) implements DialogType {
 }

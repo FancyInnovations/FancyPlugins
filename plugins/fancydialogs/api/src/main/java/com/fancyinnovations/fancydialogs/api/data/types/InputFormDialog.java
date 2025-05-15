@@ -5,7 +5,7 @@ import com.fancyinnovations.fancydialogs.api.data.input.DialogInput;
 import com.fancyinnovations.fancydialogs.api.data.submit.SubmitMethod;
 import org.jetbrains.annotations.NotNull;
 
-public interface InputFormDialog extends Dialog {
+public interface InputFormDialog extends DialogType {
 
    record Input(
            @NotNull String key,

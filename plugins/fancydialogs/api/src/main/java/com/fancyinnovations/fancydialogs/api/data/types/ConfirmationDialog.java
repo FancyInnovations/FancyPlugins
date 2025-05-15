@@ -8,6 +8,6 @@ public record ConfirmationDialog(
         @NotNull DialogData common,
         @NotNull ClickAction yesButton,
         @NotNull ClickAction noButton
-) implements Dialog{
+) implements DialogType {
 
 }

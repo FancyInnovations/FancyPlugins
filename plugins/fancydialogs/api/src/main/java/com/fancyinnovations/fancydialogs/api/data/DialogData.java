@@ -1,6 +1,6 @@
-package com.fancyinnovations.fancydialogs.api;
+package com.fancyinnovations.fancydialogs.api.data;
 
-import com.fancyinnovations.fancydialogs.api.body.DialogBody;
+import com.fancyinnovations.fancydialogs.api.data.body.DialogBody;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

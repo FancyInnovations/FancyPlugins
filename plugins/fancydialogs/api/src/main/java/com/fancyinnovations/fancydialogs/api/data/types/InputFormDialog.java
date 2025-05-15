@@ -1,8 +1,8 @@
-package com.fancyinnovations.fancydialogs.api.types;
+package com.fancyinnovations.fancydialogs.api.data.types;
 
-import com.fancyinnovations.fancydialogs.api.click.Button;
-import com.fancyinnovations.fancydialogs.api.input.DialogInput;
-import com.fancyinnovations.fancydialogs.api.submit.SubmitMethod;
+import com.fancyinnovations.fancydialogs.api.data.click.Button;
+import com.fancyinnovations.fancydialogs.api.data.input.DialogInput;
+import com.fancyinnovations.fancydialogs.api.data.submit.SubmitMethod;
 import org.jetbrains.annotations.NotNull;
 
 public interface InputFormDialog extends Dialog {

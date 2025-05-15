@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancydialogs.api.input;
+package com.fancyinnovations.fancydialogs.api.data.input;
 
 import org.jetbrains.annotations.NotNull;
 

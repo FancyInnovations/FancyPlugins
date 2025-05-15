@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancydialogs.api.click;
+package com.fancyinnovations.fancydialogs.api.data.click;
 
 public enum ClickEvent {
     OPEN_URL,

@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancydialogs.api.click;
+package com.fancyinnovations.fancydialogs.api.data.click;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

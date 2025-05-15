@@ -55,6 +55,8 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.6")
 
     compileOnly("org.lushplugins:ChatColorHandler:5.1.3")
+
+    implementation("org.jetbrains:annotations:24.0.0")
 }
 
 paper {

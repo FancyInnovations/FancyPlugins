@@ -19,28 +19,30 @@ val supportedVersions =
         "1.21.5",
     )
 
-//allprojects {
-//    group = "de.oliver"
-//    version = getFDVersion()
-//    description = "Simple, lightweight and fast dialog plugin using the new dialog feature"
-//
-//    repositories {
-//        mavenLocal()
-//        mavenCentral()
-//
-//        maven(url = "https://repo.papermc.io/repository/maven-public/")
-//        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-//
-//        maven(url = "https://repo.fancyinnovations.com/snapshots")
-//        maven(url = "https://repo.fancyinnovations.com/releases")
-//        maven(url = "https://repo.lushplugins.org/releases")
-//        maven(url = "https://repo.viaversion.com/")
-//        maven(url = "https://repo.opencollab.dev/main/")
-//    }
-//}
+allprojects {
+    group = "de.oliver"
+    version = getFDVersion()
+    description = "Simple, lightweight and fast dialog plugin using the new dialog feature"
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven(url = "https://repo.papermc.io/repository/maven-public/")
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+        maven(url = "https://repo.fancyinnovations.com/snapshots")
+        maven(url = "https://repo.fancyinnovations.com/releases")
+        maven(url = "https://repo.lushplugins.org/releases")
+        maven(url = "https://repo.viaversion.com/")
+        maven(url = "https://repo.opencollab.dev/main/")
+    }
+}
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
+
+    implementation(project(":plugins:fancydialogs:api"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }

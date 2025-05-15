@@ -43,6 +43,10 @@ public class FancyDialogsPlugin extends JavaPlugin {
         this.fancyLogger = new ExtendedFancyLogger("FancyDialogs", LogLevel.INFO, List.of(consoleAppender, jsonAppender), new ArrayList<>());
     }
 
+    public static FancyDialogsPlugin get() {
+        return INSTANCE;
+    }
+
     @Override
     public void onLoad() {
         dialogRegistry = new DialogRegistry();
@@ -70,11 +74,6 @@ public class FancyDialogsPlugin extends JavaPlugin {
     public void onDisable() {
         fancyLogger.info("Successfully disabled FancyDialogs version %s".formatted(getDescription().getVersion()));
     }
-
-    public static FancyDialogsPlugin get() {
-        return INSTANCE;
-    }
-
 
     public ExtendedFancyLogger getFancyLogger() {
         return fancyLogger;

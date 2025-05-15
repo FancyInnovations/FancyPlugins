@@ -1,5 +1,6 @@
 package com.fancyinnovations.fancydialogs;
 
+import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
 import com.fancyinnovations.fancydialogs.storage.DialogStorage;
 import com.fancyinnovations.fancydialogs.storage.JsonDialogStorage;
@@ -9,6 +10,7 @@ import de.oliver.fancyanalytics.logger.appender.Appender;
 import de.oliver.fancyanalytics.logger.appender.ConsoleAppender;
 import de.oliver.fancyanalytics.logger.appender.JsonAppender;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -67,12 +69,18 @@ public class FancyDialogsPlugin extends JavaPlugin {
                     """);
         }
 
+        registerListeners();
+
         fancyLogger.info("Successfully enabled FancyDialogs version %s".formatted(getDescription().getVersion()));
     }
 
     @Override
     public void onDisable() {
         fancyLogger.info("Successfully disabled FancyDialogs version %s".formatted(getDescription().getVersion()));
+    }
+
+    private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
     }
 
     public ExtendedFancyLogger getFancyLogger() {

@@ -1,6 +1,8 @@
 package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
+import com.fancyinnovations.fancydialogs.storage.DialogStorage;
+import com.fancyinnovations.fancydialogs.storage.JsonDialogStorage;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
@@ -21,6 +23,7 @@ public class FancyDialogsPlugin extends JavaPlugin {
     private final ExtendedFancyLogger fancyLogger;
 
     private DialogRegistry dialogRegistry;
+    private DialogStorage dialogStorage;
 
     public FancyDialogsPlugin() {
         INSTANCE = this;
@@ -43,6 +46,7 @@ public class FancyDialogsPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         dialogRegistry = new DialogRegistry();
+        dialogStorage = new JsonDialogStorage();
 
         fancyLogger.info("Successfully loaded FancyDialogs version %s".formatted(getDescription().getVersion()));
     }
@@ -71,4 +75,16 @@ public class FancyDialogsPlugin extends JavaPlugin {
         return INSTANCE;
     }
 
+
+    public ExtendedFancyLogger getFancyLogger() {
+        return fancyLogger;
+    }
+
+    public DialogRegistry getDialogRegistry() {
+        return dialogRegistry;
+    }
+
+    public DialogStorage getDialogStorage() {
+        return dialogStorage;
+    }
 }

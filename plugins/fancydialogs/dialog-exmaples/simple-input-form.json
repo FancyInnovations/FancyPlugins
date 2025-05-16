@@ -1,0 +1,43 @@
+{
+  "type": "simple_input_form",
+  "title": "Simple Input Form Dialog",
+  "inputs": [
+    {
+      "type":"text",
+      "label": "Text input",
+      "key": "key1"
+    },
+    {
+      "type":"boolean",
+      "label": "Checkbox",
+      "key": "key2"
+    },
+    {
+      "type": "number_range",
+      "label": "Number Range",
+      "start": 50.0,
+      "end": 420.0,
+      "steps": 5,
+      "initial": 200.0,
+      "key": "key2"
+    },
+    {
+      "type": "single_option",
+      "label": "Single Option",
+      "options": [
+        {"id": "opt1", "display": "Option 1", "initial":  true},
+        {"id": "opt1", "display": "Option 2"},
+        {"id": "opt1", "display": "Option 3"}
+      ],
+      "key": "key3"
+    }
+  ],
+  "action": {
+    "label": "Create!",
+    "id":"whatever",
+    "on_submit": {
+      "type": "command_template",
+      "template": "tellraw @a '$(example) $(extra1) $(extra2)'"
+    }
+  }
+}

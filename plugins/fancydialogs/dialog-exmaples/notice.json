@@ -1,0 +1,24 @@
+{
+  "type": "notice",
+  "title": "Notice Dialog",
+  "body": [
+    {
+      "type": "plain_message",
+      "contents": "Welcome to the server! Please read the rules carefully.",
+      "width": 200
+    },
+    {
+      "type": "plain_message",
+      "contents": "The rules are: blah blah blah.",
+      "width": 400
+    }
+  ],
+  "action": {
+    "label": "Understood!",
+    "id":"whatever",
+    "on_submit": {
+      "type": "command_template",
+      "template": "tellraw @a '$(example) $(extra1) $(extra2)'"
+    }
+  }
+}

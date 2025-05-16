@@ -1,0 +1,42 @@
+{
+  "type": "multi_action",
+  "title": "Multi Action Dialog",
+  "body": [
+    {
+      "type": "plain_message",
+      "contents": "Welcome to the server! Please read the rules carefully.",
+      "width": 200
+    },
+    {
+      "type": "plain_message",
+      "contents": "The rules are: blah blah blah.",
+      "width": 400
+    }
+  ],
+  "actions": [
+    {
+      "label": "Action 1",
+      "id":"whatever",
+      "on_submit": {
+        "type": "command_template",
+        "template": "tellraw @a '$(example) $(extra1) $(extra2)'"
+      }
+    },
+    {
+      "label": "Action 2",
+      "id":"whatever2",
+      "on_submit": {
+        "type": "command_template",
+        "template": "tellraw @a '$(example) $(extra1) $(extra2)'"
+      }
+    },
+    {
+      "label": "Action 3",
+      "id":"whatever3",
+      "on_submit": {
+        "type": "command_template",
+        "template": "tellraw @a '$(example) $(extra1) $(extra2)'"
+      }
+    }
+  ]
+}

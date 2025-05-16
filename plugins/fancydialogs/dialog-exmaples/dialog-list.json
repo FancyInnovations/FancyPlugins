@@ -1,0 +1,42 @@
+{
+  "type": "dialog_list",
+  "title": "Dialog List Dialog",
+  "body": [
+    {
+      "type": "plain_message",
+      "contents": "Welcome to the server! Please read the rules carefully.",
+      "width": 200
+    },
+    {
+      "type": "plain_message",
+      "contents": "The rules are: blah blah blah.",
+      "width": 400
+    }
+  ],
+  "dialogs": [
+    {
+      "type": "notice",
+      "title": "Rules",
+      "external_title": "Go to rules dialog",
+      "body": [
+        {
+          "type": "plain_message",
+          "contents": "Some important information 1.",
+          "width": 200
+        }
+      ]
+    },
+    {
+      "type": "notice",
+      "title": "Notice Dialog 2",
+      "external_title": "Go to dialog 2",
+      "body": [
+        {
+          "type": "plain_message",
+          "contents": "ome important information 2.",
+          "width": 200
+        }
+      ]
+    }
+  ]
+}

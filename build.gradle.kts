@@ -1,5 +1,5 @@
 plugins {
-    id("com.gradleup.shadow") version "9.0.0-beta11" apply false
+    id("com.gradleup.shadow") version "9.0.0-SNAPSHOT" apply false
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.16" apply false
     id("xyz.jpenilla.run-paper") version "2.3.1" apply false
     id("net.minecrell.plugin-yml.paper") version "0.6.0" apply false

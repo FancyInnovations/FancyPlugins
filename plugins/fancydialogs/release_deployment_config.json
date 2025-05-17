@@ -5,7 +5,7 @@
   "changelog_path": "../../../../plugins/fancydialogs/CHANGELOG.md",
   "version_path": "../../../../plugins/fancydialogs/VERSION",
   "supported_versions":[
-    "1.21.5"
+    "1.21.6"
   ],
   "channel": "RELEASE",
   "loaders": [

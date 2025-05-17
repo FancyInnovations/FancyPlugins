@@ -158,12 +158,11 @@ public class FlatFileHologramStorage implements HologramStorage {
                     continue;
                 }
 
-                DisplayHologramData displayData = null;
-                switch (type) {
-                    case TEXT -> displayData = new TextHologramData(name, new Location(null, 0, 0, 0));
-                    case ITEM -> displayData = new ItemHologramData(name, new Location(null, 0, 0, 0));
-                    case BLOCK -> displayData = new BlockHologramData(name, new Location(null, 0, 0, 0));
-                }
+                DisplayHologramData displayData = switch (type) {
+                    case TEXT -> new TextHologramData(name, new Location(null, 0, 0, 0));
+                    case ITEM -> new ItemHologramData(name, new Location(null, 0, 0, 0));
+                    case BLOCK -> new BlockHologramData(name, new Location(null, 0, 0, 0));
+                };
 
                 if (!displayData.read(holoSection, name)) {
                     FancyHolograms.get().getFancyLogger().warn("Could not read hologram data - skipping hologram");

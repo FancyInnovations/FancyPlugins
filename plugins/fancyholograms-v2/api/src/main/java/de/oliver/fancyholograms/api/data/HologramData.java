@@ -23,6 +23,7 @@ public class HologramData implements YamlData {
     private final String name;
     private final HologramType type;
     private Location location;
+    private String worldName;
     private boolean hasChanges;
     private int visibilityDistance = DEFAULT_VISIBILITY_DISTANCE;
     private Visibility visibility = DEFAULT_VISIBILITY;
@@ -39,6 +40,13 @@ public class HologramData implements YamlData {
         this.name = name;
         this.type = type;
         this.location = location;
+        if (location.getWorld() != null) {
+            this.worldName = location.getWorld().getName();
+        }
+    }
+
+    public String getWorldName() {
+        return worldName;
     }
 
     public @NotNull String getName() {
@@ -136,7 +144,7 @@ public class HologramData implements YamlData {
 
     @Override
     public boolean read(ConfigurationSection section, String name) {
-        String worldName = section.getString("location.world", "world");
+        worldName = section.getString("location.world", "error");
         float x = (float) section.getDouble("location.x", 0);
         float y = (float) section.getDouble("location.y", 0);
         float z = (float) section.getDouble("location.z", 0);

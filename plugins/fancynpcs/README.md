@@ -12,7 +12,8 @@
 
 <br />
 
-Simple, lightweight and feature-rich NPC plugin for **[Paper](https://papermc.io/software/paper)** (and **[Folia](https://papermc.io/software/folia)**) servers using packets.
+Simple, lightweight and feature-rich NPC plugin for **[Paper](https://papermc.io/software/paper)** (and *
+*[Folia](https://papermc.io/software/folia)**) servers using packets.
 
 </div>
 
@@ -34,7 +35,7 @@ Check out **[images section](#images)** down below.
 
 ## Installation
 
-Paper **1.19.4** - **1.21.5** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
+Paper **1.19.4** - **1.21.6** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
 
 **Spigot** is **not** supported.
 

@@ -4,7 +4,7 @@
   "plugin_jar_path": "../../../../plugins/fancynpcs/build/libs/FancyNpcs-%VERSION%.jar",
   "changelog_path": "../../../../plugins/fancynpcs/CHANGELOG.md",
   "version_path": "../../../../plugins/fancynpcs/VERSION",
-  "supported_versions":[
+  "supported_versions": [
     "1.19.4",
     "1.20",
     "1.20.1",
@@ -18,7 +18,8 @@
     "1.21.2",
     "1.21.3",
     "1.21.4",
-    "1.21.5"
+    "1.21.5",
+    "1.21.6"
   ],
   "channel": "RELEASE",
   "loaders": [

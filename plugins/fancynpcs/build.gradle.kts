@@ -50,6 +50,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancynpcs:fn-api"))
+    implementation(project(":plugins:fancynpcs:implementation_1_21_6"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_5"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_4"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_3"))

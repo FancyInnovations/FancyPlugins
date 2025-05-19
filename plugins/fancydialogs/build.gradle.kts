@@ -47,8 +47,8 @@ dependencies {
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
         .forEach { implementation(project(it.path)) }
+    implementation(project(":libraries:packets"))
     implementation(project(":libraries:packets:packets-api"))
-    implementation(project(":libraries:packets:factories"))
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
     implementation("de.oliver.FancyAnalytics:api:0.1.6")

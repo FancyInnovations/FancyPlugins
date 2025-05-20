@@ -9,7 +9,7 @@ dependencies {
     paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
     compileOnly(project(":libraries:packets:packets-api"))
 
-    compileOnly("com.fancyinnovations:fancymc:25w20a")
+    compileOnly("com.fancyinnovations:fancymc:25w21a")
 
     testImplementation(project(":libraries:packets"))
     testImplementation(project(":libraries:packets:packets-api"))

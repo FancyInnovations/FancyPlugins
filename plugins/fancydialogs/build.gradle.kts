@@ -42,7 +42,7 @@ allprojects {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
 
-    implementation(project(":plugins:fancydialogs:api"))
+    implementation(project(":plugins:fancydialogs:fd-api"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }

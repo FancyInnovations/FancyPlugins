@@ -7,7 +7,7 @@ paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArt
 
 dependencies {
     paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
-    compileOnly("com.fancyinnovations:fancymc:25w21a")
+    compileOnly("com.fancyinnovations:fancymc:1.21.6-pre1")
 
     compileOnly(project(":plugins:fancynpcs:fn-api"))
     compileOnly(project(":libraries:common"))

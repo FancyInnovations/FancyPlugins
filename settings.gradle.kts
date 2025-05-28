@@ -31,7 +31,7 @@ include(":plugins:fancyholograms:implementation_1_19_4")
 include(":plugins:fancyvisuals")
 
 include(":plugins:fancydialogs")
-include(":plugins:fancydialogs:api")
+include(":plugins:fancydialogs:fd-api")
 
 include(":libraries:common")
 include(":libraries:jdb")

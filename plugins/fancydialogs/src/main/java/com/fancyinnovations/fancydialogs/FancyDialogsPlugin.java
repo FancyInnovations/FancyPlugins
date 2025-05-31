@@ -66,6 +66,10 @@ public class FancyDialogsPlugin extends JavaPlugin {
         fdConfig = new FancyDialogsConfig();
         fdConfig.load();
 
+        if (!fdConfig.getLogLevel().equalsIgnoreCase("INFO")) {
+            fancyLogger.setCurrentLevel(LogLevel.valueOf(fdConfig.getLogLevel().toUpperCase()));
+        }
+
         translator = new Translator(new TextConfig("#32e347", "#35ad1d", "#81E366", "#E3CA66", "#E36666", ""));
         translator.loadLanguages(getDataFolder().getAbsolutePath());
         final Language selectedLanguage = translator.getLanguages().stream()

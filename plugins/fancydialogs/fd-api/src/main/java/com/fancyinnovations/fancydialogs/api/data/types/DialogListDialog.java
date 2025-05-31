@@ -10,7 +10,7 @@ import java.util.List;
 public record DialogListDialog(
         @NotNull DialogData common,
         @NotNull List<DialogType> dialogs,
-        @Nullable ClickEvent onCancel,
+        @Nullable ClickEvent exitAction,
         int columns,
         int buttonWidth
 ) implements DialogType {

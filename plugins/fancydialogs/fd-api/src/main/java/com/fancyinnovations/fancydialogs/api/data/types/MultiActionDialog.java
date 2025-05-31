@@ -11,7 +11,7 @@ import java.util.List;
 public record MultiActionDialog(
         @NotNull DialogData common,
         @NotNull List<ClickAction> actions,
-        @Nullable ClickEvent onCancel,
+        @Nullable ClickEvent exitAction,
         int columns
 ) implements DialogType {
 

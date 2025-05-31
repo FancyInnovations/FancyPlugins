@@ -11,27 +11,49 @@
 
 <br />
 
-Simple, lightweight and feature-rich dialog plugin for **[Paper](https://papermc.io/software/paper)** (and [Folia](https://papermc.io/software/folia)) servers using the new dialogs and packets.
+Simple and lightweight plugin to create and manage the new dialogs.
+Because the dialogs were added in 1.21.6, only players on 1.21.6 or newer can view them.
+
+You can create create dialogs (in JSON files) and then assign them to many cool features.
 
 </div>
 
 ## Features
 
-With this plugin you can create fancy-looking dialogs and customize them.
+- Welcome dialog: shows when a player joins for the first time
+- Tutorials: explain how your amazing server works in multiple chapters
+- Quick action: assign one dialog to the quick-action hotkey ('G' by default)
+- MiniMessage formatting is supported
+- You can use placeholders by PlaceholderAPI and MiniPlaceholders
+- Awesome API for other plugin developers to use
 
-Core features include:
+## Dialog structure
 
-- **Many dialog types** (multi actions, input form, notice and more)
-- **Input elements** (text, slider, combo box, checkbox, button)
-- **MiniMessage** formatting.
-- Placeholders support through [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) and [MiniPlaceholders](https://github.com/MiniPlaceholders/MiniPlaceholders) integration.
-- ...and much more!
+There are four different dialog types, you can choose from:
 
-<br />
+- Notice
+- Confirmation
+- Multi action
+- Dialog list
+
+Each dialog has the following properties:
+
+- Title: will be shown at the top of the screen
+- External title: will be shown when a button refers on this dialog
+- Can close with tab: true / false
+- Body: text and/or items
+- Inputs: see section below
+
+Input controls:
+
+- Checkbox: can be true or false
+- Slider (numbers): configure min, max and how many steps
+- Combobox: choose one element from a list
+- Text: the user can type any text (multiline boxes are supported)
 
 ## Installation
 
-Paper **1.21.5** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
+Paper **1.21.6** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
 
 **Spigot** is **not** supported.
 

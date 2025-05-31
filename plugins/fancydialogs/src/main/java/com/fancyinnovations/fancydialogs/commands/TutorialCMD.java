@@ -2,9 +2,9 @@ package com.fancyinnovations.fancydialogs.commands;
 
 import com.fancyinnovations.fancydialogs.FancyDialogsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.entity.Player;
-import org.incendo.cloud.annotations.Command;
-import org.incendo.cloud.annotations.Permission;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 public final class TutorialCMD {
 
@@ -17,11 +17,11 @@ public final class TutorialCMD {
     }
 
     @Command("tutorial open <tutorial>")
-    @Permission("fancydialogs.commands.tutorial")
+    @CommandPermission("fancydialogs.commands.tutorial")
     public void onOpen(
-            final Player sender,
+            final BukkitCommandActor sender,
             final String tutorial
-            ) {
-        sender.sendMessage("Opening tutorial: " + tutorial);
+    ) {
+        sender.requirePlayer().sendMessage("Opening tutorial: " + tutorial);
     }
 }

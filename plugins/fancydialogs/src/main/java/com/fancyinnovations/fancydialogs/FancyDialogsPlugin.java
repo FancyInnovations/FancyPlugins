@@ -1,7 +1,7 @@
 package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.api.Dialog;
-import com.fancyinnovations.fancydialogs.commands.CloudCommandManager;
+import com.fancyinnovations.fancydialogs.commands.TutorialCMD;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
@@ -18,6 +18,9 @@ import de.oliver.fancylib.translations.TextConfig;
 import de.oliver.fancylib.translations.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import revxrsal.commands.Lamp;
+import revxrsal.commands.bukkit.BukkitLamp;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -93,10 +96,10 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
         registerListeners();
 
-        new CloudCommandManager(this, false)
-                .registerArguments()
-                .registerExceptionHandlers()
-                .registerCommands();
+        Lamp<BukkitCommandActor> lamp = BukkitLamp
+                .builder(this)
+                .build();
+        lamp.register(TutorialCMD.INSTANCE);
 
         fancyLogger.info("Successfully enabled FancyDialogs version %s".formatted(getDescription().getVersion()));
     }

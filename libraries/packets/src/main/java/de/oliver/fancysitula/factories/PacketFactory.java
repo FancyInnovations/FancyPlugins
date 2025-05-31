@@ -1,5 +1,6 @@
 package de.oliver.fancysitula.factories;
 
+import de.oliver.fancysitula.api.dialogs.FS_Dialog;
 import de.oliver.fancysitula.api.packets.*;
 import de.oliver.fancysitula.api.utils.FS_EquipmentSlot;
 import de.oliver.fancysitula.api.utils.ServerVersion;
@@ -472,6 +473,39 @@ public class PacketFactory {
             }
             case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeEntity);
+            }
+            default ->
+                    throw new IllegalArgumentException("Unsupported server version: " + ServerVersion.getCurrentVersion());
+        }
+    }
+
+    /**
+     * Creates a new FS_ClientboundShowDialogPacket instance based on the server version
+     *
+     * @param dialog The dialog to show
+     * @return An instance of FS_ClientboundShowDialogPacket for the specified server version
+     */
+    public FS_ClientboundShowDialogPacket createShowDialogPacket(
+            FS_Dialog dialog
+    ) {
+        switch (ServerVersion.getCurrentVersion()) {
+            case v1_21_6 -> {
+                return new de.oliver.fancysitula.versions.v1_21_6.packets.ClientboundShowDialogPacketImpl(dialog);
+            }
+            default ->
+                    throw new IllegalArgumentException("Unsupported server version: " + ServerVersion.getCurrentVersion());
+        }
+    }
+
+    /**
+     * Creates a new FS_ClientboundClearDialogPacket instance based on the server version
+     *
+     * @return An instance of FS_ClientboundClearDialogPacket for the specified server version
+     */
+    public FS_ClientboundClearDialogPacket createClearDialogPacket() {
+        switch (ServerVersion.getCurrentVersion()) {
+            case v1_21_6 -> {
+                return new de.oliver.fancysitula.versions.v1_21_6.packets.ClientboundClearDialogPacketImpl();
             }
             default ->
                     throw new IllegalArgumentException("Unsupported server version: " + ServerVersion.getCurrentVersion());

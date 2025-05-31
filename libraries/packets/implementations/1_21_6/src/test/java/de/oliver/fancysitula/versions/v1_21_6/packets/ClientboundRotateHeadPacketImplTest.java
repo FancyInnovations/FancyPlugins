@@ -1,7 +1,6 @@
-package de.oliver.fancysitula.versions.v1_21_4.packets;
+package de.oliver.fancysitula.versions.v1_21_6.packets;
 
 import de.oliver.fancysitula.api.utils.reflections.ReflectionUtils;
-import de.oliver.fancysitula.versions.v1_21_6.packets.ClientboundRotateHeadPacketImpl;
 import net.minecraft.network.protocol.game.ClientboundRotateHeadPacket;
 import org.junit.jupiter.api.Test;
 

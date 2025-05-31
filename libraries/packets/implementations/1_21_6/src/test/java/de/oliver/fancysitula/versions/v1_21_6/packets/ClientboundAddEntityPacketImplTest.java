@@ -1,7 +1,6 @@
-package de.oliver.fancysitula.versions.v1_21_4.packets;
+package de.oliver.fancysitula.versions.v1_21_6.packets;
 
 import de.oliver.fancysitula.api.utils.AngelConverter;
-import de.oliver.fancysitula.versions.v1_21_6.packets.ClientboundAddEntityPacketImpl;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import org.bukkit.entity.EntityType;
 

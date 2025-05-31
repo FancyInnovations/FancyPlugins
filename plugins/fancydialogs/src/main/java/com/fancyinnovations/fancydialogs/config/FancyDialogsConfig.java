@@ -28,6 +28,8 @@ public class FancyDialogsConfig {
 
         quickActionsDialogID = (String) ConfigHelper.getOrDefault(config, "quick_actions_dialog_id", "quick-actions-dialog");
         config.setInlineComments("quick_actions_dialog_id", List.of("The ID of the dialog which will be shown to the player when they click on the quick actions key ('G' by default)."));
+
+        FancyDialogsPlugin.get().saveConfig();
     }
 
     public String getLanguage() {

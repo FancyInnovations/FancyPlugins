@@ -55,10 +55,8 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.6")
 
     compileOnly("org.lushplugins:ChatColorHandler:5.1.3")
-    implementation("org.incendo:cloud-core:2.1.0-SNAPSHOT")
-    implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
-    implementation("org.incendo:cloud-annotations:2.1.0-SNAPSHOT")
-    annotationProcessor("org.incendo:cloud-annotations:2.1.0-SNAPSHOT")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.12")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.12")
 
     implementation("org.jetbrains:annotations:24.0.0")
 }

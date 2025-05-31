@@ -2,6 +2,7 @@ package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.api.Dialog;
 import com.fancyinnovations.fancydialogs.commands.TutorialCMD;
+import com.fancyinnovations.fancydialogs.config.FDFeatureFlags;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
@@ -68,6 +69,12 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
         if (!fdConfig.getLogLevel().equalsIgnoreCase("INFO")) {
             fancyLogger.setCurrentLevel(LogLevel.valueOf(fdConfig.getLogLevel().toUpperCase()));
+        }
+
+        FDFeatureFlags.load();
+
+        if (FDFeatureFlags.DEBUG_MODE.isEnabled()) {
+            fancyLogger.setCurrentLevel(LogLevel.DEBUG);
         }
 
         translator = new Translator(new TextConfig("#32e347", "#35ad1d", "#81E366", "#E3CA66", "#E36666", ""));

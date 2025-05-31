@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 public record ServerLinksDialog(
         @NotNull DialogData common,
-        @Nullable ClickEvent onCancel,
+        @Nullable ClickEvent exitAction,
         int columns,
         int buttonWidth
 ) implements DialogType {

@@ -3,6 +3,7 @@ package com.fancyinnovations.fancydialogs.commands;
 import com.fancyinnovations.fancydialogs.FancyDialogsPlugin;
 import de.oliver.fancylib.translations.Translator;
 import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
@@ -17,11 +18,12 @@ public final class TutorialCMD {
     }
 
     @Command("tutorial open <tutorial>")
+    @Description("Opens a specific tutorial dialog")
     @CommandPermission("fancydialogs.commands.tutorial")
-    public void onOpen(
-            final BukkitCommandActor sender,
+    public void onTutorialOpen(
+            final BukkitCommandActor actor,
             final String tutorial
     ) {
-        sender.requirePlayer().sendMessage("Opening tutorial: " + tutorial);
+        actor.requirePlayer().sendMessage("Opening tutorial: " + tutorial);
     }
 }

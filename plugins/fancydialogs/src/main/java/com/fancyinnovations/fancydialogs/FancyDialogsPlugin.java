@@ -17,6 +17,7 @@ import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import de.oliver.fancylib.translations.Language;
 import de.oliver.fancylib.translations.TextConfig;
 import de.oliver.fancylib.translations.Translator;
+import de.oliver.fancysitula.api.utils.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import revxrsal.commands.Lamp;
@@ -103,6 +104,19 @@ public class FancyDialogsPlugin extends JavaPlugin {
                     might not work correctly.
                     --------------------------------------------------
                     """);
+        }
+
+        String version = Bukkit.getMinecraftVersion();
+        if (ServerVersion.getByVersion(version).getProtocolVersion() < 771) {
+            fancyLogger.error("""
+                    --------------------------------------------------
+                    FancyDialogs requires Minecraft version 1.21.6 or higher.
+                    Your server is running version %s, which is not supported.
+                    Please update your server to the latest version.
+                    --------------------------------------------------
+                    """.formatted(version));
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
 
         registerListeners();

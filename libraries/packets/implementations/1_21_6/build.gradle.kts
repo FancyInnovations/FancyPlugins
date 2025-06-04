@@ -6,10 +6,10 @@ plugins {
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
-    paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.6-R0.1-SNAPSHOT")
     compileOnly(project(":libraries:packets:packets-api"))
 
-    compileOnly("com.fancyinnovations:fancymc:1.21.6-pre2")
+//    compileOnly("com.fancyinnovations:fancymc:1.21.6-pre2")
 
     testImplementation(project(":libraries:packets"))
     testImplementation(project(":libraries:packets:packets-api"))

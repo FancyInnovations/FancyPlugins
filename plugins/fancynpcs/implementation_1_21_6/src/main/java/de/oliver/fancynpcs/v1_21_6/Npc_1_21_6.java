@@ -404,7 +404,7 @@ public class Npc_1_21_6 extends Npc {
         sittingVehicle.setPos(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());
 
         ServerEntity serverEntity = new ServerEntity(
-                serverPlayer.serverLevel(),
+                serverPlayer.level(),
                 sittingVehicle,
                 0,
                 false,

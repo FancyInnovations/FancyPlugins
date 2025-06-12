@@ -57,6 +57,7 @@ public class CopyCMD implements Subcommand {
         location.setPitch(originalLocation.getPitch());
         location.setYaw(originalLocation.getYaw());
         data.setLocation(location);
+        data.setLinkedNpcName(null);
 
         final var copy = FancyHolograms.get().getHologramsManager().create(data);
 

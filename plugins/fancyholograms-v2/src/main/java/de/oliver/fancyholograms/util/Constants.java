@@ -26,6 +26,9 @@ public enum Constants {
             <%primary_color%>- /hologram edit <hologram> removeLine <dark_gray>- <white>Removes a line at the bottom
             <%primary_color%>- /hologram edit <hologram> insertBefore <line number> <text ...> <dark_gray>- <white>Inserts a line before another
             <%primary_color%>- /hologram edit <hologram> insertAfter <line number> <text ...> <dark_gray>- <white>Inserts a line after another
+            <%primary_color%>- /hologram edit <hologram> swapLines <line number> <line number> <dark_gray>- <white>Swap line positions
+            <%primary_color%>- /hologram edit <hologram> moveUp <line number> <line number> <dark_gray>- <white>Move a line up
+            <%primary_color%>- /hologram edit <hologram> moveDown <line number> <line number> <dark_gray>- <white>Move a line down
             <%primary_color%>- /hologram edit <hologram> setLine <line number> <text ...> <dark_gray>- <white>Edits the line
             <%primary_color%>- /hologram edit <hologram> position <dark_gray>- <white>Teleports the hologram to you
             <%primary_color%>- /hologram edit <hologram> moveTo <x> <y> <z> [yaw] [pitch] <dark_gray>- <white>Teleports the hologram to the coordinates

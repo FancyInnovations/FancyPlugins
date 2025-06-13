@@ -206,9 +206,17 @@ public final class HologramCMD extends Command {
                 }
                 case "brightness" -> Stream.of("block", "sky");
                 case "textalignment" -> Arrays.stream(TextDisplay.TextAlignment.values()).map(Enum::name);
-                case "setline", "removeline" -> {
+                case "setline", "removeline", "swaplines" -> {
                     TextHologramData textData = (TextHologramData) hologram.getData();
                     yield IntStream.range(1, textData.getText().size() + 1).mapToObj(Integer::toString);
+                }
+                case "moveup" -> {
+                    TextHologramData textData = (TextHologramData) hologram.getData();
+                    yield IntStream.range(2, textData.getText().size() + 1).mapToObj(Integer::toString);
+                }
+                case "movedown" -> {
+                    TextHologramData textData = (TextHologramData) hologram.getData();
+                    yield IntStream.range(1, textData.getText().size()).mapToObj(Integer::toString);
                 }
                 case "linkwithnpc" -> {
                     if (!PluginUtils.isFancyNpcsEnabled()) {
@@ -220,6 +228,21 @@ public final class HologramCMD extends Command {
                 case "block" -> Arrays.stream(Material.values()).filter(Material::isBlock).map(Enum::name);
                 case "seethrough" -> Stream.of("true", "false");
                 case "visibility" -> new VisibilityCMD().tabcompletion(sender, hologram, args).stream();
+
+                default -> null;
+            };
+
+            if (suggestions != null) {
+                return suggestions.filter(input -> input.toLowerCase().startsWith(args[3].toLowerCase(Locale.ROOT))).toList();
+            }
+        }
+
+        if(args.length == 5) {
+            final var suggestions = switch (args[2].toLowerCase(Locale.ROOT)) {
+                case "swaplines" -> {
+                    TextHologramData textData = (TextHologramData) hologram.getData();
+                    yield IntStream.range(1, textData.getText().size() + 1).mapToObj(Integer::toString);
+                }
 
                 default -> null;
             };
@@ -336,6 +359,9 @@ public final class HologramCMD extends Command {
             case "removeline" -> new RemoveLineCMD().run(player, hologram, args);
             case "insertbefore" -> new InsertBeforeCMD().run(player, hologram, args);
             case "insertafter" -> new InsertAfterCMD().run(player, hologram, args);
+            case "swaplines" -> new SwapLinesCMD().run(player, hologram, args);
+            case "moveup" -> new MoveUpCMD().run(player, hologram, args);
+            case "movedown" -> new MoveDownCMD().run(player, hologram, args);
             case "textshadow" -> new TextShadowCMD().run(player, hologram, args);
             case "textalignment" -> new TextAlignmentCMD().run(player, hologram, args);
             case "seethrough" -> new SeeThroughCMD().run(player, hologram, args);

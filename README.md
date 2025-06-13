@@ -66,7 +66,7 @@ Here is a list of contributors to the previous repositories:
 - [NonSwag](https://github.com/NonSwag)
 - [FrezzyDev](https://github.com/FrezzyDev)
 - [perkojack](https://github.com/perkojack)
-- [BigTowns](https://github.com/BigTowns)
+- [BigTows](https://github.com/BigTows)
 - [kforbro](https://github.com/kforbro)
 - [Kamillaova](https://github.com/Kamillaova)
 - [Emibergo02](https://github.com/Emibergo02)

@@ -227,7 +227,7 @@ public class NpcManagerImpl implements NpcManager {
         YamlConfiguration npcConfig = YamlConfiguration.loadConfiguration(npcConfigFile);
 
         if (!npcConfig.isConfigurationSection("npcs")) {
-            isLoaded = true;
+            this.setLoaded();
             return;
         }
 
@@ -438,7 +438,10 @@ public class NpcManagerImpl implements NpcManager {
             npc.create();
             registerNpc(npc);
         }
+        this.setLoaded();
+    }
 
+    private void setLoaded(){
         isLoaded = true;
         new NpcsLoadedEvent().callEvent();
     }

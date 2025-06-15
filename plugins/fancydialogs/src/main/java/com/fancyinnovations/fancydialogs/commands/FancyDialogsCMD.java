@@ -98,16 +98,16 @@ public final class FancyDialogsCMD {
     ) {
         Collection<Dialog> dialogs = plugin.getDialogRegistry().getAll();
         if (dialogs.isEmpty()) {
-            translator.translate("commands.fancydialogs.registry.list.empty").send(actor.sender());
+            translator.translate("commands.dialog.registry.list.empty").send(actor.sender());
             return;
         }
 
-        translator.translate("commands.fancydialogs.registry.list.header")
+        translator.translate("commands.dialog.registry.list.header")
                 .replace("count", String.valueOf(dialogs.size()))
                 .send(actor.sender());
 
         for (Dialog dialog : dialogs) {
-            translator.translate("commands.fancydialogs.registry.list.entry")
+            translator.translate("commands.dialog.registry.list.entry")
                     .replace("id", dialog.getId())
                     .replace("title", dialog.getData().title())
                     .send(actor.sender());

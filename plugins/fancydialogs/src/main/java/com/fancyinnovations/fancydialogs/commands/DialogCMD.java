@@ -7,7 +7,11 @@ import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Optional;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
+import revxrsal.commands.bukkit.parameters.EntitySelector;
+
+import java.util.Collection;
 
 public final class DialogCMD {
 
@@ -19,13 +23,35 @@ public final class DialogCMD {
     private DialogCMD() {
     }
 
+    @Command("dialog list")
+    @Description("Lists all registered dialogs")
+    @CommandPermission("fancydialogs.commands.dialog.list")
+    public void list(BukkitCommandActor actor) {
+        Collection<Dialog> dialogs = plugin.getDialogRegistry().getAll();
+        if (dialogs.isEmpty()) {
+            translator.translate("commands.dialog.registry.list.empty").send(actor.sender());
+            return;
+        }
+
+        translator.translate("commands.dialog.registry.list.header")
+                .replace("count", String.valueOf(dialogs.size()))
+                .send(actor.sender());
+
+        for (Dialog dialog : dialogs) {
+            translator.translate("commands.dialog.registry.list.entry")
+                    .replace("id", dialog.getId())
+                    .replace("title", dialog.getData().title())
+                    .send(actor.sender());
+        }
+    }
+
     @Command("dialog open <dialog>")
     @Description("Opens a dialog (for a player) by its ID")
     @CommandPermission("fancydialogs.commands.registry.unregister")
     public void open(
             Player actor,
             Dialog dialog,
-            @Optional Player target
+            @Optional EntitySelector<Player> target
     ) {
         if (target == null) {
             dialog.open(actor);
@@ -33,10 +59,18 @@ public final class DialogCMD {
                     .replace("id", dialog.getId())
                     .send(actor);
         } else {
-            dialog.open(target);
+            for (Player player : target) {
+                dialog.open(player);
+            }
+
+            Collection<String> players = target.stream()
+                    .map(Player::getName)
+                    .toList();
+            String playersStr = String.join(", ", players);
+
             translator.translate("commands.dialog.open.other")
                     .replace("id", dialog.getId())
-                    .replace("target", target.getName())
+                    .replace("target", playersStr)
                     .send(actor);
         }
     }

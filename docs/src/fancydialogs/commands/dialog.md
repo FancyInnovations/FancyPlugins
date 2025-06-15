@@ -7,4 +7,16 @@ order: 10
 
 # /Dialog
 
-The `/dialog` command is the main command for managing dialogs.
+## List all dialogs
+
+Lists all registered dialogs.
+
+- **Syntax**: `/dialog list`
+- **Permissions**: `fancydialogs.commands.dialog.list`
+
+## Open dialog
+
+Opens a dialog (for a player) by its ID.
+
+- **Syntax**: `/dialog open <id> [player]`
+- **Permissions**: `fancydialogs.commands.dialog.open`

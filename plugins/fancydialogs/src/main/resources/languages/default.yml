@@ -6,7 +6,11 @@ messages:
     dialog:
       open:
         self: "<dark_gray>› <gray>Opened dialog {warningColor}{id}<gray>."
-        other: "<dark_gray>› <gray>Opened dialog {warningColor}{id}<gray> for player {target}."
+        other: "<dark_gray>› <gray>Opened dialog {warningColor}{id}<gray> for {target}."
+      list:
+        empty: "<dark_gray>› <gray>There are no dialogs registered."
+        header: "<dark_gray>› <gray>Registered dialogs:"
+        entry: "<dark_gray>› <gray> - {warningColor}{id}<gray> ({title})"
     fancydialogs:
       version: "<dark_gray>› <gray>You are running FancyDialogs {warningColor}{version}<gray>."
       storage:
@@ -17,10 +21,6 @@ messages:
         reload:
           success: "<dark_gray>› <gray>Successfully reloaded {warningColor}{count}<gray> dialogs from the storage."
       registry:
-        list:
-          empty: "<dark_gray>› <gray>There are no dialogs registered."
-          header: "<dark_gray>› <gray>Registered dialogs:"
-          entry: "<dark_gray>› <gray> - {warningColor}{id}<gray> ({title})"
         clear:
           success: "<dark_gray>› <gray>Successfully cleared all registered dialogs."
         unregister:

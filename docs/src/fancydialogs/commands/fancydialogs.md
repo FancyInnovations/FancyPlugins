@@ -11,7 +11,7 @@ order: 9
 
 Shows the version of FancyDialogs.
 
-- **Syntax**:  `/fancydialogs version`
+- **Syntax**: `/fancydialogs version`
 - **Permissions**: `fancydialogs.commands.fancydialogs.version`
 
 ## Storage
@@ -20,21 +20,21 @@ Shows the version of FancyDialogs.
 
 Saves all dialog data to the storage.
 
-- **Syntax**:  `/fancydialogs storage save`
+- **Syntax**: `/fancydialogs storage save`
 - **Permissions**: `fancydialogs.commands.fancydialogs.storage.save`
 
 ### Load all dialogs
 
 Loads all dialog data from the storage.
 
-- **Syntax**:  `/fancydialogs storage load`
+- **Syntax**: `/fancydialogs storage load`
 - **Permissions**: `fancydialogs.commands.fancydialogs.storage.load`
 
 ### Reload all dialogs
 
 Clears the dialog registry and loads all dialog data from the storage.
 
-- **Syntax**:  `/fancydialogs storage reload`
+- **Syntax**: `/fancydialogs storage reload`
 - **Permissions**: `fancydialogs.commands.fancydialogs.storage.reload`
 
 ## Registry
@@ -43,19 +43,19 @@ Clears the dialog registry and loads all dialog data from the storage.
 
 Lists all registered dialogs.
 
-- **Syntax**:  `/fancydialogs registry list`
+- **Syntax**: `/fancydialogs registry list`
 - **Permissions**: `fancydialogs.commands.fancydialogs.registry.list`
 
 ## Clear registry
 
 Clears the dialog registry
 
-- **Syntax**:  `/fancydialogs registry clear`
+- **Syntax**: `/fancydialogs registry clear`
 - **Permissions**: `fancydialogs.commands.fancydialogs.registry.clear`
 
 ## Unregister dialog
 
 Unregisters a dialog by its ID.
 
-- **Syntax**:  `/fancydialogs registry unregister <id>`
+- **Syntax**: `/fancydialogs registry unregister <id>`
 - **Permissions**: `fancydialogs.commands.fancydialogs.registry.unregister`

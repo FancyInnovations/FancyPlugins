@@ -6,9 +6,9 @@ import de.oliver.fancynpcs.v1_21_6.ReflectionHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.ChickenVariant;
 import org.bukkit.entity.EntityType;
@@ -48,10 +48,7 @@ public class ChickenAttributes {
     }
 
     private static HolderLookup.RegistryLookup<ChickenVariant> getChickenVariantRegistry() {
-        return VanillaRegistries
-                .createLookup()
-                .lookup(Registries.CHICKEN_VARIANT)
-                .orElseThrow();
+        return MinecraftServer.getServer().registryAccess().lookupOrThrow(Registries.CHICKEN_VARIANT);
     }
 
 }

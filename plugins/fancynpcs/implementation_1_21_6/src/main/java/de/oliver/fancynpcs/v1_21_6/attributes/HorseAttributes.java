@@ -68,17 +68,14 @@ public class HorseAttributes {
         switch (value.toLowerCase()) {
             case "standing" -> {
                 horse.setEating(false);
-                //TODO fix
-//                horse.setForceStanding(false);
+                horse.setStanding(0);
             }
             case "rearing" -> {
-                //TODO fix
-//                horse.setForceStanding(true);
+                horse.setStanding(20);
                 horse.setEating(false);
             }
             case "eating" -> {
-                //TODO fix
-//                horse.setForceStanding(false);
+                horse.setStanding(0);
                 horse.setEating(true);
             }
         }

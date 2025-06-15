@@ -6,9 +6,9 @@ import de.oliver.fancynpcs.v1_21_6.ReflectionHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.CatVariant;
 import net.minecraft.world.item.DyeColor;
@@ -82,10 +82,7 @@ public class CatAttributes {
     }
 
     private static HolderLookup.RegistryLookup<CatVariant> getCatVariantRegistry() {
-        return VanillaRegistries
-                .createLookup()
-                .lookup(Registries.CAT_VARIANT)
-                .orElseThrow();
+        return MinecraftServer.getServer().registryAccess().lookupOrThrow(Registries.CAT_VARIANT);
     }
 
     private static void setCollarColor(Npc npc, String value) {

@@ -6,9 +6,9 @@ import de.oliver.fancynpcs.v1_21_6.ReflectionHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.animal.PigVariant;
@@ -67,10 +67,7 @@ public class PigAttributes {
     }
 
     private static HolderLookup.RegistryLookup<PigVariant> getPigVariantRegistry() {
-        return VanillaRegistries
-                .createLookup()
-                .lookup(Registries.PIG_VARIANT)
-                .orElseThrow();
+        return MinecraftServer.getServer().registryAccess().lookupOrThrow(Registries.PIG_VARIANT);
     }
 
 }

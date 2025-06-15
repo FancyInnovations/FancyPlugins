@@ -155,7 +155,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         String mcVersion = Bukkit.getMinecraftVersion();
 
         switch (mcVersion) {
-            case "1.21.6" -> npcAdapter = Npc_1_21_6::new;
+            case "1.21.6 Release Candidate 1" -> npcAdapter = Npc_1_21_6::new;
             case "1.21.5" -> npcAdapter = Npc_1_21_5::new;
             case "1.21.4" -> npcAdapter = Npc_1_21_4::new;
             case "1.21.2", "1.21.3" -> npcAdapter = Npc_1_21_3::new;

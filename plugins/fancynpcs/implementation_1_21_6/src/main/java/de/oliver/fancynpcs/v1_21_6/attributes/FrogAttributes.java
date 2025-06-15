@@ -6,9 +6,9 @@ import de.oliver.fancynpcs.v1_21_6.ReflectionHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
 import org.bukkit.entity.EntityType;
@@ -48,9 +48,6 @@ public class FrogAttributes {
     }
 
     private static HolderLookup.RegistryLookup<FrogVariant> getFrogVariantRegistry() {
-        return VanillaRegistries
-                .createLookup()
-                .lookup(Registries.FROG_VARIANT)
-                .orElseThrow();
+        return MinecraftServer.getServer().registryAccess().lookupOrThrow(Registries.FROG_VARIANT);
     }
 }

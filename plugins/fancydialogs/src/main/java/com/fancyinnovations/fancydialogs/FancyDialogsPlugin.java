@@ -2,8 +2,10 @@ package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.api.Dialog;
 import com.fancyinnovations.fancydialogs.api.data.DialogData;
+import com.fancyinnovations.fancydialogs.commands.DialogCMD;
 import com.fancyinnovations.fancydialogs.commands.FancyDialogsCMD;
 import com.fancyinnovations.fancydialogs.commands.TutorialCMD;
+import com.fancyinnovations.fancydialogs.commands.types.DialogCommandType;
 import com.fancyinnovations.fancydialogs.config.FDFeatureFlags;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.dialog.DialogImpl;
@@ -135,11 +137,7 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
         registerListeners();
 
-        Lamp<BukkitCommandActor> lamp = BukkitLamp
-                .builder(this)
-                .build();
-        lamp.register(FancyDialogsCMD.INSTANCE);
-        lamp.register(TutorialCMD.INSTANCE);
+        registerCommands();
 
         // FancyNpcs actions
         new OpenDialogNpcAction().register();
@@ -158,6 +156,21 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+    }
+
+    private void registerCommands() {
+        Lamp.Builder<BukkitCommandActor> lampBuilder = BukkitLamp
+                .builder(this);
+
+        lampBuilder.parameterTypes(builder -> {
+            builder.addParameterType(Dialog.class, DialogCommandType.INSTANCE);
+        });
+
+        Lamp<BukkitCommandActor> lamp = lampBuilder.build();
+
+        lamp.register(FancyDialogsCMD.INSTANCE);
+        lamp.register(DialogCMD.INSTANCE);
+        lamp.register(TutorialCMD.INSTANCE);
     }
 
     public ExtendedFancyLogger getFancyLogger() {

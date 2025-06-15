@@ -1,6 +1,12 @@
 language_name: default
 messages:
+  dialog:
+    not_found: "<dark_gray>› <gray>Dialog {warningColor}{id}<gray> is not registered."
   commands:
+    dialog:
+      open:
+        self: "<dark_gray>› <gray>Opened dialog {warningColor}{id}<gray>."
+        other: "<dark_gray>› <gray>Opened dialog {warningColor}{id}<gray> for player {target}."
     fancydialogs:
       version: "<dark_gray>› <gray>You are running FancyDialogs {warningColor}{version}<gray>."
       storage:
@@ -19,4 +25,3 @@ messages:
           success: "<dark_gray>› <gray>Successfully cleared all registered dialogs."
         unregister:
           success: "<dark_gray>› <gray>Successfully unregistered dialog {warningColor}{id}<gray>."
-          not_found: "<dark_gray>› <gray>Dialog {warningColor}{id}<gray> is not registered."

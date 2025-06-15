@@ -124,24 +124,16 @@ public final class FancyDialogsCMD {
         translator.translate("commands.fancydialogs.registry.clear.success").send(actor.sender());
     }
 
-    @Command("fancydialogs registry unregister <id>")
+    @Command("fancydialogs registry unregister <dialog>")
     @Description("Unregisters a dialog by its ID")
     @CommandPermission("fancydialogs.commands.registry.unregister")
     public void registryUnregister(
             final BukkitCommandActor actor,
-            final String id
+            final Dialog dialog
     ) {
-        Dialog dialog = plugin.getDialogRegistry().get(id);
-        if (dialog == null) {
-            translator.translate("commands.fancydialogs.registry.unregister.not_found")
-                    .replace("id", id)
-                    .send(actor.sender());
-            return;
-        }
-
-        plugin.getDialogRegistry().unregister(id);
+        plugin.getDialogRegistry().unregister(dialog.getId());
         translator.translate("commands.fancydialogs.registry.unregister.success")
-                .replace("id", id)
+                .replace("id", dialog.getId())
                 .send(actor.sender());
     }
 }

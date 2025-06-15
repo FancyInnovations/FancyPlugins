@@ -4,6 +4,7 @@ import de.oliver.fancysitula.api.dialogs.FS_CommonDialogData;
 import de.oliver.fancysitula.api.dialogs.FS_DialogAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_CommonButtonData;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButton;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCustomAction;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogTextBody;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogBooleanInput;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogInput;
@@ -102,7 +103,10 @@ public class FancySitulaCMD extends Command {
                                 "tooltip1",
                                 40
                         ),
-                        null
+                        new FS_DialogCustomAction(
+                                "my-custom-action-1",
+                                "someAdditionalData1"
+                        )
                 )
         );
 

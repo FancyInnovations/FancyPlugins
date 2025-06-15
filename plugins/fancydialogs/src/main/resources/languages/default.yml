@@ -8,6 +8,8 @@ messages:
           success: "<dark_gray>› <gray>Successfully saved {warningColor}{count}<gray> dialogs to the storage."
         load:
           success: "<dark_gray>› <gray>Successfully loaded {warningColor}{count}<gray> dialogs from the storage."
+        reload:
+          success: "<dark_gray>› <gray>Successfully reloaded {warningColor}{count}<gray> dialogs from the storage."
       registry:
         list:
           empty: "<dark_gray>› <gray>There are no dialogs registered."

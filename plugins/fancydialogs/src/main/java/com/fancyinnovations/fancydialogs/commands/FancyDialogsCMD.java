@@ -27,8 +27,7 @@ public final class FancyDialogsCMD {
     @Description("Shows the version of FancyDialogs")
     @CommandPermission("fancydialogs.commands.tutorial")
     public void version(
-            final BukkitCommandActor actor,
-            final String tutorial
+            final BukkitCommandActor actor
     ) {
         String version = plugin.getPluginMeta().getVersion();
 
@@ -68,6 +67,25 @@ public final class FancyDialogsCMD {
         }
 
         translator.translate("commands.fancydialogs.storage.load.success")
+                .replace("count", String.valueOf(dialogs.size()))
+                .send(actor.sender());
+    }
+
+    @Command("fancydialogs storage reload")
+    @Description("Clears the dialog registry and loads all dialog data from the storage")
+    @CommandPermission("fancydialogs.commands.storage.load")
+    public void storageReload(
+            final BukkitCommandActor actor
+    ) {
+        plugin.getDialogRegistry().clear();
+
+        Collection<DialogData> dialogs = plugin.getDialogStorage().loadAll();
+        for (DialogData dialogData : dialogs) {
+            DialogImpl dialog = new DialogImpl(dialogData.id(), dialogData);
+            plugin.getDialogRegistry().register(dialog);
+        }
+
+        translator.translate("commands.fancydialogs.storage.reload.success")
                 .replace("count", String.valueOf(dialogs.size()))
                 .send(actor.sender());
     }

@@ -30,6 +30,13 @@ Loads all dialog data from the storage.
 - **Syntax**:  `/fancydialogs storage load`
 - **Permissions**: `fancydialogs.commands.fancydialogs.storage.load`
 
+### Reload all dialogs
+
+Clears the dialog registry and loads all dialog data from the storage.
+
+- **Syntax**:  `/fancydialogs storage reload`
+- **Permissions**: `fancydialogs.commands.fancydialogs.storage.reload`
+
 ## Registry
 
 ## List all dialogs

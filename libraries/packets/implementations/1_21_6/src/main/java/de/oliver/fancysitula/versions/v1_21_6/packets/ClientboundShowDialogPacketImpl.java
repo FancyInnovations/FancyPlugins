@@ -13,6 +13,7 @@ import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogBooleanInput;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogInput;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogNumberRangeInput;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogSingleOptionInput;
+import de.oliver.fancysitula.api.dialogs.types.FS_ConfirmationDialog;
 import de.oliver.fancysitula.api.dialogs.types.FS_NoticeDialog;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundShowDialogPacket;
@@ -62,6 +63,8 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
     private Dialog toNms(FS_Dialog dialog) {
         if (dialog instanceof FS_NoticeDialog notice) {
             return noticeToNms(notice);
+        } else if (dialog instanceof FS_ConfirmationDialog confirmation) {
+            return confirmationToNms(confirmation);
         }
 
         return null;
@@ -72,6 +75,14 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
         ActionButton actionButton = actionButtonToNms(notice.getActionButton());
 
         return new NoticeDialog(common, actionButton);
+    }
+
+    private Dialog confirmationToNms(FS_ConfirmationDialog notice) {
+        CommonDialogData common = commonToNms(notice.getDialogData());
+        ActionButton yes = actionButtonToNms(notice.getYesButton());
+        ActionButton no = actionButtonToNms(notice.getNoButton());
+
+        return new ConfirmationDialog(common, yes, no);
     }
 
     private CommonDialogData commonToNms(FS_CommonDialogData dialogData) {

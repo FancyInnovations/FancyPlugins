@@ -1,2 +1,3 @@
 language_name: default
 messages:
+  foo: "Foo"

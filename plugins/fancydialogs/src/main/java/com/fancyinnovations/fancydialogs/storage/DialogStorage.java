@@ -1,20 +1,17 @@
 package com.fancyinnovations.fancydialogs.storage;
 
-import com.fancyinnovations.fancydialogs.api.Dialog;
-import com.fancyinnovations.fancydialogs.api.data.types.DialogType;
+import com.fancyinnovations.fancydialogs.api.data.DialogData;
 
 import java.util.Collection;
 
 public interface DialogStorage {
 
-    void save(Dialog dialog);
+    void save(DialogData dialog);
 
-    void saveBatch(Collection<Dialog> dialogs);
+    void saveBatch(Collection<DialogData> dialogs);
 
-    void delete(Dialog dialog);
+    void delete(DialogData dialog);
 
-    Collection<Dialog> loadAll(Dialog.Type type);
-
-    Collection<Dialog> loadAll();
+    Collection<DialogData> loadAll();
 
 }

@@ -11,6 +11,10 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         boolean isNewPlayer = !event.getPlayer().hasPlayedBefore();
+        if (FancyDialogsPlugin.get().getFancyDialogsConfig().getLogLevel().equalsIgnoreCase("debug")) {
+            isNewPlayer = true;
+        }
+
         if (isNewPlayer) {
             String welcomeDialogID = FancyDialogsPlugin.get().getFancyDialogsConfig().getWelcomeDialogID();
             Dialog dialog = FancyDialogsPlugin.get().getDialogRegistry().get(welcomeDialogID);

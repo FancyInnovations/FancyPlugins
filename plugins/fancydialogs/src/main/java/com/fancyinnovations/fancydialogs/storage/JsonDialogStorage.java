@@ -1,7 +1,7 @@
 package com.fancyinnovations.fancydialogs.storage;
 
 import com.fancyinnovations.fancydialogs.FancyDialogsPlugin;
-import com.fancyinnovations.fancydialogs.api.Dialog;
+import com.fancyinnovations.fancydialogs.api.data.DialogData;
 import de.oliver.jdb.JDB;
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class JsonDialogStorage implements DialogStorage{
+public class JsonDialogStorage implements DialogStorage {
 
     private final JDB jdb;
 
@@ -18,47 +18,36 @@ public class JsonDialogStorage implements DialogStorage{
     }
 
     @Override
-    public void save(Dialog dialog) {
+    public void save(DialogData dialog) {
         try {
-            jdb.set(dialog.getType().name().toLowerCase() + "/" + dialog.getId(), dialog);
+            jdb.set(dialog.id(), dialog);
         } catch (IOException e) {
-            FancyDialogsPlugin.get().getFancyLogger().error("Failed to save dialog " + dialog.getId());
+            FancyDialogsPlugin.get().getFancyLogger().error("Failed to save dialog " + dialog.id());
             FancyDialogsPlugin.get().getFancyLogger().error(e);
         }
     }
 
     @Override
-    public void saveBatch(Collection<Dialog> dialogs) {
-        for (Dialog dialog : dialogs) {
+    public void saveBatch(Collection<DialogData> dialogs) {
+        for (DialogData dialog : dialogs) {
             save(dialog);
         }
     }
 
     @Override
-    public void delete(Dialog dialog) {
-        jdb.delete(dialog.getType().name().toLowerCase() + "/" + dialog.getId());
+    public void delete(DialogData dialog) {
+        jdb.delete(dialog.id());
     }
 
     @Override
-    public Collection<Dialog> loadAll(Dialog.Type type) {
-        List<Dialog> dialogs = new ArrayList<>();
+    public Collection<DialogData> loadAll() {
+        List<DialogData> dialogs = new ArrayList<>();
 
         try {
-            dialogs = jdb.getAll(type.name().toLowerCase(), Dialog.class);
+            dialogs = jdb.getAll("", DialogData.class);
         } catch (IOException e) {
-            FancyDialogsPlugin.get().getFancyLogger().error("Failed to load all dialogs for type: " + type);
+            FancyDialogsPlugin.get().getFancyLogger().error("Failed to load all dialogs");
             FancyDialogsPlugin.get().getFancyLogger().error(e);
-        }
-
-        return dialogs;
-    }
-
-    @Override
-    public Collection<Dialog> loadAll() {
-        List<Dialog> dialogs = new ArrayList<>();
-
-        for (Dialog.Type t : Dialog.Type.values()) {
-            dialogs.addAll(loadAll(t));
         }
 
         return dialogs;

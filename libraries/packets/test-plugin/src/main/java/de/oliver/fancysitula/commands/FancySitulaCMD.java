@@ -1,5 +1,13 @@
 package de.oliver.fancysitula.commands;
 
+import de.oliver.fancysitula.api.dialogs.FS_CommonDialogData;
+import de.oliver.fancysitula.api.dialogs.FS_DialogAction;
+import de.oliver.fancysitula.api.dialogs.actions.FS_CommonButtonData;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButton;
+import de.oliver.fancysitula.api.dialogs.body.FS_DialogTextBody;
+import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogBooleanInput;
+import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogInput;
+import de.oliver.fancysitula.api.dialogs.types.FS_NoticeDialog;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundPlayerInfoUpdatePacket;
 import de.oliver.fancysitula.api.packets.FS_Color;
@@ -34,7 +42,9 @@ public class FancySitulaCMD extends Command {
 
         // Wrap the real player into an FS_Player instance
         FS_RealPlayer fsPlayer = new FS_RealPlayer(p);
-        testTeam(p);
+        testNoticeDialog(p);
+
+//        testTeam(p);
 
 //        FS_TextDisplay fakeTextDisplay = new FS_TextDisplay();
 //        fakeTextDisplay.setBillboardRenderConstraints((byte) 3);
@@ -59,6 +69,44 @@ public class FancySitulaCMD extends Command {
 //        FancySitula.ENTITY_FACTORY.spawnEntityFor(fsPlayer, fakeBlockDisplay);
 
         return true;
+    }
+
+    private void testNoticeDialog(Player to) {
+        FS_RealPlayer fsPlayer = new FS_RealPlayer(to);
+
+        FS_NoticeDialog noticeDialog = new FS_NoticeDialog(
+                new FS_CommonDialogData(
+                        "My dialog",
+                        "External Title",
+                        true,
+                        false,
+                        FS_DialogAction.NONE,
+                        List.of(
+                                new FS_DialogTextBody("Hello world!", 200)
+                        ),
+                        List.of(
+                                new FS_DialogInput(
+                                        "booleanInput1",
+                                        new FS_DialogBooleanInput(
+                                                "Boolean button 1",
+                                                false,
+                                                "True value",
+                                                "False value"
+                                        )
+                                )
+                        )
+                ),
+                new FS_DialogActionButton(
+                        new FS_CommonButtonData(
+                                "button1",
+                                "tooltip1",
+                                40
+                        ),
+                        null
+                )
+        );
+
+        FancySitula.PACKET_FACTORY.createShowDialogPacket(noticeDialog).send(fsPlayer);
     }
 
     private void testTeam(Player to) {

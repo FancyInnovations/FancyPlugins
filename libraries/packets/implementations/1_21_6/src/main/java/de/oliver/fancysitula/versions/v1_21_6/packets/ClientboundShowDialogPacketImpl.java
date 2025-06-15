@@ -1,13 +1,43 @@
 package de.oliver.fancysitula.versions.v1_21_6.packets;
 
+import de.oliver.fancysitula.api.dialogs.FS_CommonDialogData;
 import de.oliver.fancysitula.api.dialogs.FS_Dialog;
+import de.oliver.fancysitula.api.dialogs.FS_DialogAction;
+import de.oliver.fancysitula.api.dialogs.actions.FS_CommonButtonData;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButton;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogRunCommandAction;
+import de.oliver.fancysitula.api.dialogs.body.FS_DialogBody;
+import de.oliver.fancysitula.api.dialogs.body.FS_DialogItemBody;
+import de.oliver.fancysitula.api.dialogs.body.FS_DialogTextBody;
+import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogBooleanInput;
+import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogInput;
+import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogNumberRangeInput;
+import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogSingleOptionInput;
+import de.oliver.fancysitula.api.dialogs.types.FS_NoticeDialog;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundShowDialogPacket;
 import de.oliver.fancysitula.versions.v1_21_6.utils.VanillaPlayerAdapter;
+import io.papermc.paper.adventure.PaperAdventure;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.ClientboundShowDialogPacket;
-import net.minecraft.server.dialog.Dialog;
+import net.minecraft.server.dialog.*;
+import net.minecraft.server.dialog.action.Action;
+import net.minecraft.server.dialog.action.CommandTemplate;
+import net.minecraft.server.dialog.body.DialogBody;
+import net.minecraft.server.dialog.body.ItemBody;
+import net.minecraft.server.dialog.body.PlainMessage;
+import net.minecraft.server.dialog.input.BooleanInput;
+import net.minecraft.server.dialog.input.InputControl;
+import net.minecraft.server.dialog.input.NumberRangeInput;
+import net.minecraft.server.dialog.input.SingleOptionInput;
 import net.minecraft.server.level.ServerPlayer;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPacket {
 
@@ -30,6 +60,149 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
     }
 
     private Dialog toNms(FS_Dialog dialog) {
+        if (dialog instanceof FS_NoticeDialog notice) {
+            return noticeToNms(notice);
+        }
+
         return null;
+    }
+
+    private Dialog noticeToNms(FS_NoticeDialog notice) {
+        CommonDialogData common = commonToNms(notice.getDialogData());
+        ActionButton actionButton = actionButtonToNms(notice.getActionButton());
+
+        return new NoticeDialog(common, actionButton);
+    }
+
+    private CommonDialogData commonToNms(FS_CommonDialogData dialogData) {
+        Component title = PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(dialogData.getTitle()));
+
+        Optional<Component> externalTitle = dialogData.getExternalTitle() != null ?
+                Optional.of(PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(dialogData.getExternalTitle()))) :
+                Optional.empty();
+
+        return new CommonDialogData(
+                title,
+                externalTitle,
+                dialogData.isCanCloseWithEscape(),
+                dialogData.isPause(),
+                actionToNms(dialogData.getAfterAction()),
+                bodyToNms(dialogData.getBody()),
+                inputsToNms(dialogData.getInputs())
+        );
+    }
+
+    private DialogAction actionToNms(FS_DialogAction dialogAction) {
+        return switch (dialogAction) {
+            case CLOSE -> DialogAction.CLOSE;
+            case NONE -> DialogAction.NONE;
+            case WAIT_FOR_RESPONSE -> DialogAction.WAIT_FOR_RESPONSE;
+        };
+    }
+
+    private List<DialogBody> bodyToNms(List<FS_DialogBody> bodies) {
+        List<DialogBody> nmsBodies = new ArrayList<>();
+
+        for (FS_DialogBody body : bodies) {
+            if (body instanceof FS_DialogTextBody textBody) {
+                nmsBodies.add(new PlainMessage(
+                        PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(textBody.getText())),
+                        textBody.getWidth()
+                ));
+            } else if (body instanceof FS_DialogItemBody itemBody) {
+                Optional<PlainMessage> description = itemBody.getDescription() != null ?
+                        Optional.of(new PlainMessage(
+                                PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(itemBody.getDescription().getText())),
+                                itemBody.getDescription().getWidth()
+                        )) :
+                        Optional.empty();
+
+                nmsBodies.add(new ItemBody(
+                        CraftItemStack.asNMSCopy(itemBody.getItem()),
+                        description,
+                        itemBody.isShowDecorations(),
+                        itemBody.isShowTooltip(),
+                        itemBody.getWidth(),
+                        itemBody.getHeight()
+                ));
+            }
+        }
+
+        return nmsBodies;
+    }
+
+    private List<Input> inputsToNms(List<FS_DialogInput> inputs) {
+        List<Input> nmsInputs = new ArrayList<>();
+
+        for (FS_DialogInput input : inputs) {
+            String key = input.getKey();
+
+            InputControl control = null;
+            if (input.getControl() instanceof FS_DialogBooleanInput booleanInput) {
+                control = new BooleanInput(
+                        PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(booleanInput.getLabel())),
+                        booleanInput.isInitial(),
+                        booleanInput.getOnTrue(),
+                        booleanInput.getOnFalse()
+                );
+            } else if (input.getControl() instanceof FS_DialogNumberRangeInput numberRangeInput) {
+                control = new NumberRangeInput(
+                        numberRangeInput.getWidth(),
+                        PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(numberRangeInput.getLabel())),
+                        numberRangeInput.getLabelFormat(),
+                        new NumberRangeInput.RangeInfo(
+                                numberRangeInput.getStart(),
+                                numberRangeInput.getEnd(),
+                                numberRangeInput.getInitial() != null ? Optional.of(numberRangeInput.getInitial()) : Optional.empty(),
+                                numberRangeInput.getStep() != null ? Optional.of(numberRangeInput.getStep()) : Optional.empty()
+                        )
+                );
+            } else if (input.getControl() instanceof FS_DialogSingleOptionInput singleOptionInput) {
+                List<SingleOptionInput.Entry> nmsEntries = new ArrayList<>();
+                for (FS_DialogSingleOptionInput.Entry entry : singleOptionInput.getEntries()) {
+                    nmsEntries.add(new SingleOptionInput.Entry(
+                            entry.getId(),
+                            entry.getDisplay() != null ? Optional.of(PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(entry.getDisplay()))) : Optional.empty(),
+                            entry.isInitial()
+                    ));
+                }
+
+                control = new SingleOptionInput(
+                        singleOptionInput.getWidth(),
+                        nmsEntries,
+                        PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(singleOptionInput.getLabel())),
+                        singleOptionInput.isLabelVisible()
+                );
+            }
+
+            nmsInputs.add(new Input(key, control));
+        }
+
+        return nmsInputs;
+    }
+
+    private ActionButton actionButtonToNms(FS_DialogActionButton actionButton) {
+        CommonButtonData buttonData = commonButtonDataToNms(actionButton.getButtonData());
+
+        Action action = null;
+        if (actionButton.getAction() instanceof FS_DialogRunCommandAction runCommandAction) {
+            action = new CommandTemplate(null); // TODO: Fix this
+        }
+
+        Optional<Action> optionalAction = action != null ?
+                Optional.of(action) :
+                Optional.empty();
+
+        return new ActionButton(buttonData, optionalAction);
+    }
+
+    private CommonButtonData commonButtonDataToNms(FS_CommonButtonData commonButtonData) {
+        Component label = PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(commonButtonData.getLabel()));
+        Optional<Component> tooltip = commonButtonData.getTooltip() != null ?
+                Optional.of(PaperAdventure.asVanilla(MiniMessage.miniMessage().deserialize(commonButtonData.getTooltip()))) :
+                Optional.empty();
+        int width = commonButtonData.getWidth();
+
+        return new CommonButtonData(label, tooltip, width);
     }
 }

@@ -6,6 +6,7 @@ import com.fancyinnovations.fancydialogs.commands.TutorialCMD;
 import com.fancyinnovations.fancydialogs.config.FDFeatureFlags;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.dialog.DialogImpl;
+import com.fancyinnovations.fancydialogs.fancynpcs.OpenDialogNpcAction;
 import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
 import com.fancyinnovations.fancydialogs.registry.DefaultDialogs;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
@@ -137,6 +138,9 @@ public class FancyDialogsPlugin extends JavaPlugin {
                 .builder(this)
                 .build();
         lamp.register(TutorialCMD.INSTANCE);
+
+        // FancyNpcs actions
+        new OpenDialogNpcAction().register();
 
         fancyLogger.info("Successfully enabled FancyDialogs version %s".formatted(getDescription().getVersion()));
     }

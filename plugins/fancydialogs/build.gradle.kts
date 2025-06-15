@@ -54,6 +54,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:api:0.1.6")
     implementation("de.oliver.FancyAnalytics:logger:0.0.6")
 
+    compileOnly(project(":plugins:fancynpcs:fn-api"))
     compileOnly("org.lushplugins:ChatColorHandler:5.1.3")
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.12")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.12")
@@ -72,6 +73,10 @@ paper {
     apiVersion = "1.21"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
     serverDependencies {
+        register("FancyNpcs") {
+            required = false
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
         register("MiniPlaceholders") {
             required = false
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE

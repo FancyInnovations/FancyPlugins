@@ -1,6 +1,7 @@
 package com.fancyinnovations.fancydialogs.commands;
 
 import com.fancyinnovations.fancydialogs.FancyDialogsPlugin;
+import com.fancyinnovations.fancydialogs.api.ConfirmationDialog;
 import com.fancyinnovations.fancydialogs.api.Dialog;
 import com.fancyinnovations.fancydialogs.api.data.DialogData;
 import com.fancyinnovations.fancydialogs.dialog.DialogImpl;
@@ -59,6 +60,13 @@ public final class FancyDialogsCMD {
     public void storageLoad(
             final BukkitCommandActor actor
     ) {
+        if (actor.isPlayer()) {
+            if (!ConfirmationDialog.ask(actor.asPlayer(), "Are you sure you want to load all dialogs from storage? This will clear the current registry.")) {
+                translator.translate("commands.fancydialogs.storage.load.cancelled").send(actor.sender());
+                return;
+            }
+        }
+
         Collection<DialogData> dialogs = plugin.getDialogStorage().loadAll();
 
         for (DialogData dialogData : dialogs) {

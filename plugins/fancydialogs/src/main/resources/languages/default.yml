@@ -18,6 +18,7 @@ messages:
           success: "<dark_gray>› <gray>Successfully saved {warningColor}{count}<gray> dialogs to the storage."
         load:
           success: "<dark_gray>› <gray>Successfully loaded {warningColor}{count}<gray> dialogs from the storage."
+          cancelled: "<dark_gray>› <gray>Loading dialogs from storage was cancelled."
         reload:
           success: "<dark_gray>› <gray>Successfully reloaded {warningColor}{count}<gray> dialogs from the storage."
       registry:

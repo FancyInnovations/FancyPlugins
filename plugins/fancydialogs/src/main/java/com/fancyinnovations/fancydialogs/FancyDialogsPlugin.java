@@ -1,6 +1,7 @@
 package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.api.Dialog;
+import com.fancyinnovations.fancydialogs.api.FancyDialogs;
 import com.fancyinnovations.fancydialogs.api.data.DialogData;
 import com.fancyinnovations.fancydialogs.commands.DialogCMD;
 import com.fancyinnovations.fancydialogs.commands.FancyDialogsCMD;
@@ -38,7 +39,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class FancyDialogsPlugin extends JavaPlugin {
+public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
 
     private static FancyDialogsPlugin INSTANCE;
     private final ExtendedFancyLogger fancyLogger;
@@ -171,6 +172,11 @@ public class FancyDialogsPlugin extends JavaPlugin {
         lamp.register(FancyDialogsCMD.INSTANCE);
         lamp.register(DialogCMD.INSTANCE);
         lamp.register(TutorialCMD.INSTANCE);
+    }
+
+    @Override
+    public Dialog createDialog(DialogData data) {
+        return new DialogImpl(data.id(), data);
     }
 
     public ExtendedFancyLogger getFancyLogger() {

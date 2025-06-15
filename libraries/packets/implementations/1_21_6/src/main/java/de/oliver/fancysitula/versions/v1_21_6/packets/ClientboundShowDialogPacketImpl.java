@@ -5,7 +5,7 @@ import de.oliver.fancysitula.api.dialogs.FS_Dialog;
 import de.oliver.fancysitula.api.dialogs.FS_DialogAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_CommonButtonData;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButton;
-import de.oliver.fancysitula.api.dialogs.actions.FS_DialogRunCommandAction;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCustomAction;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogBody;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogItemBody;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogTextBody;
@@ -21,14 +21,17 @@ import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundShowDialogPacket;
 import de.oliver.fancysitula.versions.v1_21_6.utils.VanillaPlayerAdapter;
 import io.papermc.paper.adventure.PaperAdventure;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.ClientboundShowDialogPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.dialog.*;
 import net.minecraft.server.dialog.action.Action;
-import net.minecraft.server.dialog.action.CommandTemplate;
+import net.minecraft.server.dialog.action.CustomAll;
 import net.minecraft.server.dialog.body.DialogBody;
 import net.minecraft.server.dialog.body.ItemBody;
 import net.minecraft.server.dialog.body.PlainMessage;
@@ -235,9 +238,23 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
         CommonButtonData buttonData = commonButtonDataToNms(actionButton.getButtonData());
 
         Action action = null;
-        if (actionButton.getAction() instanceof FS_DialogRunCommandAction runCommandAction) {
-            action = new CommandTemplate(null); // TODO: Fix this
+        if (actionButton.getAction() instanceof FS_DialogCustomAction customAction) {
+            Key idKey = Key.key("fancysitula", customAction.getId());
+            ResourceLocation idLocation = PaperAdventure.asVanilla(idKey);
+
+            Optional<CompoundTag> additions;
+            if (customAction.getAdditions() != null) {
+                CompoundTag tag = new CompoundTag();
+                tag.putString("additions", customAction.getAdditions());
+                additions = Optional.of(tag);
+            } else {
+                additions = Optional.empty();
+            }
+
+            action = new CustomAll(idLocation, additions);
         }
+
+        // TODO add support for run command action
 
         Optional<Action> optionalAction = action != null ?
                 Optional.of(action) :

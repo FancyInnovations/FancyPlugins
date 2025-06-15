@@ -2,6 +2,7 @@ package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.api.Dialog;
 import com.fancyinnovations.fancydialogs.api.data.DialogData;
+import com.fancyinnovations.fancydialogs.commands.FancyDialogsCMD;
 import com.fancyinnovations.fancydialogs.commands.TutorialCMD;
 import com.fancyinnovations.fancydialogs.config.FDFeatureFlags;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
@@ -137,6 +138,7 @@ public class FancyDialogsPlugin extends JavaPlugin {
         Lamp<BukkitCommandActor> lamp = BukkitLamp
                 .builder(this)
                 .build();
+        lamp.register(FancyDialogsCMD.INSTANCE);
         lamp.register(TutorialCMD.INSTANCE);
 
         // FancyNpcs actions

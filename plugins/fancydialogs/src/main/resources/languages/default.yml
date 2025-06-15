@@ -1,3 +1,20 @@
 language_name: default
 messages:
-  foo: "Foo"
+  commands:
+    fancydialogs:
+      version: "<dark_gray>› <gray>You are running FancyDialogs {warningColor}{version}<gray>."
+      storage:
+        save:
+          success: "<dark_gray>› <gray>Successfully saved {warningColor}{count}<gray> dialogs to the storage."
+        load:
+          success: "<dark_gray>› <gray>Successfully loaded {warningColor}{count}<gray> dialogs from the storage."
+      registry:
+        list:
+          empty: "<dark_gray>› <gray>There are no dialogs registered."
+          header: "<dark_gray>› <gray>Registered dialogs:"
+          entry: "<dark_gray>› <gray> - {warningColor}{id}<gray> ({title})"
+        clear:
+          success: "<dark_gray>› <gray>Successfully cleared all registered dialogs."
+        unregister:
+          success: "<dark_gray>› <gray>Successfully unregistered dialog {warningColor}{id}<gray>."
+          not_found: "<dark_gray>› <gray>Dialog {warningColor}{id}<gray> is not registered."

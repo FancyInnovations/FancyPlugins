@@ -14,6 +14,7 @@ import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogInput;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogNumberRangeInput;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogSingleOptionInput;
 import de.oliver.fancysitula.api.dialogs.types.FS_ConfirmationDialog;
+import de.oliver.fancysitula.api.dialogs.types.FS_DialogListDialog;
 import de.oliver.fancysitula.api.dialogs.types.FS_NoticeDialog;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundShowDialogPacket;
@@ -21,6 +22,7 @@ import de.oliver.fancysitula.versions.v1_21_6.utils.VanillaPlayerAdapter;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.ClientboundShowDialogPacket;
 import net.minecraft.server.dialog.*;
@@ -65,6 +67,8 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
             return noticeToNms(notice);
         } else if (dialog instanceof FS_ConfirmationDialog confirmation) {
             return confirmationToNms(confirmation);
+        } else if (dialog instanceof FS_DialogListDialog dialogList) {
+            return dialogListToNms(dialogList);
         }
 
         return null;
@@ -83,6 +87,23 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
         ActionButton no = actionButtonToNms(notice.getNoButton());
 
         return new ConfirmationDialog(common, yes, no);
+    }
+
+    private Dialog dialogListToNms(FS_DialogListDialog dialogList) {
+        CommonDialogData common = commonToNms(dialogList.getDialogData());
+        List<Holder<Dialog>> dialogs = new ArrayList<>();
+
+        for (FS_Dialog dialog : dialogList.getDialogs()) {
+            dialogs.add(Holder.direct(toNms(dialog)));
+        }
+
+        HolderSet<Dialog> dialogSet = HolderSet.direct(dialogs);
+
+        Optional<ActionButton> exitButton = dialogList.getExitButton() != null ?
+                Optional.of(actionButtonToNms(dialogList.getExitButton())) :
+                Optional.empty();
+
+        return new DialogListDialog(common, dialogSet, exitButton, dialogList.getColumns(), dialogList.getButtonWidth());
     }
 
     private CommonDialogData commonToNms(FS_CommonDialogData dialogData) {

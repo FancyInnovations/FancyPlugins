@@ -1,14 +1,13 @@
 package com.fancyinnovations.fancydialogs;
 
 import com.fancyinnovations.fancydialogs.api.Dialog;
-import com.fancyinnovations.fancydialogs.api.data.DialogBodyData;
-import com.fancyinnovations.fancydialogs.api.data.DialogButton;
 import com.fancyinnovations.fancydialogs.api.data.DialogData;
 import com.fancyinnovations.fancydialogs.commands.TutorialCMD;
 import com.fancyinnovations.fancydialogs.config.FDFeatureFlags;
 import com.fancyinnovations.fancydialogs.config.FancyDialogsConfig;
 import com.fancyinnovations.fancydialogs.dialog.DialogImpl;
 import com.fancyinnovations.fancydialogs.listener.PlayerJoinListener;
+import com.fancyinnovations.fancydialogs.registry.DefaultDialogs;
 import com.fancyinnovations.fancydialogs.registry.DialogRegistry;
 import com.fancyinnovations.fancydialogs.storage.DialogStorage;
 import com.fancyinnovations.fancydialogs.storage.JsonDialogStorage;
@@ -92,25 +91,6 @@ public class FancyDialogsPlugin extends JavaPlugin {
         dialogStorage = new JsonDialogStorage();
         Collection<DialogData> dialogData = dialogStorage.loadAll();
 
-        DialogData welcomeDialog = new DialogData(
-                "welcome_to_fancydialogs_dialog",
-                "Welcome to FancyDialogs",
-                "Welcome to FancyDialogs",
-                false,
-                List.of(
-                        new DialogBodyData("Welcome to FancyDialogs! This is a sample dialog to get you started.")
-                ),
-                List.of(
-                        new DialogButton(
-                                "Close",
-                                "Close the dialog",
-                                "close_dialog"
-                        )
-                )
-        );
-        dialogStorage.save(welcomeDialog);
-        dialogData.add(welcomeDialog);
-
         List<Dialog> dialogs = new ArrayList<>();
         for (DialogData data : dialogData) {
             Dialog dialog = new DialogImpl(data.id(), data);
@@ -120,6 +100,8 @@ public class FancyDialogsPlugin extends JavaPlugin {
 
         dialogRegistry = new DialogRegistry();
         dialogs.forEach(dialogRegistry::register);
+
+        DefaultDialogs.registerDefaultDialogs();
 
         fancyLogger.info("Successfully loaded FancyDialogs version %s".formatted(getDescription().getVersion()));
     }

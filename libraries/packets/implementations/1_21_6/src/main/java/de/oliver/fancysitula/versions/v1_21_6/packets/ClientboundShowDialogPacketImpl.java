@@ -15,6 +15,7 @@ import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogNumberRangeInput;
 import de.oliver.fancysitula.api.dialogs.inputs.FS_DialogSingleOptionInput;
 import de.oliver.fancysitula.api.dialogs.types.FS_ConfirmationDialog;
 import de.oliver.fancysitula.api.dialogs.types.FS_DialogListDialog;
+import de.oliver.fancysitula.api.dialogs.types.FS_MultiActionDialog;
 import de.oliver.fancysitula.api.dialogs.types.FS_NoticeDialog;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundShowDialogPacket;
@@ -69,6 +70,8 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
             return confirmationToNms(confirmation);
         } else if (dialog instanceof FS_DialogListDialog dialogList) {
             return dialogListToNms(dialogList);
+        } else if (dialog instanceof FS_MultiActionDialog multiActionDialog) {
+            return multiActionDialogToNms(multiActionDialog);
         }
 
         return null;
@@ -104,6 +107,21 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
                 Optional.empty();
 
         return new DialogListDialog(common, dialogSet, exitButton, dialogList.getColumns(), dialogList.getButtonWidth());
+    }
+
+    private Dialog multiActionDialogToNms(FS_MultiActionDialog multiActionDialog) {
+        CommonDialogData common = commonToNms(multiActionDialog.getDialogData());
+        List<ActionButton> actionButtons = new ArrayList<>();
+
+        for (FS_DialogActionButton actionButton : multiActionDialog.getActions()) {
+            actionButtons.add(actionButtonToNms(actionButton));
+        }
+
+        Optional<ActionButton> exitAction = multiActionDialog.getExitAction() != null ?
+                Optional.of(actionButtonToNms(multiActionDialog.getExitAction())) :
+                Optional.empty();
+
+        return new MultiActionDialog(common, actionButtons, exitAction, multiActionDialog.getColumns());
     }
 
     private CommonDialogData commonToNms(FS_CommonDialogData dialogData) {

@@ -200,6 +200,7 @@ public final class HologramCMD extends Command {
 
                     yield colors.stream();
                 }
+                case "opacity" -> Stream.of("0", "0.25", "0.5", "0.75", "1");
                 case "textshadow" -> {
                     TextHologramData textData = (TextHologramData) hologram.getData();
                     yield Stream.of(!textData.hasTextShadow()).map(Object::toString);
@@ -331,6 +332,7 @@ public final class HologramCMD extends Command {
 
             // text data
             case "background" -> new BackgroundCMD().run(player, hologram, args);
+            case "opacity" -> new OpacityCMD().run(player, hologram, args);
             case "addline" -> new AddLineCMD().run(player, hologram, args);
             case "setline" -> new SetLineCMD().run(player, hologram, args);
             case "removeline" -> new RemoveLineCMD().run(player, hologram, args);

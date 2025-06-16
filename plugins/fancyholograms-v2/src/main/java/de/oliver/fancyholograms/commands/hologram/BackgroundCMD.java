@@ -42,7 +42,7 @@ public class BackgroundCMD implements Subcommand {
         final Color background;
 
         if (color.equals("reset") || color.equals("default")) {
-            background = null;
+            background = Hologram.DEFAULT_BACKGROUND;
         } else {
             if (color.equals("transparent")) {
                 background = Hologram.TRANSPARENT;

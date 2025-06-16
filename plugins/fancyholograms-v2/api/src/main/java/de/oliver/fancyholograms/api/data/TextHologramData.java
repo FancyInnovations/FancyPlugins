@@ -21,7 +21,7 @@ public class TextHologramData extends DisplayHologramData {
     public static final int DEFAULT_TEXT_UPDATE_INTERVAL = -1;
 
     private List<String> text;
-    private Color background;
+    private Color background = Hologram.DEFAULT_BACKGROUND;
     private TextDisplay.TextAlignment textAlignment = DEFAULT_TEXT_ALIGNMENT;
     private boolean textShadow = DEFAULT_TEXT_SHADOW_STATE;
     private boolean seeThrough = DEFAULT_SEE_THROUGH;

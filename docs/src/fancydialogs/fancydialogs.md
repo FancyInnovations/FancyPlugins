@@ -2,6 +2,7 @@
 title: FancyDialogs
 icon: browser
 order: 90
+visibility: hidden
 ---
 
 #

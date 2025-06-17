@@ -54,7 +54,8 @@ public class OpacityCMD implements Subcommand {
 
         Color background = textData.getBackground();
 
-        int alpha = (int) (opacity * 255);
+        int alpha = opacity == 0 ? 0 : Math.round(opacity * (255 - 26) + 26);
+
         if (background.getAlpha() == alpha) {
             MessageHelper.warning(sender, "This hologram already has this opacity.");
             return false;

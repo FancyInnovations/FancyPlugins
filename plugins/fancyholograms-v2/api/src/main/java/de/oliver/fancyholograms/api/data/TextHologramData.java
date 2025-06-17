@@ -145,7 +145,7 @@ public class TextHologramData extends DisplayHologramData {
             default -> TextDisplay.TextAlignment.CENTER;
         };
 
-        background = null;
+        background = Hologram.DEFAULT_BACKGROUND;
         String backgroundStr = section.getString("background", null);
         if (backgroundStr != null) {
             if (backgroundStr.equalsIgnoreCase("transparent")) {
@@ -172,13 +172,14 @@ public class TextHologramData extends DisplayHologramData {
         section.set("update_text_interval", textUpdateInterval);
 
         final String color;
+
         if (background == null) {
             color = null;
         } else if (background == Hologram.TRANSPARENT) {
             color = "transparent";
         } else {
             NamedTextColor named = background.getAlpha() == 255 ? NamedTextColor.namedColor(background.asRGB()) : null;
-            color = named != null ? named.toString() : '#' + Integer.toHexString(background.asARGB());
+            color = named != null ? named.toString() : '#' + String.format("%08X", background.asARGB());
         }
 
         section.set("background", color);

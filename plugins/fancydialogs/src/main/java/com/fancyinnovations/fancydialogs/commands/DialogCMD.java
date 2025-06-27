@@ -47,17 +47,23 @@ public final class DialogCMD {
 
     @Command("dialog open <dialog>")
     @Description("Opens a dialog (for a player) by its ID")
-    @CommandPermission("fancydialogs.commands.registry.unregister")
+    @CommandPermission("fancydialogs.commands.dialog.open")
     public void open(
-            Player actor,
+            BukkitCommandActor actor,
             Dialog dialog,
             @Optional EntitySelector<Player> target
     ) {
         if (target == null) {
-            dialog.open(actor);
-            translator.translate("commands.dialog.open.self")
-                    .replace("id", dialog.getId())
-                    .send(actor);
+            if (actor.isPlayer()) {
+                dialog.open(actor.asPlayer());
+                translator.translate("commands.dialog.open.self")
+                        .replace("id", dialog.getId())
+                        .send(actor.sender());
+            } else {
+                translator.translate("commands.dialog.open.console_requires_target")
+                        .replace("id", dialog.getId())
+                        .send(actor.sender());
+            }
         } else {
             for (Player player : target) {
                 dialog.open(player);
@@ -71,7 +77,7 @@ public final class DialogCMD {
             translator.translate("commands.dialog.open.other")
                     .replace("id", dialog.getId())
                     .replace("target", playersStr)
-                    .send(actor);
+                    .send(actor.sender());
         }
     }
 }

@@ -7,6 +7,7 @@ messages:
       open:
         self: "<dark_gray>› <gray>Opened dialog {warningColor}{id}<gray>."
         other: "<dark_gray>› <gray>Opened dialog {warningColor}{id}<gray> for {target}."
+        console_requires_target: "<dark_gray>› <gray>Console must specify a target player to open dialog {warningColor}{id}<gray>. Use: /dialog open {id} <player>"
       list:
         empty: "<dark_gray>› <gray>There are no dialogs registered."
         header: "<dark_gray>› <gray>Registered dialogs:"

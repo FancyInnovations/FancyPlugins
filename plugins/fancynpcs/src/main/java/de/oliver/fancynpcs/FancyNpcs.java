@@ -323,10 +323,12 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
                         npc.spawnForAll();
                     }
                 } catch (final Throwable thr) {
-                    getLogger().severe("An error occurred while updating '" + npc.getData().getName() + "' NPC.");
-                    getLogger().severe("  (1) " + thr.getClass().getName() + ": " + thr.getMessage());
-                    if (thr.getCause() != null)
-                        getLogger().severe("  (2) " + thr.getCause().getClass().getName() + ": " + thr.getCause().getMessage());
+                    fancyLogger.error(
+                            "An error occurred while updating '" + npc.getData().getName() + "' NPC."
+                                    + System.lineSeparator() + "  (1) " + thr.getClass().getName() + ": " + thr.getMessage()
+                                    + (thr.getCause() != null ? System.lineSeparator() + "  (2) " + thr.getCause().getClass().getName() + ": " + thr.getCause().getMessage() : "")
+                    );
+                    fancyLogger.error(thr);
                 }
             }
         }, 30, npcUpdateInterval, TimeUnit.SECONDS);

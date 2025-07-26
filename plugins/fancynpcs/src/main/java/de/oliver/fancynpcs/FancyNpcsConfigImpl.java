@@ -116,7 +116,7 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
         config.setInlineComments("autosave_interval", List.of("The interval at which autosave is performed in minutes."));
 
         npcUpdateInterval = (int) ConfigHelper.getOrDefault(config, "npc_update_interval", 60);
-        config.setInlineComments("npc_update_skin_interval", List.of("The interval at which the NPC is updated (in seconds). Only if the skin or displayName is a placeholder."));
+        config.setInlineComments("npc_update_interval", List.of("The interval at which the NPC is updated (in seconds). Only if the skin or displayName is a placeholder."));
 
         npcUpdateVisibilityInterval = (int) ConfigHelper.getOrDefault(config, "npc_update_visibility_interval", 20);
         config.setInlineComments("npc_update_visibility_interval", List.of("The interval at which the NPC visibility is updated (in ticks)."));

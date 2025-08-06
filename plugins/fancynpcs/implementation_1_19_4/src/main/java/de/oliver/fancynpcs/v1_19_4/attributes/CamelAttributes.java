@@ -21,6 +21,13 @@ public class CamelAttributes {
                 CamelAttributes::setPose
         ));
 
+        attributes.add(new NpcAttribute(
+                "has_saddle",
+                List.of("true", "false"),
+                List.of(EntityType.CAMEL),
+                CamelAttributes::setHasSaddle
+        ));
+
         return attributes;
     }
 
@@ -43,4 +50,11 @@ public class CamelAttributes {
         }
     }
 
+    private static void setHasSaddle(Npc npc, String value) {
+        Camel camel = ReflectionHelper.getEntity(npc);
+
+        boolean hasSaddle = Boolean.parseBoolean(value.toLowerCase());
+
+        camel.steering.setSaddle(hasSaddle);
+    }
 }

@@ -140,7 +140,7 @@ public class Npc_1_20_1 extends Npc {
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
         }
 
-        update(player, true);
+        update(player);
     }
 
     @Override

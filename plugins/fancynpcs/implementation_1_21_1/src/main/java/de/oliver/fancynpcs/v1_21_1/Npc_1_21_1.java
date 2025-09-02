@@ -148,7 +148,7 @@ public class Npc_1_21_1 extends Npc {
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
         }
 
-        update(player);
+        update(player, true);
     }
 
     @Override
@@ -200,6 +200,11 @@ public class Npc_1_21_1 extends Npc {
 
     @Override
     public void update(Player player) {
+        update(player, true);
+    }
+    
+    @Override
+    public void update(Player player, boolean swingArm) {
         if (npc == null) {
             return;
         }
@@ -277,7 +282,7 @@ public class Npc_1_21_1 extends Npc {
         refreshEntityData(player);
 
         if (data.isSpawnEntity() && data.getLocation() != null) {
-            move(player, true);
+            move(player, swingArm);
         }
 
         NpcAttribute playerPoseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "pose");

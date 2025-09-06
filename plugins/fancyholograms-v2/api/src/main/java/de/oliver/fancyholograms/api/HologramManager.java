@@ -22,6 +22,8 @@ public interface HologramManager {
 
     void loadHolograms();
 
+    boolean isLoaded();
+
     void saveHolograms();
 
     void reloadHolograms();

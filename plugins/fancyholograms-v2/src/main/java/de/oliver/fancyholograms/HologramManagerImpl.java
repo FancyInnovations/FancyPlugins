@@ -166,6 +166,11 @@ public final class HologramManagerImpl implements HologramManager {
         if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
     }
 
+    @Override
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
     public void loadHolograms(String world) {
         ImmutableList<Hologram> loaded = ImmutableList.copyOf(plugin.getHologramStorage().loadAll(world));
         loaded.forEach(this::addHologram);

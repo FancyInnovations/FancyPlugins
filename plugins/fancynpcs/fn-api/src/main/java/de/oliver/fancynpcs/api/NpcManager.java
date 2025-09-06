@@ -26,6 +26,8 @@ public interface NpcManager {
 
     void loadNpcs();
 
+    boolean isLoaded();
+
     void reloadNpcs();
 
 }

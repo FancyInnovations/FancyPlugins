@@ -440,6 +440,11 @@ public class NpcManagerImpl implements NpcManager {
         this.setLoaded();
     }
 
+    @Override
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
     private void setLoaded() {
         isLoaded = true;
         new NpcsLoadedEvent().callEvent();

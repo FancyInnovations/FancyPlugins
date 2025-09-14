@@ -120,7 +120,9 @@ public abstract class Npc {
 
     public abstract void update(Player player, boolean swingArm);
 
-    public abstract void update(Player player);
+    public void update(Player player) {
+        update(player, false);
+    }
 
     public void updateForAll(boolean swingArm) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {

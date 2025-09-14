@@ -208,12 +208,6 @@ public class Npc_1_21_5 extends Npc {
         ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (location.getYaw() * angelMultiplier));
         serverPlayer.connection.send(rotateHeadPacket);
     }
-
-    @Override
-    public void update(Player player) {
-        update(player, true);
-    }
-    
     @Override
     public void update(Player player, boolean swingArm) {
         if (npc == null) {

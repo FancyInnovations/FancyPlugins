@@ -190,11 +190,6 @@ public class Npc_1_19_4 extends Npc {
     }
 
     @Override
-    public void update(Player player) {
-        update(player, true);
-    }
-    
-    @Override
     public void update(Player player, boolean swingArm) {
         if (npc == null) {
             return;

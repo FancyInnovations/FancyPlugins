@@ -121,7 +121,7 @@ public abstract class Npc {
     public abstract void update(Player player, boolean swingArm);
 
     public void update(Player player) {
-        update(player, false);
+        update(player, true);
     }
 
     public void updateForAll(boolean swingArm) {

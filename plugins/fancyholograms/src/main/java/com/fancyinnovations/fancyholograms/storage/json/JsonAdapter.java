@@ -13,6 +13,8 @@ import org.bukkit.entity.Display;
 import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3f;
 
+import java.util.Base64;
+
 public class JsonAdapter {
 
     public static JsonHologramData hologramDataToJson(com.fancyinnovations.fancyholograms.api.data.HologramData data) {
@@ -78,7 +80,7 @@ public class JsonAdapter {
 
     public static JsonItemHologramData itemHologramDataToJson(com.fancyinnovations.fancyholograms.api.data.ItemHologramData data) {
         return new JsonItemHologramData(
-                new String(data.getItemStack().serializeAsBytes())
+                Base64.getEncoder().encodeToString(data.getItemStack().serializeAsBytes())
         );
     }
 
@@ -178,7 +180,8 @@ public class JsonAdapter {
 
             case ITEM ->
                     new com.fancyinnovations.fancyholograms.api.data.ItemHologramData(data.hologram_data().name(), loc)
-                            .setItemStack(ItemStack.deserializeBytes(data.item_data().item().getBytes())) // item data
+                            //.setItemStack(ItemStack.deserializeBytes(data.item_data().item().getBytes())) // item data
+                            .setItemStack(ItemStack.deserializeBytes(Base64.getDecoder().decode(data.item_data().item())))
                             .setBillboard(data.display_data().billboard()) // display data
                             .setScale(scale)
                             .setTranslation(translation)

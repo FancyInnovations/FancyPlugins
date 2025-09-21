@@ -180,8 +180,7 @@ public class JsonAdapter {
 
             case ITEM ->
                     new com.fancyinnovations.fancyholograms.api.data.ItemHologramData(data.hologram_data().name(), loc)
-                            //.setItemStack(ItemStack.deserializeBytes(data.item_data().item().getBytes())) // item data
-                            .setItemStack(ItemStack.deserializeBytes(Base64.getDecoder().decode(data.item_data().item())))
+                            .setItemStack(ItemStack.deserializeBytes(Base64.getDecoder().decode(data.item_data().item()))) // item data
                             .setBillboard(data.display_data().billboard()) // display data
                             .setScale(scale)
                             .setTranslation(translation)

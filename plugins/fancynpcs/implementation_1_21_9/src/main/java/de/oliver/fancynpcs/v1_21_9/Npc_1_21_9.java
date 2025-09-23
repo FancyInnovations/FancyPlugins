@@ -94,7 +94,7 @@ public class Npc_1_21_9 extends Npc {
             String value = data.getSkinData().getTextureValue();
             String signature = data.getSkinData().getTextureSignature();
 
-            ((ServerPlayer) npc).getGameProfile().getProperties().replaceValues(
+            ((ServerPlayer) npc).getGameProfile().properties().replaceValues(
                     "textures",
                     ImmutableList.of(new Property("textures", value, signature))
             );
@@ -223,7 +223,7 @@ public class Npc_1_21_9 extends Npc {
 
         PlayerTeam team = new PlayerTeam(new Scoreboard(), "npc-" + localName);
         team.getPlayers().clear();
-        team.getPlayers().add(npc instanceof ServerPlayer npcPlayer ? npcPlayer.getGameProfile().getName() : npc.getStringUUID());
+        team.getPlayers().add(npc instanceof ServerPlayer npcPlayer ? npcPlayer.getGameProfile().name() : npc.getStringUUID());
         team.setColor(PaperAdventure.asVanilla(data.getGlowingColor()));
         if (!data.isCollidable()) {
             team.setCollisionRule(Team.CollisionRule.NEVER);
@@ -384,8 +384,8 @@ public class Npc_1_21_9 extends Npc {
     private ClientboundPlayerInfoUpdatePacket.Entry getEntry(ServerPlayer npcPlayer, ServerPlayer viewer) {
         GameProfile profile = npcPlayer.getGameProfile();
         if (data.isMirrorSkin()) {
-            GameProfile newProfile = new GameProfile(profile.getId(), profile.getName());
-            newProfile.getProperties().putAll(viewer.getGameProfile().getProperties());
+            GameProfile newProfile = new GameProfile(profile.id(), profile.name());
+            newProfile.properties().putAll(viewer.getGameProfile().properties());
             profile = newProfile;
         }
 
@@ -418,10 +418,7 @@ public class Npc_1_21_9 extends Npc {
                 sittingVehicle,
                 0,
                 false,
-                packet -> {
-                },
-                (p, l) -> {
-                },
+                FakeSynchronizer.INSTANCE,
                 Set.of()
         );
         ClientboundAddEntityPacket addEntityPacket = new ClientboundAddEntityPacket(sittingVehicle, serverEntity);

@@ -49,11 +49,15 @@ public class HangarService {
 
         HangarVersionUpload versionUpload = new HangarVersionUpload(
                 version,
-                config.channel(),
-                changelog,
+                Map.of(),
                 Map.of(
-                        "PAPER", Arrays.stream(config.supportedVersions()).toList()
-                )
+                        HangarVersionUpload.Platform.PAPER, Arrays.stream(config.supportedVersions()).toList()
+                ),
+                changelog,
+                List.of(
+                        new HangarVersionUpload.MultipartFileOrUrl(List.of(HangarVersionUpload.Platform.PAPER), null)
+                ),
+                config.channel()
         );
 
         // Create HTTP client

@@ -55,7 +55,6 @@ public class HangarService {
                         "PAPER", Arrays.stream(config.supportedVersions()).toList()
                 )
         );
-        String versionUploadJson = GSON.toJson(versionUpload);
 
         // Create HTTP client
         try (CloseableHttpClient client = HttpClients.createDefault()) {
@@ -84,7 +83,7 @@ public class HangarService {
 
         final boolean success = client.execute(post, response -> {
             if (response.getCode() != 200) {
-                System.out.println("Error uploading version {}: {}" + response.getReasonPhrase());
+                System.out.println("Error uploading version: " + response.getCode() + " Reason: " + response.getReasonPhrase());
                 return false;
             }
             return true;

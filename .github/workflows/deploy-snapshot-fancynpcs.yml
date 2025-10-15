@@ -44,19 +44,19 @@ jobs:
           cd tools/deployment/build/libs &&
           java -jar deployment.jar modrinth ../../../../plugins/fancynpcs/snapshot_deployment_config.json true
 
-      #      - name: Build FancyNpcs for Hangar
-      #        env:
-      #          RELEASE_CHANNEL: 'snapshot'
-      #          RELEASE_PLATFORM: 'hangar'
-      #        run: ./gradlew :plugins:fancynpcs:shadowJar
-      #
-      #      - name: Deploy to Hangar
-      #        env:
-      #          HANGAR_API_KEY: "${{ secrets.HANGAR_API_KEY }}"
-      #          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      #        run:
-      #          cd tools/deployment/build/libs &&
-      #          java -jar deployment.jar hangar ../../../../plugins/fancynpcs/snapshot_deployment_config.json true
+      - name: Build FancyNpcs for Hangar
+        env:
+          RELEASE_CHANNEL: 'snapshot'
+          RELEASE_PLATFORM: 'hangar'
+        run: ./gradlew :plugins:fancynpcs:shadowJar
+
+      - name: Deploy to Hangar
+        env:
+          HANGAR_API_KEY: "${{ secrets.HANGAR_API_KEY }}"
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run:
+          cd tools/deployment/build/libs &&
+          java -jar deployment.jar hangar ../../../../plugins/fancynpcs/snapshot_deployment_config.json false
 
       - name: Publish to reposilite (snapshots)
         run: ./gradlew :plugins:fancynpcs:fn-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository

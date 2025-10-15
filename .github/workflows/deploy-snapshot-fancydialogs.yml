@@ -30,19 +30,33 @@ jobs:
       - name: Build deployment tool
         run: ./gradlew :tools:deployment:shadowJar
 
-      - name: Build FancyDialogs for Modrinth
+      #      - name: Build FancyDialogs for Modrinth
+      #        env:
+      #          RELEASE_CHANNEL: 'snapshot'
+      #          RELEASE_PLATFORM: 'modrinth'
+      #        run: ./gradlew :plugins:fancydialogs:shadowJar
+      #
+      #      - name: Deploy to Modrinth
+      #        env:
+      #          MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
+      #          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      #        run:
+      #          cd tools/deployment/build/libs &&
+      #          java -jar deployment.jar modrinth ../../../../plugins/fancydialogs/snapshot_deployment_config.json true
+
+      - name: Build FancyDialogs for Hangar
         env:
           RELEASE_CHANNEL: 'snapshot'
-          RELEASE_PLATFORM: 'modrinth'
+          RELEASE_PLATFORM: 'hangar'
         run: ./gradlew :plugins:fancydialogs:shadowJar
 
-      - name: Deploy to Modrinth
+      - name: Deploy to Hangar
         env:
-          MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
+          HANGAR_API_KEY: "${{ secrets.HANGAR_API_KEY }}"
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run:
           cd tools/deployment/build/libs &&
-          java -jar deployment.jar modrinth ../../../../plugins/fancydialogs/snapshot_deployment_config.json true
+          java -jar deployment.jar hangar ../../../../plugins/fancydialogs/snapshot_deployment_config.json false
 
       - name: Publish to reposilite (snapshots)
         run: ./gradlew :plugins:fancydialogs:fd-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository

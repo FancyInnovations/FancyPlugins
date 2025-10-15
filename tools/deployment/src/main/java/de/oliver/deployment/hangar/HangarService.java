@@ -6,13 +6,13 @@ import de.oliver.deployment.Configuration;
 import de.oliver.deployment.git.GitService;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.mime.FileBody;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
+import org.apache.hc.client5.http.entity.mime.StringBody;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpMessage;
-import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 import java.io.File;
@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -58,37 +59,38 @@ public class HangarService {
 
         // Create HTTP client
         try (CloseableHttpClient client = HttpClients.createDefault()) {
+            uploadVersion(client, config.projectName(), versionUpload, List.of(pluginFile.toPath()));
+        }
+    }
 
-            HttpPost post = new HttpPost(HANGAR_API_URL + "/projects/" + config.projectName() + "/upload");
-            this.addAuthorizationHeader(client, post);
+    public void uploadVersion(
+            final HttpClient client,
+            final String project,
+            final HangarVersionUpload versionUpload,
+            final List<Path> filePaths
+    ) throws IOException {
+        // The data needs to be sent as multipart form data
+        final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addPart("versionUpload", new StringBody(GSON.toJson(versionUpload), ContentType.APPLICATION_JSON));
 
-            // Build multipart entity
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        // Attach files (one file for each platform where no external url is defined in the version upload data)
+        for (final Path filePath : filePaths) {
+            builder.addPart("files", new FileBody(filePath.toFile(), ContentType.DEFAULT_BINARY));
+        }
 
-            // Add multiple files with the same field name "files"
-            builder.addBinaryBody(
-                    "files",
-                    pluginFile,
-                    ContentType.DEFAULT_BINARY,
-                    pluginFile.getName()
-            );
+        final HttpPost post = new HttpPost("%s/projects/%s/upload".formatted(HANGAR_API_URL, project));
+        post.setEntity(builder.build());
+        this.addAuthorizationHeader(client, post);
 
-            // Add JSON field "versionUpload"
-            builder.addTextBody(
-                    "versionUpload",
-                    versionUploadJson,
-                    ContentType.APPLICATION_JSON
-            );
-
-            post.setEntity(builder.build());
-
-            // Execute the request
-            try (CloseableHttpResponse response = client.execute(post)) {
-                System.out.println("Status: " + response.getCode());
-                System.out.println("Response: " + EntityUtils.toString(response.getEntity()));
-            } catch (ParseException e) {
-                e.printStackTrace();
+        final boolean success = client.execute(post, response -> {
+            if (response.getCode() != 200) {
+                System.out.println("Error uploading version {}: {}" + response.getReasonPhrase());
+                return false;
             }
+            return true;
+        });
+        if (!success) {
+            throw new RuntimeException("Error uploading version");
         }
     }
 

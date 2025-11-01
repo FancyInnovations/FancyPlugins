@@ -78,6 +78,12 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
      */
     private int removeNpcsFromPlayerlistDelay;
 
+
+    /**
+     * Whether MPCs should swing arm on update.
+     */
+    private boolean swingArmOnUpdate;
+
     /**
      * The API key for the MineSkin API.
      */
@@ -138,6 +144,9 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
 
         removeNpcsFromPlayerlistDelay = (int) ConfigHelper.getOrDefault(config, "remove_npcs_from_playerlist_delay", 2000);
         config.setInlineComments("remove_npcs_from_playerlist_delay", List.of("The delay in milliseconds to remove NPCs from the player list. Increase this value if you have problems with skins not loading correctly when joining or switching worlds. You can set it to -1, if you don't have any npcs using the show_in_tab feature."));
+
+        swingArmOnUpdate = (boolean) ConfigHelper.getOrDefault(config, "swing_arm_on_update", true);
+        config.setInlineComments("swing_arm_on_update", List.of("Whether NPCs should swing arm on update."));
 
         blockedCommands = (List<String>) ConfigHelper.getOrDefault(config, "blocked_commands", Arrays.asList("op", "ban"));
         config.setInlineComments("blocked_commands", List.of("The commands that are blocked for NPCs in the message."));
@@ -230,6 +239,8 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
     public int getRemoveNpcsFromPlayerlistDelay() {
         return removeNpcsFromPlayerlistDelay;
     }
+
+    public boolean isSwingArmOnUpdate() { return swingArmOnUpdate; }
 
     public String getMineSkinApiKey() {
         if (mineskinApiKey.isEmpty()) {

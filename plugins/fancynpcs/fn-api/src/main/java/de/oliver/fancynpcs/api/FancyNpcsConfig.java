@@ -35,6 +35,8 @@ public interface FancyNpcsConfig {
 
     int getRemoveNpcsFromPlayerlistDelay();
 
+    boolean isSwingArmOnUpdate();
+
     String getMineSkinApiKey();
 
     List<String> getBlockedCommands();

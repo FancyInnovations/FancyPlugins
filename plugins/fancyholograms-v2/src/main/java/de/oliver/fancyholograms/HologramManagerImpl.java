@@ -10,7 +10,6 @@ import de.oliver.fancyholograms.api.events.HologramsLoadedEvent;
 import de.oliver.fancyholograms.api.events.HologramsUnloadedEvent;
 import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
-import de.oliver.fancynpcs.api.NpcAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -336,12 +335,11 @@ public final class HologramManagerImpl implements HologramManager {
 
         final var location = npc.getData().getLocation().clone().add(0, (npc.getEyeHeight() * npcScale) + (0.5 * npcScale), 0);
 
-        for (Map.Entry<NpcAttribute, String> entry : npc.getData().getAttributes().entrySet()) {
-            NpcAttribute attribute = entry.getKey();
-            String value = entry.getValue();
-
-            if (attribute.getName().equalsIgnoreCase("pose")) {
-                switch (value.toLowerCase()) {
+        final var poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(npc.getData().getType(), "pose");
+        if (poseAttr != null) {
+            final var pose = npc.getData().getAttributes().get(poseAttr);
+            if (pose != null) {
+                switch (pose.toLowerCase()) {
                     case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
                     case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
                     case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);

@@ -10,6 +10,7 @@ import de.oliver.fancyholograms.api.events.HologramsLoadedEvent;
 import de.oliver.fancyholograms.api.events.HologramsUnloadedEvent;
 import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
+import de.oliver.fancynpcs.api.NpcAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -161,7 +162,14 @@ public final class HologramManagerImpl implements HologramManager {
         }
         isLoaded = true;
 
-        FancyHolograms.get().getHologramThread().submit(() -> Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(allLoaded))));
+        FancyHolograms.get().getHologramThread().submit(() -> {
+            Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(allLoaded)));
+            for (Hologram hologram : allLoaded) {
+                if (hologram.getData().getLinkedNpcName() != null) {
+                    syncHologramWithNpc(hologram);
+                }
+            }
+        });
 
         if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
     }
@@ -177,7 +185,14 @@ public final class HologramManagerImpl implements HologramManager {
 
         isLoaded = true;
 
-        Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(loaded)));
+        FancyHolograms.get().getHologramThread().submit(() -> {
+            Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(loaded)));
+            for (Hologram hologram : loaded) {
+                if (hologram.getData().getLinkedNpcName() != null) {
+                    syncHologramWithNpc(hologram);
+                }
+            }
+        });
 
         if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for world %s", loaded.size(), world));
     }
@@ -320,6 +335,20 @@ public final class HologramManagerImpl implements HologramManager {
         }
 
         final var location = npc.getData().getLocation().clone().add(0, (npc.getEyeHeight() * npcScale) + (0.5 * npcScale), 0);
+
+        for (Map.Entry<NpcAttribute, String> entry : npc.getData().getAttributes().entrySet()) {
+            NpcAttribute attribute = entry.getKey();
+            String value = entry.getValue();
+
+            if (attribute.getName().equalsIgnoreCase("pose")) {
+                switch (value.toLowerCase()) {
+                    case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
+                    case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
+                    case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);
+                }
+            }
+        }
+
         hologram.getData().setLocation(location);
     }
 }

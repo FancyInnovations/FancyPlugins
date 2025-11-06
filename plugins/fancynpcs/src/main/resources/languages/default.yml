@@ -123,6 +123,7 @@ messages:
     npc_move_to: "<dark_gray>› <gray>Syntax: {primaryColor}/npc move_to {secondaryColor}(npc) (x) (y) (z) [world]"
     npc_nearby: "<dark_gray>› <gray>Syntax: {primaryColor}/npc nearby {secondaryColor}[filters...]"
     npc_remove: "<dark_gray>› <gray>Syntax: {primaryColor}/npc remove {secondaryColor}(npc)"
+    npc_rotate: "<dark_gray>› <gray>Syntax: {primaryColor}/npc rotate {secondaryColor}(npc) (yaw) (pitch)"
     npc_show_in_tab: "<dark_gray>› <gray>Syntax: {primaryColor}/npc show_in_tab {secondaryColor}(npc) (state)"
     npc_skin: "<dark_gray>› <gray>Syntax: {primaryColor}/npc skin {secondaryColor}(npc) (@none | @mirror | name | uuid | placeholder | url | file name) [--slim]"
     npc_teleport: "<dark_gray>› <gray>Syntax: {primaryColor}/npc teleport {secondaryColor}(npc)"
@@ -176,6 +177,7 @@ messages:
     - "<dark_gray>› <hover:show_text:'<gray>Teleports NPC to specified location.'>{primaryColor}/npc move_to {secondaryColor}(npc) (x) (y) (z) [world]"
     - "<dark_gray>› <hover:show_text:'<gray>Lists all NPCs in your world. Can be filtered and sorted.'>{primaryColor}/npc nearby {secondaryColor}[--radius] [--type] [--sort]"
     - "<dark_gray>› <hover:show_text:'<gray>Removes (deletes) specified NPC.'>{primaryColor}/npc remove {secondaryColor}(npc)"
+    - "<dark_gray>› <hover:show_text:'<gray>Changes the rotation (yaw and pitch) of the NPC.'>{primaryColor}/npc rotate {secondaryColor}(npc) (yaw) (pitch)"
     - "<dark_gray>› <hover:show_text:'<gray>Changes the scale of the size of the NPC.'>{primaryColor}/npc scale {secondaryColor}(npc) (factor)"
     - "<dark_gray>› <hover:show_text:'<gray>Changes whether the NPC is shown in the player-list. This works only on NPCs of PLAYER type.<newline><newline>{errorColor}Re-connecting to the server might be required for changes to take effect.'>{primaryColor}/npc show_in_tab {secondaryColor}(npc) (state)"
     - "<dark_gray>› <hover:show_text:'<gray>Changes skin of the NPC.<newline><gray>Supports PlaceholderAPI and MiniPlaceholders.<newline><newline>{warningColor}@none <dark_gray>- <gray>removes the skin<newline>{warningColor}@mirror <dark_gray>- <gray>mirrors player skin<newline>{warningColor}(name) <dark_gray>- <gray>name of any player<newline>{warningColor}(url) <dark_gray>- <gray>url of the skin texture'>{primaryColor}/npc skin {secondaryColor}(npc) (@none | @mirror | name | url) [--slim]"
@@ -301,6 +303,9 @@ messages:
 
   # Commands (npc remove)
   npc_remove_success: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> has been removed."
+
+  # Commands (npc rotate)
+  npc_rotate_set_success: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> has been rotated to yaw {warningColor}{yaw}<gray> and pitch {warningColor}{pitch}<gray>."
 
   # Commands (scale)
   npc_scale_set_success: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> has been scaled to {warningColor}{scale}<gray>."

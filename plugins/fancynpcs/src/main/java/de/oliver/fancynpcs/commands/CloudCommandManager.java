@@ -184,6 +184,7 @@ public final class CloudCommandManager {
         annotationParser.parse(NearbyCMD.INSTANCE);
         annotationParser.parse(HelpCMD.INSTANCE);
         annotationParser.parse(RemoveCMD.INSTANCE);
+        annotationParser.parse(RotateCMD.INSTANCE);
         annotationParser.parse(ShowInTabCMD.INSTANCE);
         annotationParser.parse(SkinCMD.INSTANCE);
         annotationParser.parse(TeleportCMD.INSTANCE);

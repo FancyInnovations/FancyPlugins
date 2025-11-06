@@ -126,8 +126,6 @@ public enum SkinCMD {
             return;
         }
 
-        translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
-
         CompletableFuture.supplyAsync(() -> {
             try {
                 return new MojangAPI(SkinManagerImpl.EXECUTOR).fetchSkin(uuid.toString(), variant);
@@ -166,6 +164,9 @@ public enum SkinCMD {
                             final SkinData skinData = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(fileName, variant);
                             skinData.setIdentifier(fileName);
 
+                            if (!skinData.hasTexture()) {
+                                translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
+                            }
                             applySkin(npc, skinData, sender);
                         } catch (final SkinLoadException e) {
                             translator.translate("npc_skin_failure_invalid_file").replace("npc", npc.getData().getName()).send(sender);
@@ -195,7 +196,7 @@ public enum SkinCMD {
                     .replace("npc", npc.getData().getName())
                     .replace("name", skinData.getIdentifier())
                     .send(sender);
-            if (!skinData.hasTexture()) {
+            if (!skinData.hasTexture() && !SkinUtils.isFile(skinData.getIdentifier())) {
                 translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
             }
             npc.getData().setMirrorSkin(false);

@@ -139,10 +139,10 @@ public final class HologramImpl extends Hologram {
         }
 
         if (fsDisplay == null) {
-            return false; // could not be created, nothing to show
+            return false;
         }
 
-        if (!data.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName())) {
+        if (!data.matchesWorld(player.getWorld())) {
             return false;
         }
 

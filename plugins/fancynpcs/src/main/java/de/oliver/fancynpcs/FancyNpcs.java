@@ -53,6 +53,7 @@ import de.oliver.fancynpcs.v1_20_2.Npc_1_20_2;
 import de.oliver.fancynpcs.v1_20_4.Npc_1_20_4;
 import de.oliver.fancynpcs.v1_20_6.Npc_1_20_6;
 import de.oliver.fancynpcs.v1_21_1.Npc_1_21_1;
+import de.oliver.fancynpcs.v1_21_11.Npc_1_21_11;
 import de.oliver.fancynpcs.v1_21_3.Npc_1_21_3;
 import de.oliver.fancynpcs.v1_21_4.Npc_1_21_4;
 import de.oliver.fancynpcs.v1_21_5.Npc_1_21_5;
@@ -162,6 +163,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         String mcVersion = Bukkit.getMinecraftVersion();
 
         switch (mcVersion) {
+            case "1.21.11" -> npcAdapter = Npc_1_21_11::new;
             case "1.21.9", "1.21.10" -> npcAdapter = Npc_1_21_9::new;
             case "1.21.6", "1.21.7", "1.21.8" -> npcAdapter = Npc_1_21_6::new;
             case "1.21.5" -> npcAdapter = Npc_1_21_5::new;
@@ -275,7 +277,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         pluginManager.registerEvents(new PlayerTeleportListener(), instance);
         pluginManager.registerEvents(new PlayerChangedWorldListener(), instance);
         pluginManager.registerEvents(skinManager, instance);
-        if (Bukkit.getMinecraftVersion().equals("1.21.4") || Bukkit.getMinecraftVersion().equals("1.21.5") || Bukkit.getMinecraftVersion().equals("1.21.6") || Bukkit.getMinecraftVersion().equals("1.21.7") || Bukkit.getMinecraftVersion().equals("1.21.8") || Bukkit.getMinecraftVersion().equals("1.21.9") || Bukkit.getMinecraftVersion().equals("1.21.10")) {
+        if (Bukkit.getMinecraftVersion().equals("1.21.4") || Bukkit.getMinecraftVersion().equals("1.21.5") || Bukkit.getMinecraftVersion().equals("1.21.6") || Bukkit.getMinecraftVersion().equals("1.21.7") || Bukkit.getMinecraftVersion().equals("1.21.8") || Bukkit.getMinecraftVersion().equals("1.21.9") || Bukkit.getMinecraftVersion().equals("1.21.10") || Bukkit.getMinecraftVersion().equals("1.21.11")) {
             getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
         }
 

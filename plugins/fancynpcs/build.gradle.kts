@@ -32,7 +32,8 @@ val supportedVersions =
         "1.21.7",
         "1.21.8",
         "1.21.9",
-        "1.21.10"
+        "1.21.10",
+        "1.21.11"
     )
 
 allprojects {
@@ -56,6 +57,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancynpcs:fn-api"))
+    implementation(project(":plugins:fancynpcs:implementation_1_21_11"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_9"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_6"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_5"))

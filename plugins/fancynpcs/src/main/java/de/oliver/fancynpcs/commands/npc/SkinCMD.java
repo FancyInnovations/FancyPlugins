@@ -42,6 +42,7 @@ public enum SkinCMD {
     INSTANCE; // SINGLETON
 
     private final Translator translator = FancyNpcs.getInstance().getTranslator();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     /* PARSERS AND SUGGESTIONS */
 
@@ -52,7 +53,7 @@ public enum SkinCMD {
             final @NotNull Npc npc,
             final @NotNull @Argument(suggestions = "SkinCMD/skin") String skin,
             final @Flag("slim") boolean slim,
-            final @Flag("static") boolean static
+            final @Flag("static") boolean isStatic
     ) {
         if (npc.getData().getType() != EntityType.PLAYER) {
             translator.translate("command_unsupported_npc_type").send(sender);
@@ -83,32 +84,16 @@ public enum SkinCMD {
                 translator.translate("command_npc_modification_cancelled").send(sender);
             }
         } else try {
-            if (static && SkinUtils.isUsername(skin)) {
+            if (isStatic && SkinUtils.isUsername(skin)) {
                 downloadStaticSkin(skin, sender, npc, slim);
                 return;
             }
 
-            SkinData.SkinVariant variant = slim ? SkinData.SkinVariant.SLIM : SkinData.SkinVariant.AUTO;
-            SkinData skinData = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(skin, variant);
+            final SkinData.SkinVariant variant = slim ? SkinData.SkinVariant.SLIM : SkinData.SkinVariant.AUTO;
+            final SkinData skinData = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(skin, variant);
             skinData.setIdentifier(skin);
 
-            if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, false, sender).callEvent() && new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, skinData, sender).callEvent()) {
-                translator.translate("npc_skin_set")
-                        .replace("npc", npc.getData().getName())
-                        .replace("name", skinData.getIdentifier())
-                        .send(sender);
-                if (!skinData.hasTexture()) {
-                    translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
-                }
-                npc.getData().setMirrorSkin(false);
-                npc.getData().setSkinData(skinData);
-                npc.removeForAll();
-                npc.create();
-                npc.spawnForAll();
-
-            } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
-            }
+            applySkin(npc, skinData, sender);
         } catch (final SkinLoadException e) {
             switch (e.getReason()) {
                 case INVALID_URL -> translator.translate("npc_skin_failure_invalid_url").replace("npc", npc.getData().getName()).send(sender);
@@ -121,33 +106,35 @@ public enum SkinCMD {
 
     /* UTILITY METHODS */
 
-    private void downloadStaticSkin(String username, CommandSender sender, Npc npc, boolean slim) {
-        SkinData.SkinVariant variant = slim ? SkinData.SkinVariant.SLIM : SkinData.SkinVariant.AUTO;
-        
+    private void downloadStaticSkin(final String username, final CommandSender sender, final Npc npc, final boolean slim) {
+        final SkinData.SkinVariant variant = slim ? SkinData.SkinVariant.SLIM : SkinData.SkinVariant.AUTO;
+
         try {
-            SkinData skinData = FancyNpcs.getInstance().getSkinManagerImpl().getByUsername(username, variant);
+            final SkinData skinData = FancyNpcs.getInstance().getSkinManagerImpl().getByUsername(username, variant);
             if (skinData.hasTexture()) {
                 processStaticSkin(skinData.getTextureValue(), username, sender, npc, slim);
                 return;
             }
-        } catch (SkinLoadException e) {
+        } catch (final SkinLoadException e) {
             translator.translate("npc_skin_failure_invalid_username").replace("npc", npc.getData().getName()).send(sender);
             return;
         }
 
-        UUID uuid = FancyNpcs.getInstance().getSkinManagerImpl().getUuidCache().getUUID(username);
+        final UUID uuid = FancyNpcs.getInstance().getSkinManagerImpl().getUuidCache().getUUID(username);
         if (uuid == null) {
             translator.translate("npc_skin_failure_invalid_username").replace("npc", npc.getData().getName()).send(sender);
             return;
         }
 
+        translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
+
         CompletableFuture.supplyAsync(() -> {
             try {
                 return new MojangAPI(SkinManagerImpl.EXECUTOR).fetchSkin(uuid.toString(), variant);
-            } catch (RatelimitException e) {
+            } catch (final RatelimitException e) {
                 return null;
             }
-        }).thenAccept(fetchedSkinData -> {
+        }, SkinManagerImpl.EXECUTOR).thenAccept(fetchedSkinData -> {
             if (fetchedSkinData == null || !fetchedSkinData.hasTexture()) {
                 FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
                     translator.translate("npc_skin_failure_invalid_username").replace("npc", npc.getData().getName()).send(sender);
@@ -156,48 +143,31 @@ public enum SkinCMD {
             }
             processStaticSkin(fetchedSkinData.getTextureValue(), username, sender, npc, slim);
         });
-        
-        translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
     }
 
-    private void processStaticSkin(String textureValue, String username, CommandSender sender, Npc npc, boolean slim) {
+    private void processStaticSkin(final String textureValue, final String username, final CommandSender sender, final Npc npc, final boolean slim) {
         try {
-            String decodedJson = new String(Base64.getDecoder().decode(textureValue));
-            JsonObject jsonObject = JsonParser.parseString(decodedJson).getAsJsonObject();
-            String skinUrl = jsonObject.getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+            final String decodedJson = new String(Base64.getDecoder().decode(textureValue));
+            final JsonObject jsonObject = JsonParser.parseString(decodedJson).getAsJsonObject();
+            final String skinUrl = jsonObject.getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
 
-            String fileName = username + ".png";
-            File skinFile = new File(new File(FancyNpcs.getInstance().getDataFolder(), "skins"), fileName);
+            final String fileName = username + ".png";
+            final File skinFile = new File(new File(FancyNpcs.getInstance().getDataFolder(), "skins"), fileName);
             skinFile.getParentFile().mkdirs();
 
-            HttpClient.newHttpClient().sendAsync(
+            httpClient.sendAsync(
                     HttpRequest.newBuilder().uri(URI.create(skinUrl)).GET().build(),
                     HttpResponse.BodyHandlers.ofFile(skinFile.toPath())
             ).thenAccept(response -> {
                 if (response.statusCode() >= 200 && response.statusCode() < 300) {
                     FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
                         try {
-                            SkinData.SkinVariant variant = slim ? SkinData.SkinVariant.SLIM : SkinData.SkinVariant.AUTO;
-                            SkinData skinData = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(fileName, variant);
+                            final SkinData.SkinVariant variant = slim ? SkinData.SkinVariant.SLIM : SkinData.SkinVariant.AUTO;
+                            final SkinData skinData = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(fileName, variant);
                             skinData.setIdentifier(fileName);
 
-                            if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, false, sender).callEvent() && new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, skinData, sender).callEvent()) {
-                                translator.translate("npc_skin_set")
-                                        .replace("npc", npc.getData().getName())
-                                        .replace("name", skinData.getIdentifier())
-                                        .send(sender);
-                                if (!skinData.hasTexture()) {
-                                    translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
-                                }
-                                npc.getData().setMirrorSkin(false);
-                                npc.getData().setSkinData(skinData);
-                                npc.removeForAll();
-                                npc.create();
-                                npc.spawnForAll();
-                            } else {
-                                translator.translate("command_npc_modification_cancelled").send(sender);
-                            }
-                        } catch (SkinLoadException e) {
+                            applySkin(npc, skinData, sender);
+                        } catch (final SkinLoadException e) {
                             translator.translate("npc_skin_failure_invalid_file").replace("npc", npc.getData().getName()).send(sender);
                         }
                     });
@@ -212,10 +182,29 @@ public enum SkinCMD {
                 });
                 return null;
             });
-        } catch (Exception e) {
+        } catch (final Exception e) {
             FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
                 translator.translate("npc_skin_failure_invalid_username").replace("npc", npc.getData().getName()).send(sender);
             });
+        }
+    }
+
+    private void applySkin(final Npc npc, final SkinData skinData, final CommandSender sender) {
+        if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, false, sender).callEvent() && new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, skinData, sender).callEvent()) {
+            translator.translate("npc_skin_set")
+                    .replace("npc", npc.getData().getName())
+                    .replace("name", skinData.getIdentifier())
+                    .send(sender);
+            if (!skinData.hasTexture()) {
+                translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
+            }
+            npc.getData().setMirrorSkin(false);
+            npc.getData().setSkinData(skinData);
+            npc.removeForAll();
+            npc.create();
+            npc.spawnForAll();
+        } else {
+            translator.translate("command_npc_modification_cancelled").send(sender);
         }
     }
 

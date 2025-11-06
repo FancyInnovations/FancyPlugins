@@ -120,26 +120,24 @@ public enum SkinCMD {
             return;
         }
 
-        final UUID uuid = FancyNpcs.getInstance().getSkinManagerImpl().getUuidCache().getUUID(username);
-        if (uuid == null) {
-            translator.translate("npc_skin_failure_invalid_username").replace("npc", npc.getData().getName()).send(sender);
-            return;
-        }
-
         CompletableFuture.supplyAsync(() -> {
             try {
+                final UUID uuid = FancyNpcs.getInstance().getSkinManagerImpl().getUuidCache().getUUID(username);
+                if (uuid == null) {
+                    return null;
+                }
                 return new MojangAPI(SkinManagerImpl.EXECUTOR).fetchSkin(uuid.toString(), variant);
             } catch (final RatelimitException e) {
                 return null;
             }
         }, SkinManagerImpl.EXECUTOR).thenAccept(fetchedSkinData -> {
-            if (fetchedSkinData == null || !fetchedSkinData.hasTexture()) {
-                FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
+            FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
+                if (fetchedSkinData == null || !fetchedSkinData.hasTexture()) {
                     translator.translate("npc_skin_failure_invalid_username").replace("npc", npc.getData().getName()).send(sender);
-                });
-                return;
-            }
-            processStaticSkin(fetchedSkinData.getTextureValue(), username, sender, npc, slim);
+                    return;
+                }
+                processStaticSkin(fetchedSkinData.getTextureValue(), username, sender, npc, slim);
+            });
         });
     }
 

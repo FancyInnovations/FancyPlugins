@@ -151,6 +151,7 @@ public final class HologramImpl extends Hologram {
             textDisplay.setStyleFlags((byte) 0);
             textDisplay.setShadow(textData.hasTextShadow());
             textDisplay.setSeeThrough(textData.isSeeThrough());
+            textDisplay.setTextOpacity(textData.getTextOpacity());
 
             switch (textData.getTextAlignment()) {
                 case LEFT -> textDisplay.setAlignLeft(true);

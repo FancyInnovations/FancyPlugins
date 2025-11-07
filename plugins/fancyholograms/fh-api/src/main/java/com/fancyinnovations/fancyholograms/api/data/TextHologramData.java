@@ -21,6 +21,7 @@ public class TextHologramData extends DisplayHologramData {
     public static final boolean DEFAULT_TEXT_SHADOW_STATE = false;
     public static final boolean DEFAULT_SEE_THROUGH = false;
     public static final int DEFAULT_TEXT_UPDATE_INTERVAL = -1;
+    public static final byte DEFAULT_TEXT_OPACITY = (byte) 255;
 
     private List<String> text = new ArrayList<>(DEFAULT_TEXT);
     private Color background = null;
@@ -28,6 +29,7 @@ public class TextHologramData extends DisplayHologramData {
     private boolean textShadow = DEFAULT_TEXT_SHADOW_STATE;
     private boolean seeThrough = DEFAULT_SEE_THROUGH;
     private int textUpdateInterval = DEFAULT_TEXT_UPDATE_INTERVAL;
+    private byte textOpacity = DEFAULT_TEXT_OPACITY;
 
     /**
      * @param name     Name of hologram
@@ -150,6 +152,19 @@ public class TextHologramData extends DisplayHologramData {
         return this;
     }
 
+    public byte getTextOpacity() {
+        return textOpacity;
+    }
+
+    public TextHologramData setTextOpacity(byte textOpacity) {
+        if (this.textOpacity != textOpacity) {
+            this.textOpacity = textOpacity;
+            setHasChanges(true);
+        }
+
+        return this;
+    }
+
     @Override
     @ApiStatus.Internal
     public boolean read(ConfigurationSection section, String name) {
@@ -163,6 +178,7 @@ public class TextHologramData extends DisplayHologramData {
         textShadow = section.getBoolean("text_shadow", DEFAULT_TEXT_SHADOW_STATE);
         seeThrough = section.getBoolean("see_through", DEFAULT_SEE_THROUGH);
         textUpdateInterval = section.getInt("update_text_interval", DEFAULT_TEXT_UPDATE_INTERVAL);
+        textOpacity = (byte) section.getInt("text_opacity", DEFAULT_TEXT_OPACITY);
 
         String textAlignmentStr = section.getString("text_alignment", DEFAULT_TEXT_ALIGNMENT.name().toLowerCase());
         textAlignment = switch (textAlignmentStr.toLowerCase(Locale.ROOT)) {
@@ -197,6 +213,7 @@ public class TextHologramData extends DisplayHologramData {
         section.set("see_through", seeThrough);
         section.set("text_alignment", textAlignment.name().toLowerCase(Locale.ROOT));
         section.set("update_text_interval", textUpdateInterval);
+        section.set("text_opacity", textOpacity);
 
         final String color;
         if (background == null) {
@@ -223,6 +240,7 @@ public class TextHologramData extends DisplayHologramData {
                 .setTextShadow(this.hasTextShadow())
                 .setSeeThrough(this.isSeeThrough())
                 .setTextUpdateInterval(this.getTextUpdateInterval())
+                .setTextOpacity(this.getTextOpacity())
                 .setScale(this.getScale())
                 .setShadowRadius(this.getShadowRadius())
                 .setShadowStrength(this.getShadowStrength())

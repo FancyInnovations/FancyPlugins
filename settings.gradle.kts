@@ -47,6 +47,7 @@ include(":libraries:packets:implementations:1_21_4")
 include(":libraries:packets:implementations:1_21_5")
 include(":libraries:packets:implementations:1_21_6")
 include(":libraries:packets:implementations:1_21_9")
+include(":libraries:packets:implementations:1_21_11")
 
 
 include(":tools:deployment")

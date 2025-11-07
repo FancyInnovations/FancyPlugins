@@ -8,7 +8,9 @@ public record JsonDisplayHologramData(
         Float shadow_radius,
         Float shadow_strength,
         JsonBrightness brightness,
-        Display.Billboard billboard
+        Display.Billboard billboard,
+        Boolean glowing,
+        String glowing_color
 ) {
 }
 

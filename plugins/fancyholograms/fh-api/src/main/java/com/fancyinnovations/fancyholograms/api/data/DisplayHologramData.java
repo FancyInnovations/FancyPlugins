@@ -1,6 +1,7 @@
 package com.fancyinnovations.fancyholograms.api.data;
 
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Display;
@@ -26,6 +27,8 @@ public class DisplayHologramData extends HologramData {
     private float shadowRadius = DEFAULT_SHADOW_RADIUS;
     private float shadowStrength = DEFAULT_SHADOW_STRENGTH;
     private int interpolationDuration = DEFAULT_INTERPOLATION_DURATION;
+    private boolean glowing = false;
+    private NamedTextColor glowingColor = NamedTextColor.WHITE;
 
     /**
      * @param name     Name of hologram
@@ -130,6 +133,32 @@ public class DisplayHologramData extends HologramData {
         return this;
     }
 
+    public boolean isGlowing() {
+        return glowing;
+    }
+
+    public DisplayHologramData setGlowing(boolean glowing) {
+        if (this.glowing != glowing) {
+            this.glowing = glowing;
+            setHasChanges(true);
+        }
+
+        return this;
+    }
+
+    public NamedTextColor getGlowingColor() {
+        return glowingColor;
+    }
+
+    public DisplayHologramData setGlowingColor(NamedTextColor glowingColor) {
+        if (!Objects.equals(this.glowingColor, glowingColor)) {
+            this.glowingColor = glowingColor;
+            setHasChanges(true);
+        }
+
+        return this;
+    }
+
     @Override
     @ApiStatus.Internal
     public boolean read(ConfigurationSection section, String name) {
@@ -167,6 +196,9 @@ public class DisplayHologramData extends HologramData {
             );
         }
 
+        glowing = section.getBoolean("glowing", false);
+        glowingColor = NamedTextColor.NAMES.value(section.getString("glowing_color", "white"));
+
         return true;
     }
 
@@ -189,6 +221,8 @@ public class DisplayHologramData extends HologramData {
         }
 
         section.set("billboard", billboard != Display.Billboard.CENTER ? billboard.name().toLowerCase(Locale.ROOT) : null);
+        section.set("glowing", glowing);
+        section.set("glowing_color", glowingColor.toString());
 
         return true;
     }
@@ -203,10 +237,13 @@ public class DisplayHologramData extends HologramData {
                 .setBillboard(this.getBillboard())
                 .setTranslation(this.getTranslation())
                 .setBrightness(this.getBrightness())
-                .setVisibilityDistance(this.getVisibilityDistance())
-                .setVisibility(this.getVisibility())
-                .setPersistent(this.isPersistent())
-                .setLinkedNpcName(this.getLinkedNpcName());
+                .setGlowing(this.isGlowing())
+                .setGlowingColor(this.getGlowingColor());
+
+        displayHologramData.setVisibilityDistance(this.getVisibilityDistance());
+        displayHologramData.setVisibility(this.getVisibility());
+        displayHologramData.setPersistent(this.isPersistent());
+        displayHologramData.setLinkedNpcName(this.getLinkedNpcName());
 
         return displayHologramData;
     }

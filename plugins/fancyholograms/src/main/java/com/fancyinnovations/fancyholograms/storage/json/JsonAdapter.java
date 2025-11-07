@@ -6,6 +6,7 @@ import com.fancyinnovations.fancyholograms.api.trait.HologramTrait;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTraitRegistry;
 import com.fancyinnovations.fancyholograms.storage.json.model.*;
 import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -57,7 +58,9 @@ public class JsonAdapter {
                         data.getBrightness().getBlockLight(),
                         data.getBrightness().getSkyLight()
                 ),
-                data.getBillboard()
+                data.getBillboard(),
+                data.isGlowing(),
+                data.getGlowingColor().toString()
         );
     }
 
@@ -158,6 +161,11 @@ public class JsonAdapter {
             );
         }
 
+        boolean glowing = data.display_data().glowing() != null && data.display_data().glowing();
+        NamedTextColor glowingColor = data.display_data().glowing_color() != null
+                ? NamedTextColor.NAMES.value(data.display_data().glowing_color())
+                : NamedTextColor.WHITE;
+
         HologramData hologramData = switch (data.hologram_data().type()) {
             case TEXT ->
                     new com.fancyinnovations.fancyholograms.api.data.TextHologramData(data.hologram_data().name(), loc)
@@ -173,6 +181,8 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
+                            .setGlowing(glowing)
+                            .setGlowingColor(glowingColor)
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())
@@ -187,6 +197,8 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
+                            .setGlowing(glowing)
+                            .setGlowingColor(glowingColor)
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())
@@ -200,6 +212,8 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
+                            .setGlowing(glowing)
+                            .setGlowingColor(glowingColor)
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())

@@ -166,9 +166,20 @@ public final class HologramImpl extends Hologram {
             itemDisplay.setItem(itemData.getItemStack());
         } else if (fsDisplay instanceof FS_BlockDisplay blockDisplay && data instanceof com.fancyinnovations.fancyholograms.api.data.BlockHologramData blockData) {
             // block
-
-//            BlockType blockType = RegistryAccess.registryAccess().getRegistry(RegistryKey.BLOCK).get(blockData.getBlock().getKey());
-            blockDisplay.setBlock(blockData.getBlock().createBlockData().createBlockState());
+            try {
+                // If blockState is set, use it; otherwise use default
+                if (blockData.getBlockState() != null && !blockData.getBlockState().isEmpty()) {
+                    // Create block data using full format: namespace:block[properties]
+                    String fullBlockString = blockData.getBlock().getKey().toString() + "[" + blockData.getBlockState() + "]";
+                    blockDisplay.setBlock(org.bukkit.Bukkit.createBlockData(fullBlockString).createBlockState());
+                } else {
+                    blockDisplay.setBlock(blockData.getBlock().createBlockData().createBlockState());
+                }
+            } catch (IllegalArgumentException e) {
+                // If block state is invalid, fall back to default
+                FancyHolograms.get().getFancyLogger().warn("Invalid block state for hologram " + blockData.getName() + ": " + e.getMessage());
+                blockDisplay.setBlock(blockData.getBlock().createBlockData().createBlockState());
+            }
         }
 
         if (data instanceof com.fancyinnovations.fancyholograms.api.data.DisplayHologramData displayData) {

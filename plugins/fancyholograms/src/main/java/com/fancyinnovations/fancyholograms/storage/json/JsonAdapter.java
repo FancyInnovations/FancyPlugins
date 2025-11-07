@@ -81,7 +81,8 @@ public class JsonAdapter {
 
     public static JsonBlockHologramData blockHologramDataToJson(com.fancyinnovations.fancyholograms.api.data.BlockHologramData data) {
         return new JsonBlockHologramData(
-                data.getBlock().name()
+                data.getBlock().name(),
+                data.getBlockState()
         );
     }
 
@@ -213,6 +214,7 @@ public class JsonAdapter {
             case BLOCK ->
                     new com.fancyinnovations.fancyholograms.api.data.BlockHologramData(data.hologram_data().name(), loc)
                             .setBlock(Material.getMaterial(data.block_data().block_material())) // block data
+                            .setBlockState(data.block_data().block_state())
                             .setBillboard(data.display_data().billboard()) // display data
                             .setScale(scale)
                             .setTranslation(translation)

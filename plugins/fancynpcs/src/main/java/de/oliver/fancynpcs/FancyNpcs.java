@@ -191,7 +191,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             fancyLogger.error("Unsupported minecraft server version.");
             getLogger().warning("--------------------------------------------------");
             getLogger().warning("Unsupported minecraft server version.");
-            getLogger().warning("This plugin only supports 1.19.4 - 1.21.8");
+            getLogger().warning("This plugin only supports 1.19.4 - 1.21.11");
             getLogger().warning("Disabling the FancyNpcs plugin.");
             getLogger().warning("--------------------------------------------------");
             pluginManager.disablePlugin(this);

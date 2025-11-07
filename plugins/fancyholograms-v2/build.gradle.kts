@@ -8,32 +8,9 @@ plugins {
     id("xyz.jpenilla.run-paper")
     id("com.gradleup.shadow")
     id("de.eldoria.plugin-yml.paper")
-    id("io.papermc.hangar-publish-plugin")
-    id("com.modrinth.minotaur")
 }
 
 runPaper.folia.registerTask()
-
-val supportedVersions =
-    listOf(
-        "1.19.4",
-        "1.20",
-        "1.20.1",
-        "1.20.2",
-        "1.20.3",
-        "1.20.4",
-        "1.20.5",
-        "1.20.6",
-        "1.21",
-        "1.21.1",
-        "1.21.2",
-        "1.21.3",
-        "1.21.4",
-        "1.21.5",
-        "1.21.6",
-        "1.21.7",
-        "1.21.8",
-    )
 
 allprojects {
     group = "de.oliver"
@@ -167,14 +144,6 @@ tasks {
     }
 }
 
-tasks.publishAllPublicationsToHangar {
-    dependsOn("shadowJar")
-}
-
-tasks.modrinth {
-    dependsOn("shadowJar")
-}
-
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
@@ -189,35 +158,4 @@ val gitCommitMessage: Provider<String> = providers.exec {
 
 fun getFHVersion(): String {
     return file("VERSION").readText()
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        version = project.version as String
-        id = "FancyHolograms"
-        channel = "Alpha"
-
-        apiKey.set(System.getenv("HANGAR_PUBLISH_API_TOKEN"))
-
-        platforms {
-            paper {
-                jar = tasks.shadowJar.flatMap { it.archiveFile }
-                platformVersions = supportedVersions
-            }
-        }
-
-        changelog = gitCommitMessage.get()
-    }
-}
-
-modrinth {
-    token.set(System.getenv("MODRINTH_PUBLISH_API_TOKEN"))
-    projectId.set("fancyholograms")
-    versionNumber.set(getFHVersion())
-    versionType.set("alpha")
-    uploadFile.set(file("build/libs/${project.name}-${getFHVersion()}.jar"))
-    gameVersions.addAll(supportedVersions)
-    loaders.add("paper")
-    loaders.add("folia")
-    changelog.set(gitCommitMessage.get())
 }

@@ -8,8 +8,6 @@ plugins {
     id("xyz.jpenilla.run-paper")
     id("com.gradleup.shadow")
     id("de.eldoria.plugin-yml.paper")
-    id("io.papermc.hangar-publish-plugin")
-    id("com.modrinth.minotaur")
 }
 
 runPaper.folia.registerTask()
@@ -137,14 +135,6 @@ tasks {
             expand(props)
         }
     }
-}
-
-tasks.publishAllPublicationsToHangar {
-    dependsOn("shadowJar")
-}
-
-tasks.modrinth {
-    dependsOn("shadowJar")
 }
 
 java {

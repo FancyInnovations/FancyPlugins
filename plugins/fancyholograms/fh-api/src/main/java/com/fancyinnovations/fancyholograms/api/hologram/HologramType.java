@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum HologramType {
-    TEXT(Arrays.asList("background", "textshadow", "textalignment", "seethrough", "setline", "removeline", "addline", "insertbefore", "insertafter", "updatetextinterval")),
+    TEXT(Arrays.asList("background", "textshadow", "textalignment", "opacity", "seethrough", "setline", "removeline", "addline", "insertbefore", "insertafter", "swap_lines", "move_line_up", "move_line_down", "updatetextinterval")),
     ITEM(List.of("item")),
-    BLOCK(List.of("block"));
+    BLOCK(Arrays.asList("block", "blockstate"));
 
     private final List<String> commands;
 

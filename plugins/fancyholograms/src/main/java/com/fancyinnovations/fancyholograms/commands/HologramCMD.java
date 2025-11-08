@@ -41,6 +41,9 @@ public final class HologramCMD extends Command {
             <%primary_color%>- /hologram edit <hologram> insertBefore <line number> <text ...> <dark_gray>- <white>Inserts a line before another
             <%primary_color%>- /hologram edit <hologram> insertAfter <line number> <text ...> <dark_gray>- <white>Inserts a line after another
             <%primary_color%>- /hologram edit <hologram> setLine <line number> <text ...> <dark_gray>- <white>Edits the line
+            <%primary_color%>- /hologram edit <hologram> swap_lines <first> <second> <dark_gray>- <white>Swaps two lines
+            <%primary_color%>- /hologram edit <hologram> move_line_up <line> <dark_gray>- <white>Moves a line up one position
+            <%primary_color%>- /hologram edit <hologram> move_line_down <line> <dark_gray>- <white>Moves a line down one position
             <%primary_color%>- /hologram edit <hologram> position <dark_gray>- <white>Teleports the hologram to you
             <%primary_color%>- /hologram edit <hologram> moveTo <x> <y> <z> [yaw] [pitch] <dark_gray>- <white>Teleports the hologram to the coordinates
             <%primary_color%>- /hologram edit <hologram> rotate <degrees> <dark_gray>- <white>Rotates the hologram
@@ -49,11 +52,13 @@ public final class HologramCMD extends Command {
             <%primary_color%>- /hologram edit <hologram> background <color> <dark_gray>- <white>Changes the background of the hologram
             <%primary_color%>- /hologram edit <hologram> textShadow <true|false> <dark_gray>- <white>Enables/disables the text shadow
             <%primary_color%>- /hologram edit <hologram> textAlignment <alignment> <dark_gray>- <white>Sets the text alignment
+            <%primary_color%>- /hologram edit <hologram> opacity <0-100> <dark_gray>- <white>Changes the opacity of the text hologram
             <%primary_color%>- /hologram edit <hologram> seeThrough <true|false> <dark_gray>- <white>Enables/disables whether the text can be seen through blocks
             <%primary_color%>- /hologram edit <hologram> shadowRadius <value> <dark_gray>- <white>Changes the shadow radius of the hologram
             <%primary_color%>- /hologram edit <hologram> shadowStrength <value> <dark_gray>- <white>Changes the shadow strength of the hologram
             <%primary_color%>- /hologram edit <hologram> brightness <block|sky> <0-15> <dark_gray>- <white>Changes the brightness of the hologram
             <%primary_color%>- /hologram edit <hologram> updateTextInterval <seconds> <dark_gray>- <white>Sets the interval for updating the text
+            <%primary_color%>- /hologram edit <hologram> blockState <property> <value> <dark_gray>- <white>Changes the block state (e.g., "facing north" for block holograms)
             <%primary_color%>- /hologram edit <hologram> traits <add|remove> <trait name> <dark_gray>- <white>Adds or removes a trait to the hologram
             """.replace("%primary_color%", MessageHelper.getPrimaryColor());
 
@@ -192,7 +197,7 @@ public final class HologramCMD extends Command {
 
             final var usingNpcs = PluginUtils.isFancyNpcsEnabled();
 
-            List<String> suggestions = new ArrayList<>(Arrays.asList("traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
+            List<String> suggestions = new ArrayList<>(Arrays.asList("traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", "glowing", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
             suggestions.addAll(type.getCommands());
 
             return suggestions.stream().filter(input -> input.toLowerCase().startsWith(args[2].toLowerCase(Locale.ROOT))).toList();
@@ -246,6 +251,24 @@ public final class HologramCMD extends Command {
                     TextHologramData textData = (TextHologramData) hologram.getData();
                     yield IntStream.range(1, textData.getText().size() + 1).mapToObj(Integer::toString);
                 }
+                case "move_line_up" -> {
+                    TextHologramData textData = (TextHologramData) hologram.getData();
+                    // cant move line 1 up
+                    yield IntStream.range(2, textData.getText().size() + 1).mapToObj(Integer::toString);
+                }
+                case "move_line_down" -> {
+                    TextHologramData textData = (TextHologramData) hologram.getData();
+                    // cant move last line down
+                    yield IntStream.range(1, textData.getText().size()).mapToObj(Integer::toString);
+                }
+                case "swap_lines" -> {
+                    TextHologramData textData = (TextHologramData) hologram.getData();
+                    if (args.length == 4) {
+                        yield IntStream.range(1, textData.getText().size() + 1).mapToObj(Integer::toString);
+                    } else {
+                        yield Stream.<String>empty();
+                    }
+                }
                 case "linkwithnpc" -> {
                     if (!PluginUtils.isFancyNpcsEnabled()) {
                         yield Stream.<String>empty();
@@ -256,6 +279,7 @@ public final class HologramCMD extends Command {
                 case "block" -> Arrays.stream(Material.values()).filter(Material::isBlock).map(Enum::name);
                 case "seethrough" -> Stream.of("true", "false");
                 case "visibility" -> new VisibilityCMD().tabcompletion(sender, hologram, args).stream();
+                case "glowing" -> new GlowingCMD().tabcompletion(sender, hologram, args).stream();
 
                 default -> null;
             };
@@ -275,6 +299,21 @@ public final class HologramCMD extends Command {
             }
 
             return List.of(textData.getText().get(index - 1));
+        }
+
+        // /holo edit [hologram] swap_lines [first] {tab:second_line}
+        if (args.length == 5 && args[2].equalsIgnoreCase("swap_lines")) {
+            TextHologramData textData = (TextHologramData) hologram.getData();
+
+            final var firstLine = Ints.tryParse(args[3]);
+            if (firstLine == null || firstLine < 1 || firstLine > textData.getText().size()) {
+                return Collections.emptyList();
+            }
+
+            return IntStream.range(1, textData.getText().size() + 1)
+                    .filter(i -> i != firstLine)
+                    .mapToObj(Integer::toString)
+                    .toList();
         }
 
         // /holo edit [hologram] moveto {tab:x} {tab:y} {tab:z}
@@ -364,6 +403,7 @@ public final class HologramCMD extends Command {
             case "shadowradius" -> new ShadowRadiusCMD().run(player, hologram, args);
             case "shadowstrength" -> new ShadowStrengthCMD().run(player, hologram, args);
             case "brightness" -> new BrightnessCMD().run(player, hologram, args);
+            case "glowing" -> new GlowingCMD().run(player, hologram, args);
 
             // text data
             case "background" -> new BackgroundCMD().run(player, hologram, args);
@@ -372,12 +412,17 @@ public final class HologramCMD extends Command {
             case "removeline" -> new RemoveLineCMD().run(player, hologram, args);
             case "insertbefore" -> new InsertBeforeCMD().run(player, hologram, args);
             case "insertafter" -> new InsertAfterCMD().run(player, hologram, args);
+            case "swap_lines" -> new SwapLinesCMD().run(player, hologram, args);
+            case "move_line_up" -> new MoveUpCMD().run(player, hologram, args);
+            case "move_line_down" -> new MoveDownCMD().run(player, hologram, args);
             case "textshadow" -> new TextShadowCMD().run(player, hologram, args);
             case "textalignment" -> new TextAlignmentCMD().run(player, hologram, args);
+            case "opacity" -> new OpacityCMD().run(player, hologram, args);
             case "seethrough" -> new SeeThroughCMD().run(player, hologram, args);
 
             // block data
             case "block" -> new BlockCMD().run(player, hologram, args);
+            case "blockstate" -> new BlockStateCMD().run(player, hologram, args);
 
             default -> false;
         };

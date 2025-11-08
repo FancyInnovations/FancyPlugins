@@ -13,6 +13,7 @@ public class BlockHologramData extends DisplayHologramData {
     public static Material DEFAULT_BLOCK = Material.GRASS_BLOCK;
 
     private Material block = DEFAULT_BLOCK;
+    private String blockState = null;
 
     /**
      * @param name     Name of hologram
@@ -36,11 +37,25 @@ public class BlockHologramData extends DisplayHologramData {
         return this;
     }
 
+    public String getBlockState() {
+        return blockState;
+    }
+
+    public BlockHologramData setBlockState(String blockState) {
+        if (!Objects.equals(this.blockState, blockState)) {
+            this.blockState = blockState;
+            setHasChanges(true);
+        }
+
+        return this;
+    }
+
     @Override
     @ApiStatus.Internal
     public boolean read(ConfigurationSection section, String name) {
         super.read(section, name);
         block = Material.getMaterial(section.getString("block", "GRASS_BLOCK").toUpperCase());
+        blockState = section.getString("block_state", null);
 
         return true;
     }
@@ -50,6 +65,7 @@ public class BlockHologramData extends DisplayHologramData {
     public boolean write(ConfigurationSection section, String name) {
         super.write(section, name);
         section.set("block", block.name());
+        section.set("block_state", blockState);
 
         return true;
     }
@@ -59,6 +75,7 @@ public class BlockHologramData extends DisplayHologramData {
         BlockHologramData blockHologramData = new BlockHologramData(name, getLocation());
         blockHologramData
                 .setBlock(this.getBlock())
+                .setBlockState(this.getBlockState())
                 .setScale(this.getScale())
                 .setShadowRadius(this.getShadowRadius())
                 .setShadowStrength(this.getShadowStrength())

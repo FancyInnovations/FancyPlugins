@@ -76,6 +76,11 @@ public class SetLineCMD implements Subcommand {
 
         index--;
 
+        if (args.length < 5) {
+            MessageHelper.error(player, "Please provide text for the line");
+            return false;
+        }
+
         String text = "";
         for (int i = 4; i < args.length; i++) {
             text += args[i] + " ";

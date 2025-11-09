@@ -155,7 +155,7 @@ public abstract class Npc {
     }
 
     public void interact(Player player, ActionTrigger actionTrigger) {
-        if (data.getInteractionCooldown() > 0) {
+        if (data.getInteractionCooldown() > 0 && !player.hasPermission("fancynpcs.bypass.cooldown.interaction")) {
             final long interactionCooldownMillis = (long) (data.getInteractionCooldown() * 1000);
             final long lastInteractionMillis = lastPlayerInteraction.getOrDefault(player.getUniqueId(), 0L);
             final Interval interactionCooldownLeft = Interval.between(lastInteractionMillis + interactionCooldownMillis, System.currentTimeMillis(), Unit.MILLISECONDS);

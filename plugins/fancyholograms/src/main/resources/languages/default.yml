@@ -25,3 +25,9 @@ messages:
             no_traits: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> does not have any traits attached."
             header: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> has the following traits attached:"
             entry: "<dark_gray>› <gray> - {warningColor}{name}<gray>"
+      glowing:
+        toggled: "<dark_gray>› <gray>Toggled glowing {warningColor}{state}<gray>."
+        disabled: "<dark_gray>› <gray>Disabled glowing."
+        color_set: "<dark_gray>› <gray>Changed glowing color to {warningColor}{color}<gray>."
+        invalid_color: "<dark_gray>› <gray>Could not parse glowing color."
+        only_item_block: "<dark_gray>› <gray>You can only make item and block holograms glow."

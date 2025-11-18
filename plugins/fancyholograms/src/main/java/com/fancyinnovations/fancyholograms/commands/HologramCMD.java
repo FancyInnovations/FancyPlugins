@@ -192,7 +192,7 @@ public final class HologramCMD extends Command {
 
             final var usingNpcs = PluginUtils.isFancyNpcsEnabled();
 
-            List<String> suggestions = new ArrayList<>(Arrays.asList("traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", "glowing", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
+            List<String> suggestions = new ArrayList<>(Arrays.asList("traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
             suggestions.addAll(type.getCommands());
 
             return suggestions.stream().filter(input -> input.toLowerCase().startsWith(args[2].toLowerCase(Locale.ROOT))).toList();
@@ -256,7 +256,6 @@ public final class HologramCMD extends Command {
                 case "block" -> Arrays.stream(Material.values()).filter(Material::isBlock).map(Enum::name);
                 case "seethrough" -> Stream.of("true", "false");
                 case "visibility" -> new VisibilityCMD().tabcompletion(sender, hologram, args).stream();
-                case "glowing" -> new GlowingCMD().tabcompletion(sender, hologram, args).stream();
 
                 default -> null;
             };
@@ -365,7 +364,6 @@ public final class HologramCMD extends Command {
             case "shadowradius" -> new ShadowRadiusCMD().run(player, hologram, args);
             case "shadowstrength" -> new ShadowStrengthCMD().run(player, hologram, args);
             case "brightness" -> new BrightnessCMD().run(player, hologram, args);
-            case "glowing" -> new GlowingCMD().run(player, hologram, args);
 
             // text data
             case "background" -> new BackgroundCMD().run(player, hologram, args);

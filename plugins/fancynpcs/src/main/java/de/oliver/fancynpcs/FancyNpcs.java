@@ -82,6 +82,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
     public static final FeatureFlag PLAYER_NPCS_FEATURE_FLAG = new FeatureFlag("player-npcs", "Every player can only manage the npcs they have created", false);
     public static final FeatureFlag USE_NATIVE_THREADS_FEATURE_FLAG = new FeatureFlag("use-native-threads", "Use native threads instead of virtual threads.", false);
     public static final FeatureFlag ENABLE_DEBUG_MODE_FEATURE_FLAG = new FeatureFlag("enable-debug-mode", "Enable debug mode", false);
+    public static final FeatureFlag ENABLE_FOLIA_VISIBILITY_FIX_FEATURE_FLAG = new FeatureFlag("enable-folia-visibility-fix", "When enabled, all npcs will respawn after 100ms when they should spawn", false);
     public static final FeatureFlag USE_MINECRAFT_USERCACHE_FEATURE_FLAG = new FeatureFlag("use-minecraft-usercache", "Include the content of usercache.json to the username->uuid cache", false);
 
     private static FancyNpcs instance;
@@ -154,6 +155,8 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         featureFlagConfig.addFeatureFlag(PLAYER_NPCS_FEATURE_FLAG);
         featureFlagConfig.addFeatureFlag(USE_NATIVE_THREADS_FEATURE_FLAG);
         featureFlagConfig.addFeatureFlag(ENABLE_DEBUG_MODE_FEATURE_FLAG);
+        featureFlagConfig.addFeatureFlag(ENABLE_FOLIA_VISIBILITY_FIX_FEATURE_FLAG);
+        featureFlagConfig.addFeatureFlag(USE_MINECRAFT_USERCACHE_FEATURE_FLAG);
         featureFlagConfig.load();
 
         if (ENABLE_DEBUG_MODE_FEATURE_FLAG.isEnabled()) {
@@ -598,6 +601,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         return textConfig;
     }
 
+    @Override
     public FeatureFlagConfig getFeatureFlagConfig() {
         return featureFlagConfig;
     }

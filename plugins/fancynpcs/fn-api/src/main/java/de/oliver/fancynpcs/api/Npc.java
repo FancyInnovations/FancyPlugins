@@ -1,6 +1,7 @@
 package de.oliver.fancynpcs.api;
 
 import de.oliver.fancylib.RandomUtils;
+import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
 import de.oliver.fancynpcs.api.actions.NpcAction;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Npc {
 
@@ -110,6 +112,15 @@ public abstract class Npc {
 
             if (shouldBeVisible && !wasVisible) {
                 spawn(player);
+
+                // Respawn the npc to fix visibility issues on Folia
+                if (ServerSoftware.isFolia() && FancyNpcsPlugin.get().getFeatureFlagConfig().getFeatureFlag("enable-folia-visibility-fix").isEnabled()) {
+                    FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
+                        remove(player);
+                        spawn(player);
+                    }, 100, TimeUnit.MILLISECONDS);
+                }
+
             } else if (!shouldBeVisible && wasVisible) {
                 remove(player);
             }
@@ -185,7 +196,7 @@ public abstract class Npc {
 
         // actions
         ActionExecutor.execute(actionTrigger, this, player);
-        
+
         if (actionTrigger == ActionTrigger.LEFT_CLICK || actionTrigger == ActionTrigger.RIGHT_CLICK) {
             ActionExecutor.execute(ActionTrigger.ANY_CLICK, this, player);
         }

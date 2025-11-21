@@ -17,6 +17,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.RemoteChatSession;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
@@ -106,6 +107,7 @@ public class Npc_1_21_5 extends Npc {
             return;
         }
 
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
 
         if (npc instanceof ServerPlayer npcPlayer) {
             EnumSet<ClientboundPlayerInfoUpdatePacket.Action> actions = EnumSet.noneOf(ClientboundPlayerInfoUpdatePacket.Action.class);
@@ -116,7 +118,7 @@ public class Npc_1_21_5 extends Npc {
             }
 
             ClientboundPlayerInfoUpdatePacket playerInfoPacket = new ClientboundPlayerInfoUpdatePacket(actions, getEntry(npcPlayer, serverPlayer));
-            serverPlayer.connection.send(playerInfoPacket);
+            packets.add(playerInfoPacket);
 
             if (data.isSpawnEntity()) {
                 npc.setPos(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());
@@ -136,7 +138,7 @@ public class Npc_1_21_5 extends Npc {
                 Vec3.ZERO,
                 data.getLocation().getYaw()
         );
-        serverPlayer.connection.send(addEntityPacket);
+        packets.add(addEntityPacket);
 
         isVisibleForPlayer.put(player.getUniqueId(), true);
 
@@ -148,6 +150,9 @@ public class Npc_1_21_5 extends Npc {
                 serverPlayer.connection.send(playerInfoRemovePacket);
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
         }
+
+        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
+        serverPlayer.connection.send(bundlePacket);
 
         update(player);
     }
@@ -208,6 +213,7 @@ public class Npc_1_21_5 extends Npc {
         ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (location.getYaw() * angelMultiplier));
         serverPlayer.connection.send(rotateHeadPacket);
     }
+
     @Override
     public void update(Player player, boolean swingArm) {
         if (npc == null) {

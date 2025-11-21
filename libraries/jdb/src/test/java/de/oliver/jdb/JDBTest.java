@@ -111,6 +111,23 @@ public class JDBTest {
     }
 
     @Test
+    public void testCountDocuments() throws IOException {
+        // Prepare
+        String basePath = "./test_files/";
+        JDB jdb = new JDB(basePath);
+        String path = "test_files";
+        jdb.set(path + "/obj1", "Test message 1");
+        jdb.set(path + "/obj2", "Test message 2");
+        jdb.set(path + "/obj3", "Test message 3");
+
+        // Act
+        int count = jdb.countDocuments(path);
+
+        // Assert
+        assertEquals(3, count);
+    }
+
+    @Test
     public void testSetNewObject() throws IOException {
         // Prepare
         String basePath = "./test_files/";

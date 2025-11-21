@@ -45,8 +45,6 @@ import de.oliver.fancynpcs.tests.PlaceholderApiEnv;
 import de.oliver.fancynpcs.tracker.TurnToPlayerTracker;
 import de.oliver.fancynpcs.tracker.VisibilityTracker;
 import de.oliver.fancynpcs.utils.OldSkinCacheMigrator;
-import de.oliver.fancynpcs.v1_19_4.Npc_1_19_4;
-import de.oliver.fancynpcs.v1_19_4.PacketReader_1_19_4;
 import de.oliver.fancynpcs.v1_20.PacketReader_1_20;
 import de.oliver.fancynpcs.v1_20_1.Npc_1_20_1;
 import de.oliver.fancynpcs.v1_20_2.Npc_1_20_2;
@@ -177,7 +175,6 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             case "1.20.3", "1.20.4" -> npcAdapter = Npc_1_20_4::new;
             case "1.20.2" -> npcAdapter = Npc_1_20_2::new;
             case "1.20.1", "1.20" -> npcAdapter = Npc_1_20_1::new;
-            case "1.19.4" -> npcAdapter = Npc_1_19_4::new;
             default -> npcAdapter = null;
         }
 
@@ -194,7 +191,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             fancyLogger.error("Unsupported minecraft server version.");
             getLogger().warning("--------------------------------------------------");
             getLogger().warning("Unsupported minecraft server version.");
-            getLogger().warning("This plugin only supports 1.19.4 - 1.21.11");
+            getLogger().warning("This plugin only supports 1.20- 1.21.11");
             getLogger().warning("Disabling the FancyNpcs plugin.");
             getLogger().warning("--------------------------------------------------");
             pluginManager.disablePlugin(this);
@@ -286,7 +283,6 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
 
         // use packet injection method
         switch (mcVersion) {
-            case "1.19.4" -> pluginManager.registerEvents(new PacketReader_1_19_4(), instance);
             case "1.20" -> pluginManager.registerEvents(new PacketReader_1_20(), instance);
             default -> pluginManager.registerEvents(new PlayerUseUnknownEntityListener(), instance);
         }

@@ -3,7 +3,7 @@ package de.oliver.fancynpcs.v1_21_11.attributes;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v1_21_11.ReflectionHelper;
-import net.minecraft.world.entity.monster.SpellcasterIllager;
+import net.minecraft.world.entity.monster.illager.SpellcasterIllager;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Spellcaster;
 

@@ -39,7 +39,6 @@ dependencies {
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_4", configuration = "reobf"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_2", configuration = "reobf"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_1", configuration = "reobf"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_19_4", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }

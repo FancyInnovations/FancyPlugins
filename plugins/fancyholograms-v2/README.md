@@ -36,7 +36,7 @@ With this plugin you can create holograms with customizable properties like:
 
 ## Installation
 
-Paper **1.19.4** - **1.21.8** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
+Paper **1.20** - **1.21.8** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
 
 **Spigot** is **not** supported.
 

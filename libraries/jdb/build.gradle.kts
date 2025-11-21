@@ -1,11 +1,11 @@
 plugins {
     id("java")
     id("maven-publish")
-    id("com.github.johnrengelman.shadow")
+    id("com.gradleup.shadow")
 }
 
 group = "de.oliver"
-version = findProperty("jdbVersion") as String
+version = getJDBVersion()
 description = "Library for storing JSON data locally"
 
 java {
@@ -55,7 +55,7 @@ tasks {
             create<MavenPublication>("maven") {
                 groupId = "de.oliver"
                 artifactId = "JDB"
-                version = findProperty("jdbVersion") as String
+                version = getJDBVersion()
                 from(project.components["java"])
             }
         }
@@ -84,4 +84,8 @@ tasks {
     test {
         useJUnitPlatform()
     }
+}
+
+fun getJDBVersion(): String {
+    return file("VERSION").readText()
 }

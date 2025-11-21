@@ -2,7 +2,6 @@ package de.oliver.fancynpcs.listeners;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import de.oliver.fancynpcs.FancyNpcs;
-import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.v1_20.PacketReader_1_20;
 import org.bukkit.Bukkit;
@@ -17,13 +16,6 @@ public class PlayerJoinListener implements Listener {
         String mcVersion = Bukkit.getMinecraftVersion();
         if (mcVersion.equals("1.20")) {
             PacketReader_1_20.inject(event.getPlayer());
-        }
-
-        for (Npc npc : FancyNpcs.getInstance().getNpcManagerImpl().getAllNpcs()) {
-            npc.getIsVisibleForPlayer().put(event.getPlayer().getUniqueId(), false);
-            npc.getIsForcedHidden().put(event.getPlayer().getUniqueId(), false);
-            npc.getIsLookingAtPlayer().put(event.getPlayer().getUniqueId(), false);
-            npc.getIsTeamCreated().put(event.getPlayer().getUniqueId(), false);
         }
 
         // don't spawn the npc for player if he just joined

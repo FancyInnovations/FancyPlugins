@@ -49,7 +49,7 @@ public final class HologramCMD extends Command {
             <%primary_color%>- /hologram edit <hologram> background <color> <dark_gray>- <white>Changes the background of the hologram
             <%primary_color%>- /hologram edit <hologram> textShadow <true|false> <dark_gray>- <white>Enables/disables the text shadow
             <%primary_color%>- /hologram edit <hologram> textAlignment <alignment> <dark_gray>- <white>Sets the text alignment
-            <%primary_color%>- /hologram edit <hologram> opacity <0-100> <dark_gray>- <white>Changes the opacity of the text hologram
+            <%primary_color%>- /hologram edit <hologram> textopacity <0-100> <dark_gray>- <white>Changes the opacity of the text hologram
             <%primary_color%>- /hologram edit <hologram> seeThrough <true|false> <dark_gray>- <white>Enables/disables whether the text can be seen through blocks
             <%primary_color%>- /hologram edit <hologram> shadowRadius <value> <dark_gray>- <white>Changes the shadow radius of the hologram
             <%primary_color%>- /hologram edit <hologram> shadowStrength <value> <dark_gray>- <white>Changes the shadow strength of the hologram
@@ -377,7 +377,6 @@ public final class HologramCMD extends Command {
             case "insertafter" -> new InsertAfterCMD().run(player, hologram, args);
             case "textshadow" -> new TextShadowCMD().run(player, hologram, args);
             case "textalignment" -> new TextAlignmentCMD().run(player, hologram, args);
-            case "opacity" -> new OpacityCMD().run(player, hologram, args);
             case "seethrough" -> new SeeThroughCMD().run(player, hologram, args);
 
             // block data

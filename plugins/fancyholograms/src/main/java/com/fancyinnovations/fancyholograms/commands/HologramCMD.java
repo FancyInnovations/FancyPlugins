@@ -383,7 +383,6 @@ public final class HologramCMD extends Command {
 
             // block data
             case "block" -> new BlockCMD().run(player, hologram, args);
-            case "blockstate" -> new BlockStateCMD().run(player, hologram, args);
 
             default -> false;
         };

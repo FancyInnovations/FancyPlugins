@@ -369,6 +369,7 @@ public class Npc_1_21_11 extends Npc {
         serverPlayer.connection.send(setEntityDataPacket);
     }
 
+    @Override
     public void move(Player player, boolean swingArm) {
         if (npc == null) {
             return;

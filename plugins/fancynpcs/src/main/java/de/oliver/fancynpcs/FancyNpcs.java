@@ -158,20 +158,16 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
 
         String mcVersion = Bukkit.getMinecraftVersion();
 
-        switch (mcVersion) {
-            case "1.21.11" -> npcAdapter = Npc_1_21_11::new;
-            case "1.21.9", "1.21.10" -> npcAdapter = Npc_1_21_9::new;
-            case "1.21.6", "1.21.7", "1.21.8" -> npcAdapter = Npc_1_21_6::new;
-            case "1.21.5" -> npcAdapter = Npc_1_21_5::new;
-            case "1.21.4" -> npcAdapter = Npc_1_21_4::new;
-            case "1.21.2", "1.21.3" -> npcAdapter = Npc_1_21_3::new;
-            case "1.21", "1.21.1" -> npcAdapter = Npc_1_21_1::new;
-            default -> npcAdapter = null;
-        }
-
-        npcManager = new NpcManagerImpl(this, npcAdapter);
-
-        PluginManager pluginManager = Bukkit.getPluginManager();
+        npcAdapter = switch (mcVersion) {
+            case "1.21.11" -> Npc_1_21_11::new;
+            case "1.21.9", "1.21.10" -> Npc_1_21_9::new;
+            case "1.21.6", "1.21.7", "1.21.8" -> Npc_1_21_6::new;
+            case "1.21.5" -> Npc_1_21_5::new;
+            case "1.21.4" -> Npc_1_21_4::new;
+            case "1.21.2", "1.21.3" -> Npc_1_21_3::new;
+            case "1.21", "1.21.1" -> Npc_1_21_1::new;
+            default -> null;
+        };
 
         if (npcAdapter == null) {
             fancyAnalytics.sendEvent(new Event("pluginLoadingWithUnsupportedVersion", new HashMap<>())
@@ -185,9 +181,11 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             getLogger().warning("This plugin only supports 1.21 - latest");
             getLogger().warning("Disabling the FancyNpcs plugin.");
             getLogger().warning("--------------------------------------------------");
-            pluginManager.disablePlugin(this);
+            Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        npcManager = new NpcManagerImpl(this, npcAdapter);
     }
 
     @Override
@@ -299,11 +297,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             final List<Npc> npcs = new ArrayList<>(npcManager.getAllNpcs());
             for (final Npc npc : npcs) {
                 try {
-                    boolean shouldUpdate = false;
-
-                    if (npc.getData().getDisplayName() != null && !npc.getData().getDisplayName().isBlank() && SkinUtils.isPlaceholder(npc.getData().getDisplayName())) {
-                        shouldUpdate = true;
-                    }
+                    boolean shouldUpdate = npc.getData().getDisplayName() != null && !npc.getData().getDisplayName().isBlank() && SkinUtils.isPlaceholder(npc.getData().getDisplayName());
 
                     if (npc.getData().getSkinData() != null) {
                         final String skinID = npc.getData().getSkinData().getIdentifier();
@@ -456,7 +450,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             long count = 0;
 
             for (Npc npc : npcManager.getAllNpcs()) {
-                count += npc.getData().getActions().values().size();
+                count += npc.getData().getActions().size();
             }
 
             return (double) count;
@@ -515,6 +509,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         return Thread.ofVirtual().name(name).unstarted(runnable);
     }
 
+    @Override
     public ExtendedFancyLogger getFancyLogger() {
         return fancyLogger;
     }

@@ -2,6 +2,8 @@ package com.fancyinnovations.fancyholograms.api.hologram;
 
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Sets;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -14,6 +16,7 @@ import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 
@@ -29,12 +32,29 @@ public abstract class Hologram {
     protected final @NotNull HologramData data;
     protected final @NotNull Set<UUID> viewers;
 
+    private static final UUID NULL_PLAYER_KEY = new UUID(0L, 0L);
+
+    private final Cache<UUID, Component> cachedTextPerPlayer = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.SECONDS)
+            .maximumSize(512)
+            .build();
+    private String lastRawText = "";
+
     protected Hologram(@NotNull final HologramData data) {
         this.data = data;
         this.viewers = new HashSet<>();
 
         this.data.getTraitTrait().attachHologram(this);
-        this.data.setOnModify(this.data.getTraitTrait()::onModify);
+
+        final Runnable traitOnModify = this.data.getTraitTrait()::onModify;
+        final Runnable clearCache = this::clearTextCache;
+
+        final Runnable composedOnModify = () -> {
+            clearCache.run();
+            traitOnModify.run();
+        };
+
+        this.data.setOnModify(composedOnModify);
     }
 
     /**
@@ -145,8 +165,12 @@ public abstract class Hologram {
     }
 
     /**
-     * Gets the text shown in the hologram. If a player is specified, placeholders in the text are replaced
-     * with their corresponding values for the player.
+     * Gets the text shown in the hologram, with lightweight caching to reduce repeated placeholder and color processing.
+     *
+     * Caching rules:
+     * - Cache key: player UUID (or NULL_PLAYER_KEY for non-player specific text)
+     * - Cache is invalidated whenever the underlying text changes via the onModify callback.
+     * - Uses Guava Cache with 1 second TTL and a maximum size of 512 entries.
      *
      * @param player the player to get the placeholders for, or null if no placeholders should be replaced
      * @return the text shown in the hologram
@@ -156,8 +180,33 @@ public abstract class Hologram {
             return null;
         }
 
-        var text = String.join("\n", textData.getText());
+        final String rawText = String.join("\n", textData.getText());
 
-        return ModernChatColorHandler.translate(text, player);
+        if (!rawText.equals(lastRawText)) {
+            cachedTextPerPlayer.invalidateAll();
+            lastRawText = rawText;
+        }
+
+        final UUID cacheKey = (player != null) ? player.getUniqueId() : NULL_PLAYER_KEY;
+
+        final Component cached = cachedTextPerPlayer.getIfPresent(cacheKey);
+        if (cached != null) {
+            return cached;
+        }
+
+        final Component translated = ModernChatColorHandler.translate(rawText, player);
+        cachedTextPerPlayer.put(cacheKey, translated);
+        return translated;
     }
+
+    /**
+     * Clears the cached text for all players. Intended to be invoked via the onModify hook
+     * when text-related data changes to prevent stale content from being displayed.
+     */
+    @ApiStatus.Internal
+    public void clearTextCache() {
+        cachedTextPerPlayer.invalidateAll();
+        lastRawText = "";
+    }
+
 }

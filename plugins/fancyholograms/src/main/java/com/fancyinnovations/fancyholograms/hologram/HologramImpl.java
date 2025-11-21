@@ -151,6 +151,7 @@ public final class HologramImpl extends Hologram {
             textDisplay.setStyleFlags((byte) 0);
             textDisplay.setShadow(textData.hasTextShadow());
             textDisplay.setSeeThrough(textData.isSeeThrough());
+            textDisplay.setTextOpacity(textData.getTextOpacity());
 
             switch (textData.getTextAlignment()) {
                 case LEFT -> textDisplay.setAlignLeft(true);
@@ -194,6 +195,30 @@ public final class HologramImpl extends Hologram {
             fsDisplay.setShadowStrength(displayData.getShadowStrength());
 
             fsDisplay.setViewRange(displayData.getVisibilityDistance());
+
+            if (displayData.isGlowing()) {
+                int rgb = displayData.getGlowingColor().value() & 0xFFFFFF;
+                int argb = 0xFF000000 | rgb;
+                fsDisplay.setGlowColorOverride(argb);
+
+                byte flags = 0x40;
+                try {
+                    byte currentFlags = fsDisplay.getSharedFlags();
+                    flags = (byte) (currentFlags | 0x40);
+                } catch (NullPointerException ignored) {
+                }
+                fsDisplay.setSharedFlags(flags);
+            } else {
+                fsDisplay.setGlowColorOverride(-1);
+
+                byte flags = 0;
+                try {
+                    byte currentFlags = fsDisplay.getSharedFlags();
+                    flags = (byte) (currentFlags & ~0x40);
+                } catch (NullPointerException ignored) {
+                }
+                fsDisplay.setSharedFlags(flags);
+            }
         }
     }
 

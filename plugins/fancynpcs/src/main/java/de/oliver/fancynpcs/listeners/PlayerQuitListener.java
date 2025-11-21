@@ -19,6 +19,7 @@ public class PlayerQuitListener implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         for (Npc npc : FancyNpcs.getInstance().getNpcManagerImpl().getAllNpcs()) {
             npc.getIsVisibleForPlayer().remove(uuid);
+            npc.getIsForcedHidden().remove(uuid);
             npc.getIsLookingAtPlayer().remove(uuid);
             npc.getIsTeamCreated().remove(uuid);
             new NpcStopLookingEvent(npc, event.getPlayer()).callEvent();

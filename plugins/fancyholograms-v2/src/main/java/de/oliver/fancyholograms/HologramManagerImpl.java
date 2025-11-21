@@ -161,7 +161,14 @@ public final class HologramManagerImpl implements HologramManager {
         }
         isLoaded = true;
 
-        FancyHolograms.get().getHologramThread().submit(() -> Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(allLoaded))));
+        FancyHolograms.get().getHologramThread().submit(() -> {
+            Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(allLoaded)));
+            for (Hologram hologram : allLoaded) {
+                if (hologram.getData().getLinkedNpcName() != null) {
+                    syncHologramWithNpc(hologram);
+                }
+            }
+        });
 
         if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
     }
@@ -177,7 +184,14 @@ public final class HologramManagerImpl implements HologramManager {
 
         isLoaded = true;
 
-        Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(loaded)));
+        FancyHolograms.get().getHologramThread().submit(() -> {
+            Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(loaded)));
+            for (Hologram hologram : loaded) {
+                if (hologram.getData().getLinkedNpcName() != null) {
+                    syncHologramWithNpc(hologram);
+                }
+            }
+        });
 
         if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for world %s", loaded.size(), world));
     }
@@ -320,6 +334,19 @@ public final class HologramManagerImpl implements HologramManager {
         }
 
         final var location = npc.getData().getLocation().clone().add(0, (npc.getEyeHeight() * npcScale) + (0.5 * npcScale), 0);
+
+        final var poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(npc.getData().getType(), "pose");
+        if (poseAttr != null) {
+            final var pose = npc.getData().getAttributes().get(poseAttr);
+            if (pose != null) {
+                switch (pose.toLowerCase()) {
+                    case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
+                    case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
+                    case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);
+                }
+            }
+        }
+
         hologram.getData().setLocation(location);
     }
 }

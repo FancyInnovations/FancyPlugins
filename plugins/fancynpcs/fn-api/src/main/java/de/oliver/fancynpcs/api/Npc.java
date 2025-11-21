@@ -26,6 +26,7 @@ public abstract class Npc {
     private static final NpcAttribute INVISIBLE_ATTRIBUTE = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, "invisible");
     private static final char[] localNameChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'k', 'l', 'm', 'n', 'o', 'r'};
     protected final Map<UUID, Boolean> isTeamCreated = new ConcurrentHashMap<>();
+    protected final Map<UUID, Boolean> isForcedHidden = new ConcurrentHashMap<>();
     protected final Map<UUID, Boolean> isVisibleForPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Boolean> isLookingAtPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Long> lastPlayerInteraction = new ConcurrentHashMap<>();
@@ -107,7 +108,7 @@ public abstract class Npc {
 
     public void checkAndUpdateVisibility(Player player) {
         FancyNpcsPlugin.get().getNpcThread().submit(() -> {
-            boolean shouldBeVisible = shouldBeVisible(player);
+            boolean shouldBeVisible = !isForcedHidden.getOrDefault(player.getUniqueId(), false) && shouldBeVisible(player);
             boolean wasVisible = isVisibleForPlayer.getOrDefault(player.getUniqueId(), false);
 
             if (shouldBeVisible && !wasVisible) {
@@ -218,6 +219,10 @@ public abstract class Npc {
 
     public Map<UUID, Boolean> getIsVisibleForPlayer() {
         return isVisibleForPlayer;
+    }
+
+    public Map<UUID, Boolean> getIsForcedHidden() {
+        return isForcedHidden;
     }
 
     public Map<UUID, Boolean> getIsLookingAtPlayer() {

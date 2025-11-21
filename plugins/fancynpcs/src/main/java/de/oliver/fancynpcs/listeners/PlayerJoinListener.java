@@ -21,6 +21,7 @@ public class PlayerJoinListener implements Listener {
 
         for (Npc npc : FancyNpcs.getInstance().getNpcManagerImpl().getAllNpcs()) {
             npc.getIsVisibleForPlayer().put(event.getPlayer().getUniqueId(), false);
+            npc.getIsForcedHidden().put(event.getPlayer().getUniqueId(), false);
             npc.getIsLookingAtPlayer().put(event.getPlayer().getUniqueId(), false);
             npc.getIsTeamCreated().put(event.getPlayer().getUniqueId(), false);
         }

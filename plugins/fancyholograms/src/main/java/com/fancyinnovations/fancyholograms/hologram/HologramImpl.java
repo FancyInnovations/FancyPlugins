@@ -193,10 +193,25 @@ public final class HologramImpl extends Hologram {
             fsDisplay.setShadowRadius(displayData.getShadowRadius());
             fsDisplay.setShadowStrength(displayData.getShadowStrength());
 
-            // glowing color
-            if (displayData.getGlowingColor() != null && displayData.getGlowingColor().getColor() != null) {
+            // glowing
+            if (displayData.getGlowingColor() != null && displayData.getGlowingColor() != de.oliver.fancylib.colors.GlowingColor.DISABLED && displayData.getGlowingColor().getColor() != null) {
+                byte currentFlags = 0;
+                try {
+                    currentFlags = fsDisplay.getSharedFlags();
+                } catch (NullPointerException e) {
+
+                }
+                fsDisplay.setSharedFlags((byte) (currentFlags | 0x40));
+
                 fsDisplay.setGlowColorOverride(displayData.getGlowingColor().getColor().value());
             } else {
+                try {
+                    byte currentFlags = fsDisplay.getSharedFlags();
+                    fsDisplay.setSharedFlags((byte) (currentFlags & ~0x40));
+                } catch (NullPointerException e) {
+
+                }
+
                 fsDisplay.setGlowColorOverride(-1);
             }
 

@@ -7,7 +7,6 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.MessageHelper;
 import de.oliver.fancylib.colors.GlowingColor;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.translations.message.SimpleMessage;
@@ -37,7 +36,8 @@ public final class GlowingCMD {
         // Check if hologram is ITEM or BLOCK type
         if (!(hologram.getData() instanceof DisplayHologramData displayData) ||
             (!(hologram.getData() instanceof ItemHologramData) && !(hologram.getData() instanceof BlockHologramData))) {
-            MessageHelper.error(actor.sender(), "This command only works for item and block holograms");
+            translator.translate("commands.hologram.edit.glowing.only_item_block")
+                    .send(actor.sender());
             return;
         }
 
@@ -87,7 +87,8 @@ public final class GlowingCMD {
         // Check if hologram is ITEM or BLOCK type
         if (!(hologram.getData() instanceof DisplayHologramData displayData) ||
             (!(hologram.getData() instanceof ItemHologramData) && !(hologram.getData() instanceof BlockHologramData))) {
-            MessageHelper.error(actor.sender(), "This command only works for item and block holograms");
+            translator.translate("commands.hologram.edit.glowing.only_item_block")
+                    .send(actor.sender());
             return;
         }
 

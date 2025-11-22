@@ -11,6 +11,7 @@ import com.fancyinnovations.fancyholograms.commands.FancyHologramsCMD;
 import com.fancyinnovations.fancyholograms.commands.FancyHologramsTestCMD;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.ConfigCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.GlowingCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.TraitCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.HologramCommandType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.TraitCommandType;
@@ -305,6 +306,7 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
 
         // hologram commands
         lamp.register(TraitCMD.INSTANCE);
+        lamp.register(GlowingCMD.INSTANCE);
     }
 
     private void registerListeners() {

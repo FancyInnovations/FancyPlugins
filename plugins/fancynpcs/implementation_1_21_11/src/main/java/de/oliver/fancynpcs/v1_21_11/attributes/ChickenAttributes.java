@@ -9,8 +9,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.animal.ChickenVariant;
+import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;

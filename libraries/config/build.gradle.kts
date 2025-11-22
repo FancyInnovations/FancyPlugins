@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.8")
     compileOnly("org.jetbrains:annotations:26.0.2")
 

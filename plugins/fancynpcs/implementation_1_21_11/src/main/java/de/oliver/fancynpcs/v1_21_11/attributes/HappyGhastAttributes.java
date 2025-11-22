@@ -4,7 +4,7 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v1_21_11.ReflectionHelper;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.animal.HappyGhast;
+import net.minecraft.world.entity.animal.happyghast.HappyGhast;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.bukkit.entity.EntityType;

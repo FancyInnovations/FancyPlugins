@@ -3,7 +3,7 @@ package de.oliver.fancynpcs.v1_21_11.attributes;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v1_21_11.ReflectionHelper;
-import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.entity.animal.fox.Fox;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;

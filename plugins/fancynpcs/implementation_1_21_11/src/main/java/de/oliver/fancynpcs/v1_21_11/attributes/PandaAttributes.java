@@ -5,7 +5,7 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v1_21_11.ReflectionHelper;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.world.entity.animal.Panda;
+import net.minecraft.world.entity.animal.panda.Panda;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;

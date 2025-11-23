@@ -9,6 +9,7 @@ import de.oliver.fancynpcs.api.NpcData;
 import de.oliver.fancynpcs.api.NpcManager;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
 import de.oliver.fancynpcs.api.actions.NpcAction;
+import de.oliver.fancynpcs.api.data.property.NpcVisibility;
 import de.oliver.fancynpcs.api.events.NpcsLoadedEvent;
 import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.api.skins.SkinLoadException;
@@ -179,6 +180,7 @@ public class NpcManagerImpl implements NpcManager {
             npcConfig.set("npcs." + data.getId() + ".interactionCooldown", data.getInteractionCooldown());
             npcConfig.set("npcs." + data.getId() + ".scale", data.getScale());
             npcConfig.set("npcs." + data.getId() + ".visibility_distance", data.getVisibilityDistance());
+            npcConfig.set("npcs." + data.getId() + ".visibility", data.getVisibility().name());
 
             if (data.getSkinData() != null) {
                 npcConfig.set("npcs." + data.getId() + ".skin.identifier", data.getSkinData().getIdentifier());
@@ -380,6 +382,8 @@ public class NpcManagerImpl implements NpcManager {
             float interactionCooldown = (float) npcConfig.getDouble("npcs." + id + ".interactionCooldown", 0);
             float scale = (float) npcConfig.getDouble("npcs." + id + ".scale", 1);
             int visibilityDistance = npcConfig.getInt("npcs." + id + ".visibility_distance", -1);
+            String visibilityStr = npcConfig.getString("npcs." + id + ".visibility", "ALL");
+            NpcVisibility visibility = NpcVisibility.byString(visibilityStr).orElse(NpcVisibility.ALL);
 
             Map<NpcAttribute, String> attributes = new HashMap<>();
             if (npcConfig.isConfigurationSection("npcs." + id + ".attributes")) {
@@ -434,6 +438,7 @@ public class NpcManagerImpl implements NpcManager {
                 }
             }
 
+            npc.getData().setVisibility(visibility);
             npc.create();
             registerNpc(npc);
         }

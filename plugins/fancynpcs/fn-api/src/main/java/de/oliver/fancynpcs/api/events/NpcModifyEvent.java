@@ -86,6 +86,7 @@ public class NpcModifyEvent extends Event implements Cancellable {
         GLOWING_COLOR,
         INTERACTION_COOLDOWN,
         SCALE,
+        VISIBILITY,
         VISIBILITY_DISTANCE,
         LOCATION,
         MIRROR_SKIN,

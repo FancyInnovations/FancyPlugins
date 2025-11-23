@@ -1,7 +1,6 @@
 ---
 icon: dot
 title: Player
-order: 4
 ---
 
 ![](../../static/commands.png)

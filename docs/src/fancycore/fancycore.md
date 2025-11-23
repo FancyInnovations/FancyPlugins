@@ -9,7 +9,7 @@ order: 90
 ![](../static/logos-and-banners/fancycore-banner.png)
 
 !!!
-Essential feature every Hytale server needs. From permission management over world management to economy and more.
+Essential features every Hytale server needs. From permission management over world management to economy and more.
 !!!
 
 ## Features
@@ -21,6 +21,7 @@ With FancyCore, you get a wide variety of features that are essential for runnin
 - **Chat**: advanced chat management with channels, formatting, nicknames and msgs
 - **Moderation**: tools for server admins including bans, kicks, warnings, and logs
 - **World**: create and manage multiple worlds with different settings and environments
+- **Inventory**: manage player inventories, kits and player backpacks
 - **Teleportation**: spawn point, warps, player homes, and teleport requests
 - **Player**: utility commands such as fly, speed, gamemode, heal, and more
 - **Server**: view server stats and manage plugins

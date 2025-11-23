@@ -40,9 +40,15 @@ public class DialogImpl extends Dialog {
     private FS_Dialog buildForPlayer(Player player) {
         List<FS_DialogBody> body = new ArrayList<>();
         for (DialogBodyData bodyData : data.body()) {
+
+            // NEW: get width from the entry or fallback to 200
+            int textWidth = (bodyData.width() != null && bodyData.width() > 0)
+                    ? bodyData.width()
+                    : 200;
+
             FS_DialogTextBody fsDialogTextBody = new FS_DialogTextBody(
                     ChatColorHandler.translate(bodyData.text(), player, ParserTypes.placeholder()),
-                    200 // default text width
+                    textWidth
             );
             body.add(fsDialogTextBody);
         }

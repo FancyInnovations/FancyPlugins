@@ -1,5 +1,6 @@
 ---
 icon: dot
+order: 10
 ---
 
 # Getting started

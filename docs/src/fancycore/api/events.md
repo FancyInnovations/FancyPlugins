@@ -3,7 +3,7 @@ icon: dot
 order: 9
 ---
 
-# Events
+# Events API
 
 FancyCore has its own event system that allows you to listen to various events that happen in the FancyCore system.
 

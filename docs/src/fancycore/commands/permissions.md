@@ -7,6 +7,11 @@ title: Permissions
 
 # Commands for the permissions system
 
+!!!warning
+The command list is not complete and not all commands are properly documented yet.
+Some commands might not be implemented yet.
+!!!
+
 ## Groups
 
 ### Create Group

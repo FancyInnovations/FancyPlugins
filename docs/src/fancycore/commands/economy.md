@@ -7,6 +7,11 @@ title: Economy
 
 # Commands for the economy system
 
+!!!warning
+The command list is not complete and not all commands are properly documented yet.
+Some commands might not be implemented yet.
+!!!
+
 ### Balance
 
 Description: Displays the balance of the specified player or your own balance if no player is specified.<br/>

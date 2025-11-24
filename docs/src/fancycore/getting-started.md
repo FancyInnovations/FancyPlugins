@@ -12,7 +12,12 @@ Be aware that this plugin is only made for Hytale servers. Only the latest versi
 
 To install FancyCore, you need to download the latest version from one of the following sources:
 
-[!button size="s" icon="download" iconAlign="left" text="Curseforge" target="blank"](https://www.curseforge.com/members/real_oliver/projects)
+[!button size="s" icon="download" iconAlign="left" text="SOON" target="blank"]()
+
+!!!warning
+It's not yet decided on which platforms FancyCore will be available.
+You keep an eye on the discord server for updates: [FancyInnovations Discord](https://discord.gg/ZUgYCEJUEx)
+!!!
 
 After downloading the plugin, you can install it by placing the downloaded file in the `plugins` folder of your server.
 

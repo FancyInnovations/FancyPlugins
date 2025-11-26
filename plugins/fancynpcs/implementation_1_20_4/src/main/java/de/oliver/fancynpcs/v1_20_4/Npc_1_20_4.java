@@ -244,7 +244,7 @@ public class Npc_1_20_4 extends Npc {
 
         npc.setGlowingTag(data.isGlowing());
 
-        if (data.getEquipment() != null && data.getEquipment().size() > 0) {
+        if (data.getEquipment() != null && !data.getEquipment().isEmpty()) {
             List<Pair<EquipmentSlot, ItemStack>> equipmentList = new ArrayList<>();
 
             for (NpcEquipmentSlot slot : data.getEquipment().keySet()) {
@@ -301,6 +301,7 @@ public class Npc_1_20_4 extends Npc {
         serverPlayer.connection.send(setEntityDataPacket);
     }
 
+    @Override
     public void move(Player player, boolean swingArm) {
         if (npc == null) {
             return;

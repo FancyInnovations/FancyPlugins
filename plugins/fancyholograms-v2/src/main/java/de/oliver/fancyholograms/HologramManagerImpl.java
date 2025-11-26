@@ -12,6 +12,7 @@ import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -335,14 +336,16 @@ public final class HologramManagerImpl implements HologramManager {
 
         final var location = npc.getData().getLocation().clone().add(0, (npc.getEyeHeight() * npcScale) + (0.5 * npcScale), 0);
 
-        final var poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(npc.getData().getType(), "pose");
-        if (poseAttr != null) {
-            final var pose = npc.getData().getAttributes().get(poseAttr);
-            if (pose != null) {
-                switch (pose.toLowerCase()) {
-                    case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
-                    case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
-                    case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);
+        if (npc.getData().getType() == EntityType.PLAYER) {
+            final var poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(npc.getData().getType(), "pose");
+            if (poseAttr != null) {
+                final var pose = npc.getData().getAttributes().get(poseAttr);
+                if (pose != null) {
+                    switch (pose.toLowerCase()) {
+                        case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
+                        case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
+                        case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);
+                    }
                 }
             }
         }

@@ -46,6 +46,10 @@ public class CustomClickActionPacketListener {
         String dialogId = packet.getPayload().get("dialog_id");
         String buttonId = packet.getPayload().get("button_id");
 
+        if (dialogId == null || buttonId == null) {
+            return; // Missing necessary information
+        }
+
         new DialogButtonClickedEvent(event.player(), dialogId, buttonId, packet.getPayload()).callEvent();
 
         if (dialogId.startsWith("confirmation_dialog_")) {

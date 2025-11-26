@@ -33,6 +33,7 @@ import org.incendo.cloud.parser.standard.EnumParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
 import java.util.Optional;
 
 import static org.incendo.cloud.exception.handling.ExceptionHandler.unwrappingHandler;
@@ -184,6 +185,7 @@ public final class CloudCommandManager {
         annotationParser.parse(NearbyCMD.INSTANCE);
         annotationParser.parse(HelpCMD.INSTANCE);
         annotationParser.parse(RemoveCMD.INSTANCE);
+        annotationParser.parse(RotateCMD.INSTANCE);
         annotationParser.parse(ShowInTabCMD.INSTANCE);
         annotationParser.parse(SkinCMD.INSTANCE);
         annotationParser.parse(TeleportCMD.INSTANCE);
@@ -197,8 +199,7 @@ public final class CloudCommandManager {
             annotationParser.parse(FancyNpcsDebugCMD.INSTANCE);
         }
 
-        String mcVersion = Bukkit.getMinecraftVersion();
-        if (mcVersion.equals("1.20.5") || mcVersion.equals("1.20.6") || mcVersion.equals("1.21") || mcVersion.equals("1.21.1") || mcVersion.equals("1.21.2") || mcVersion.equals("1.21.3") || mcVersion.equals("1.21.4") || mcVersion.equals("1.21.5") || mcVersion.equals("1.21.6") || mcVersion.equals("1.21.7") || Bukkit.getMinecraftVersion().equals("1.21.8") || Bukkit.getMinecraftVersion().equals("1.21.9") || Bukkit.getMinecraftVersion().equals("1.21.10")) {
+        if (Set.of("1.20.5", "1.20.6", "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11").contains(Bukkit.getMinecraftVersion())) {
             annotationParser.parse(ScaleCMD.INSTANCE);
         }
 

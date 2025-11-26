@@ -1,6 +1,6 @@
 ---
 icon: dot
-order: 9
+order: 7
 ---
 
 # Open dialog npc action

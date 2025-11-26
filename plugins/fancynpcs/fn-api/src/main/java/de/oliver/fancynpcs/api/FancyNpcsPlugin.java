@@ -1,5 +1,6 @@
 package de.oliver.fancynpcs.api;
 
+import com.fancyinnovations.config.featureflags.FeatureFlagConfig;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancylib.serverSoftware.schedulers.FancyScheduler;
 import de.oliver.fancylib.translations.Translator;
@@ -32,8 +33,8 @@ public interface FancyNpcsPlugin {
     ScheduledExecutorService getNpcThread();
 
     /**
-     *  Creates a new thread with the given name and runnable.
-     *  Warning: Do not use this method, it is for internal use only.
+     * Creates a new thread with the given name and runnable.
+     * Warning: Do not use this method, it is for internal use only.
      */
     @ApiStatus.Internal
     Thread newThread(String name, Runnable runnable);
@@ -43,6 +44,8 @@ public interface FancyNpcsPlugin {
     Function<NpcData, Npc> getNpcAdapter();
 
     FancyNpcsConfig getFancyNpcConfig();
+
+    FeatureFlagConfig getFeatureFlagConfig();
 
     NpcManager getNpcManager();
 

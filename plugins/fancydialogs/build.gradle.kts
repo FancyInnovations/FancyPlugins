@@ -8,8 +8,6 @@ plugins {
     id("xyz.jpenilla.run-paper")
     id("com.gradleup.shadow")
     id("de.eldoria.plugin-yml.paper")
-    id("io.papermc.hangar-publish-plugin")
-    id("com.modrinth.minotaur")
 }
 
 runPaper.folia.registerTask()
@@ -52,7 +50,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     compileOnly(project(":plugins:fancynpcs:fn-api"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.3")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.0")
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.12")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.12")
 
@@ -137,14 +135,6 @@ tasks {
             expand(props)
         }
     }
-}
-
-tasks.publishAllPublicationsToHangar {
-    dependsOn("shadowJar")
-}
-
-tasks.modrinth {
-    dependsOn("shadowJar")
 }
 
 java {

@@ -9,6 +9,10 @@ The following examples show how to use FancyDialogs in different ways. They are 
 
 Almost all examples are made by the community. If you have a nice example that you want to share, feel free come to our discord server and show it to us.
 
+![Provided by reunionsmp.com](../static/fancydialogs/examples/reunionsmp-1.png)
+
+![Provided by reunionsmp.com](../static/fancydialogs/examples/reunionsmp-2.png)
+
 ![Provided by oliver](../static/fancydialogs/examples/oliver-welcome_to_fd.png)
 
 ![Provided by oliver](../static/fancydialogs/examples/oliver-welcome.png)

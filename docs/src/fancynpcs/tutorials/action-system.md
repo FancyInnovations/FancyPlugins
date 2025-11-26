@@ -122,6 +122,10 @@ Syntax: `need_permission (permission)`
 
 Example: `/npc action (npc) (trigger) add need_permission my.cool.permission`
 
+!!!info
+If you add the `!` prefix to the permission, the action will be inverted. This means that the action list will be canceled if the player has the permission.
+!!!
+
 ### play_sound
 
 Plays a sound to the player. This action is useful for creating audio feedback for the player when interacting with the NPC.

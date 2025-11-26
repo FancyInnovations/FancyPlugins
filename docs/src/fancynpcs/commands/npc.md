@@ -177,6 +177,13 @@ Teleports NPC to specified location.
 - **Syntax**:  `/npc move_to (npc) (x) (y) (z) [world] [--look-in-my-direction]`
 - **Permissions**: `fancynpcs.command.npc.move_to`
 
+### Rotate npc
+
+Sets the yaw and pitch of the specified NPC.
+
+- **Syntax**:  `/npc rotate (npc) (yaw) (pitch)`
+- **Permissions**: `fancynpcs.command.npc.rotate`
+
 ### Center npc location
 
 Centers the NPC to the specified location.

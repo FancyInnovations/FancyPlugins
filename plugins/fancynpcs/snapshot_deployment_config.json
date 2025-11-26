@@ -5,7 +5,6 @@
   "changelog_path": "../../../../plugins/fancynpcs/CHANGELOG-SNAPSHOT.md",
   "version_path": "../../../../plugins/fancynpcs/VERSION",
   "supported_versions": [
-    "1.19.4",
     "1.20",
     "1.20.1",
     "1.20.2",

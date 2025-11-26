@@ -1,10 +1,8 @@
 plugins {
-    id("com.gradleup.shadow") version "9.0.0-beta17" apply false
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17" apply false
-    id("xyz.jpenilla.run-paper") version "2.3.1" apply false
-    id("de.eldoria.plugin-yml.paper") version "0.7.1" apply false
-    id("io.papermc.hangar-publish-plugin") version "0.1.3" apply false
-    id("com.modrinth.minotaur") version "2.+" apply false
+    id("com.gradleup.shadow") version "9.2.2" apply false
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.19" apply false
+    id("xyz.jpenilla.run-paper") version "3.0.2" apply false
+    id("de.eldoria.plugin-yml.paper") version "0.8.0" apply false
 }
 
 allprojects {
@@ -17,5 +15,12 @@ allprojects {
         maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://repo.fancyinnovations.com/releases")
         maven(url = "https://jitpack.io")
+        maven("https://maven-prs.papermc.io/Paper/pr13194") {
+            name = "Maven for PR #13194" // https://github.com/PaperMC/Paper/pull/13194
+            mavenContent {
+                includeModule("io.papermc.paper", "dev-bundle")
+                includeModule("io.papermc.paper", "paper-api")
+            }
+        }
     }
 }

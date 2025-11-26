@@ -90,6 +90,7 @@ public class NpcModifyEvent extends Event implements Cancellable {
         LOCATION,
         MIRROR_SKIN,
         PLAYER_COMMAND,
+        ROTATION,
         SERVER_COMMAND,
         SHOW_IN_TAB,
         SKIN,

@@ -1,4 +1,5 @@
-- Added support for 1.21.11
+- Removed support for 1.19.4
+- Fixed npcs randomly disappearing
 - Fixed skin mirroring for 1.21.9
 - Added inverted permission check for `need_permission` action (use prefix `!` to invert)
 - Added `/npc rotate <npc> <yaw> <pitch>` command to set NPC orientation

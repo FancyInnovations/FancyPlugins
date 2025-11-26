@@ -41,7 +41,6 @@ public class DialogImpl extends Dialog {
         List<FS_DialogBody> body = new ArrayList<>();
         for (DialogBodyData bodyData : data.body()) {
 
-            // NEW: get width from the entry or fallback to 200
             int textWidth = (bodyData.width() != null && bodyData.width() > 0)
                     ? bodyData.width()
                     : 200;

@@ -2,6 +2,7 @@ package de.oliver.deployment;
 
 import com.google.gson.Gson;
 import de.oliver.deployment.git.GitService;
+import de.oliver.deployment.hangar.HangarService;
 import de.oliver.deployment.modrinth.ModrinthService;
 import de.oliver.deployment.notification.DiscordWebhook;
 
@@ -30,6 +31,11 @@ public class Main {
 
         if (platform.equalsIgnoreCase("modrinth")) {
             deployToModrinth(configuration);
+        } else if (platform.equalsIgnoreCase("hangar")) {
+            deployToHangar(configuration);
+        } else {
+            System.err.println("Unknown platform: " + platform);
+            System.exit(1);
         }
 
         if (sendNotification) {
@@ -45,6 +51,16 @@ public class Main {
         ModrinthService modrinthService = new ModrinthService(modrinthApiKey);
         try {
             modrinthService.deployPlugin(configuration);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deployToHangar(Configuration configuration) {
+        String hangarApiKey = System.getenv("HANGAR_API_KEY");
+        HangarService hangarService = new HangarService(hangarApiKey);
+        try {
+            hangarService.deployPlugin(configuration);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,6 +12,7 @@ import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -122,7 +123,7 @@ public final class HologramManagerImpl implements HologramManager {
                         }
                     }
 
-                    FancyHolograms.get().getHologramThread().submit(() -> this.plugin.getHologramStorage().delete(hologram));
+                    FancyHolograms.get().getHologramThread().submit(() -> plugin.getHologramStorage().delete(hologram));
                 }
         );
 
@@ -142,29 +143,35 @@ public final class HologramManagerImpl implements HologramManager {
     }
 
     public void saveHolograms() {
-        if (!this.isLoaded) {
+        if (!isLoaded) {
             return;
         }
 
-        this.plugin.getHologramStorage().saveBatch(this.getPersistentHolograms(), false);
+        plugin.getHologramStorage().saveBatch(getPersistentHolograms(), false);
     }
 
     @Override
     public void loadHolograms() {
+        List<Hologram> allLoaded = new ArrayList<>();
+
+        for (World world : Bukkit.getWorlds()) {
+            Collection<Hologram> loaded = plugin.getHologramStorage().loadAll(world.getName());
+            loaded.forEach(this::addHologram);
+
+            allLoaded.addAll(loaded);
+        }
+        this.isLoaded = true;
+
         FancyHolograms.get().getHologramThread().submit(() -> {
-            List<Hologram> allLoaded = new ArrayList<>();
-
-            for (World world : Bukkit.getWorlds()) {
-                Collection<Hologram> loaded = this.plugin.getHologramStorage().loadAll(world.getName());
-                loaded.forEach(this::addHologram);
-
-                allLoaded.addAll(loaded);
-            }
-            this.isLoaded = true;
-
             Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(allLoaded)));
-            if (this.hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
+            for (Hologram hologram : allLoaded) {
+                if (hologram.getData().getLinkedNpcName() != null) {
+                    syncHologramWithNpc(hologram);
+                }
+            }
         });
+
+        if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
     }
 
     @Override
@@ -173,17 +180,22 @@ public final class HologramManagerImpl implements HologramManager {
     }
 
     public void loadHolograms(String world) {
+        ImmutableList<Hologram> loaded = ImmutableList.copyOf(this.plugin.getHologramStorage().loadAll(world));
+        loaded.forEach(this::addHologram);
+
+        this.isLoaded = true;
+
         FancyHolograms.get().getHologramThread().submit(() -> {
-            ImmutableList<Hologram> loaded = ImmutableList.copyOf(this.plugin.getHologramStorage().loadAll(world));
-            loaded.forEach(this::addHologram);
-
-            this.isLoaded = true;
-
             Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(loaded)));
-
-            if (this.hologramLoadLogging)
-                FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for world %s", loaded.size(), world));
+            for (Hologram hologram : loaded) {
+                if (hologram.getData().getLinkedNpcName() != null) {
+                    syncHologramWithNpc(hologram);
+                }
+            }
         });
+
+        if (this.hologramLoadLogging)
+            FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for world %s", loaded.size(), world));
     }
 
     /**
@@ -324,6 +336,21 @@ public final class HologramManagerImpl implements HologramManager {
         }
 
         final var location = npc.getData().getLocation().clone().add(0, (npc.getEyeHeight() * npcScale) + (0.5 * npcScale), 0);
+
+        if (npc.getData().getType() == EntityType.PLAYER) {
+            final var poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(npc.getData().getType(), "pose");
+            if (poseAttr != null) {
+                final var pose = npc.getData().getAttributes().get(poseAttr);
+                if (pose != null) {
+                    switch (pose.toLowerCase()) {
+                        case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
+                        case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
+                        case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);
+                    }
+                }
+            }
+        }
+
         hologram.getData().setLocation(location);
     }
 }

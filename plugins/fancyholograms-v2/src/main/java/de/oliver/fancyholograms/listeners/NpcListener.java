@@ -34,7 +34,7 @@ public final class NpcListener implements Listener {
         final var holograms = this.plugin.getHologramsManager().getHolograms();
 
         switch (event.getModification()) {
-            case TYPE, LOCATION, SCALE -> {
+            case TYPE, LOCATION, SCALE, ATTRIBUTE -> {
                 final var needsToBeUpdated = holograms.stream()
                         .filter(hologram -> event.getNpc().getData().getName().equals(hologram.getData().getLinkedNpcName()))
                         .toList();

@@ -34,7 +34,6 @@ public class HologramControllerImpl implements HologramController {
             }
 
             hologram.spawnTo(player);
-            hologram.getData().getTraitTrait().onSpawn(player);
         }
     }
 
@@ -49,7 +48,6 @@ public class HologramControllerImpl implements HologramController {
             }
 
             hologram.despawnFrom(player);
-            hologram.getData().getTraitTrait().onDespawn(player);
         }
     }
 
@@ -124,6 +122,10 @@ public class HologramControllerImpl implements HologramController {
                 HologramData data = hologram.getData();
                 if (data.hasChanges()) {
                     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                            continue;
+                        }
+
                         hologram.updateFor(onlinePlayer);
                     }
 
@@ -135,6 +137,8 @@ public class HologramControllerImpl implements HologramController {
                 }
             }
         }, 50, 1000, TimeUnit.MILLISECONDS);
+
+        final int hologramUpdateIntervalMs = FancyHologramsPlugin.get().getFHConfiguration().getHologramUpdateInterval();
 
         FancyHologramsPlugin.get().getHologramThread().scheduleWithFixedDelay(() -> {
             final var time = System.currentTimeMillis();
@@ -153,6 +157,10 @@ public class HologramControllerImpl implements HologramController {
 
                     if (lastUpdate == null || time > (lastUpdate + interval)) {
                         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                            if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                                continue;
+                            }
+
                             hologram.updateFor(onlinePlayer);
                         }
 
@@ -160,7 +168,7 @@ public class HologramControllerImpl implements HologramController {
                     }
                 }
             }
-        }, 50, 50, TimeUnit.MILLISECONDS);
+        }, 50, hologramUpdateIntervalMs, TimeUnit.MILLISECONDS);
     }
 
     /**

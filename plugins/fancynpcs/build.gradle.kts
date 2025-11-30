@@ -54,8 +54,8 @@ dependencies {
     implementation(project(":libraries:plugin-tests"))
     implementation(project(":libraries:config"))
     compileOnly("org.lushplugins:ChatColorHandler:6.0.0")
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.4")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.11")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
     implementation("org.incendo:cloud-paper:2.0.0-beta.13")
@@ -95,7 +95,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11-pre3")
 
         downloadPlugins {
 //            hangar("ViaVersion", "5.4.0")

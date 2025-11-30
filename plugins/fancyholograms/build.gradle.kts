@@ -46,8 +46,8 @@ dependencies {
     implementation(project(":libraries:config"))
     implementation(project(":libraries:packets"))
     implementation(project(":libraries:packets:packets-api"))
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.4")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.11")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.12")
@@ -96,7 +96,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11-pre3")
 
         downloadPlugins {
             modrinth("fancynpcs", "2.7.0")

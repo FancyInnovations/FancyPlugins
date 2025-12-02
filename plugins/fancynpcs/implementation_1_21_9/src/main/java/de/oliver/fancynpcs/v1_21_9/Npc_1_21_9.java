@@ -106,9 +106,7 @@ public class Npc_1_21_9 extends Npc {
             ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
         }
 
-        NpcSpawnEvent spawnEvent = new NpcSpawnEvent(this, player);
-        spawnEvent.callEvent();
-        if (spawnEvent.isCancelled()) {
+        if (!new NpcSpawnEvent(this, player).callEvent()) {
             return;
         }
 

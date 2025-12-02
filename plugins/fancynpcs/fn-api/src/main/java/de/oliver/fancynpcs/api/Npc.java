@@ -188,10 +188,7 @@ public abstract class Npc {
         }
 
         List<NpcAction.NpcActionData> actions = data.getActions(actionTrigger);
-        NpcInteractEvent npcInteractEvent = new NpcInteractEvent(this, data.getOnClick(), actions, player, actionTrigger);
-        npcInteractEvent.callEvent();
-
-        if (npcInteractEvent.isCancelled()) {
+        if (!new NpcInteractEvent(this, data.getOnClick(), actions, player, actionTrigger).callEvent()) {
             return;
         }
 

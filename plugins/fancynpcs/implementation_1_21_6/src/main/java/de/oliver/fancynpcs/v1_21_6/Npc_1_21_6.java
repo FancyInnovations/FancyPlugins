@@ -112,9 +112,7 @@ public class Npc_1_21_6 extends Npc {
             }
         }
 
-        NpcSpawnEvent spawnEvent = new NpcSpawnEvent(this, player);
-        spawnEvent.callEvent();
-        if (spawnEvent.isCancelled()) {
+        if (!new NpcSpawnEvent(this, player).callEvent()) {
             return;
         }
 

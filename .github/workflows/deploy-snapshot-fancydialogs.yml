@@ -27,19 +27,16 @@ jobs:
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew
 
-      - name: Build deployment tool
-        run: ./gradlew :tools:deployment:shadowJar
-
-      - name: Build FancyDialogs for Modrinth
+      - name: Build FancyDialogs
         env:
           RELEASE_CHANNEL: 'snapshot'
-          RELEASE_PLATFORM: 'modrinth'
+          RELEASE_PLATFORM: 'N/A'
         run: ./gradlew :plugins:fancydialogs:shadowJar
 
       - name: Deploy
         uses: fancyinnovations/fancyverteiler@main
         with:
-          config_path: "../../../../plugins/fancydialogs/snapshot_deployment_config.json"
+          config_path: "/plugins/fancydialogs/snapshot_deployment_config.json"
           modrinth_api_key: ${{ secrets.MODRINTH_API_KEY }}
           discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 

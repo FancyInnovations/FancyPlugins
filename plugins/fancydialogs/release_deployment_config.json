@@ -1,7 +1,7 @@
 {
   "project_name": "FancyDialogs",
   "plugin_jar_path": "/plugins/fancydialogs/build/libs/FancyDialogs-%VERSION%.jar",
-  "changelog_path": "/plugins/fancydialogs/CHANGELOG-SNAPSHOT.md",
+  "changelog_path": "/plugins/fancydialogs/CHANGELOG.md",
   "version_path": "/plugins/fancydialogs/VERSION",
   "modrinth": {
     "project_id": "Sx6YwpnK",

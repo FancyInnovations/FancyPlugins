@@ -2,8 +2,9 @@ name: Deploy FancyHolograms (release)
 
 on:
   workflow_dispatch:
+
 jobs:
-  deploy-plugin:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,25 +28,20 @@ jobs:
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew
 
-      - name: Build deployment tool
-        run: ./gradlew :tools:deployment:shadowJar
-
-      - name: Build FancyHolograms for Modrinth
+      - name: Build
         env:
           RELEASE_CHANNEL: 'release'
-          RELEASE_PLATFORM: 'modrinth'
         run: ./gradlew :plugins:fancyholograms:shadowJar
 
-      - name: Deploy to Modrinth
-        env:
-          MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run:
-          cd tools/deployment/build/libs &&
-          java -jar deployment.jar modrinth ../../../../plugins/fancyholograms/release_deployment_config.json true
+      - name: Deploy
+        uses: fancyinnovations/fancyverteiler@main
+        with:
+          config_path: "/plugins/fancyholograms/release_deployment_config.json"
+          modrinth_api_key: ${{ secrets.MODRINTH_API_KEY }}
+          discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      - name: Publish to reposilite (releases)
-        run: ./gradlew :plugins:fancyholograms:fh-api:publishAllPublicationsToFancyinnovationsReleasesRepository
+      #      - name: Publish to reposilite (releases)
+      #        run: ./gradlew :plugins:fancyholograms:fh-api:publishAllPublicationsToFancyinnovationsReleasesRepository
 
-      - name: Publish to reposilite (snapshots)
-        run: ./gradlew :plugins:fancyholograms:fh-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository
+      #      - name: Publish to reposilite (snapshots)
+      #        run: ./gradlew :plugins:fancyholograms:fh-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository

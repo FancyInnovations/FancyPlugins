@@ -36,13 +36,12 @@ jobs:
           RELEASE_PLATFORM: 'modrinth'
         run: ./gradlew :plugins:fancydialogs:shadowJar
 
-      - name: Deploy to Modrinth
-        env:
-          MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run:
-          cd tools/deployment/build/libs &&
-          java -jar deployment.jar modrinth ../../../../plugins/fancydialogs/snapshot_deployment_config.json true
+      - name: Deploy
+        uses: fancyinnovations/fancyverteiler@main
+        with:
+          config_path: "../../../../plugins/fancydialogs/snapshot_deployment_config.json"
+          modrinth_api_key: ${{ secrets.MODRINTH_API_KEY }}
+          discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      - name: Publish to reposilite (snapshots)
-        run: ./gradlew :plugins:fancydialogs:fd-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository
+#      - name: Publish to reposilite (snapshots)
+#        run: ./gradlew :plugins:fancydialogs:fd-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository

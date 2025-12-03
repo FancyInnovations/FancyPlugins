@@ -1,21 +1,23 @@
 {
   "project_name": "FancyDialogs",
-  "project_id": "Sx6YwpnK",
   "plugin_jar_path": "../../../../plugins/fancydialogs/build/libs/FancyDialogs-%VERSION%.jar",
   "changelog_path": "../../../../plugins/fancydialogs/CHANGELOG-SNAPSHOT.md",
   "version_path": "../../../../plugins/fancydialogs/VERSION",
-  "supported_versions": [
-    "1.21.6",
-    "1.21.7",
-    "1.21.8",
-    "1.21.9",
-    "1.21.10",
-    "1.21.11-pre4"
-  ],
-  "channel": "BETA",
-  "loaders": [
-    "paper",
-    "folia"
-  ],
-  "featured": false
+  "modrinth": {
+    "project_id": "Sx6YwpnK",
+    "supported_versions": [
+      "1.21.6",
+      "1.21.7",
+      "1.21.8",
+      "1.21.9",
+      "1.21.10",
+      "1.21.11-pre4"
+    ],
+    "channel": "alpha",
+    "loaders": [
+      "paper",
+      "folia"
+    ],
+    "featured": false
+  }
 }

@@ -35,7 +35,6 @@ This is a [monorepo](docs/src/development-guidelines/monorepo.md) for all plugin
 - Packets: packet handling library (also called FancySitula)
 
 **Tools:**
-- Deployment: deploy plugins to platforms like modrinth
 - Quick E2E: generate a quick end-to-end environment for testing
 
 ## Usage

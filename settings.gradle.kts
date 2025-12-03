@@ -48,7 +48,6 @@ include(":libraries:packets:implementations:1_21_9")
 include(":libraries:packets:implementations:1_21_11")
 
 
-include(":tools:deployment")
 include(":tools:quick-e2e")
 
 pluginManagement {

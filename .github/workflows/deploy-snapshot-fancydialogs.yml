@@ -2,8 +2,9 @@ name: Deploy FancyDialogs (snapshot)
 
 on:
   workflow_dispatch:
+
 jobs:
-  deploy-fancydialogs:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,10 +28,9 @@ jobs:
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew
 
-      - name: Build FancyDialogs
+      - name: Build
         env:
           RELEASE_CHANNEL: 'snapshot'
-          RELEASE_PLATFORM: 'N/A'
         run: ./gradlew :plugins:fancydialogs:shadowJar
 
       - name: Deploy

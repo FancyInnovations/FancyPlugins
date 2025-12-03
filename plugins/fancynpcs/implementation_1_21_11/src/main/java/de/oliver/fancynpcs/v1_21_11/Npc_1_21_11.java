@@ -106,9 +106,7 @@ public class Npc_1_21_11 extends Npc {
             ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
         }
 
-        NpcSpawnEvent spawnEvent = new NpcSpawnEvent(this, player);
-        spawnEvent.callEvent();
-        if (spawnEvent.isCancelled()) {
+        if (!new NpcSpawnEvent(this, player).callEvent()) {
             return;
         }
 
@@ -359,6 +357,7 @@ public class Npc_1_21_11 extends Npc {
         serverPlayer.connection.send(setEntityDataPacket);
     }
 
+    @Override
     public void move(Player player, boolean swingArm) {
         if (npc == null) {
             return;

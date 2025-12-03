@@ -26,6 +26,7 @@ public abstract class Npc {
     private static final NpcAttribute INVISIBLE_ATTRIBUTE = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, "invisible");
     private static final char[] localNameChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'k', 'l', 'm', 'n', 'o', 'r'};
     protected final Map<UUID, Boolean> isTeamCreated = new ConcurrentHashMap<>();
+    protected final Map<UUID, Boolean> isForcedHidden = new ConcurrentHashMap<>();
     protected final Map<UUID, Boolean> isVisibleForPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Boolean> isLookingAtPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Long> lastPlayerInteraction = new ConcurrentHashMap<>();
@@ -39,14 +40,12 @@ public abstract class Npc {
     }
 
     protected String generateLocalName() {
-        String localName = "";
+        StringBuilder localName = new StringBuilder();
         for (int i = 0; i < 8; i++) {
-            localName += "&" + localNameChars[(int) RandomUtils.randomInRange(0, localNameChars.length)];
+            localName.append('&').append(localNameChars[(int) RandomUtils.randomInRange(0, localNameChars.length)]);
         }
 
-        localName = ChatColor.translateAlternateColorCodes('&', localName);
-
-        return localName;
+        return ChatColor.translateAlternateColorCodes('&', localName.toString());
     }
 
     public abstract void create();
@@ -98,16 +97,14 @@ public abstract class Npc {
             return false;
         }
 
-        if (FancyNpcsPlugin.get().getFancyNpcConfig().isSkipInvisibleNpcs() && data.getAttributes().getOrDefault(INVISIBLE_ATTRIBUTE, "false").equalsIgnoreCase("true") && !data.isGlowing() && data.getEquipment().isEmpty()) {
-            return false;
-        }
-
-        return true;
+        return !FancyNpcsPlugin.get().getFancyNpcConfig().isSkipInvisibleNpcs()
+                || !data.getAttributes().getOrDefault(INVISIBLE_ATTRIBUTE, "false").equalsIgnoreCase("true")
+                || data.isGlowing() || !data.getEquipment().isEmpty();
     }
 
     public void checkAndUpdateVisibility(Player player) {
         FancyNpcsPlugin.get().getNpcThread().submit(() -> {
-            boolean shouldBeVisible = shouldBeVisible(player);
+            boolean shouldBeVisible = !isForcedHidden.getOrDefault(player.getUniqueId(), false) && shouldBeVisible(player);
             boolean wasVisible = isVisibleForPlayer.getOrDefault(player.getUniqueId(), false);
 
             if (shouldBeVisible && !wasVisible) {
@@ -182,10 +179,7 @@ public abstract class Npc {
         }
 
         List<NpcAction.NpcActionData> actions = data.getActions(actionTrigger);
-        NpcInteractEvent npcInteractEvent = new NpcInteractEvent(this, data.getOnClick(), actions, player, actionTrigger);
-        npcInteractEvent.callEvent();
-
-        if (npcInteractEvent.isCancelled()) {
+        if (!new NpcInteractEvent(this, data.getOnClick(), actions, player, actionTrigger).callEvent()) {
             return;
         }
 
@@ -218,6 +212,10 @@ public abstract class Npc {
 
     public Map<UUID, Boolean> getIsVisibleForPlayer() {
         return isVisibleForPlayer;
+    }
+
+    public Map<UUID, Boolean> getIsForcedHidden() {
+        return isForcedHidden;
     }
 
     public Map<UUID, Boolean> getIsLookingAtPlayer() {

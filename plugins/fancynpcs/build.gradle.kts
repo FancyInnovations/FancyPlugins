@@ -95,7 +95,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.11-pre5")
+        minecraftVersion("1.21.11-rc2")
 
         downloadPlugins {
 //            hangar("ViaVersion", "5.4.0")

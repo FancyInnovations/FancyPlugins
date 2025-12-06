@@ -17,6 +17,8 @@ import org.joml.Quaternionf;
 public final class HologramImpl extends Hologram {
 
     private FS_Display fsDisplay;
+    private long lastSyncTime = 0L;
+    private final long minSyncIntervalMs = FancyHologramsPlugin.get().getFHConfiguration().getHologramUpdateInterval();
 
     public HologramImpl(@NotNull final HologramData data) {
         super(data);
@@ -62,8 +64,6 @@ public final class HologramImpl extends Hologram {
 
         this.viewers.add(player.getUniqueId());
         updateFor(player);
-
-        data.getTraitTrait().onSpawn(player);
     }
 
     @Override
@@ -84,8 +84,6 @@ public final class HologramImpl extends Hologram {
         FancySitula.ENTITY_FACTORY.despawnEntityFor(fsPlayer, fsDisplay);
 
         this.viewers.remove(player.getUniqueId());
-
-        data.getTraitTrait().onDespawn(player);
     }
 
 
@@ -99,11 +97,11 @@ public final class HologramImpl extends Hologram {
             return;
         }
 
-        syncWithData();
-
         if (!isViewer(player)) {
             return;
         }
+
+        syncWithData();
 
         FS_RealPlayer fsPlayer = new FS_RealPlayer(player);
 
@@ -129,6 +127,13 @@ public final class HologramImpl extends Hologram {
         if (fsDisplay == null) {
             return;
         }
+
+        final long now = System.currentTimeMillis();
+        if (now - lastSyncTime < minSyncIntervalMs && !data.hasChanges()) {
+            return;
+        }
+
+        lastSyncTime = now;
 
         // location data
         final var location = data.getLocation();

@@ -1,5 +1,22 @@
 language_name: default
 messages:
+  color_black: "Black"
+  color_dark_blue: "Dark Blue"
+  color_dark_green: "Dark Green"
+  color_dark_aqua: "Dark Aqua"
+  color_dark_red: "Dark Red"
+  color_dark_purple: "Dark Purple"
+  color_gold: "Gold"
+  color_gray: "Gray"
+  color_dark_gray: "Dark Gray"
+  color_blue: "Blue"
+  color_green: "Green"
+  color_aqua: "Aqua"
+  color_red: "Red"
+  color_light_purple: "Light Purple"
+  color_yellow: "Yellow"
+  color_white: "White"
+
   common:
     hologram:
       not_found: "<dark_gray>› <gray>Could not find hologram {warningColor}{name}<gray>."
@@ -25,3 +42,9 @@ messages:
             no_traits: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> does not have any traits attached."
             header: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> has the following traits attached:"
             entry: "<dark_gray>› <gray> - {warningColor}{name}<gray>"
+        glowing:
+          invalid_color: "<dark_gray>› <gray>Invalid glowing color {warningColor}{color}<gray>."
+          disabled: "<dark_gray>› <gray>Disabled glowing for hologram {warningColor}{hologram}<gray>."
+          enabled: "<dark_gray>› <gray>Enabled glowing with color {warningColor}{color}<gray> for hologram {warningColor}{hologram}<gray>."
+          color_set: "<dark_gray>› <gray>Set glowing color to {warningColor}{color}<gray> for hologram {warningColor}{hologram}<gray>."
+          only_item_block: "<dark_gray>› <gray>Glowing only works for item and block holograms."

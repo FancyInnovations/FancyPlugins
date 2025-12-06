@@ -76,6 +76,10 @@ public abstract class Npc {
      * @return True if the NPC should be visible for the player, otherwise false.
      */
     protected boolean shouldBeVisible(Player player) {
+        if (!data.getVisibility().canSee(player, this)) {
+            return false;
+        }
+
         int visibilityDistance = (data.getVisibilityDistance() > -1) ? data.getVisibilityDistance() : FancyNpcsPlugin.get().getFancyNpcConfig().getVisibilityDistance();
 
         if (visibilityDistance == 0) {
@@ -125,6 +129,12 @@ public abstract class Npc {
                 remove(player);
             }
         });
+    }
+
+    public void checkAndUpdateVisibilityForAll() {
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            checkAndUpdateVisibility(onlinePlayer);
+        }
     }
 
     public abstract void lookAt(Player player, Location location);
@@ -218,6 +228,10 @@ public abstract class Npc {
 
     public Map<UUID, Boolean> getIsVisibleForPlayer() {
         return isVisibleForPlayer;
+    }
+
+    public boolean isShownFor(Player player) {
+        return isVisibleForPlayer.getOrDefault(player.getUniqueId(), false);
     }
 
     public Map<UUID, Boolean> getIsLookingAtPlayer() {

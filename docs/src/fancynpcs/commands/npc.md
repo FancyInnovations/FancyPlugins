@@ -147,6 +147,25 @@ Sets an attribute of the NPC.
 - **Syntax**:  `/npc attribute (npc) (set | list)`
 - **Permissions**: `fancynpcs.command.npc.attribute.(sub)`
 
+### Set visibility
+
+Controls who can see the NPC through visibility modes.
+
+- **Syntax**:  `/npc visibility (npc) (all | permission_required | manual)`
+- **Permissions**: `fancynpcs.command.npc.visibility`
+
+**Visibility Modes:**
+
+`all` - Everyone can see the NPC (default behavior).
+
+`permission_required` - Players need the permission `fancynpcs.npc.<npc_name>.see` to see this NPC.
+
+`manual` - Players must be manually added through the API to see the NPC. This mode is intended for API usage and allows developers to control visibility programmatically.
+
+!!!info
+The `manual` visibility mode provides the most granular control and is designed for advanced integrations. See the [API documentation](../api/getting-started.md) for details on managing manual visibility through code.
+!!!
+
 ## Npc location and rotation
 
 ### Turn npc to player

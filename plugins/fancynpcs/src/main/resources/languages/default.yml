@@ -74,6 +74,7 @@ messages:
   command_invalid_location: "<dark_gray>› {errorColor}Argument {warningColor}{input}{errorColor} is not a valid location."
   command_invalid_world: "<dark_gray>› {errorColor}World named {warningColor}{input}{errorColor} does not exist or is not loaded."
   command_invalid_glowing_color: "<dark_gray>› {errorColor}Argument named {warningColor}{input}{errorColor} is not a valid glowing color."
+  command_invalid_npc_visibility: "<dark_gray>› {errorColor}Argument named {warningColor}{input}{errorColor} is not a valid visibility type."
   command_invalid_list_sort_type: "<dark_gray>› {errorColor}Argument named {warningColor}{input}{errorColor} is not a valid sort type."
   command_invalid_nearby_sort_type: "<dark_gray>› {errorColor}Argument named {warningColor}{input}{errorColor} is not a valid sort type."
   command_invalid_entity_type: "<dark_gray>› {errorColor}Argument named {warningColor}{input}{errorColor} is not a valid entity type."
@@ -130,6 +131,7 @@ messages:
     npc_turn_to_player: "<dark_gray>› <gray>Syntax: {primaryColor}/npc turn_to_player {secondaryColor}(npc) (state)"
     npc_turn_to_player_distance: "<dark_gray>› <gray>Syntax: {primaryColor}/npc turn_to_player_distance {secondaryColor}(npc) (state)"
     npc_type: "<dark_gray>› <gray>Syntax: {primaryColor}/npc type {secondaryColor}(npc) (type)"
+    npc_visibility: "<dark_gray>› <gray>Syntax: {primaryColor}/npc visibility {secondaryColor}(npc) (all | permission_required | manual)"
     npc_visibility_distance: "<dark_gray>› <gray>Syntax: {primaryColor}/npc visibility_distance {secondaryColor}(npc) (always_visible | default | not_visible | distance)"
 
   # Commands (fancynpcs)
@@ -185,6 +187,7 @@ messages:
     - "<dark_gray>› <hover:show_text:'<gray>Changes whether the NPC should turn to the player when in range.'>{primaryColor}/npc turn_to_player {secondaryColor}(npc) (state)"
     - "<dark_gray>› <hover:show_text:'<gray>Changes the distance at which the NPC should turn to the player.'>{primaryColor}/npc turn_to_player_distance {secondaryColor}(npc) (distance)"
     - "<dark_gray>› <hover:show_text:'<gray>Changes the type of the NPC.'>{primaryColor}/npc type {secondaryColor}(npc) (type)"
+    - "<dark_gray>› <hover:show_text:'<gray>Changes the visibility mode of the NPC. Controls who can see this NPC.'>{primaryColor}/npc visibility {secondaryColor}(npc) (all | permission_required | manual)"
     - "<dark_gray>› <hover:show_text:'<gray>Changes the visibility distance of the NPC.'>{primaryColor}/npc visibility_distance {secondaryColor}(npc) (default | distance | ...)"
 
   # Commands (npc action)
@@ -309,6 +312,9 @@ messages:
 
   # Commands (scale)
   npc_scale_set_success: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> has been scaled to {warningColor}{scale}<gray>."
+
+  # Commands (npc visibility)
+  npc_visibility_set: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> visibility has been set to {warningColor}{visibility}<gray>."
 
   # Commands (npc visibility_distance)
   npc_visibility_distance_set_value: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is now visible from {warningColor}{distance}<gray> blocks."

@@ -14,6 +14,8 @@ import de.oliver.fancysitula.api.dialogs.FS_Dialog;
 import de.oliver.fancysitula.api.dialogs.FS_DialogAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_CommonButtonData;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButton;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButtonAction;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCopyToClipboardAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCustomAction;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogBody;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogTextBody;
@@ -94,19 +96,33 @@ public class DialogImpl extends Dialog {
 
         List<FS_DialogActionButton> actions = new ArrayList<>();
         for (DialogButton button : data.buttons()) {
+            FS_DialogActionButtonAction buttonAction;
+
+            if (button.actions().size() == 1 &&
+                button.actions().get(0).name().equals("copy_to_clipboard")) {
+                String text = ChatColorHandler.translate(
+                        button.actions().get(0).data(),
+                        player,
+                        ParserTypes.placeholder()
+                );
+                buttonAction = new FS_DialogCopyToClipboardAction(text);
+            } else {
+                buttonAction = new FS_DialogCustomAction(
+                        "fancydialogs_dialog_action",
+                        Map.of(
+                                "dialog_id", id,
+                                "button_id", button.id()
+                        )
+                );
+            }
+
             FS_DialogActionButton fsDialogActionButton = new FS_DialogActionButton(
                     new FS_CommonButtonData(
                             ChatColorHandler.translate(button.label(), player, ParserTypes.placeholder()),
                             ChatColorHandler.translate(button.tooltip(), player, ParserTypes.placeholder()),
                             150 // default button width
                     ),
-                    new FS_DialogCustomAction(
-                            "fancydialogs_dialog_action",
-                            Map.of(
-                                    "dialog_id", id,
-                                    "button_id", button.id()
-                            )
-                    )
+                    buttonAction
             );
             actions.add(fsDialogActionButton);
         }

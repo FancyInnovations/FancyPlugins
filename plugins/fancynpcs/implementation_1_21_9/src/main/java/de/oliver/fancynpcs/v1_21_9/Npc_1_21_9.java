@@ -103,7 +103,17 @@ public class Npc_1_21_9 extends Npc {
                             new Property("textures", value, signature)
                     )
             );
-            ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
+
+
+            Collection<Property> textures = ((ServerPlayer) npc).getGameProfile().properties().get("textures");
+            if (textures.isEmpty()) {
+                ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
+            } else {
+                Property prop = textures.iterator().next();
+                if (!prop.value().equals(value)) {
+                    ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
+                }
+            }
         }
 
         NpcSpawnEvent spawnEvent = new NpcSpawnEvent(this, player);
@@ -398,7 +408,7 @@ public class Npc_1_21_9 extends Npc {
     private ClientboundPlayerInfoUpdatePacket.Entry getEntry(ServerPlayer npcPlayer, ServerPlayer viewer) {
         GameProfile profile;
         if (!data.isMirrorSkin()) {
-            profile = npcPlayer.getGameProfile();
+            profile = new GameProfile(npcPlayer.getGameProfile().id(), npcPlayer.getGameProfile().name(), npcPlayer.getGameProfile().properties());
         } else {
             Property textures = viewer.getGameProfile().properties().get("textures").iterator().next();
 

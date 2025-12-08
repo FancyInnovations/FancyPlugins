@@ -38,10 +38,12 @@ jobs:
       - name: Get last commit SHA and message
         id: last_commit
         run: |
-          echo "commit_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
-          git log -1 --pretty=%B >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo "commit_sha=$(git rev-parse --short HEAD)"
+            echo "commit_msg<<EOF"
+            git log -1 --pretty=%B
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Deploy
         uses: fancyinnovations/fancyverteiler@main

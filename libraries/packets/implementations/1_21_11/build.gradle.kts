@@ -6,7 +6,7 @@ plugins {
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
-    paperweight.paperDevBundle("1.21.11-rc2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.11-rc3-R0.1-SNAPSHOT")
     compileOnly(project(":libraries:packets:packets-api"))
 
     testImplementation(project(":libraries:packets"))

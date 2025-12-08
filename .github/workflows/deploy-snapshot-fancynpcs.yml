@@ -45,7 +45,6 @@ jobs:
 
       - name: Deploy
         uses: fancyinnovations/fancyverteiler@main
-        env:
         with:
           config_path: "/plugins/fancynpcs/snapshot_deployment_config.json"
           commit_sha: ${{ steps.last_commit.outputs.commit_sha }}

@@ -1,1 +1,1 @@
-- Fixed player kick issue when no button or action is defined. ([#147](https://github.com/FancyInnovations/FancyPlugins/issues/147))
+- Added support for 1.21.11

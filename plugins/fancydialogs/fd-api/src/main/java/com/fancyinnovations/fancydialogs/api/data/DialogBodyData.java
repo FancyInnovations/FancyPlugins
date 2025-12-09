@@ -6,4 +6,3 @@ public record DialogBodyData(
         @Nullable Integer width
 ) {
 }
-}

@@ -5,4 +5,7 @@ public record DialogBodyData(
         String text,
         @Nullable Integer width
 ) {
+    public DialogBodyData(String text) {
+        this(text, null);
+    }
 }

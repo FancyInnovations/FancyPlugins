@@ -17,6 +17,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.RemoteChatSession;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
@@ -94,10 +95,21 @@ public class Npc_1_21_6 extends Npc {
             String value = data.getSkinData().getTextureValue();
             String signature = data.getSkinData().getTextureSignature();
 
-            ((ServerPlayer) npc).getGameProfile().getProperties().replaceValues(
-                    "textures",
-                    ImmutableList.of(new Property("textures", value, signature))
-            );
+            Collection<Property> textures = ((ServerPlayer) npc).getGameProfile().getProperties().get("textures");
+            if (textures.isEmpty()) {
+                ((ServerPlayer) npc).getGameProfile().getProperties().replaceValues(
+                        "textures",
+                        ImmutableList.of(new Property("textures", value, signature))
+                );
+            } else {
+                Property prop = textures.iterator().next();
+                if (!prop.value().equals(value)) {
+                    ((ServerPlayer) npc).getGameProfile().getProperties().replaceValues(
+                            "textures",
+                            ImmutableList.of(new Property("textures", value, signature))
+                    );
+                }
+            }
         }
 
         NpcSpawnEvent spawnEvent = new NpcSpawnEvent(this, player);
@@ -106,6 +118,7 @@ public class Npc_1_21_6 extends Npc {
             return;
         }
 
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
 
         if (npc instanceof ServerPlayer npcPlayer) {
             EnumSet<ClientboundPlayerInfoUpdatePacket.Action> actions = EnumSet.noneOf(ClientboundPlayerInfoUpdatePacket.Action.class);
@@ -116,7 +129,7 @@ public class Npc_1_21_6 extends Npc {
             }
 
             ClientboundPlayerInfoUpdatePacket playerInfoPacket = new ClientboundPlayerInfoUpdatePacket(actions, getEntry(npcPlayer, serverPlayer));
-            serverPlayer.connection.send(playerInfoPacket);
+            packets.add(playerInfoPacket);
 
             if (data.isSpawnEntity()) {
                 npc.setPos(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());
@@ -136,7 +149,7 @@ public class Npc_1_21_6 extends Npc {
                 Vec3.ZERO,
                 data.getLocation().getYaw()
         );
-        serverPlayer.connection.send(addEntityPacket);
+        packets.add(addEntityPacket);
 
         isVisibleForPlayer.put(player.getUniqueId(), true);
 
@@ -148,6 +161,9 @@ public class Npc_1_21_6 extends Npc {
                 serverPlayer.connection.send(playerInfoRemovePacket);
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
         }
+
+        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
+        serverPlayer.connection.send(bundlePacket);
 
         update(player);
     }
@@ -382,8 +398,10 @@ public class Npc_1_21_6 extends Npc {
     }
 
     private ClientboundPlayerInfoUpdatePacket.Entry getEntry(ServerPlayer npcPlayer, ServerPlayer viewer) {
-        GameProfile profile = npcPlayer.getGameProfile();
-        if (data.isMirrorSkin()) {
+        GameProfile profile = new GameProfile(npcPlayer.getGameProfile().getId(), npcPlayer.getGameProfile().getName());
+        if (!data.isMirrorSkin()) {
+            profile.getProperties().putAll(npcPlayer.getGameProfile().getProperties());
+        } else {
             GameProfile newProfile = new GameProfile(profile.getId(), profile.getName());
             newProfile.getProperties().putAll(viewer.getGameProfile().getProperties());
             profile = newProfile;

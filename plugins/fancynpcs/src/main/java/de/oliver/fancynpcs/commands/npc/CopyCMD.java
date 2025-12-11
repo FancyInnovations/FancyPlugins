@@ -10,9 +10,12 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 // TO-DO: Console support with --position and --world parameter flags.
 public enum CopyCMD {
@@ -52,7 +55,13 @@ public enum CopyCMD {
                         npc.getData().isTurnToPlayer(),
                         npc.getData().getTurnToPlayerDistance(),
                         npc.getData().getOnClick(),
-                        new ConcurrentHashMap<>(npc.getData().getActions()),
+                        npc.getData().getActions()
+                                .entrySet()
+                                .stream()
+                                .collect(Collectors.toConcurrentMap(
+                                        Map.Entry::getKey,
+                                        e -> new ArrayList<>(e.getValue())
+                                )),
                         npc.getData().getInteractionCooldown(),
                         npc.getData().getScale(),
                         npc.getData().getVisibilityDistance(),

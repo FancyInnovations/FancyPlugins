@@ -20,6 +20,8 @@ public final class FHConfiguration implements HologramConfiguration {
 
     public static final String LANGUAGE_PATH = "settings.language";
 
+    public static final String HOLOGRAM_UPDATE_INTERVAL_PATH = "performance.hologram_update_interval_ms";
+
     public static final String DISABLE_HOLOGRAMS_FOR_BEDROCK_PLAYERS_PATH = "experimental_features.disable_holograms_for_bedrock_players";
     public static final String DISABLE_HOLOGRAMS_FOR_OLD_CLIENTS = "experimental_features.disable_holograms_for_old_clients";
     public static final String USE_LAMP_COMMANDS = "experimental_features.use_lamp_commands";
@@ -100,6 +102,15 @@ public final class FHConfiguration implements HologramConfiguration {
                 "default",
                 false,
                 String.class
+        ));
+
+        config.addField(new ConfigField<>(
+                HOLOGRAM_UPDATE_INTERVAL_PATH,
+                "The interval at which holograms check for text updates (in milliseconds). Lower values = more responsive but higher CPU usage. Recommended: 200-500ms",
+                false,
+                200,
+                false,
+                Integer.class
         ));
 
         /*
@@ -197,5 +208,13 @@ public final class FHConfiguration implements HologramConfiguration {
     @Override
     public boolean useLampCommands() {
         return config.get(USE_LAMP_COMMANDS);
+    }
+
+    public int getHologramUpdateInterval() {
+        Integer value = config.get(HOLOGRAM_UPDATE_INTERVAL_PATH);
+        if (value == null || value < 10) {
+            return 200;
+        }
+        return value;
     }
 }

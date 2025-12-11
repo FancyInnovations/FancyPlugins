@@ -1,5 +1,8 @@
 # FancyVisuals
 
+> [!IMPORTANT]
+> FancyVisuals is not being actively developed anymore.
+
 **Do not use this plugin in production! It is still in development and may contain bugs and unfinished features.**
 
 This is a plugin to customise most visual components of your minecraft server. This includes the scoreboard, tablist,

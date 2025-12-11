@@ -71,7 +71,7 @@ Unregisters a dialog by its ID.
 
 ## Joined Players Cache
 
-## Clear joined players cache
+### Clear joined players cache
 
 Clears the cache of players who have joined a dialog.
 

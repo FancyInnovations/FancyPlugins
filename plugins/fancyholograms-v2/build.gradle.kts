@@ -33,13 +33,12 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancyholograms-v2:api"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_4", configuration = "reobf"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_2", configuration = "reobf"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_1", configuration = "reobf"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_19_4", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -49,8 +48,8 @@ dependencies {
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:config"))
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.4")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.11")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     compileOnly(project(":plugins:fancynpcs:fn-api"))
@@ -91,7 +90,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11")
 
         downloadPlugins {
 //            modrinth("fancynpcs", "2.5.2")

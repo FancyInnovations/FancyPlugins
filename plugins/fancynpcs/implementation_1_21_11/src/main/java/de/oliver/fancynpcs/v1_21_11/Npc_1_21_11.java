@@ -19,6 +19,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.RemoteChatSession;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
@@ -102,7 +103,17 @@ public class Npc_1_21_11 extends Npc {
                             new Property("textures", value, signature)
                     )
             );
-            ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
+
+
+            Collection<Property> textures = ((ServerPlayer) npc).getGameProfile().properties().get("textures");
+            if (textures.isEmpty()) {
+                ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
+            } else {
+                Property prop = textures.iterator().next();
+                if (!prop.value().equals(value)) {
+                    ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName, propertyMap);
+                }
+            }
         }
 
         NpcSpawnEvent spawnEvent = new NpcSpawnEvent(this, player);
@@ -111,6 +122,7 @@ public class Npc_1_21_11 extends Npc {
             return;
         }
 
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
 
         if (npc instanceof ServerPlayer npcPlayer) {
             EnumSet<ClientboundPlayerInfoUpdatePacket.Action> actions = EnumSet.noneOf(ClientboundPlayerInfoUpdatePacket.Action.class);
@@ -121,7 +133,7 @@ public class Npc_1_21_11 extends Npc {
             }
 
             ClientboundPlayerInfoUpdatePacket playerInfoPacket = new ClientboundPlayerInfoUpdatePacket(actions, getEntry(npcPlayer, serverPlayer));
-            serverPlayer.connection.send(playerInfoPacket);
+            packets.add(playerInfoPacket);
 
             if (data.isSpawnEntity()) {
                 npc.setPos(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());
@@ -141,7 +153,7 @@ public class Npc_1_21_11 extends Npc {
                 Vec3.ZERO,
                 data.getLocation().getYaw()
         );
-        serverPlayer.connection.send(addEntityPacket);
+        packets.add(addEntityPacket);
 
         isVisibleForPlayer.put(player.getUniqueId(), true);
 
@@ -153,6 +165,9 @@ public class Npc_1_21_11 extends Npc {
                 serverPlayer.connection.send(playerInfoRemovePacket);
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
         }
+
+        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
+        serverPlayer.connection.send(bundlePacket);
 
         update(player);
     }
@@ -226,6 +241,8 @@ public class Npc_1_21_11 extends Npc {
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
+
         PlayerTeam team = new PlayerTeam(new Scoreboard(), "npc-" + localName);
         team.getPlayers().clear();
         team.getPlayers().add(npc instanceof ServerPlayer npcPlayer ? npcPlayer.getGameProfile().name() : npc.getStringUUID());
@@ -263,11 +280,11 @@ public class Npc_1_21_11 extends Npc {
             }
 
             ClientboundPlayerInfoUpdatePacket playerInfoPacket = new ClientboundPlayerInfoUpdatePacket(actions, getEntry(npcPlayer, serverPlayer));
-            serverPlayer.connection.send(playerInfoPacket);
+            packets.add(playerInfoPacket);
         }
 
         boolean isTeamCreatedForPlayer = this.isTeamCreated.getOrDefault(player.getUniqueId(), false);
-        serverPlayer.connection.send(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(team, !isTeamCreatedForPlayer));
+        packets.add(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(team, !isTeamCreatedForPlayer));
         isTeamCreated.put(player.getUniqueId(), true);
 
         npc.setGlowingTag(data.isGlowing());
@@ -292,7 +309,7 @@ public class Npc_1_21_11 extends Npc {
 
         if (!equipmentList.isEmpty()) {
             ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(npc.getId(), equipmentList);
-            serverPlayer.connection.send(setEquipmentPacket);
+            packets.add(setEquipmentPacket);
         }
 
         if (npc instanceof ServerPlayer) {
@@ -315,7 +332,7 @@ public class Npc_1_21_11 extends Npc {
             } else {
                 if (sittingVehicle != null) {
                     ClientboundRemoveEntitiesPacket removeSittingVehiclePacket = new ClientboundRemoveEntitiesPacket(sittingVehicle.getId());
-                    serverPlayer.connection.send(removeSittingVehiclePacket);
+                    packets.add(removeSittingVehiclePacket);
                 }
             }
 
@@ -328,9 +345,11 @@ public class Npc_1_21_11 extends Npc {
             attributeInstance.setBaseValue(data.getScale());
 
             ClientboundUpdateAttributesPacket updateAttributesPacket = new ClientboundUpdateAttributesPacket(npc.getId(), List.of(attributeInstance));
-            serverPlayer.connection.send(updateAttributesPacket);
-
+            packets.add(updateAttributesPacket);
         }
+
+        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
+        serverPlayer.connection.send(bundlePacket);
     }
 
     @Override
@@ -389,7 +408,7 @@ public class Npc_1_21_11 extends Npc {
     private ClientboundPlayerInfoUpdatePacket.Entry getEntry(ServerPlayer npcPlayer, ServerPlayer viewer) {
         GameProfile profile;
         if (!data.isMirrorSkin()) {
-            profile = npcPlayer.getGameProfile();
+            profile = new GameProfile(npcPlayer.getGameProfile().id(), npcPlayer.getGameProfile().name(), npcPlayer.getGameProfile().properties());
         } else {
             Property textures = viewer.getGameProfile().properties().get("textures").iterator().next();
 

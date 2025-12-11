@@ -26,7 +26,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -37,7 +37,7 @@ dependencies {
     implementation(project(":libraries:packets"))
     implementation(project(":libraries:packets:packets-api"))
     implementation(project(":libraries:config"))
-    compileOnly("de.oliver.FancyAnalytics:mc-api:0.1.11") // loaded in FancyVisualLoader
+    compileOnly("de.oliver.FancyAnalytics:mc-api:0.1.12") // loaded in FancyVisualLoader
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.8") // loaded in FancyVisualLoader
 
     implementation("org.lushplugins:ChatColorHandler:6.0.0")

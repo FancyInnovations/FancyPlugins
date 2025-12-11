@@ -14,14 +14,12 @@ include(":plugins:fancynpcs:implementation_1_20_4")
 include(":plugins:fancynpcs:implementation_1_20_2")
 include(":plugins:fancynpcs:implementation_1_20_1")
 include(":plugins:fancynpcs:implementation_1_20")
-include(":plugins:fancynpcs:implementation_1_19_4")
 
 include(":plugins:fancyholograms-v2")
 include(":plugins:fancyholograms-v2:api")
 include(":plugins:fancyholograms-v2:implementation_1_20_4")
 include(":plugins:fancyholograms-v2:implementation_1_20_2")
 include(":plugins:fancyholograms-v2:implementation_1_20_1")
-include(":plugins:fancyholograms-v2:implementation_1_19_4")
 
 include(":plugins:fancyholograms")
 include(":plugins:fancyholograms:fh-api")
@@ -50,7 +48,6 @@ include(":libraries:packets:implementations:1_21_9")
 include(":libraries:packets:implementations:1_21_11")
 
 
-include(":tools:deployment")
 include(":tools:quick-e2e")
 
 pluginManagement {

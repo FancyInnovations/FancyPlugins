@@ -33,8 +33,8 @@ import org.incendo.cloud.parser.standard.EnumParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.incendo.cloud.exception.handling.ExceptionHandler.unwrappingHandler;
 

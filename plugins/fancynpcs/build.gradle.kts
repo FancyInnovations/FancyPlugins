@@ -28,7 +28,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancynpcs:fn-api"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_11"))
@@ -43,7 +43,6 @@ dependencies {
     implementation(project(":plugins:fancynpcs:implementation_1_20_2", configuration = "reobf"))
     implementation(project(":plugins:fancynpcs:implementation_1_20_1", configuration = "reobf"))
     implementation(project(":plugins:fancynpcs:implementation_1_20", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_19_4", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -55,8 +54,8 @@ dependencies {
     implementation(project(":libraries:plugin-tests"))
     implementation(project(":libraries:config"))
     compileOnly("org.lushplugins:ChatColorHandler:6.0.0")
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.4")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.11")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
     implementation("org.incendo:cloud-paper:2.0.0-beta.13")
@@ -96,7 +95,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11")
 
         downloadPlugins {
 //            hangar("ViaVersion", "5.4.0")

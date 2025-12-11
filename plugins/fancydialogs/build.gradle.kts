@@ -8,8 +8,6 @@ plugins {
     id("xyz.jpenilla.run-paper")
     id("com.gradleup.shadow")
     id("de.eldoria.plugin-yml.paper")
-    id("io.papermc.hangar-publish-plugin")
-    id("com.modrinth.minotaur")
 }
 
 runPaper.folia.registerTask()
@@ -35,7 +33,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancydialogs:fd-api"))
 
@@ -47,12 +45,12 @@ dependencies {
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:config"))
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.4")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.11")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     compileOnly(project(":plugins:fancynpcs:fn-api"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.3")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.0")
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.12")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.12")
 
@@ -87,14 +85,14 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11")
 
         downloadPlugins {
-            modrinth("fancynpcs", "2.8.0")
+//            modrinth("fancynpcs", "2.8.0")
 //            hangar("ViaVersion", "5.3.2")
 //            hangar("ViaBackwards", "5.3.2")
 //            modrinth("multiverse-core", "4.3.11")
-            hangar("PlaceholderAPI", "2.11.6")
+//            hangar("PlaceholderAPI", "2.11.6")
         }
     }
 
@@ -137,14 +135,6 @@ tasks {
             expand(props)
         }
     }
-}
-
-tasks.publishAllPublicationsToHangar {
-    dependsOn("shadowJar")
-}
-
-tasks.modrinth {
-    dependsOn("shadowJar")
 }
 
 java {

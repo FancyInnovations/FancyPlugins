@@ -1,7 +1,7 @@
 package com.fancyinnovations.fancyholograms.api.data;
 
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
-import net.kyori.adventure.text.format.NamedTextColor;
+import de.oliver.fancylib.colors.GlowingColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Display;
@@ -19,6 +19,7 @@ public class DisplayHologramData extends HologramData {
     public static final float DEFAULT_SHADOW_RADIUS = 0.0f;
     public static final float DEFAULT_SHADOW_STRENGTH = 1.0f;
     public static final int DEFAULT_INTERPOLATION_DURATION = 0;
+    public static final GlowingColor DEFAULT_GLOWING_COLOR = GlowingColor.DISABLED;
 
     private Display.Billboard billboard = DEFAULT_BILLBOARD;
     private Vector3f scale = new Vector3f(DEFAULT_SCALE);
@@ -27,8 +28,7 @@ public class DisplayHologramData extends HologramData {
     private float shadowRadius = DEFAULT_SHADOW_RADIUS;
     private float shadowStrength = DEFAULT_SHADOW_STRENGTH;
     private int interpolationDuration = DEFAULT_INTERPOLATION_DURATION;
-    private boolean glowing = false;
-    private NamedTextColor glowingColor = NamedTextColor.WHITE;
+    private GlowingColor glowingColor = DEFAULT_GLOWING_COLOR;
 
     /**
      * @param name     Name of hologram
@@ -133,24 +133,11 @@ public class DisplayHologramData extends HologramData {
         return this;
     }
 
-    public boolean isGlowing() {
-        return glowing;
-    }
-
-    public DisplayHologramData setGlowing(boolean glowing) {
-        if (this.glowing != glowing) {
-            this.glowing = glowing;
-            setHasChanges(true);
-        }
-
-        return this;
-    }
-
-    public NamedTextColor getGlowingColor() {
+    public GlowingColor getGlowingColor() {
         return glowingColor;
     }
 
-    public DisplayHologramData setGlowingColor(NamedTextColor glowingColor) {
+    public DisplayHologramData setGlowingColor(GlowingColor glowingColor) {
         if (!Objects.equals(this.glowingColor, glowingColor)) {
             this.glowingColor = glowingColor;
             setHasChanges(true);
@@ -196,8 +183,12 @@ public class DisplayHologramData extends HologramData {
             );
         }
 
-        glowing = section.getBoolean("glowing", false);
-        glowingColor = NamedTextColor.NAMES.value(section.getString("glowing_color", "white"));
+        String glowingColorStr = section.getString("glowing_color", DEFAULT_GLOWING_COLOR.name());
+        try {
+            glowingColor = GlowingColor.valueOf(glowingColorStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            glowingColor = DEFAULT_GLOWING_COLOR;
+        }
 
         return true;
     }
@@ -221,8 +212,7 @@ public class DisplayHologramData extends HologramData {
         }
 
         section.set("billboard", billboard != Display.Billboard.CENTER ? billboard.name().toLowerCase(Locale.ROOT) : null);
-        section.set("glowing", glowing);
-        section.set("glowing_color", glowingColor.toString());
+        section.set("glowing_color", glowingColor != DEFAULT_GLOWING_COLOR ? glowingColor.name().toLowerCase(Locale.ROOT) : null);
 
         return true;
     }
@@ -237,13 +227,11 @@ public class DisplayHologramData extends HologramData {
                 .setBillboard(this.getBillboard())
                 .setTranslation(this.getTranslation())
                 .setBrightness(this.getBrightness())
-                .setGlowing(this.isGlowing())
-                .setGlowingColor(this.getGlowingColor());
-
-        displayHologramData.setVisibilityDistance(this.getVisibilityDistance());
-        displayHologramData.setVisibility(this.getVisibility());
-        displayHologramData.setPersistent(this.isPersistent());
-        displayHologramData.setLinkedNpcName(this.getLinkedNpcName());
+                .setGlowingColor(this.getGlowingColor())
+                .setVisibilityDistance(this.getVisibilityDistance())
+                .setVisibility(this.getVisibility())
+                .setPersistent(this.isPersistent())
+                .setLinkedNpcName(this.getLinkedNpcName());
 
         return displayHologramData;
     }

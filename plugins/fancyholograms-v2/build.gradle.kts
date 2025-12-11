@@ -8,32 +8,9 @@ plugins {
     id("xyz.jpenilla.run-paper")
     id("com.gradleup.shadow")
     id("de.eldoria.plugin-yml.paper")
-    id("io.papermc.hangar-publish-plugin")
-    id("com.modrinth.minotaur")
 }
 
 runPaper.folia.registerTask()
-
-val supportedVersions =
-    listOf(
-        "1.19.4",
-        "1.20",
-        "1.20.1",
-        "1.20.2",
-        "1.20.3",
-        "1.20.4",
-        "1.20.5",
-        "1.20.6",
-        "1.21",
-        "1.21.1",
-        "1.21.2",
-        "1.21.3",
-        "1.21.4",
-        "1.21.5",
-        "1.21.6",
-        "1.21.7",
-        "1.21.8",
-    )
 
 allprojects {
     group = "de.oliver"
@@ -56,13 +33,12 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancyholograms-v2:api"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_4", configuration = "reobf"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_2", configuration = "reobf"))
     implementation(project(":plugins:fancyholograms-v2:implementation_1_20_1", configuration = "reobf"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_19_4", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -72,12 +48,12 @@ dependencies {
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:config"))
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.4")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.11")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     compileOnly(project(":plugins:fancynpcs:fn-api"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.3")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.0")
     compileOnly("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
 }
 
@@ -114,7 +90,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11")
 
         downloadPlugins {
 //            modrinth("fancynpcs", "2.5.2")
@@ -167,14 +143,6 @@ tasks {
     }
 }
 
-tasks.publishAllPublicationsToHangar {
-    dependsOn("shadowJar")
-}
-
-tasks.modrinth {
-    dependsOn("shadowJar")
-}
-
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
@@ -189,35 +157,4 @@ val gitCommitMessage: Provider<String> = providers.exec {
 
 fun getFHVersion(): String {
     return file("VERSION").readText()
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        version = project.version as String
-        id = "FancyHolograms"
-        channel = "Alpha"
-
-        apiKey.set(System.getenv("HANGAR_PUBLISH_API_TOKEN"))
-
-        platforms {
-            paper {
-                jar = tasks.shadowJar.flatMap { it.archiveFile }
-                platformVersions = supportedVersions
-            }
-        }
-
-        changelog = gitCommitMessage.get()
-    }
-}
-
-modrinth {
-    token.set(System.getenv("MODRINTH_PUBLISH_API_TOKEN"))
-    projectId.set("fancyholograms")
-    versionNumber.set(getFHVersion())
-    versionType.set("alpha")
-    uploadFile.set(file("build/libs/${project.name}-${getFHVersion()}.jar"))
-    gameVersions.addAll(supportedVersions)
-    loaders.add("paper")
-    loaders.add("folia")
-    changelog.set(gitCommitMessage.get())
 }

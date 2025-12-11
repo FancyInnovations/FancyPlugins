@@ -59,8 +59,7 @@ public class JsonAdapter {
                         data.getBrightness().getSkyLight()
                 ),
                 data.getBillboard(),
-                data.isGlowing(),
-                data.getGlowingColor().toString()
+                data.getGlowingColor()
         );
     }
 
@@ -165,11 +164,6 @@ public class JsonAdapter {
             );
         }
 
-        boolean glowing = data.display_data().glowing() != null && data.display_data().glowing();
-        NamedTextColor glowingColor = data.display_data().glowing_color() != null
-                ? NamedTextColor.NAMES.value(data.display_data().glowing_color())
-                : NamedTextColor.WHITE;
-
         HologramData hologramData = switch (data.hologram_data().type()) {
             case TEXT ->
                     new com.fancyinnovations.fancyholograms.api.data.TextHologramData(data.hologram_data().name(), loc)
@@ -188,8 +182,7 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
-                            .setGlowing(glowing)
-                            .setGlowingColor(glowingColor)
+                            .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())
@@ -204,8 +197,7 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
-                            .setGlowing(glowing)
-                            .setGlowingColor(glowingColor)
+                            .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())
@@ -219,8 +211,7 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
-                            .setGlowing(glowing)
-                            .setGlowingColor(glowingColor)
+                            .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())

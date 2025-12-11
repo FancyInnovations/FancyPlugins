@@ -20,7 +20,8 @@ public enum NpcVisibility {
         (player, npc) -> player.hasPermission("fancynpcs.npc." + npc.getData().getName() + ".see")
     ),
     /**
-     * The player needs to be added manually through the API
+     * The player visibility is controlled manually through the API.
+     * You can use either include list (allowlist) or exclude list (blocklist), or both.
      */
     MANUAL(ManualNpcVisibility::canSee);
 
@@ -46,29 +47,93 @@ public enum NpcVisibility {
     }
 
     /**
-     * Handling of NpcVisibility.MANUAL
+     * Handling of NpcVisibility.MANUAL mode with include and exclude lists
      */
     public static class ManualNpcVisibility {
-        private static final HashMultimap<String, UUID> distantViewers = HashMultimap.create();
+        private static final HashMultimap<String, UUID> includeList = HashMultimap.create();
+        private static final HashMultimap<String, UUID> excludeList = HashMultimap.create();
 
+        /**
+         * Check if player can see NPC based on include/exclude lists.
+         * Logic:
+         * - If include list is not empty: player must be in include list to see
+         * - If exclude list has entries: player in exclude list cannot see
+         * - Include list takes priority over exclude list
+         */
         public static boolean canSee(Player player, Npc npc) {
-            return npc.isShownFor(player) || distantViewers.containsEntry(npc.getData().getName(), player.getUniqueId());
+            String npcName = npc.getData().getName();
+            UUID playerId = player.getUniqueId();
+
+            boolean hasIncludeList = includeList.containsKey(npcName);
+            boolean hasExcludeList = excludeList.containsKey(npcName);
+
+            // If include list exists and is not empty, player MUST be in it
+            if (hasIncludeList) {
+                return includeList.containsEntry(npcName, playerId);
+            }
+
+            // If only exclude list exists, player must NOT be in it
+            if (hasExcludeList) {
+                return !excludeList.containsEntry(npcName, playerId);
+            }
+
+            // If neither list has entries, use default visibility
+            return npc.isShownFor(player);
         }
 
+        // Include list management
+        public static void addToIncludeList(Npc npc, UUID uuid) {
+            addToIncludeList(npc.getData().getName(), uuid);
+        }
+
+        public static void addToIncludeList(String npcName, UUID uuid) {
+            includeList.put(npcName, uuid);
+        }
+
+        public static void removeFromIncludeList(Npc npc, UUID uuid) {
+            removeFromIncludeList(npc.getData().getName(), uuid);
+        }
+
+        public static void removeFromIncludeList(String npcName, UUID uuid) {
+            includeList.remove(npcName, uuid);
+        }
+
+        // Exclude list management
+        public static void addToExcludeList(Npc npc, UUID uuid) {
+            addToExcludeList(npc.getData().getName(), uuid);
+        }
+
+        public static void addToExcludeList(String npcName, UUID uuid) {
+            excludeList.put(npcName, uuid);
+        }
+
+        public static void removeFromExcludeList(Npc npc, UUID uuid) {
+            removeFromExcludeList(npc.getData().getName(), uuid);
+        }
+
+        public static void removeFromExcludeList(String npcName, UUID uuid) {
+            excludeList.remove(npcName, uuid);
+        }
+
+        // Old methods for backward compatibility
+        @Deprecated
         public static void addDistantViewer(Npc npc, UUID uuid) {
-            addDistantViewer(npc.getData().getName(), uuid);
+            addToIncludeList(npc, uuid);
         }
 
+        @Deprecated
         public static void addDistantViewer(String npcName, UUID uuid) {
-            distantViewers.put(npcName, uuid);
+            addToIncludeList(npcName, uuid);
         }
 
+        @Deprecated
         public static void removeDistantViewer(Npc npc, UUID uuid) {
-            removeDistantViewer(npc.getData().getName(), uuid);
+            removeFromIncludeList(npc, uuid);
         }
 
+        @Deprecated
         public static void removeDistantViewer(String npcName, UUID uuid) {
-            distantViewers.remove(npcName, uuid);
+            removeFromIncludeList(npcName, uuid);
         }
 
         public static void remove(Npc npc) {
@@ -76,11 +141,13 @@ public enum NpcVisibility {
         }
 
         public static void remove(String npcName) {
-            distantViewers.removeAll(npcName);
+            includeList.removeAll(npcName);
+            excludeList.removeAll(npcName);
         }
 
         public static void clear() {
-            distantViewers.clear();
+            includeList.clear();
+            excludeList.clear();
         }
     }
 }

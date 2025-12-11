@@ -41,6 +41,9 @@ public final class HologramCMD extends Command {
             <%primary_color%>- /hologram edit <hologram> insertBefore <line number> <text ...> <dark_gray>- <white>Inserts a line before another
             <%primary_color%>- /hologram edit <hologram> insertAfter <line number> <text ...> <dark_gray>- <white>Inserts a line after another
             <%primary_color%>- /hologram edit <hologram> setLine <line number> <text ...> <dark_gray>- <white>Edits the line
+            <%primary_color%>- /hologram edit <hologram> swapLines <first> <second> <dark_gray>- <white>Swaps two lines
+            <%primary_color%>- /hologram edit <hologram> moveLineUp <line> <dark_gray>- <white>Moves a line up one position
+            <%primary_color%>- /hologram edit <hologram> moveLineDown <line> <dark_gray>- <white>Moves a line down one position
             <%primary_color%>- /hologram edit <hologram> position <dark_gray>- <white>Teleports the hologram to you
             <%primary_color%>- /hologram edit <hologram> moveTo <x> <y> <z> [yaw] [pitch] <dark_gray>- <white>Teleports the hologram to the coordinates
             <%primary_color%>- /hologram edit <hologram> rotate <degrees> <dark_gray>- <white>Rotates the hologram

@@ -5,6 +5,7 @@ import de.oliver.fancysitula.api.dialogs.FS_Dialog;
 import de.oliver.fancysitula.api.dialogs.FS_DialogAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_CommonButtonData;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButton;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCopyToClipboardAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCustomAction;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogBody;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogItemBody;
@@ -27,8 +28,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.ClientboundShowDialogPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.dialog.*;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.server.dialog.action.Action;
 import net.minecraft.server.dialog.action.CustomAll;
+import net.minecraft.server.dialog.action.StaticAction;
 import net.minecraft.server.dialog.body.DialogBody;
 import net.minecraft.server.dialog.body.ItemBody;
 import net.minecraft.server.dialog.body.PlainMessage;
@@ -241,7 +244,10 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
         CommonButtonData buttonData = commonButtonDataToNms(actionButton.getButtonData());
 
         Action action = null;
-        if (actionButton.getAction() instanceof FS_DialogCustomAction customAction) {
+        if (actionButton.getAction() instanceof FS_DialogCopyToClipboardAction copyToClipboardAction) {
+            ClickEvent clickEvent = new ClickEvent.CopyToClipboard(copyToClipboardAction.getValue());
+            action = new StaticAction(clickEvent);
+        } else if (actionButton.getAction() instanceof FS_DialogCustomAction customAction) {
             Key idKey = Key.key("fancysitula", customAction.getId());
             ResourceLocation idLocation = PaperAdventure.asVanilla(idKey);
 

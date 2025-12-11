@@ -2,6 +2,7 @@ package de.oliver.fancynpcs.api;
 
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
 import de.oliver.fancynpcs.api.actions.NpcAction;
+import de.oliver.fancynpcs.api.data.property.NpcVisibility;
 import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.api.utils.NpcEquipmentSlot;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -41,6 +42,7 @@ public class NpcData {
     private float scale;
     private int visibilityDistance;
     private Map<NpcAttribute, String> attributes;
+    private NpcVisibility visibility;
     private boolean isDirty;
 
     public NpcData(
@@ -118,6 +120,7 @@ public class NpcData {
         this.equipment = new ConcurrentHashMap<>();
         this.attributes = new ConcurrentHashMap<>();
         this.mirrorSkin = false;
+        this.visibility = NpcVisibility.ALL;
         this.isDirty = true;
     }
 
@@ -396,6 +399,16 @@ public class NpcData {
 
     public NpcData setMirrorSkin(boolean mirrorSkin) {
         this.mirrorSkin = mirrorSkin;
+        isDirty = true;
+        return this;
+    }
+
+    public NpcVisibility getVisibility() {
+        return visibility == null ? NpcVisibility.ALL : visibility;
+    }
+
+    public NpcData setVisibility(NpcVisibility visibility) {
+        this.visibility = visibility;
         isDirty = true;
         return this;
     }

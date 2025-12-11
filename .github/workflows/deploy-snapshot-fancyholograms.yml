@@ -2,8 +2,9 @@ name: Deploy FancyHolograms (snapshot)
 
 on:
   workflow_dispatch:
+
 jobs:
-  deploy-plugin:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,22 +28,29 @@ jobs:
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew
 
-      - name: Build deployment tool
-        run: ./gradlew :tools:deployment:shadowJar
-
-      - name: Build FancyHolograms for Modrinth
+      - name: Build
         env:
           RELEASE_CHANNEL: 'snapshot'
-          RELEASE_PLATFORM: 'modrinth'
         run: ./gradlew :plugins:fancyholograms:shadowJar
 
-      - name: Deploy to Modrinth
-        env:
-          MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run:
-          cd tools/deployment/build/libs &&
-          java -jar deployment.jar modrinth ../../../../plugins/fancyholograms/snapshot_deployment_config.json true
+      - name: Get last commit SHA and message
+        id: last_commit
+        run: |
+          {
+            echo "commit_sha=$(git rev-parse --short HEAD)"
+            echo "commit_msg<<EOF"
+            git log -1 --pretty=%B
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
-      - name: Publish to reposilite (snapshots)
-        run: ./gradlew :plugins:fancyholograms:fh-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository
+      - name: Deploy
+        uses: fancyinnovations/fancyverteiler@main
+        with:
+          config_path: "/plugins/fancyholograms/snapshot_deployment_config.json"
+          commit_sha: ${{ steps.last_commit.outputs.commit_sha }}
+          commit_message: ${{ steps.last_commit.outputs.commit_msg }}
+          modrinth_api_key: ${{ secrets.MODRINTH_API_KEY }}
+          discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+#      - name: Publish to reposilite (snapshots)
+#        run: ./gradlew :plugins:fancyholograms:fh-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository

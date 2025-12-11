@@ -10,14 +10,18 @@ import com.fancyinnovations.fancydialogs.api.data.inputs.DialogInput;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogSelect;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogTextField;
 import de.oliver.fancysitula.api.dialogs.FS_CommonDialogData;
+import de.oliver.fancysitula.api.dialogs.FS_Dialog;
 import de.oliver.fancysitula.api.dialogs.FS_DialogAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_CommonButtonData;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButton;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogActionButtonAction;
+import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCopyToClipboardAction;
 import de.oliver.fancysitula.api.dialogs.actions.FS_DialogCustomAction;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogBody;
 import de.oliver.fancysitula.api.dialogs.body.FS_DialogTextBody;
 import de.oliver.fancysitula.api.dialogs.inputs.*;
 import de.oliver.fancysitula.api.dialogs.types.FS_MultiActionDialog;
+import de.oliver.fancysitula.api.dialogs.types.FS_NoticeDialog;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.factories.FancySitula;
 import org.bukkit.entity.Player;
@@ -35,12 +39,17 @@ public class DialogImpl extends Dialog {
         super(id, data);
     }
 
-    private FS_MultiActionDialog buildForPlayer(Player player) {
+    private FS_Dialog buildForPlayer(Player player) {
         List<FS_DialogBody> body = new ArrayList<>();
         for (DialogBodyData bodyData : data.body()) {
+
+            int textWidth = (bodyData.width() != null && bodyData.width() > 0)
+                    ? bodyData.width()
+                    : 200;
+
             FS_DialogTextBody fsDialogTextBody = new FS_DialogTextBody(
                     ChatColorHandler.translate(bodyData.text(), player, ParserTypes.placeholder()),
-                    200 // default text width
+                    textWidth
             );
             body.add(fsDialogTextBody);
         }
@@ -92,21 +101,59 @@ public class DialogImpl extends Dialog {
 
         List<FS_DialogActionButton> actions = new ArrayList<>();
         for (DialogButton button : data.buttons()) {
+            FS_DialogActionButtonAction buttonAction;
+
+            if (button.actions().size() == 1 &&
+                button.actions().get(0).name().equals("copy_to_clipboard")) {
+                String text = ChatColorHandler.translate(
+                        button.actions().get(0).data(),
+                        player,
+                        ParserTypes.placeholder()
+                );
+                buttonAction = new FS_DialogCopyToClipboardAction(text);
+            } else {
+                buttonAction = new FS_DialogCustomAction(
+                        "fancydialogs_dialog_action",
+                        Map.of(
+                                "dialog_id", id,
+                                "button_id", button.id()
+                        )
+                );
+            }
+
             FS_DialogActionButton fsDialogActionButton = new FS_DialogActionButton(
                     new FS_CommonButtonData(
                             ChatColorHandler.translate(button.label(), player, ParserTypes.placeholder()),
                             ChatColorHandler.translate(button.tooltip(), player, ParserTypes.placeholder()),
                             150 // default button width
                     ),
-                    new FS_DialogCustomAction(
-                            "fancydialogs_dialog_action",
-                            Map.of(
-                                    "dialog_id", id,
-                                    "button_id", button.id()
-                            )
-                    )
+                    buttonAction
             );
             actions.add(fsDialogActionButton);
+        }
+
+        if (actions.isEmpty()) {
+            return new FS_NoticeDialog(
+                    new FS_CommonDialogData(
+                            ChatColorHandler.translate(data.title(), player, ParserTypes.placeholder()),
+                            ChatColorHandler.translate(data.title(), player, ParserTypes.placeholder()),
+                            data.canCloseWithEscape(),
+                            false,
+                            FS_DialogAction.CLOSE,
+                            body,
+                            inputs
+                    ),
+                    new FS_DialogActionButton(
+                            new FS_CommonButtonData(
+                                    "Close",
+                                    null,
+                                    150 // default button width
+                            ),
+                            new FS_DialogCustomAction(
+                                    "fancydialogs_dialog_action--none",
+                                    Map.of())
+                    )
+            );
         }
 
         return new FS_MultiActionDialog(
@@ -118,53 +165,6 @@ public class DialogImpl extends Dialog {
                         FS_DialogAction.CLOSE,
                         body,
                         inputs
-//                        List.of(
-//                                new FS_DialogInput(
-//                                        "input1",
-//                                        new FS_DialogTextInput(
-//                                                200,
-//                                                "Enter something",
-//                                                true,
-//                                                "default text",
-//                                                100,
-//                                                null
-//                                        )
-//                                ),
-//                                new FS_DialogInput(
-//                                        "input2",
-//                                        new FS_DialogBooleanInput(
-//                                                "input2",
-//                                                false,
-//                                                "true",
-//                                                "false"
-//                                        )
-//                                ),
-//                                new FS_DialogInput(
-//                                        "input3",
-//                                        new FS_DialogNumberRangeInput(
-//                                                200,
-//                                                "Number Input",
-//                                                "options.generic_value",
-//                                                0,
-//                                                100,
-//                                                50.f,
-//                                                1.0f
-//                                        )
-//                                ),
-//                                new FS_DialogInput(
-//                                        "input4",
-//                                        new FS_DialogSingleOptionInput(
-//                                                200,
-//                                                List.of(
-//                                                        new FS_DialogSingleOptionInput.Entry("option1", "Option 1", true),
-//                                                        new FS_DialogSingleOptionInput.Entry("option2", "Option 2", false),
-//                                                        new FS_DialogSingleOptionInput.Entry("option3", "Option 3", false)
-//                                                ),
-//                                                "Select an option",
-//                                                true
-//                                        )
-//                                )
-//                        )
                 ),
                 actions, // actions
                 null,

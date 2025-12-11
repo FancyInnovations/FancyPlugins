@@ -8,6 +8,9 @@ public class PacketListenerFactory {
 
     public FS_PacketListener createPacketListener(FS_ServerboundPacket.Type packet) {
         switch (ServerVersion.getCurrentVersion()) {
+            case v1_21_11 -> {
+                return new de.oliver.fancysitula.versions.v1_21_11.utils.PacketListenerImpl(packet);
+            }
             case v1_21_9, v1_21_10 -> {
                 return new de.oliver.fancysitula.versions.v1_21_9.utils.PacketListenerImpl(packet);
             }

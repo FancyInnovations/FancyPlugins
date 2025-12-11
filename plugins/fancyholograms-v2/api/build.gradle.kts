@@ -4,7 +4,7 @@ plugins {
     id("com.gradleup.shadow")
 }
 
-val minecraftVersion = "1.19.4"
+val minecraftVersion = "1.20"
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
@@ -12,7 +12,7 @@ dependencies {
     compileOnly(project(":libraries:common"))
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.8")
 
-    implementation("org.lushplugins:ChatColorHandler:6.0.3")
+    implementation("org.lushplugins:ChatColorHandler:6.0.0")
 }
 
 tasks {

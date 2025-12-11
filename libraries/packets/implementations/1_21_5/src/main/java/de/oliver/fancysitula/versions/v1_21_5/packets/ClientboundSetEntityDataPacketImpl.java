@@ -15,11 +15,38 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityDataPacket {
 
+    private static final ConcurrentMap<String, Class<?>> ENTITY_CLASS_CACHE = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, net.minecraft.network.syncher.EntityDataAccessor<Object>> ENTITY_ACCESSOR_CACHE = new ConcurrentHashMap<>();
+
     public ClientboundSetEntityDataPacketImpl(int entityId, List<EntityData> entityData) {
         super(entityId, entityData);
+    }
+
+    private static Class<?> getEntityClassCached(String className) throws ClassNotFoundException {
+        Class<?> cached = ENTITY_CLASS_CACHE.get(className);
+        if (cached != null) {
+            return cached;
+        }
+        Class<?> resolved = Class.forName(className);
+        ENTITY_CLASS_CACHE.put(className, resolved);
+        return resolved;
+    }
+
+    private static net.minecraft.network.syncher.EntityDataAccessor<Object> getAccessorCached(String entityClassName, String fieldName) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+        String key = entityClassName + "#" + fieldName;
+        net.minecraft.network.syncher.EntityDataAccessor<Object> cached = ENTITY_ACCESSOR_CACHE.get(key);
+        if (cached != null) {
+            return cached;
+        }
+        Class<?> entityClass = getEntityClassCached(entityClassName);
+        net.minecraft.network.syncher.EntityDataAccessor<Object> accessor = ReflectionUtils.getStaticField(entityClass, fieldName);
+        ENTITY_ACCESSOR_CACHE.put(key, accessor);
+        return accessor;
     }
 
     @Override
@@ -27,8 +54,9 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
         List<SynchedEntityData.DataValue<?>> dataValues = new ArrayList<>();
         for (EntityData data : entityData) {
             try {
-                Class<?> entityClass = Class.forName(data.getAccessor().entityClassName());
-                net.minecraft.network.syncher.EntityDataAccessor<Object> accessor = ReflectionUtils.getStaticField(entityClass, data.getAccessor().accessorFieldName());
+                String entityClassName = data.getAccessor().entityClassName();
+                String accessorFieldName = data.getAccessor().accessorFieldName();
+                net.minecraft.network.syncher.EntityDataAccessor<Object> accessor = getAccessorCached(entityClassName, accessorFieldName);
 
                 Object vanillaValue = data.getValue();
 

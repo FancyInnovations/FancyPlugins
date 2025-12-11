@@ -12,7 +12,12 @@ import com.fancyinnovations.fancyholograms.commands.FancyHologramsTestCMD;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.ConfigCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.BlockStateCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.MoveDownCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.MoveUpCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.SwapLinesCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.GlowingCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.TraitCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.types.GlowingColorCommandType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.HologramCommandType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.TraitCommandType;
 import com.fancyinnovations.fancyholograms.config.FHConfiguration;
@@ -293,11 +298,13 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
         lampBuilder.parameterTypes(builder -> {
             builder.addParameterType(Hologram.class, HologramCommandType.INSTANCE);
             builder.addParameterType(HologramTraitRegistry.TraitInfo.class, TraitCommandType.INSTANCE);
+            builder.addParameterType(de.oliver.fancylib.colors.GlowingColor.class, GlowingColorCommandType.INSTANCE);
         });
 
         lampBuilder
                 .exceptionHandler(HologramCommandType.INSTANCE)
-                .exceptionHandler(TraitCommandType.INSTANCE);
+                .exceptionHandler(TraitCommandType.INSTANCE)
+                .exceptionHandler(GlowingColorCommandType.INSTANCE);
 
         Lamp<BukkitCommandActor> lamp = lampBuilder.build();
 
@@ -307,13 +314,17 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
         // hologram commands
         lamp.register(TraitCMD.INSTANCE);
         lamp.register(BlockStateCMD.INSTANCE);
+        lamp.register(MoveUpCMD.INSTANCE);
+        lamp.register(MoveDownCMD.INSTANCE);
+        lamp.register(SwapLinesCMD.INSTANCE);
+        lamp.register(GlowingCMD.INSTANCE);
     }
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldLoadedListener(), this);
 
-        if (Bukkit.getMinecraftVersion().equals("1.21.4") || Bukkit.getMinecraftVersion().equals("1.21.5") || Bukkit.getMinecraftVersion().equals("1.21.6")) {
+        if (Set.of("1.21.4", "1.21.5", "1.21.6").contains(Bukkit.getMinecraftVersion())) {
             getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
         }
 

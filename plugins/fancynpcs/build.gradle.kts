@@ -6,34 +6,9 @@ plugins {
     id("xyz.jpenilla.run-paper")
     id("com.gradleup.shadow")
     id("de.eldoria.plugin-yml.paper")
-    id("io.papermc.hangar-publish-plugin")
-    id("com.modrinth.minotaur")
 }
 
 runPaper.folia.registerTask()
-
-val supportedVersions =
-    listOf(
-        "1.19.4",
-        "1.20",
-        "1.20.1",
-        "1.20.2",
-        "1.20.3",
-        "1.20.4",
-        "1.20.5",
-        "1.20.6",
-        "1.21",
-        "1.21.1",
-        "1.21.2",
-        "1.21.3",
-        "1.21.4",
-        "1.21.5",
-        "1.21.6",
-        "1.21.7",
-        "1.21.8",
-        "1.21.9",
-        "1.21.10"
-    )
 
 allprojects {
     group = "de.oliver"
@@ -53,9 +28,10 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancynpcs:fn-api"))
+    implementation(project(":plugins:fancynpcs:implementation_1_21_11"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_9"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_6"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_5"))
@@ -67,7 +43,6 @@ dependencies {
     implementation(project(":plugins:fancynpcs:implementation_1_20_2", configuration = "reobf"))
     implementation(project(":plugins:fancynpcs:implementation_1_20_1", configuration = "reobf"))
     implementation(project(":plugins:fancynpcs:implementation_1_20", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_19_4", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -78,9 +53,9 @@ dependencies {
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:plugin-tests"))
     implementation(project(":libraries:config"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.3")
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.4")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.11")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.0")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
     implementation("org.incendo:cloud-paper:2.0.0-beta.13")
@@ -120,7 +95,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11")
 
         downloadPlugins {
 //            hangar("ViaVersion", "5.4.0")
@@ -204,14 +179,6 @@ tasks {
     }
 }
 
-tasks.publishAllPublicationsToHangar {
-    dependsOn(":plugins:fancynpcs:shadowJar")
-}
-
-tasks.modrinth {
-    dependsOn(":plugins:fancynpcs:shadowJar")
-}
-
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
@@ -226,35 +193,4 @@ val gitCommitMessage: Provider<String> = providers.exec {
 
 fun getFNVersion(): String {
     return file("VERSION").readText()
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        version = getFNVersion()
-        id = "FancyNpcs"
-        channel = "Alpha"
-
-        apiKey.set(System.getenv("HANGAR_PUBLISH_API_TOKEN"))
-
-        platforms {
-            paper {
-                jar = tasks.shadowJar.flatMap { it.archiveFile }
-                platformVersions.set(supportedVersions)
-            }
-        }
-
-        changelog = gitCommitMessage.get()
-    }
-}
-
-modrinth {
-    token.set(System.getenv("MODRINTH_PUBLISH_API_TOKEN"))
-    projectId.set("fancynpcs")
-    versionNumber.set(getFNVersion())
-    versionType.set("alpha")
-    uploadFile.set(file("build/libs/${project.name}-${getFNVersion()}.jar"))
-    gameVersions.addAll(supportedVersions)
-    loaders.add("paper")
-    loaders.add("folia")
-    changelog.set(gitCommitMessage.get())
 }

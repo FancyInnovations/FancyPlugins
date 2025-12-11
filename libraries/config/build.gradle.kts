@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.8")
     compileOnly("org.jetbrains:annotations:26.0.2")
 
@@ -24,9 +24,41 @@ dependencies {
 }
 
 tasks {
+    publishing {
+        repositories {
+            maven {
+                name = "fancyinnovationsReleases"
+                url = uri("https://repo.fancyinnovations.com/releases")
+                credentials(PasswordCredentials::class)
+                authentication {
+                    isAllowInsecureProtocol = true
+                    create<BasicAuthentication>("basic")
+                }
+            }
+
+            maven {
+                name = "fancyinnovationsSnapshots"
+                url = uri("https://repo.fancyinnovations.com/snapshots")
+                credentials(PasswordCredentials::class)
+                authentication {
+                    isAllowInsecureProtocol = true
+                    create<BasicAuthentication>("basic")
+                }
+            }
+        }
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = "de.oliver"
+                artifactId = "config"
+                version = getCFGVersion()
+                from(project.components["java"])
+            }
+        }
+    }
+
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release.set(21)
+        options.release.set(17) //TODO change to 21, once 1.19.4 support is dropped
     }
 
     java {
@@ -47,5 +79,9 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17)) //TODO change to 21, once 1.19.4 support is dropped
+}
+
+fun getCFGVersion(): String {
+    return file("VERSION").readText()
 }

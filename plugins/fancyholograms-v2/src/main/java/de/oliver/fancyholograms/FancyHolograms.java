@@ -17,7 +17,10 @@ import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancyholograms.commands.FancyHologramsCMD;
 import de.oliver.fancyholograms.commands.FancyHologramsTestCMD;
 import de.oliver.fancyholograms.commands.HologramCMD;
-import de.oliver.fancyholograms.hologram.version.*;
+import de.oliver.fancyholograms.hologram.version.Hologram1_20_1;
+import de.oliver.fancyholograms.hologram.version.Hologram1_20_2;
+import de.oliver.fancyholograms.hologram.version.Hologram1_20_4;
+import de.oliver.fancyholograms.hologram.version.HologramImpl;
 import de.oliver.fancyholograms.listeners.*;
 import de.oliver.fancyholograms.storage.FlatFileHologramStorage;
 import de.oliver.fancyholograms.storage.converter.FHConversionRegistry;
@@ -109,7 +112,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
         final var adapter = resolveHologramAdapter();
 
         if (adapter == null) {
-            List<String> supportedVersions = new ArrayList<>(List.of("1.19.4", "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4"));
+            List<String> supportedVersions = new ArrayList<>(List.of("1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4"));
             supportedVersions.addAll(ServerVersion.getSupportedVersions());
 
             fancyLogger.warn("""
@@ -268,7 +271,6 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
             case "1.20.3", "1.20.4" -> Hologram1_20_4::new;
             case "1.20.2" -> Hologram1_20_2::new;
             case "1.20", "1.20.1" -> Hologram1_20_1::new;
-            case "1.19.4" -> Hologram1_19_4::new;
             default -> null;
         };
     }
@@ -292,7 +294,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldListener(), this);
-        if (Bukkit.getMinecraftVersion().equals("1.21.4") || Bukkit.getMinecraftVersion().equals("1.21.5") || Bukkit.getMinecraftVersion().equals("1.21.6") || Bukkit.getMinecraftVersion().equals("1.21.7") || Bukkit.getMinecraftVersion().equals("1.21.8")) {
+        if (Set.of("1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8").contains(Bukkit.getMinecraftVersion())) {
             getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
         }
 

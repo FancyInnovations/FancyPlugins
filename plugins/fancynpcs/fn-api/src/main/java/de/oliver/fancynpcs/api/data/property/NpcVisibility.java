@@ -5,6 +5,8 @@ import de.oliver.fancynpcs.api.Npc;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,7 +23,7 @@ public enum NpcVisibility {
     ),
     /**
      * The player visibility is controlled manually through the API.
-     * You can use either include list (allowlist) or exclude list (blocklist), or both.
+     * You can use either include list (allowlist) or exclude list (blocklist).
      */
     MANUAL(ManualNpcVisibility::canSee);
 
@@ -50,104 +52,128 @@ public enum NpcVisibility {
      * Handling of NpcVisibility.MANUAL mode with include and exclude lists
      */
     public static class ManualNpcVisibility {
-        private static final HashMultimap<String, UUID> includeList = HashMultimap.create();
-        private static final HashMultimap<String, UUID> excludeList = HashMultimap.create();
+        /**
+         * Visibility mode for each NPC
+         */
+        public enum Mode {
+            /**
+             * Include mode (allowlist): Only players in the list can see the NPC
+             */
+            INCLUDE,
+            /**
+             * Exclude mode (blocklist): Players in the list cannot see the NPC
+             */
+            EXCLUDE
+        }
+
+        private static final HashMultimap<String, UUID> playerList = HashMultimap.create();
+        private static final Map<String, Mode> npcModes = new HashMap<>();
 
         /**
-         * Check if player can see NPC based on include/exclude lists.
+         * Check if player can see NPC based on the player list and mode.
          * Logic:
-         * - If include list is not empty: player must be in include list to see
-         * - If exclude list has entries: player in exclude list cannot see
-         * - Include list takes priority over exclude list
+         * - INCLUDE mode: player must be in the list to see
+         * - EXCLUDE mode: player in the list cannot see
          */
         public static boolean canSee(Player player, Npc npc) {
-            String npcName = npc.getData().getName();
+            String npcId = npc.getData().getId();
             UUID playerId = player.getUniqueId();
 
-            boolean hasIncludeList = includeList.containsKey(npcName);
-            boolean hasExcludeList = excludeList.containsKey(npcName);
+            Mode mode = npcModes.get(npcId);
 
-            // If include list exists and is not empty, player MUST be in it
-            if (hasIncludeList) {
-                return includeList.containsEntry(npcName, playerId);
+            if (mode == null) {
+                return npc.isShownFor(player);
             }
 
-            // If only exclude list exists, player must NOT be in it
-            if (hasExcludeList) {
-                return !excludeList.containsEntry(npcName, playerId);
+            boolean isInList = playerList.containsEntry(npcId, playerId);
+
+            return switch (mode) {
+                case INCLUDE -> isInList;
+                case EXCLUDE -> !isInList;
+            };
+        }
+
+        /**
+         * Set the visibility mode for an NPC
+         */
+        public static void setMode(Npc npc, Mode mode) {
+            setMode(npc.getData().getId(), mode);
+        }
+
+        /**
+         * Set the visibility mode for an NPC
+         */
+        public static void setMode(String npcId, Mode mode) {
+            if (mode == null) {
+                npcModes.remove(npcId);
+            } else {
+                npcModes.put(npcId, mode);
             }
-
-            // If neither list has entries, use default visibility
-            return npc.isShownFor(player);
         }
 
-        // Include list management
-        public static void addToIncludeList(Npc npc, UUID uuid) {
-            addToIncludeList(npc.getData().getName(), uuid);
+        /**
+         * Get the current visibility mode for an NPC
+         */
+        public static Mode getMode(Npc npc) {
+            return getMode(npc.getData().getId());
         }
 
-        public static void addToIncludeList(String npcName, UUID uuid) {
-            includeList.put(npcName, uuid);
+        /**
+         * Get the current visibility mode for an NPC
+         */
+        public static Mode getMode(String npcId) {
+            return npcModes.get(npcId);
         }
 
-        public static void removeFromIncludeList(Npc npc, UUID uuid) {
-            removeFromIncludeList(npc.getData().getName(), uuid);
+        /**
+         * Add a player to the visibility list
+         */
+        public static void addPlayer(Npc npc, UUID uuid) {
+            addPlayer(npc.getData().getId(), uuid);
         }
 
-        public static void removeFromIncludeList(String npcName, UUID uuid) {
-            includeList.remove(npcName, uuid);
+        /**
+         * Add a player to the visibility list by NPC
+         */
+        public static void addPlayer(String npcId, UUID uuid) {
+            playerList.put(npcId, uuid);
         }
 
-        // Exclude list management
-        public static void addToExcludeList(Npc npc, UUID uuid) {
-            addToExcludeList(npc.getData().getName(), uuid);
+        /**
+         * Remove a player from the visibility list
+         */
+        public static void removePlayer(Npc npc, UUID uuid) {
+            removePlayer(npc.getData().getId(), uuid);
         }
 
-        public static void addToExcludeList(String npcName, UUID uuid) {
-            excludeList.put(npcName, uuid);
+        /**
+         * Remove a player from the visibility list by NPC
+         */
+        public static void removePlayer(String npcId, UUID uuid) {
+            playerList.remove(npcId, uuid);
         }
 
-        public static void removeFromExcludeList(Npc npc, UUID uuid) {
-            removeFromExcludeList(npc.getData().getName(), uuid);
-        }
-
-        public static void removeFromExcludeList(String npcName, UUID uuid) {
-            excludeList.remove(npcName, uuid);
-        }
-
-        // Old methods for backward compatibility
-        @Deprecated
-        public static void addDistantViewer(Npc npc, UUID uuid) {
-            addToIncludeList(npc, uuid);
-        }
-
-        @Deprecated
-        public static void addDistantViewer(String npcName, UUID uuid) {
-            addToIncludeList(npcName, uuid);
-        }
-
-        @Deprecated
-        public static void removeDistantViewer(Npc npc, UUID uuid) {
-            removeFromIncludeList(npc, uuid);
-        }
-
-        @Deprecated
-        public static void removeDistantViewer(String npcName, UUID uuid) {
-            removeFromIncludeList(npcName, uuid);
-        }
-
+        /**
+         * Remove all visibility settings for an NPC
+         */
         public static void remove(Npc npc) {
-            remove(npc.getData().getName());
+            remove(npc.getData().getId());
         }
 
-        public static void remove(String npcName) {
-            includeList.removeAll(npcName);
-            excludeList.removeAll(npcName);
+        /**
+         * Remove all visibility settings for an NPC
+         */
+        public static void remove(String npcId) {
+            playerList.removeAll(npcId);
+            npcModes.remove(npcId);
         }
 
+        /**
+         * Clear all visibility settings
+         */
         public static void clear() {
-            includeList.clear();
-            excludeList.clear();
+            playerList.clear();
+            npcModes.clear();
         }
     }
 }

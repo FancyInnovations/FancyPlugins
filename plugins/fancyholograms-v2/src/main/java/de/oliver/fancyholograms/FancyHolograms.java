@@ -17,9 +17,6 @@ import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancyholograms.commands.FancyHologramsCMD;
 import de.oliver.fancyholograms.commands.FancyHologramsTestCMD;
 import de.oliver.fancyholograms.commands.HologramCMD;
-import de.oliver.fancyholograms.hologram.version.Hologram1_20_1;
-import de.oliver.fancyholograms.hologram.version.Hologram1_20_2;
-import de.oliver.fancyholograms.hologram.version.Hologram1_20_4;
 import de.oliver.fancyholograms.hologram.version.HologramImpl;
 import de.oliver.fancyholograms.listeners.*;
 import de.oliver.fancyholograms.storage.FlatFileHologramStorage;
@@ -112,16 +109,13 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
         final var adapter = resolveHologramAdapter();
 
         if (adapter == null) {
-            List<String> supportedVersions = new ArrayList<>(List.of("1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4"));
-            supportedVersions.addAll(ServerVersion.getSupportedVersions());
-
             fancyLogger.warn("""
                     --------------------------------------------------
                     Unsupported minecraft server version.
                     Please update the server to one of (%s).
                     Disabling the FancyHolograms plugin.
                     --------------------------------------------------
-                    """.formatted(String.join(" / ", supportedVersions)));
+                    """.formatted(String.join(" / ", ServerVersion.getSupportedVersions())));
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -267,12 +261,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
             return HologramImpl::new;
         }
 
-        return switch (version) {
-            case "1.20.3", "1.20.4" -> Hologram1_20_4::new;
-            case "1.20.2" -> Hologram1_20_2::new;
-            case "1.20", "1.20.1" -> Hologram1_20_1::new;
-            default -> null;
-        };
+        return null;
     }
 
     public void reloadCommands() {

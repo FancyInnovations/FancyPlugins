@@ -45,11 +45,6 @@ import de.oliver.fancynpcs.tests.PlaceholderApiEnv;
 import de.oliver.fancynpcs.tracker.TurnToPlayerTracker;
 import de.oliver.fancynpcs.tracker.VisibilityTracker;
 import de.oliver.fancynpcs.utils.OldSkinCacheMigrator;
-import de.oliver.fancynpcs.v1_20.PacketReader_1_20;
-import de.oliver.fancynpcs.v1_20_1.Npc_1_20_1;
-import de.oliver.fancynpcs.v1_20_2.Npc_1_20_2;
-import de.oliver.fancynpcs.v1_20_4.Npc_1_20_4;
-import de.oliver.fancynpcs.v1_20_6.Npc_1_20_6;
 import de.oliver.fancynpcs.v1_21_1.Npc_1_21_1;
 import de.oliver.fancynpcs.v1_21_11.Npc_1_21_11;
 import de.oliver.fancynpcs.v1_21_3.Npc_1_21_3;
@@ -171,10 +166,6 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             case "1.21.4" -> npcAdapter = Npc_1_21_4::new;
             case "1.21.2", "1.21.3" -> npcAdapter = Npc_1_21_3::new;
             case "1.21", "1.21.1" -> npcAdapter = Npc_1_21_1::new;
-            case "1.20.5", "1.20.6" -> npcAdapter = Npc_1_20_6::new;
-            case "1.20.3", "1.20.4" -> npcAdapter = Npc_1_20_4::new;
-            case "1.20.2" -> npcAdapter = Npc_1_20_2::new;
-            case "1.20.1", "1.20" -> npcAdapter = Npc_1_20_1::new;
             default -> npcAdapter = null;
         }
 
@@ -191,7 +182,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             fancyLogger.error("Unsupported minecraft server version.");
             getLogger().warning("--------------------------------------------------");
             getLogger().warning("Unsupported minecraft server version.");
-            getLogger().warning("This plugin only supports 1.20- 1.21.11");
+            getLogger().warning("This plugin only supports 1.21 - latest");
             getLogger().warning("Disabling the FancyNpcs plugin.");
             getLogger().warning("--------------------------------------------------");
             pluginManager.disablePlugin(this);
@@ -281,11 +272,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
         }
 
-        // use packet injection method
-        switch (mcVersion) {
-            case "1.20" -> pluginManager.registerEvents(new PacketReader_1_20(), instance);
-            default -> pluginManager.registerEvents(new PlayerUseUnknownEntityListener(), instance);
-        }
+        pluginManager.registerEvents(new PlayerUseUnknownEntityListener(), instance);
 
         if (PLAYER_NPCS_FEATURE_FLAG.isEnabled()) {
             pluginManager.registerEvents(new PlayerNpcsListener(), instance);

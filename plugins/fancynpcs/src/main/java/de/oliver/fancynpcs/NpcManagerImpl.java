@@ -33,6 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 public class NpcManagerImpl implements NpcManager {
 
@@ -250,28 +251,6 @@ public class NpcManagerImpl implements NpcManager {
                 logger.warn("Could not load location for npc '" + id + "'");
             }
 
-            if (location == null) {
-                String worldName = npcConfig.getString("npcs." + id + ".location.world");
-                World world = Bukkit.getWorld(worldName);
-
-                if (world == null) {
-                    world = (!ServerSoftware.isFolia()) ? new WorldCreator(worldName).createWorld() : null;
-                }
-
-                if (world == null) {
-                    logger.info("Could not load npc '" + id + "', because the world '" + worldName + "' is not loaded");
-                    continue;
-                }
-
-                double x = npcConfig.getDouble("npcs." + id + ".location.x");
-                double y = npcConfig.getDouble("npcs." + id + ".location.y");
-                double z = npcConfig.getDouble("npcs." + id + ".location.z");
-                float yaw = (float) npcConfig.getDouble("npcs." + id + ".location.yaw");
-                float pitch = (float) npcConfig.getDouble("npcs." + id + ".location.pitch");
-
-                location = new Location(world, x, y, z, yaw, pitch);
-            }
-
             SkinData skin = null;
             String skinIdentifier = npcConfig.getString("npcs." + id + ".skin.identifier", npcConfig.getString("npcs." + id + ".skin.uuid", ""));
             String skinVariantStr = npcConfig.getString("npcs." + id + ".skin.variant", SkinData.SkinVariant.AUTO.name());
@@ -311,6 +290,89 @@ public class NpcManagerImpl implements NpcManager {
             NamedTextColor glowingColor = NamedTextColor.NAMES.value(npcConfig.getString("npcs." + id + ".glowingColor", "white"));
             boolean turnToPlayer = npcConfig.getBoolean("npcs." + id + ".turnToPlayer");
             int turnToPlayerDistance = npcConfig.getInt("npcs." + id + ".turnToPlayerDistance", -1);
+
+            if (location == null) {
+                String worldName = npcConfig.getString("npcs." + id + ".location.world");
+
+                List<World> matchingWorlds = new ArrayList<>();
+                if (worldName.contains("*") || worldName.contains("?") || worldName.contains("[") || worldName.contains("{")) {
+                    Pattern worldPattern = Pattern.compile(worldName.replace("*", ".*").replace("?", "."));
+                    for (World w : Bukkit.getWorlds()) {
+                        if (worldPattern.matcher(w.getName()).matches()) {
+                            matchingWorlds.add(w);
+                        }
+                    }
+                } else {
+                    World world = Bukkit.getWorld(worldName);
+                    if (world == null) {
+                        world = (!ServerSoftware.isFolia()) ? new WorldCreator(worldName).createWorld() : null;
+                    }
+                    if (world != null) {
+                        matchingWorlds.add(world);
+                    }
+                }
+
+                if (matchingWorlds.isEmpty()) {
+                    logger.info("Could not load npc '" + id + "', because no world matching '" + worldName + "' is loaded");
+                    continue;
+                }
+
+                double x = npcConfig.getDouble("npcs." + id + ".location.x");
+                double y = npcConfig.getDouble("npcs." + id + ".location.y");
+                double z = npcConfig.getDouble("npcs." + id + ".location.z");
+                float yaw = (float) npcConfig.getDouble("npcs." + id + ".location.yaw");
+                float pitch = (float) npcConfig.getDouble("npcs." + id + ".location.pitch");
+
+                for (World world : matchingWorlds) {
+                    Location loc = new Location(world, x, y, z, yaw, pitch);
+
+                    Map<ActionTrigger, List<NpcAction.NpcActionData>> actionsForWorld = new ConcurrentHashMap<>();
+                    for (Map.Entry<ActionTrigger, List<NpcAction.NpcActionData>> entry : actions.entrySet()) {
+                        actionsForWorld.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+                    }
+
+                    Map<NpcAttribute, String> attributesForWorld = new HashMap<>(attributes);
+
+                    NpcData data = new NpcData(
+                            matchingWorlds.size() > 1 ? id + "_" + world.getName() : id,
+                            name,
+                            creator,
+                            displayName,
+                            skin,
+                            loc,
+                            showInTab,
+                            spawnEntity,
+                            collidable,
+                            glowing,
+                            glowingColor,
+                            type,
+                            new HashMap<>(),
+                            turnToPlayer,
+                            turnToPlayerDistance,
+                            null,
+                            actionsForWorld,
+                            interactionCooldown,
+                            scale,
+                            visibilityDistance,
+                            attributesForWorld,
+                            mirrorSkin
+                    );
+
+                    Npc npc = npcAdapter.apply(data);
+
+                    if (npcConfig.isConfigurationSection("npcs." + id + ".equipment")) {
+                        for (String equipmentSlotStr : npcConfig.getConfigurationSection("npcs." + id + ".equipment").getKeys(false)) {
+                            NpcEquipmentSlot equipmentSlot = NpcEquipmentSlot.parse(equipmentSlotStr);
+                            ItemStack item = npcConfig.getItemStack("npcs." + id + ".equipment." + equipmentSlotStr);
+                            npc.getData().addEquipment(equipmentSlot, item);
+                        }
+                    }
+
+                    npc.create();
+                    registerNpc(npc);
+                }
+                continue;
+            }
 
             Map<ActionTrigger, List<NpcAction.NpcActionData>> actions = new ConcurrentHashMap<>();
 

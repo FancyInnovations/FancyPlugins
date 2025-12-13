@@ -33,7 +33,7 @@ public class TurnToPlayerTracker implements Runnable {
                 if (Double.isNaN(distance)) {
                     continue;
                 }
-                
+
                 // Get NPC-specific turn distance or fall back to default
                 int npcTurnDistance = npcData.getTurnToPlayerDistance();
                 int effectiveTurnDistance = (npcTurnDistance == -1) ? defaultTurnToPlayerDistance : npcTurnDistance;
@@ -59,7 +59,7 @@ public class TurnToPlayerTracker implements Runnable {
                     if (wasPreviouslyLooking == null || !wasPreviouslyLooking) {
                         // Calling NpcStartLookingEvent from the main thread.
                         FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
-                            Bukkit.getPluginManager().callEvent(new NpcStartLookingEvent(npc, player));
+                            new NpcStartLookingEvent(npc, player).callEvent();
                         });
                     }
                     // Updating state if changed.
@@ -71,7 +71,7 @@ public class TurnToPlayerTracker implements Runnable {
                     }
                     // Calling NpcStopLookingEvent from the main thread.
                     FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
-                        Bukkit.getPluginManager().callEvent(new NpcStopLookingEvent(npc, player));
+                        new NpcStopLookingEvent(npc, player).callEvent();
                     });
                 }
             }

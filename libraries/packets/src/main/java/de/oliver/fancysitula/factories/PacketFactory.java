@@ -46,7 +46,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundPlayerInfoUpdatePacketImpl(actions, entries);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundPlayerInfoUpdatePacketImpl(actions, entries);
             }
             default ->
@@ -94,7 +94,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundAddEntityPacketImpl(entityId, entityUUID, entityType, x, y, z, yaw, pitch, headYaw, velocityX, velocityY, velocityZ, data);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundAddEntityPacketImpl(entityId, entityUUID, entityType, x, y, z, yaw, pitch, headYaw, velocityX, velocityY, velocityZ, data);
             }
             default ->
@@ -129,7 +129,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundPlayerInfoRemovePacketImpl(uuids);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundPlayerInfoRemovePacketImpl(uuids);
             }
             default ->
@@ -164,7 +164,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundRemoveEntitiesPacketImpl(entityIds);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundRemoveEntitiesPacketImpl(entityIds);
             }
             default ->
@@ -211,7 +211,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundTeleportEntityPacketImpl(entityId, x, y, z, yaw, pitch, onGround);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundTeleportEntityPacketImpl(entityId, x, y, z, yaw, pitch, onGround);
             }
             default ->
@@ -248,7 +248,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundRotateHeadPacketImpl(entityId, headYaw);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundRotateHeadPacketImpl(entityId, headYaw);
             }
             default ->
@@ -285,7 +285,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundSetEntityDataPacketImpl(entityId, entityData);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundSetEntityDataPacketImpl(entityId, entityData);
             }
             default ->
@@ -322,7 +322,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundSetEquipmentPacketImpl(entityId, equipment);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundSetEquipmentPacketImpl(entityId, equipment);
             }
             default ->
@@ -359,7 +359,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundSetPassengersPacketImpl(entityId, passengers);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundSetPassengersPacketImpl(entityId, passengers);
             }
             default ->
@@ -399,7 +399,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, createTeam);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, createTeam);
             }
             default ->
@@ -438,7 +438,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeTeam);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeTeam);
             }
             default ->
@@ -477,7 +477,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, updateTeam);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, updateTeam);
             }
             default ->
@@ -516,7 +516,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, addEntity);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, addEntity);
             }
             default ->
@@ -555,7 +555,7 @@ public class PacketFactory {
             case v1_21_3 -> {
                 return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeEntity);
             }
-            case v1_20_5, v1_20_6, v1_21, v1_21_1 -> {
+            case v1_21, v1_21_1 -> {
                 return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeEntity);
             }
             default ->

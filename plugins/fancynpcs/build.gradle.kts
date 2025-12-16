@@ -53,7 +53,7 @@ dependencies {
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:plugin-tests"))
     implementation(project(":libraries:config"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.0")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.3")
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")

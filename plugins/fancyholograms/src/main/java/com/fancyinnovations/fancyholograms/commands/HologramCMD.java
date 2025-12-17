@@ -11,6 +11,7 @@ import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import com.google.common.primitives.Ints;
 import de.oliver.fancylib.MessageHelper;
+import de.oliver.fancylib.colors.GlowingColor;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -195,7 +196,7 @@ public final class HologramCMD extends Command {
 
             final var usingNpcs = PluginUtils.isFancyNpcsEnabled();
 
-            List<String> suggestions = new ArrayList<>(Arrays.asList("traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
+            List<String> suggestions = new ArrayList<>(Arrays.asList("glowing", "traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
             suggestions.addAll(type.getCommands());
 
             return suggestions.stream().filter(input -> input.toLowerCase().startsWith(args[2].toLowerCase(Locale.ROOT))).toList();
@@ -208,6 +209,15 @@ public final class HologramCMD extends Command {
         // /holo edit [hologram] [option] {tab:contextual}
         if (args.length == 4) {
             final var suggestions = switch (args[2].toLowerCase(Locale.ROOT)) {
+                case "glowing" -> {
+                    final var values = new ArrayList<>(List.of(GlowingColor.values()));
+
+                    if (hologram.getData() instanceof DisplayHologramData displayData) {
+                        values.remove(displayData.getGlowingColor());
+                    }
+
+                    yield values.stream().map(Enum::name);
+                }
                 case "billboard" -> {
                     final var values = new ArrayList<>(List.of(Display.Billboard.values()));
 
@@ -379,6 +389,7 @@ public final class HologramCMD extends Command {
                 case "textshadow" -> new TextShadowCMD().run(player, hologram, args);
                 case "textalignment" -> new TextAlignmentCMD().run(player, hologram, args);
                 case "seethrough" -> new SeeThroughCMD().run(player, hologram, args);
+                case "glowing" -> new GlowingCMD().run(player, hologram, args);
 
                 // block data
                 case "block" -> new BlockCMD().run(player, hologram, args);

@@ -196,7 +196,7 @@ public final class HologramCMD extends Command {
 
             final var usingNpcs = PluginUtils.isFancyNpcsEnabled();
 
-            List<String> suggestions = new ArrayList<>(Arrays.asList("glowing", "traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
+            List<String> suggestions = new ArrayList<>(Arrays.asList("moveDown", "moveUp", "glowing", "traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
             suggestions.addAll(type.getCommands());
 
             return suggestions.stream().filter(input -> input.toLowerCase().startsWith(args[2].toLowerCase(Locale.ROOT))).toList();
@@ -255,7 +255,7 @@ public final class HologramCMD extends Command {
                 }
                 case "brightness" -> Stream.of("block", "sky");
                 case "textalignment" -> Arrays.stream(TextDisplay.TextAlignment.values()).map(Enum::name);
-                case "setline", "removeline" -> {
+                case "setline", "removeline", "movedown", "moveup" -> {
                     TextHologramData textData = (TextHologramData) hologram.getData();
                     yield IntStream.range(1, textData.getText().size() + 1).mapToObj(Integer::toString);
                 }
@@ -390,6 +390,7 @@ public final class HologramCMD extends Command {
                 case "textalignment" -> new TextAlignmentCMD().run(player, hologram, args);
                 case "seethrough" -> new SeeThroughCMD().run(player, hologram, args);
                 case "glowing" -> new GlowingCMD().run(player, hologram, args);
+                case "movedown" -> new MoveDownCMD().run(player, hologram, args);
 
                 // block data
                 case "block" -> new BlockCMD().run(player, hologram, args);

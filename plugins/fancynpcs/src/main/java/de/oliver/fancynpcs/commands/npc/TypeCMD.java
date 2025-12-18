@@ -8,7 +8,6 @@ import de.oliver.fancynpcs.api.events.NpcModifyEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
@@ -39,15 +38,17 @@ public enum TypeCMD {
                 npc.getData().getEquipment().clear();
             }
 
-            FancyNpcsPlugin.get().getNpcThread().submit(() -> {
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    npc.remove(onlinePlayer);
-                }
+            if (type == EntityType.ENDER_DRAGON) {
+                npc.removeForAll();
                 npc.create();
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    npc.spawn(onlinePlayer);
-                }
-            });
+                Bukkit.getOnlinePlayers().forEach(npc::checkAndUpdateVisibility);
+            } else {
+                FancyNpcsPlugin.get().getNpcThread().submit(() -> {
+                    npc.removeForAll();
+                    npc.create();
+                    Bukkit.getOnlinePlayers().forEach(npc::checkAndUpdateVisibility);
+                });
+            }
             translator.translate("npc_type_success").replace("npc", npc.getData().getName()).replace("type", type.name().toLowerCase()).send(sender);
         } else {
             translator.translate("command_npc_modification_cancelled").send(sender);

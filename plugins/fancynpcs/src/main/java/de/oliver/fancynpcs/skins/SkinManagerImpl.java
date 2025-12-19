@@ -183,8 +183,13 @@ public class SkinManagerImpl implements SkinManager, Listener {
                 }
             }
             if (id.equals(event.getId())) {
-                event.getSkin().setIdentifier(skin.getIdentifier());
-                npc.getData().setSkinData(event.getSkin());
+                final SkinData updatedSkin = new SkinData(
+                        skin.getIdentifier(),
+                        event.getSkin().getVariant(),
+                        event.getSkin().getTextureValue(),
+                        event.getSkin().getTextureSignature()
+                );
+                npc.getData().setSkinData(updatedSkin);
                 npc.removeForAll();
                 npc.spawnForAll();
                 FancyNpcs.getInstance().getFancyLogger().info("Updated skin for NPC: " + npc.getData().getName());

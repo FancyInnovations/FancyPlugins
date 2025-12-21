@@ -12,6 +12,7 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -203,8 +204,18 @@ public class HologramControllerImpl implements HologramController {
             NpcAttribute attribute = entry.getKey();
             String value = entry.getValue();
 
-            if (attribute.getName().equalsIgnoreCase("pose") && value.equalsIgnoreCase("sitting")) {
-                location.subtract(0, 0.5 * npcScale, 0);
+            if (npc.getData().getType() == EntityType.PLAYER) {
+                final var poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(npc.getData().getType(), "pose");
+                if (poseAttr != null) {
+                    final var pose = npc.getData().getAttributes().get(poseAttr);
+                    if (pose != null) {
+                        switch (pose.toLowerCase()) {
+                            case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
+                            case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
+                            case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);
+                        }
+                    }
+                }
             }
         }
 

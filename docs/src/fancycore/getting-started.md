@@ -5,6 +5,11 @@ icon: info
 # Getting started
 
 !!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
+!!!danger
 Be aware that this plugin is only made for Hytale servers. Only the latest version of Hytale is supported.
 !!!
 

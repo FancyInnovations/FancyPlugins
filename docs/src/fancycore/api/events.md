@@ -5,6 +5,11 @@ order: 9
 
 # Events API
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
 FancyCore has its own event system that allows you to listen to various events that happen in the FancyCore system.
 
 ## Registering an event listener

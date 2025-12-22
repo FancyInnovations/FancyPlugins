@@ -4,6 +4,11 @@ icon: dot
 
 # Getting started
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancydialogs](https://fancyinnovations.com/docs/minecraft-plugins/fancydialogs).
+!!!
+
 ## Include the API in your project
 
 To include the FancyNPCs API in your project, you need to add the following dependency to your `build.gradle.kts` or `pom.xml` file.

@@ -5,6 +5,12 @@ title: Player
 
 # Player placeholders
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
+
 | Name                                     | Identfier                 | Description                                                | Examples outputs                       |
 |------------------------------------------|---------------------------|------------------------------------------------------------|----------------------------------------|
 | Player balance (formatted)               | `player_balance`          | Displays the player's current balance (formatted)          | "0", "123", "123.45", "13,123.97"      |

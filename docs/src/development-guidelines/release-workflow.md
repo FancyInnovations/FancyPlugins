@@ -4,6 +4,11 @@ icon: dot
 
 # Release Workflow
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins](https://fancyinnovations.com/docs/minecraft-plugins).
+!!!
+
 This document describes the steps to be taken when releasing a new version of a plugin.
 
 ## Before the release

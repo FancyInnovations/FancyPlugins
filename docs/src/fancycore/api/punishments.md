@@ -5,6 +5,11 @@ order: 8
 
 # Punishment API
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
 FancyCore provides a comprehensive Punishment API that allows you to manage player punishments such as warnings, kicks, mutes, and bans.
 
 ## Using the Punishment Service

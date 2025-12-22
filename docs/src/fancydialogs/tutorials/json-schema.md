@@ -5,6 +5,11 @@ order: 10
 
 # JSON Schema
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancydialogs](https://fancyinnovations.com/docs/minecraft-plugins/fancydialogs).
+!!!
+
 In this tutorial, we will explore the JSON schema used by FancyDialogs to define dialogs. 
 This schema provides a structured way to create fancy dialogs.
 

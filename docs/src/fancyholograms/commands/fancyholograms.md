@@ -7,6 +7,11 @@ order: 9
 
 # /FancyHolograms
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancyholograms](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms).
+!!!
+
 ### Version
 
 Shows the current version of the plugin. It also shows possible updates.

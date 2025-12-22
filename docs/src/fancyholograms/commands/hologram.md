@@ -7,6 +7,11 @@ order: 10
 
 # /Hologram
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancyholograms](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms).
+!!!
+
 ## Manage holograms
 
 ### help

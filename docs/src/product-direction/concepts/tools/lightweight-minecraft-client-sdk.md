@@ -4,6 +4,12 @@ icon: dot
 
 # Lightweight Minecraft Client SDK
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/general](https://fancyinnovations.com/docs/general).
+!!!
+
+
 ## Problem
 
 We need a lightweight Minecraft Client which can easily run in GitHub Actions or other CI systems to run e2e tests.

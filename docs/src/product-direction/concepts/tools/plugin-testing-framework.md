@@ -4,6 +4,12 @@ icon: dot
 
 # Plugin Testing Framework
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/general](https://fancyinnovations.com/docs/general).
+!!!
+
+
 The Plugin Testing Framework is a tool that allows developers to test their plugins in a controlled environment. 
 It provides a set of tools and libraries that make it easy to create and run tests for plugins, ensuring that they work as expected and do not introduce any bugs or issues.
 

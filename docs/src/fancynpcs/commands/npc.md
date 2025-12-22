@@ -7,6 +7,11 @@ order: 10
 
 # /Npc
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancynpcs](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs).
+!!!
+
 The `/npc` command is the main command for managing NPCs. It allows you to create, modify, and remove NPCs. You can also customize NPCs by changing their type, skin, equipment, and more.
 
 ## Manage npcs

@@ -5,6 +5,11 @@ order: 7
 
 # Placeholder API
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
 FancyCore includes a Placeholders API that allows you to create and manage custom placeholders for use in various plugins.
 
 ## Parse placeholders

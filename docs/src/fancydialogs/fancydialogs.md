@@ -8,6 +8,11 @@ order: 90
 
 ![](../static/logos-and-banners/fancydialogs-banner.png)
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancydialogs](https://fancyinnovations.com/docs/minecraft-plugins/fancydialogs).
+!!!
+
 !!!
 Simple and lightweight dialogs plugin for Paper servers and other plugin developers.
 !!!

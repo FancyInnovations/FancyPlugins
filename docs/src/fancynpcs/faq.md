@@ -4,6 +4,11 @@ icon: book
 ---
 # FAQ
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancynpcs](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs).
+!!!
+
 ### Does FancyNpcs support Shopkeepers?
 
 - There is no official integration or addon for Shopkeepers

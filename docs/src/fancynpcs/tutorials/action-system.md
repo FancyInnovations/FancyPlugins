@@ -4,6 +4,11 @@ icon: dot
 
 # Action system
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancynpcs](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs).
+!!!
+
 The NPC Action System in FancyNPCs allows server administrators to create interactive and engaging NPCs by assigning actions that trigger based on player interactions or custom events. 
 This article explains the general concept of the system and provides a guide on how server admins can leverage it through commands.
 

@@ -8,6 +8,11 @@ order: 80
 
 ![](../static/logos-and-banners/fancyanalytics-banner.png)
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/web-services/fancyanalytics](https://fancyinnovations.com/docs/web-services/fancyanalytics).
+!!!
+
 !!!
 The modern analytics platform for Minecraft server owners and plugin developers
 !!!

@@ -4,6 +4,12 @@ icon: dot
 
 # Converters
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/general](https://fancyinnovations.com/docs/general).
+!!!
+
+
 There should be converters for other popular npc / hologram plugins to our plugin. 
 This means, you can convert your npcs from other plugins to FancyNpcs (the same with holograms and FancyHolograms). 
 This is a very important feature, as it allows users to easily migrate their existing npcs and holograms to our plugin without having to recreate them from scratch.

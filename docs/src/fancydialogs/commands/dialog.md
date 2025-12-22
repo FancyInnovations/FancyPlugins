@@ -7,6 +7,11 @@ order: 10
 
 # /Dialog
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancydialogs](https://fancyinnovations.com/docs/minecraft-plugins/fancydialogs).
+!!!
+
 ## List all dialogs
 
 Lists all registered dialogs.

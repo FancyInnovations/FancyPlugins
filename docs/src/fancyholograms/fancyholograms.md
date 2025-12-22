@@ -9,6 +9,11 @@ order: 100
 
 ![](../static/logos-and-banners/fancyholograms-banner.png)
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancyholograms](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms).
+!!!
+
 !!!
 Simple, lightweight and feature-rich hologram plugin for Paper and Folia servers using packets.
 !!!

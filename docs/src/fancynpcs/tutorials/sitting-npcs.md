@@ -4,6 +4,11 @@ icon: dot
 
 # Sitting NPCs
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancynpcs](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs).
+!!!
+
 You can make a NPC sit by following these steps:
 
 1. Create a NPC

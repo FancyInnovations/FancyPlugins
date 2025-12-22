@@ -4,6 +4,12 @@ icon: dot
 
 # Action Scripting
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/general](https://fancyinnovations.com/docs/general).
+!!!
+
+
 Currently, the npc action system is quite limited with the available action types. There is no way to create conditional actions or to have loops.
 This is where action scripting comes in. Action scripting allows you to create complex actions using a scripting language.
 

@@ -5,6 +5,11 @@ order: 10
 
 # Getting started
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
 ## Include the API in your project
 
 To include the FancyCore API in your project, you need to add the following dependency to your `build.gradle.kts` or `pom.xml` file.

@@ -5,6 +5,11 @@ order: 400
 
 # Events
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/web-services/fancyanalytics](https://fancyinnovations.com/docs/web-services/fancyanalytics).
+!!!
+
 **Events** are time-stamped, structured logs that describe something that **happened** in your application. 
 They are flexible, contextual, and great for tracking user behavior, system actions, feature usage, and more.
 

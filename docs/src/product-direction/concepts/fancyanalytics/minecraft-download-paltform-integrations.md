@@ -1,5 +1,11 @@
 # Minecraft Download Platform Integrations
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/general](https://fancyinnovations.com/docs/general).
+!!!
+
+
 Being able to see metrics like downloads, views and revenue for Minecraft plugins is crucial for developers to understand their audience and improve their products.
 This document outlines the integration of Minecraft download platforms with FancyAnalytics to provide these insights.
 

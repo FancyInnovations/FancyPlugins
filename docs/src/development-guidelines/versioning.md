@@ -4,6 +4,11 @@ order: 9
 ---
 # Versioning
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins](https://fancyinnovations.com/docs/minecraft-plugins).
+!!!
+
 We use [Semantic Versioning](https://semver.org/) (Semver) for versioning.
 
 The version is structured as follows: `major.minor.patch.<build id>`. The build id is optional and is only used for

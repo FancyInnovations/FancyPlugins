@@ -5,6 +5,11 @@ order: 500
 
 # Metrics
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/web-services/fancyanalytics](https://fancyinnovations.com/docs/web-services/fancyanalytics).
+!!!
+
 Metrics are **numerical values** that represent the state, performance, or behavior of your application over time. 
 They are the core building blocks of the analytics platform — enabling insights, dashboards, alerts, and aggregation across many data sources.
 

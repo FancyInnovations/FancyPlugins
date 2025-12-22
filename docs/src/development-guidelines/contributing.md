@@ -4,6 +4,11 @@ order: 80
 ---
 # Contributing
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins](https://fancyinnovations.com/docs/minecraft-plugins).
+!!!
+
 This topic is all about the development guidelines that we follow. It is important to follow these guidelines to maintain the quality of the code and to make sure that the code is consistent and easy to read.
 
 ## Pull Requests

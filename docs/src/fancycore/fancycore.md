@@ -8,6 +8,11 @@ order: 90
 
 ![](../static/logos-and-banners/fancycore-banner.png)
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
 !!!
 Essential features every Hytale server needs. From permission management over world management to economy and more.
 !!!

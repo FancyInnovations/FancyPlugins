@@ -5,6 +5,11 @@ order: 9
 
 # Welcome dialog
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancydialogs](https://fancyinnovations.com/docs/minecraft-plugins/fancydialogs).
+!!!
+
 You can configure a dialog to be shown to players when they join the server for the first time.
 A default welcome dialog is included with FancyDialogs, but you can customize it or create your own welcome dialog.
 

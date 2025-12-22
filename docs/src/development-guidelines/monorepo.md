@@ -7,6 +7,11 @@ icon: dot
 
 #
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins](https://fancyinnovations.com/docs/minecraft-plugins).
+!!!
+
 ## What is a monorepo?
 
 A monorepo (monolithic repository) is a version control strategy where multiple related projects, such as Minecraft plugins and libraries, reside within a single repository. 

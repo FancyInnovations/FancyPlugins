@@ -6,6 +6,11 @@ order: 500
 # Minecraft Servers
 
 !!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/web-services/fancyanalytics](https://fancyinnovations.com/docs/web-services/fancyanalytics).
+!!!
+
+!!!danger
 The FancyAnalytics platform is still in development. Expect breaking changes in the future.
 !!!
 

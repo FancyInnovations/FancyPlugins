@@ -7,6 +7,11 @@ order: 9
 
 # /FancyNpcs
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancynpcs](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs).
+!!!
+
 ### Version
 
 - **Syntax**:  `/fancynpcs version`

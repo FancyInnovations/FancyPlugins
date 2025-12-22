@@ -6,6 +6,11 @@ title: FancyInnovations
 
 ![](static/logos-and-banners/fancyinnovations-banner.png)
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins](https://fancyinnovations.com/docs/minecraft-plugins).
+!!!
+
 Welcome to the FancyInnovations documentation! Here you'll find documentation about how to use the plugins, including installation, commands and API.
 
 ## About FancyInnovations

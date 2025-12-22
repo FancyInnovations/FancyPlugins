@@ -4,6 +4,11 @@ icon: dot
 
 # Clickable holograms
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancyholograms](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms).
+!!!
+
 Interactions with holograms is not a feature of FancyHolograms yet, but there is a workaround for this.
 
 1. Create your hologram with the text you want.

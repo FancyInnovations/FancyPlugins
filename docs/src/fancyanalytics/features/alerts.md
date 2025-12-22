@@ -5,6 +5,11 @@ order: 100
 
 # Alerts (soon)
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/web-services/fancyanalytics](https://fancyinnovations.com/docs/web-services/fancyanalytics).
+!!!
+
 Our analytics platform allows you to define **alerts** that notify you when something important happens — a metric crosses a threshold, an event occurs, or an error spikes.
 
 With alerts, you can **react faster**, **stay informed**, and **automate monitoring** for your apps, plugins, or services.

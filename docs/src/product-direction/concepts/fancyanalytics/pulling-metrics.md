@@ -1,5 +1,11 @@
 # Pulling Metrics
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/general](https://fancyinnovations.com/docs/general).
+!!!
+
+
 At the moment, the application actively pushes data to FancyAnalytics. 
 It would be nice to have the ability that FancyAnalytics can pull data from the application. 
 This would allow FancyAnalytics to be more flexible and not rely on the application to send data. 

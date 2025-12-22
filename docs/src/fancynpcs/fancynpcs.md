@@ -9,6 +9,11 @@ order: 200
 
 ![](../static/logos-and-banners/fancynpcs-banner.png)
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancynpcs](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs).
+!!!
+
 !!!
 Simple, lightweight and feature-rich NPC plugin for Paper and Folia servers using packets.
 !!!

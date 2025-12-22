@@ -7,6 +7,11 @@ title: World
 
 # Commands for the world management system
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/hytale-plugins/fancycore](https://fancyinnovations.com/docs/hytale-plugins/fancycore).
+!!!
+
 !!!warning
 The command list is not complete and not all commands are properly documented yet.
 Some commands might not be implemented yet.

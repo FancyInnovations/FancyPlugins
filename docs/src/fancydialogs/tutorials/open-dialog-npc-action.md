@@ -5,6 +5,11 @@ order: 7
 
 # Open dialog npc action
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancydialogs](https://fancyinnovations.com/docs/minecraft-plugins/fancydialogs).
+!!!
+
 !!!warning
 This action is only available if [FancyDialogs](https://modrinth.com/plugin/fancydialogs) AND [FancyNpcs](https://modrinth.com/plugin/fancynpcs) is installed on the server.
 !!!

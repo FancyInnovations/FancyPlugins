@@ -4,6 +4,11 @@ icon: book
 ---
 # FAQ
 
+!!!danger
+This is the old documentation site for FancyInnovations, which is no longer maintained.
+The new documentation site can be found at [fancyinnovations.com/docs/minecraft-plugins/fancyholograms](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms).
+!!!
+
 ### How to modify each line in a hologram?
 
 Per-line settings (such as scale or background) are not supported in FancyHolograms due to a limitation with display entities.

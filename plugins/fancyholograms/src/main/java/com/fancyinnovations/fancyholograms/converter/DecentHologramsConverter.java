@@ -144,6 +144,7 @@ public class DecentHologramsConverter extends HologramConverter {
         hologram.setVisibilityDistance((int) displayRange);
         hologram.setBillboard(Display.Billboard.VERTICAL);
         hologram.setPersistent(true);
+        hologram.setFilePath(hologramId);
 
         List<HologramData> results = new ArrayList<>();
         if (processIcons) {
@@ -151,6 +152,10 @@ public class DecentHologramsConverter extends HologramConverter {
         } else {
             results.add(hologram);
         }
+
+        // Offset to match DecentHolograms positioning (top-anchored vs center-anchored)
+        int lineCount = hologram.getText().size();
+        hologram.setTranslation(new Vector3f(0f, -(lineCount * TEXT_DISPLAY_LINE_HEIGHT) / 2f, 0f));
 
         return results;
     }
@@ -198,6 +203,7 @@ public class DecentHologramsConverter extends HologramConverter {
                 data.setTranslation(new Vector3f(0f, currentYOffset, 0f));
                 data.setVisibilityDistance(base.getVisibilityDistance());
                 data.setPersistent(true);
+                data.setFilePath(formattedId);
 
                 float h = TEXT_DISPLAY_LINE_HEIGHT + 0.12f;
 

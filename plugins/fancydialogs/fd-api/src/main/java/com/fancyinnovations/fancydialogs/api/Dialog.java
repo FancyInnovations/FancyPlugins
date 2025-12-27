@@ -32,6 +32,15 @@ public abstract class Dialog {
     abstract public void open(Player player);
 
     /**
+     * Opens the dialog for the specified player with arguments.
+     * Arguments can be referenced in dialog content using {arg:0}, {arg:1}, etc.
+     *
+     * @param player the player to open the dialog for
+     * @param args   the arguments to pass to the dialog
+     */
+    abstract public void open(Player player, String... args);
+
+    /**
      * Closes the dialog for the specified player.
      *
      * @param player the player to close the dialog for

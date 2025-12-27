@@ -44,6 +44,8 @@ public class NpcData {
     private Map<NpcAttribute, String> attributes;
     private NpcVisibility visibility;
     private boolean isDirty;
+    private String modelName;
+    private float modelEyeHeight = -1;
 
     public NpcData(
             String id,
@@ -122,6 +124,7 @@ public class NpcData {
         this.mirrorSkin = false;
         this.visibility = NpcVisibility.ALL;
         this.isDirty = true;
+        this.modelName = null;
     }
 
     public String getId() {
@@ -419,5 +422,25 @@ public class NpcData {
 
     public void setDirty(boolean dirty) {
         isDirty = dirty;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public NpcData setModelName(String modelName) {
+        this.modelName = modelName;
+        isDirty = true;
+        return this;
+    }
+
+    public float getModelEyeHeight() {
+        return modelEyeHeight;
+    }
+
+    public NpcData setModelEyeHeight(float modelEyeHeight) {
+        this.modelEyeHeight = modelEyeHeight;
+        isDirty = true;
+        return this;
     }
 }

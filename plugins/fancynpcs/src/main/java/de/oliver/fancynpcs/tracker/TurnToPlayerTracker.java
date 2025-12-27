@@ -39,20 +39,23 @@ public class TurnToPlayerTracker implements Runnable {
                 int effectiveTurnDistance = (npcTurnDistance == -1) ? defaultTurnToPlayerDistance : npcTurnDistance;
 
                 if (npcData.isTurnToPlayer() && distance < effectiveTurnDistance) {
-                    // Calculate the base eye height for the entity type
-                    double baseEyeHeight = getEntityEyeHeight(npcData.getType());
+                    double eyeHeight;
+                    if (npcData.getModelName() != null && npcData.getModelEyeHeight() >= 0) {
+                        eyeHeight = npcData.getModelEyeHeight();
+                    } else {
+                        eyeHeight = getEntityEyeHeight(npcData.getType()) * npcData.getScale();
+                    }
 
-                    // Adjust the NPC location Y coordinate based on the scale
                     Location adjustedNpcLocation = npcLocation.clone();
-                    adjustedNpcLocation.setY(npcLocation.getY() + (baseEyeHeight * npcData.getScale()));
+                    adjustedNpcLocation.setY(npcLocation.getY() + eyeHeight);
 
-                    // Calculate direction from adjusted NPC eye position to player eye position
                     Location playerEyeLocation = playerLocation.clone();
                     playerEyeLocation.setY(playerLocation.getY() + player.getEyeHeight());
 
                     Location newLoc = playerEyeLocation.clone();
                     newLoc.setDirection(newLoc.subtract(adjustedNpcLocation).toVector());
                     npc.lookAt(player, newLoc);
+
                     // Setting NPC to be looking at the player and getting the value previously stored (or not) inside a map.
                     Boolean wasPreviouslyLooking = npc.getIsLookingAtPlayer().put(player.getUniqueId(), true);
                     // Comparing the previous state with current state to prevent event from being called continuously.

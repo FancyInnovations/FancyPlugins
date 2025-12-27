@@ -66,6 +66,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.6")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.14")
+    compileOnly("io.github.toxicity188:bettermodel:1.15.1")
 }
 
 paper {
@@ -87,6 +88,10 @@ paper {
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }
         register("PlotSquared") {
+            required = false
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+        register("BetterModel") {
             required = false
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }

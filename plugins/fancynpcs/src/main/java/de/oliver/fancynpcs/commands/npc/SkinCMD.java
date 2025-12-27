@@ -45,6 +45,11 @@ public enum SkinCMD {
             return;
         }
 
+        if (npc.getData().getModelName() != null) {
+            translator.translate("command_unsupported_model_npc").send(sender);
+            return;
+        }
+
         final boolean isMirror = skin.equalsIgnoreCase("@mirror");
         final boolean isNone = skin.equalsIgnoreCase("@none");
         if (isMirror) {

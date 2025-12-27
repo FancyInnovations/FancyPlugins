@@ -213,6 +213,15 @@ public class NpcManagerImpl implements NpcManager {
                 }
             }
 
+            if (data.getModelName() != null) {
+                npcConfig.set("npcs." + data.getId() + ".model.name", data.getModelName());
+                if (data.getModelEyeHeight() >= 0) {
+                    npcConfig.set("npcs." + data.getId() + ".model.eyeHeight", data.getModelEyeHeight());
+                }
+            } else {
+                npcConfig.set("npcs." + data.getId() + ".model", null);
+            }
+
             npc.setDirty(false);
         }
 
@@ -436,6 +445,13 @@ public class NpcManagerImpl implements NpcManager {
                     ItemStack item = npcConfig.getItemStack("npcs." + id + ".equipment." + equipmentSlotStr);
                     npc.getData().addEquipment(equipmentSlot, item);
                 }
+            }
+
+            String modelName = npcConfig.getString("npcs." + id + ".model.name");
+            if (modelName != null && !modelName.isEmpty()) {
+                npc.getData().setModelName(modelName);
+                float eyeHeight = (float) npcConfig.getDouble("npcs." + id + ".model.eyeHeight", -1);
+                npc.getData().setModelEyeHeight(eyeHeight);
             }
 
             npc.getData().setVisibility(visibility);

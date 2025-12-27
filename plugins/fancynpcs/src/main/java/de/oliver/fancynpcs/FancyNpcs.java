@@ -30,6 +30,9 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcData;
 import de.oliver.fancynpcs.api.NpcManager;
 import de.oliver.fancynpcs.api.actions.types.*;
+import de.oliver.fancynpcs.bettermodel.BetterModelHook;
+import de.oliver.fancynpcs.bettermodel.ModelInteractionBridge;
+import de.oliver.fancynpcs.bettermodel.NpcModelController;
 import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.api.skins.SkinManager;
 import de.oliver.fancynpcs.commands.CloudCommandManager;
@@ -97,6 +100,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
     private ActionManagerImpl actionManager;
     private VisibilityTracker visibilityTracker;
     private boolean usingPlotSquared;
+    private NpcModelController modelController;
 
     public FancyNpcs() {
         instance = this;
@@ -212,6 +216,12 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         actionManager.registerAction(new BlockUntilDoneAction());
         actionManager.registerAction(new NeedPermissionAction());
         actionManager.registerAction(new PlaySoundAction());
+        actionManager.registerAction(new PlayAnimationAction());
+
+        if (BetterModelHook.isAvailable()) {
+            modelController = new NpcModelController();
+            fancyLogger.info("BetterModel integration enabled");
+        }
 
         skinManager = new SkinManagerImpl(new UUIDFileCache(), new SkinCacheFile(), new SkinCacheMemory(), MojangQueue.get(), MineSkinQueue.get());
         OldSkinCacheMigrator.migrate();
@@ -271,6 +281,10 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         }
 
         pluginManager.registerEvents(new PlayerUseUnknownEntityListener(), instance);
+
+        if (BetterModelHook.isAvailable() && modelController != null) {
+            pluginManager.registerEvents(new ModelInteractionBridge(modelController), instance);
+        }
 
         if (PLAYER_NPCS_FEATURE_FLAG.isEnabled()) {
             pluginManager.registerEvents(new PlayerNpcsListener(), instance);
@@ -598,6 +612,10 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
 
     public boolean isUsingPlotSquared() {
         return usingPlotSquared;
+    }
+
+    public NpcModelController getModelController() {
+        return modelController;
     }
 
     @Override

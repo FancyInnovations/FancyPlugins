@@ -115,6 +115,8 @@ public class NpcModifyEvent extends Event implements Cancellable {
         SERVER_COMMAND_SET,
         SERVER_COMMAND_REMOVE,
         SERVER_COMMAND_CLEAR,
-        SERVER_COMMAND_SEND_RANDOMLY
+        SERVER_COMMAND_SEND_RANDOMLY,
+        // Model.
+        MODEL
     }
 }

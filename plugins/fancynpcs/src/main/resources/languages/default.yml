@@ -88,6 +88,7 @@ messages:
   command_invalid_interval: "<dark_gray>› {errorColor}Argument {warningColor}{input}{errorColor} is not a valid duration of time."
   command_invalid_enum_generic: "<dark_gray>› {errorColor}Argument {warningColor}{input}{errorColor} is not a valid {enum}."
   command_unsupported_npc_type: "<dark_gray>› {errorColor}This NPC type does not support this feature."
+  command_unsupported_model_npc: "<dark_gray>› {errorColor}This command is not available for NPCs with a model. Remove the model first with {warningColor}/npc model <npc> @none{errorColor}."
   command_input_contains_blocked_command: "<dark_gray>› {errorColor}This command is not allowed for use in interactions."
   command_npc_modification_cancelled: "<dark_gray>› {errorColor}NPC modification has been cancelled by the API."
 
@@ -368,3 +369,15 @@ messages:
   # Commands (npc center)
   npc_center_success: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> has been centered to {warningColor}{x}<gray>, {warningColor}{y}<gray>, {warningColor}{z}<gray>."
   npc_center_failure_no_location: "<dark_gray>› {errorColor}NPC {warningColor}{npc}{errorColor} has no valid location."
+
+  # Commands (npc model) - BetterModel Integration
+  bettermodel_not_available: "<dark_gray>› {errorColor}BetterModel is not installed or not enabled."
+  model_not_found: "<dark_gray>› {errorColor}Model {warningColor}{model}{errorColor} does not exist."
+  model_apply_failed: "<dark_gray>› {errorColor}Failed to apply model {warningColor}{model}{errorColor}."
+  npc_model_set: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is now using model {warningColor}{model}<gray>."
+  npc_model_info: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is using model {warningColor}{model}<gray>."
+  npc_model_removed: "<dark_gray>› <gray>Model has been removed from NPC {warningColor}{npc}<gray>."
+  npc_model_none: "<dark_gray>› {errorColor}NPC {warningColor}{npc}{errorColor} does not have a model assigned."
+  npc_model_eyeheight_set: "<dark_gray>› <gray>Eye height for NPC {warningColor}{npc}<gray> has been set to {warningColor}{height}<gray> blocks."
+  animation_not_found: "<dark_gray>› {errorColor}Animation {warningColor}{animation}{errorColor} does not exist for model {warningColor}{model}{errorColor}."
+  npc_animation_played: "<dark_gray>› <gray>Playing animation {warningColor}{animation}<gray> on NPC {warningColor}{npc}<gray>."

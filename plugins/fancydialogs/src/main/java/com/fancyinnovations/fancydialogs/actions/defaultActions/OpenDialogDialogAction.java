@@ -18,13 +18,19 @@ public class OpenDialogDialogAction implements DialogAction {
             return;
         }
 
-        Dialog targetDialog = FancyDialogsPlugin.get().getDialogRegistry().get(data);
+        // Parse data as: dialogId [arg1] [arg2] ...
+        String[] parts = data.split(" ");
+        String dialogId = parts[0];
+        String[] args = new String[parts.length - 1];
+        System.arraycopy(parts, 1, args, 0, args.length);
+
+        Dialog targetDialog = FancyDialogsPlugin.get().getDialogRegistry().get(dialogId);
         if (targetDialog == null) {
-            FancyDialogsPlugin.get().getFancyLogger().warn("Dialog with ID '" + data + "' not found.");
+            FancyDialogsPlugin.get().getFancyLogger().warn("Dialog with ID '" + dialogId + "' not found.");
             return;
         }
 
-        targetDialog.open(player);
+        targetDialog.open(player, args);
     }
 
 }

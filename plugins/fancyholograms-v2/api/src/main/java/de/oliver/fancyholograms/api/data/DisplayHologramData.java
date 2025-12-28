@@ -204,7 +204,8 @@ public class DisplayHologramData extends HologramData {
                 .setVisibilityDistance(this.getVisibilityDistance())
                 .setVisibility(this.getVisibility())
                 .setPersistent(this.isPersistent())
-                .setLinkedNpcName(this.getLinkedNpcName());
+                .setLinkedNpcName(this.getLinkedNpcName())
+                .setYOffset(this.getYOffset());
 
         return displayHologramData;
     }

@@ -54,6 +54,7 @@ public final class HologramCMD extends Command {
             <%primary_color%>- /hologram edit <hologram> textShadow <true|false> <dark_gray>- <white>Enables/disables the text shadow
             <%primary_color%>- /hologram edit <hologram> textAlignment <alignment> <dark_gray>- <white>Sets the text alignment
             <%primary_color%>- /hologram edit <hologram> seeThrough <true|false> <dark_gray>- <white>Enables/disables whether the text can be seen through blocks
+            <%primary_color%>- /hologram edit <hologram> yOffset <value> <dark_gray>- <white>Adjusts the NPC y offset
             <%primary_color%>- /hologram edit <hologram> shadowRadius <value> <dark_gray>- <white>Changes the shadow radius of the hologram
             <%primary_color%>- /hologram edit <hologram> shadowStrength <value> <dark_gray>- <white>Changes the shadow strength of the hologram
             <%primary_color%>- /hologram edit <hologram> brightness <block|sky> <0-15> <dark_gray>- <white>Changes the brightness of the hologram
@@ -196,7 +197,7 @@ public final class HologramCMD extends Command {
 
             final var usingNpcs = PluginUtils.isFancyNpcsEnabled();
 
-            List<String> suggestions = new ArrayList<>(Arrays.asList("moveDown", "moveUp", "glowing", "traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
+            List<String> suggestions = new ArrayList<>(Arrays.asList("moveDown", "moveUp", "glowing", "traits", "position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "yOffset", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
             suggestions.addAll(type.getCommands());
 
             return suggestions.stream().filter(input -> input.toLowerCase().startsWith(args[2].toLowerCase(Locale.ROOT))).toList();
@@ -374,6 +375,7 @@ public final class HologramCMD extends Command {
                 case "updatetextinterval" -> new UpdateTextIntervalCMD().run(player, hologram, args);
                 case "visibilitydistance" -> new VisibilityDistanceCMD().run(player, hologram, args);
                 case "visibility" -> new VisibilityCMD().run(player, hologram, args);
+                case "yoffset" -> new YOffsetCMD().run(player, hologram, args);
                 case "linkwithnpc" -> new LinkWithNpcCMD().run(player, hologram, args);
                 case "shadowradius" -> new ShadowRadiusCMD().run(player, hologram, args);
                 case "shadowstrength" -> new ShadowStrengthCMD().run(player, hologram, args);

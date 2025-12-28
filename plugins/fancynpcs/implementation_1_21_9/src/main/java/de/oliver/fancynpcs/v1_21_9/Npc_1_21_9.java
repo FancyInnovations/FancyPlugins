@@ -6,6 +6,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.JavaOps;
 import de.oliver.fancylib.ReflectionUtils;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
@@ -18,6 +19,7 @@ import net.minecraft.Optionull;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.RemoteChatSession;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
@@ -251,6 +253,14 @@ public class Npc_1_21_9 extends Npc {
 
         net.kyori.adventure.text.Component displayName = ModernChatColorHandler.translate(data.getDisplayName(), serverPlayer.getBukkitEntity());
         Component vanillaComponent = PaperAdventure.asVanilla(displayName);
+        
+        // Validate MiniMessage syntax
+        try {
+            ComponentSerialization.CODEC.encodeStart(JavaOps.INSTANCE, vanillaComponent);
+        } catch (Exception e) {
+            vanillaComponent = Component.literal("Invalid displayname (check MiniMessage syntax)");
+        }
+
         if (!(npc instanceof ServerPlayer)) {
             npc.setCustomName(vanillaComponent);
             npc.setCustomNameVisible(true);

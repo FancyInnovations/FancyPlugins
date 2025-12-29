@@ -46,16 +46,19 @@ public final class DialogCMD {
     }
 
     @Command("dialog open <dialog>")
-    @Description("Opens a dialog (for a player) by its ID")
+    @Description("Opens a dialog (for a player) by its ID with optional arguments")
     @CommandPermission("fancydialogs.commands.dialog.open")
     public void open(
             BukkitCommandActor actor,
             Dialog dialog,
-            @Optional EntitySelector<Player> target
+            @Optional EntitySelector<Player> target,
+            @Optional String[] args
     ) {
+        String[] dialogArgs = args != null ? args : new String[0];
+
         if (target == null) {
             if (actor.isPlayer()) {
-                dialog.open(actor.asPlayer());
+                dialog.open(actor.asPlayer(), dialogArgs);
                 translator.translate("commands.dialog.open.self")
                         .replace("id", dialog.getId())
                         .send(actor.sender());
@@ -66,7 +69,7 @@ public final class DialogCMD {
             }
         } else {
             for (Player player : target) {
-                dialog.open(player);
+                dialog.open(player, dialogArgs);
             }
 
             Collection<String> players = target.stream()

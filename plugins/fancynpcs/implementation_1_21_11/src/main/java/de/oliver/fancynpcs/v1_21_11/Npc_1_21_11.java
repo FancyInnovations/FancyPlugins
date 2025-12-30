@@ -270,12 +270,15 @@ public class Npc_1_21_11 extends Npc {
         }
 
         if (data.getDisplayName().equalsIgnoreCase("<empty>")) {
+            Component empty = Component.empty();
+            team.setPlayerPrefix(empty);
+            npcPlayer.listName = empty;
             team.setNameTagVisibility(Team.Visibility.NEVER);
-            npc.setCustomName(null);
-            npc.setCustomNameVisible(false);
         } else {
-            team.setNameTagVisibility(Team.Visibility.ALWAYS);
+            team.setPlayerPrefix(vanillaComponent);
+            npcPlayer.listName = vanillaComponent;
         }
+
 
         if (npc instanceof ServerPlayer npcPlayer) {
             team.setPlayerPrefix(vanillaComponent);

@@ -332,7 +332,7 @@ messages:
   npc_skin_set_none: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is no longer using any skin."
   npc_skin_set_later: "<hover:show_text:'{warningColor}Still loading after more than 30 seconds?<newline><gray>Check console for potential errors and verify everything is correct. Try again in a brief moment...'><dark_gray>› <gray>Skin should be applied in a few seconds... <#848484>ℹ</hover>"
   npc_skin_failure_invalid_url:
-    - "<click:open_url:'https://docs.fancyinnovations.com/fancynpcs/faq/#urls-as-skin'><hover:show_text:'{warningColor}What does that mean?<newline><gray>Click here to find out more about this message.'><dark_gray>› {errorColor}Could not load skin from the specified URL."
+    - "<click:open_url:'https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/faq#urls-as-skin'><hover:show_text:'{warningColor}What does that mean?<newline><gray>Click here to find out more about this message.'><dark_gray>› {errorColor}Could not load skin from the specified URL."
     - "<dark_gray>› <gray>Ensure that the URL points directly to a texture file. <#848484>ℹ</hover></click>"
   npc_skin_failure_invalid_file:
     - "<dark_gray>› {errorColor}Could not load skin from the specified file."
@@ -341,7 +341,7 @@ messages:
     - "<dark_gray>› {errorColor}Could not load skin from the specified username."
     - "<dark_gray>› <gray>Ensure that the username is a valid Minecraft account."
   npc_skin_failure_invalid_placeholder:
-    - "<click:open_url:'https://docs.fancyinnovations.com/fancynpcs/faq/#placeholders-as-skin'><hover:show_text:'{warningColor}What does that mean?<newline><gray>Click here to find out more about this message.'><dark_gray>› {errorColor}Could not load skin from the specified placeholder."
+    - "<click:open_url:'https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/faq#placeholders-as-skin'><hover:show_text:'{warningColor}What does that mean?<newline><gray>Click here to find out more about this message.'><dark_gray>› {errorColor}Could not load skin from the specified placeholder."
     - "<dark_gray>› <gray>Ensure that the placeholder does not require"
     - "<dark_gray>›  <gray>a player instance to be parsed. <#848484>ℹ</hover>"
 

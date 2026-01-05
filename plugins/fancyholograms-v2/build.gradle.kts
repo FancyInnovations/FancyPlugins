@@ -36,9 +36,6 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancyholograms-v2:api"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_20_4", configuration = "reobf"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_20_2", configuration = "reobf"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_20_1", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }

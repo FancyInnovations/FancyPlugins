@@ -38,11 +38,6 @@ dependencies {
     implementation(project(":plugins:fancynpcs:implementation_1_21_4"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_3"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_1"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_6"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_4", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_2", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_1", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }

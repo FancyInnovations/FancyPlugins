@@ -607,4 +607,78 @@ public class PacketFactory {
                     throw new IllegalArgumentException("Unsupported server version: " + ServerVersion.getCurrentVersion());
         }
     }
+
+    /**
+     * Creates a new FS_ClientboundUpdateAttributesPacket instance based on the server version
+     *
+     * @param entityId   ID of the entity to update attributes for
+     * @param attributes List of attribute snapshots to update
+     */
+    public FS_ClientboundUpdateAttributesPacket createUpdateAttributesPacket(
+            int entityId,
+            List<FS_ClientboundUpdateAttributesPacket.AttributeSnapshot> attributes
+    ) {
+        switch (ServerVersion.getCurrentVersion()) {
+            case v1_21_11 -> {
+                return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
+            }
+            case v1_21_9, v1_21_10 -> {
+                return new de.oliver.fancysitula.versions.v1_21_9.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
+            }
+            case v1_21_6, v1_21_7, v1_21_8 -> {
+                return new de.oliver.fancysitula.versions.v1_21_6.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
+            }
+            case v1_21_5 -> {
+                return new de.oliver.fancysitula.versions.v1_21_5.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
+            }
+            case v1_21_4 -> {
+                return new de.oliver.fancysitula.versions.v1_21_4.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
+            }
+            case v1_21_3 -> {
+                return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
+            }
+            case v1_21, v1_21_1 -> {
+                return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
+            }
+            default ->
+                    throw new IllegalArgumentException("Unsupported server version: " + ServerVersion.getCurrentVersion());
+        }
+    }
+
+    /**
+     * Creates a new FS_ClientboundAnimatePacket instance based on the server version
+     *
+     * @param entityId    ID of the entity to animate
+     * @param animationId ID of the animation (see FS_ClientboundAnimatePacket constants)
+     */
+    public FS_ClientboundAnimatePacket createAnimatePacket(
+            int entityId,
+            int animationId
+    ) {
+        switch (ServerVersion.getCurrentVersion()) {
+            case v1_21_11 -> {
+                return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundAnimatePacketImpl(entityId, animationId);
+            }
+            case v1_21_9, v1_21_10 -> {
+                return new de.oliver.fancysitula.versions.v1_21_9.packets.ClientboundAnimatePacketImpl(entityId, animationId);
+            }
+            case v1_21_6, v1_21_7, v1_21_8 -> {
+                return new de.oliver.fancysitula.versions.v1_21_6.packets.ClientboundAnimatePacketImpl(entityId, animationId);
+            }
+            case v1_21_5 -> {
+                return new de.oliver.fancysitula.versions.v1_21_5.packets.ClientboundAnimatePacketImpl(entityId, animationId);
+            }
+            case v1_21_4 -> {
+                return new de.oliver.fancysitula.versions.v1_21_4.packets.ClientboundAnimatePacketImpl(entityId, animationId);
+            }
+            case v1_21_3 -> {
+                return new de.oliver.fancysitula.versions.v1_21_3.packets.ClientboundAnimatePacketImpl(entityId, animationId);
+            }
+            case v1_21, v1_21_1 -> {
+                return new de.oliver.fancysitula.versions.v1_20_6.packets.ClientboundAnimatePacketImpl(entityId, animationId);
+            }
+            default ->
+                    throw new IllegalArgumentException("Unsupported server version: " + ServerVersion.getCurrentVersion());
+        }
+    }
 }

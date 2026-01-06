@@ -45,13 +45,8 @@ import de.oliver.fancynpcs.tests.PlaceholderApiEnv;
 import de.oliver.fancynpcs.tracker.TurnToPlayerTracker;
 import de.oliver.fancynpcs.tracker.VisibilityTracker;
 import de.oliver.fancynpcs.utils.OldSkinCacheMigrator;
-import de.oliver.fancynpcs.v1_21_1.Npc_1_21_1;
-import de.oliver.fancynpcs.v1_21_11.Npc_1_21_11;
-import de.oliver.fancynpcs.v1_21_3.Npc_1_21_3;
-import de.oliver.fancynpcs.v1_21_4.Npc_1_21_4;
-import de.oliver.fancynpcs.v1_21_5.Npc_1_21_5;
-import de.oliver.fancynpcs.v1_21_6.Npc_1_21_6;
-import de.oliver.fancynpcs.v1_21_9.Npc_1_21_9;
+import de.oliver.fancynpcs.npc.NpcImpl;
+import de.oliver.fancysitula.api.utils.ServerVersion;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -158,16 +153,12 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
 
         String mcVersion = Bukkit.getMinecraftVersion();
 
-        npcAdapter = switch (mcVersion) {
-            case "1.21.11" -> Npc_1_21_11::new;
-            case "1.21.9", "1.21.10" -> Npc_1_21_9::new;
-            case "1.21.6", "1.21.7", "1.21.8" -> Npc_1_21_6::new;
-            case "1.21.5" -> Npc_1_21_5::new;
-            case "1.21.4" -> Npc_1_21_4::new;
-            case "1.21.2", "1.21.3" -> Npc_1_21_3::new;
-            case "1.21", "1.21.1" -> Npc_1_21_1::new;
-            default -> null;
-        };
+        // Use NpcImpl with FancySitula for all supported versions
+        if (ServerVersion.isVersionSupported(mcVersion)) {
+            npcAdapter = NpcImpl::new;
+        } else {
+            npcAdapter = null;
+        }
 
         if (npcAdapter == null) {
             fancyAnalytics.sendEvent(new Event("pluginLoadingWithUnsupportedVersion", new HashMap<>())
@@ -605,3 +596,4 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         return instance;
     }
 }
+

@@ -6,15 +6,22 @@ import de.oliver.fancysitula.api.utils.reflections.ReflectionUtils;
 import de.oliver.fancysitula.versions.v1_20_6.utils.VanillaPlayerAdapter;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.animal.armadillo.Armadillo;
+import net.minecraft.world.entity.npc.VillagerData;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerType;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -68,12 +75,61 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     vanillaValue = PaperAdventure.asVanilla(c);
                 }
 
+                // Handle Optional<Component> for custom names
+                if (data.getValue() instanceof Optional<?> opt) {
+                    if (opt.isPresent() && opt.get() instanceof Component c) {
+                        vanillaValue = Optional.of(PaperAdventure.asVanilla(c));
+                    } else {
+                        vanillaValue = Optional.empty();
+                    }
+                }
+
                 if (data.getValue() instanceof ItemStack i) {
                     vanillaValue = net.minecraft.world.item.ItemStack.fromBukkitCopy(i);
                 }
 
                 if (data.getValue() instanceof BlockState b) {
                     vanillaValue = ((CraftBlockState) b).getHandle();
+                }
+
+                // Handle Armadillo state enum conversion (value passed as String)
+                if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_STATE")
+                        && entityClassName.contains("Armadillo")) {
+                    try {
+                        vanillaValue = Armadillo.ArmadilloState.valueOf(s.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        vanillaValue = Armadillo.ArmadilloState.IDLE;
+                    }
+                }
+
+                // Note: Wolf/Cat/Frog variants with Holder<> not supported in 1.20.6
+                // These use different registry APIs in this version
+
+                // Handle VillagerData (profession or type)
+                if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_VILLAGER_DATA")
+                        && entityClassName.contains("Villager")) {
+                    // Format: "profession:minecraft:farmer" or "type:minecraft:plains"
+                    if (s.startsWith("profession:")) {
+                        String profKey = s.substring("profession:".length());
+                        ResourceLocation loc = ResourceLocation.tryParse(profKey);
+                        if (loc != null) {
+                            VillagerProfession profession = BuiltInRegistries.VILLAGER_PROFESSION.get(loc);
+                            if (profession != null) {
+                                // Create VillagerData with default type (plains) and level (1)
+                                vanillaValue = new VillagerData(VillagerType.PLAINS, profession, 1);
+                            }
+                        }
+                    } else if (s.startsWith("type:")) {
+                        String typeKey = s.substring("type:".length());
+                        ResourceLocation loc = ResourceLocation.tryParse(typeKey);
+                        if (loc != null) {
+                            VillagerType villagerType = BuiltInRegistries.VILLAGER_TYPE.get(loc);
+                            if (villagerType != null) {
+                                // Create VillagerData with default profession (none) and level (1)
+                                vanillaValue = new VillagerData(villagerType, VillagerProfession.NONE, 1);
+                            }
+                        }
+                    }
                 }
 
                 dataValues.add(SynchedEntityData.DataValue.create(accessor, vanillaValue));

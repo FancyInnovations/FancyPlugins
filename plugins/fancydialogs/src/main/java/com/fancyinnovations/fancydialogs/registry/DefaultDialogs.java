@@ -41,7 +41,7 @@ public class DefaultDialogs {
                         new DialogBodyData(""),
                         new DialogBodyData("This dialog is a demonstration of how to use FancyDialogs to create interactive and user-friendly dialogs."),
                         new DialogBodyData("FancyDialogs supports <rainbow>MiniMessages</rainbow> and PlaceholderAPI"),
-                        new DialogBodyData("Explore more features in the documentation (<click:open_url:'https://docs.fancyinnovations.com/fancyholograms/'><u>click here</u></click>)."),
+                        new DialogBodyData("Explore more features in the documentation (<click:open_url:'https://fancyinnovations.com/docs/minecraft-plugins/fancydialogs'><u>click here</u></click>)."),
                         new DialogBodyData("<gradient:#ff7300:#ffd199:#ff7300>Enjoy using FancyDialogs :D</gradient>")
                 ),
                 new DialogInputs(

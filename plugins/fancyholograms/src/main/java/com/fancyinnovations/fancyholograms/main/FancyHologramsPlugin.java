@@ -11,11 +11,7 @@ import com.fancyinnovations.fancyholograms.commands.FancyHologramsCMD;
 import com.fancyinnovations.fancyholograms.commands.FancyHologramsTestCMD;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.ConfigCMD;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.MoveDownCMD;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.MoveUpCMD;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.SwapLinesCMD;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.GlowingCMD;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.TraitCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.*;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.GlowingColorCommandType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.HologramCommandType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.TraitCommandType;
@@ -224,7 +220,7 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
                     You are using a development build of FancyHolograms.
                     Please be aware that there might be bugs in this version.
                     If you find any bugs, please report them on our discord server (https://discord.gg/ZUgYCEJUEx).
-                    Read more about the risks of using a development build here: https://docs.fancyinnovations.com/development-guidelines/versioning/#build
+                    Read more about the risks of using a development build here: https://fancyinnovations.com/docs/general/development-guidelines/versioning#build
                     --------------------------------------------------
                     """);
         }

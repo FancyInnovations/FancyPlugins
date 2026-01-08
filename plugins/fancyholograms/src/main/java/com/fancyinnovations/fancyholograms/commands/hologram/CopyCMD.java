@@ -60,6 +60,7 @@ public class CopyCMD implements Subcommand {
         data.setFilePath(name);
 
         final var copy = FancyHologramsPlugin.get().getHologramFactory().apply(data);
+        copy.getData().setHasChanges(true);
 
         if (!new HologramCreateEvent(copy, player).callEvent()) {
             MessageHelper.error(sender, "Creating the copied hologram was cancelled");

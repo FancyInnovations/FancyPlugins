@@ -36,9 +36,6 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancyholograms-v2:api"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_20_4", configuration = "reobf"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_20_2", configuration = "reobf"))
-    implementation(project(":plugins:fancyholograms-v2:implementation_1_20_1", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -53,7 +50,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     compileOnly(project(":plugins:fancynpcs:fn-api"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.3")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
     compileOnly("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
 }
 

@@ -38,11 +38,6 @@ dependencies {
     implementation(project(":plugins:fancynpcs:implementation_1_21_4"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_3"))
     implementation(project(":plugins:fancynpcs:implementation_1_21_1"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_6"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_4", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_2", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20_1", configuration = "reobf"))
-    implementation(project(":plugins:fancynpcs:implementation_1_20", configuration = "reobf"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -53,7 +48,7 @@ dependencies {
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:plugin-tests"))
     implementation(project(":libraries:config"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.3")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")

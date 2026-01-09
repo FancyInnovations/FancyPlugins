@@ -5,6 +5,8 @@ import de.oliver.fancynpcs.api.Npc;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,7 +22,8 @@ public enum NpcVisibility {
         (player, npc) -> player.hasPermission("fancynpcs.npc." + npc.getData().getName() + ".see")
     ),
     /**
-     * The player needs to be added manually through the API
+     * The player visibility is controlled manually through the API.
+     * You can use either include list (allowlist) or exclude list (blocklist).
      */
     MANUAL(ManualNpcVisibility::canSee);
 
@@ -46,41 +49,131 @@ public enum NpcVisibility {
     }
 
     /**
-     * Handling of NpcVisibility.MANUAL
+     * Handling of NpcVisibility.MANUAL mode with include and exclude lists
      */
     public static class ManualNpcVisibility {
-        private static final HashMultimap<String, UUID> distantViewers = HashMultimap.create();
+        /**
+         * Visibility mode for each NPC
+         */
+        public enum Mode {
+            /**
+             * Include mode (allowlist): Only players in the list can see the NPC
+             */
+            INCLUDE,
+            /**
+             * Exclude mode (blocklist): Players in the list cannot see the NPC
+             */
+            EXCLUDE
+        }
 
+        private static final HashMultimap<String, UUID> playerList = HashMultimap.create();
+        private static final Map<String, Mode> npcModes = new HashMap<>();
+
+        /**
+         * Check if player can see NPC based on the player list and mode.
+         * Logic:
+         * - INCLUDE mode: player must be in the list to see
+         * - EXCLUDE mode: player in the list cannot see
+         */
         public static boolean canSee(Player player, Npc npc) {
-            return npc.isShownFor(player) || distantViewers.containsEntry(npc.getData().getName(), player.getUniqueId());
+            String npcId = npc.getData().getId();
+            UUID playerId = player.getUniqueId();
+
+            Mode mode = npcModes.get(npcId);
+
+            if (mode == null) {
+                return npc.isShownFor(player);
+            }
+
+            boolean isInList = playerList.containsEntry(npcId, playerId);
+
+            return switch (mode) {
+                case INCLUDE -> isInList;
+                case EXCLUDE -> !isInList;
+            };
         }
 
-        public static void addDistantViewer(Npc npc, UUID uuid) {
-            addDistantViewer(npc.getData().getName(), uuid);
+        /**
+         * Set the visibility mode for an NPC
+         */
+        public static void setMode(Npc npc, Mode mode) {
+            setMode(npc.getData().getId(), mode);
         }
 
-        public static void addDistantViewer(String npcName, UUID uuid) {
-            distantViewers.put(npcName, uuid);
+        /**
+         * Set the visibility mode for an NPC
+         */
+        public static void setMode(String npcId, Mode mode) {
+            if (mode == null) {
+                npcModes.remove(npcId);
+            } else {
+                npcModes.put(npcId, mode);
+            }
         }
 
-        public static void removeDistantViewer(Npc npc, UUID uuid) {
-            removeDistantViewer(npc.getData().getName(), uuid);
+        /**
+         * Get the current visibility mode for an NPC
+         */
+        public static Mode getMode(Npc npc) {
+            return getMode(npc.getData().getId());
         }
 
-        public static void removeDistantViewer(String npcName, UUID uuid) {
-            distantViewers.remove(npcName, uuid);
+        /**
+         * Get the current visibility mode for an NPC
+         */
+        public static Mode getMode(String npcId) {
+            return npcModes.get(npcId);
         }
 
+        /**
+         * Add a player to the visibility list
+         */
+        public static void addPlayer(Npc npc, UUID uuid) {
+            addPlayer(npc.getData().getId(), uuid);
+        }
+
+        /**
+         * Add a player to the visibility list by NPC
+         */
+        public static void addPlayer(String npcId, UUID uuid) {
+            playerList.put(npcId, uuid);
+        }
+
+        /**
+         * Remove a player from the visibility list
+         */
+        public static void removePlayer(Npc npc, UUID uuid) {
+            removePlayer(npc.getData().getId(), uuid);
+        }
+
+        /**
+         * Remove a player from the visibility list by NPC
+         */
+        public static void removePlayer(String npcId, UUID uuid) {
+            playerList.remove(npcId, uuid);
+        }
+
+        /**
+         * Remove all visibility settings for an NPC
+         */
         public static void remove(Npc npc) {
-            remove(npc.getData().getName());
+            remove(npc.getData().getId());
         }
 
-        public static void remove(String npcName) {
-            distantViewers.removeAll(npcName);
+        /**
+         * Remove all visibility settings for an NPC
+         */
+        public static void remove(String npcId) {
+            playerList.removeAll(npcId);
+            npcModes.remove(npcId);
         }
 
+        /**
+         * Clear all visibility settings
+         */
         public static void clear() {
-            distantViewers.clear();
+            playerList.clear();
+            npcModes.clear();
         }
     }
 }

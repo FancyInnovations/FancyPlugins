@@ -1,19 +1,17 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
 rootProject.name = "minecraft-plugins"
 
 include(":plugins:fancynpcs:")
 include(":plugins:fancynpcs:fn-api")
-include(":plugins:fancynpcs:implementation_1_21_11")
-include(":plugins:fancynpcs:implementation_1_21_9")
-include(":plugins:fancynpcs:implementation_1_21_6")
-include(":plugins:fancynpcs:implementation_1_21_5")
-include(":plugins:fancynpcs:implementation_1_21_4")
-include(":plugins:fancynpcs:implementation_1_21_3")
-include(":plugins:fancynpcs:implementation_1_21_1")
-include(":plugins:fancynpcs:implementation_1_20_6")
-include(":plugins:fancynpcs:implementation_1_20_4")
-include(":plugins:fancynpcs:implementation_1_20_2")
-include(":plugins:fancynpcs:implementation_1_20_1")
-include(":plugins:fancynpcs:implementation_1_20")
 
 include(":plugins:fancyholograms-v2")
 include(":plugins:fancyholograms-v2:api")
@@ -49,9 +47,3 @@ include(":libraries:packets:implementations:1_21_11")
 
 
 include(":tools:quick-e2e")
-
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-}

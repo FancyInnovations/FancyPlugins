@@ -6,15 +6,23 @@ import de.oliver.fancysitula.api.utils.reflections.ReflectionUtils;
 import de.oliver.fancysitula.versions.v1_20_6.utils.VanillaPlayerAdapter;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.animal.armadillo.Armadillo;
+import net.minecraft.world.entity.npc.VillagerData;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerType;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -32,7 +40,9 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
         if (cached != null) {
             return cached;
         }
-        Class<?> resolved = Class.forName(className);
+        // Use the server's class loader to avoid Paper's reflection remapper issues
+        ClassLoader classLoader = MinecraftServer.class.getClassLoader();
+        Class<?> resolved = classLoader.loadClass(className);
         ENTITY_CLASS_CACHE.put(className, resolved);
         return resolved;
     }
@@ -49,12 +59,20 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
         return accessor;
     }
 
+    private static String translateClassName(String entityClassName) {
+        // In 1.20.6, horse classes are in animal.horse package, not animal.equine
+        if (entityClassName.contains("animal.equine.")) {
+            return entityClassName.replace("animal.equine.", "animal.horse.");
+        }
+        return entityClassName;
+    }
+
     @Override
     public Object createPacket() {
         List<SynchedEntityData.DataValue<?>> dataValues = new ArrayList<>();
         for (EntityData data : entityData) {
             try {
-                String entityClassName = data.getAccessor().entityClassName();
+                String entityClassName = translateClassName(data.getAccessor().entityClassName());
                 String accessorFieldName = data.getAccessor().accessorFieldName();
                 net.minecraft.network.syncher.EntityDataAccessor<Object> accessor = getAccessorCached(entityClassName, accessorFieldName);
 
@@ -68,12 +86,98 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     vanillaValue = PaperAdventure.asVanilla(c);
                 }
 
+                // Handle Optional<Component> for custom names
+                if (data.getValue() instanceof Optional<?> opt) {
+                    if (opt.isPresent() && opt.get() instanceof Component c) {
+                        vanillaValue = Optional.of(PaperAdventure.asVanilla(c));
+                    } else {
+                        vanillaValue = Optional.empty();
+                    }
+                }
+
                 if (data.getValue() instanceof ItemStack i) {
                     vanillaValue = net.minecraft.world.item.ItemStack.fromBukkitCopy(i);
                 }
 
                 if (data.getValue() instanceof BlockState b) {
                     vanillaValue = ((CraftBlockState) b).getHandle();
+                }
+
+                // Handle Armadillo state enum conversion (value passed as String)
+                if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_STATE")
+                        && entityClassName.contains("Armadillo")) {
+                    try {
+                        vanillaValue = Armadillo.ArmadilloState.valueOf(s.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        vanillaValue = Armadillo.ArmadilloState.IDLE;
+                    }
+                }
+
+                // Note: Wolf/Cat/Frog variants with Holder<> not supported in 1.20.6
+                // These use different registry APIs in this version
+
+                // Handle VillagerData (profession, type, or combined format)
+                if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_VILLAGER_DATA")
+                        && entityClassName.contains("Villager")) {
+                    // Combined format: "type:minecraft:plains,profession:minecraft:farmer,level:3" (all optional)
+                    // Legacy formats: "profession:minecraft:farmer" or "type:minecraft:plains"
+                    if (s.contains(",") || (s.contains("type:") && s.contains("profession:"))) {
+                        // Combined format - parse all components
+                        VillagerType villagerType = VillagerType.PLAINS;
+                        VillagerProfession profession = VillagerProfession.NONE;
+                        int level = 1;
+
+                        String[] parts = s.split(",");
+                        for (String part : parts) {
+                            part = part.trim();
+                            if (part.startsWith("type:")) {
+                                String typeKey = part.substring("type:".length());
+                                ResourceLocation loc = ResourceLocation.tryParse(typeKey);
+                                if (loc != null) {
+                                    VillagerType type = BuiltInRegistries.VILLAGER_TYPE.get(loc);
+                                    if (type != null) {
+                                        villagerType = type;
+                                    }
+                                }
+                            } else if (part.startsWith("profession:")) {
+                                String profKey = part.substring("profession:".length());
+                                ResourceLocation loc = ResourceLocation.tryParse(profKey);
+                                if (loc != null) {
+                                    VillagerProfession prof = BuiltInRegistries.VILLAGER_PROFESSION.get(loc);
+                                    if (prof != null) {
+                                        profession = prof;
+                                    }
+                                }
+                            } else if (part.startsWith("level:")) {
+                                try {
+                                    level = Integer.parseInt(part.substring("level:".length()));
+                                    level = Math.max(1, Math.min(5, level)); // Clamp to valid range
+                                } catch (NumberFormatException ignored) {
+                                }
+                            }
+                        }
+                        vanillaValue = new VillagerData(villagerType, profession, level);
+                    } else if (s.startsWith("profession:")) {
+                        // Legacy format: "profession:minecraft:farmer"
+                        String profKey = s.substring("profession:".length());
+                        ResourceLocation loc = ResourceLocation.tryParse(profKey);
+                        if (loc != null) {
+                            VillagerProfession profession = BuiltInRegistries.VILLAGER_PROFESSION.get(loc);
+                            if (profession != null) {
+                                vanillaValue = new VillagerData(VillagerType.PLAINS, profession, 1);
+                            }
+                        }
+                    } else if (s.startsWith("type:")) {
+                        // Legacy format: "type:minecraft:plains"
+                        String typeKey = s.substring("type:".length());
+                        ResourceLocation loc = ResourceLocation.tryParse(typeKey);
+                        if (loc != null) {
+                            VillagerType villagerType = BuiltInRegistries.VILLAGER_TYPE.get(loc);
+                            if (villagerType != null) {
+                                vanillaValue = new VillagerData(villagerType, VillagerProfession.NONE, 1);
+                            }
+                        }
+                    }
                 }
 
                 dataValues.add(SynchedEntityData.DataValue.create(accessor, vanillaValue));

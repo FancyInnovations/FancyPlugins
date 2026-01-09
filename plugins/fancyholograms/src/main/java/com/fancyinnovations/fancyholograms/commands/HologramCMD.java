@@ -12,7 +12,7 @@ import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import com.google.common.primitives.Ints;
 import de.oliver.fancylib.MessageHelper;
 import de.oliver.fancylib.colors.GlowingColor;
-import de.oliver.fancynpcs.api.FancyNpcsPlugin;
+import com.fancyinnovations.fancynpcs.api.FancyNpcsPlugin;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;

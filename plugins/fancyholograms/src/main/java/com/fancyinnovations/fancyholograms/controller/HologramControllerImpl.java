@@ -7,9 +7,10 @@ import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.google.common.cache.CacheBuilder;
-import de.oliver.fancynpcs.api.FancyNpcsPlugin;
-import de.oliver.fancynpcs.api.Npc;
-import de.oliver.fancynpcs.api.NpcAttribute;
+import de.oliver.fancylib.serverSoftware.ServerSoftware;
+import com.fancyinnovations.fancynpcs.api.FancyNpcsPlugin;
+import com.fancyinnovations.fancynpcs.api.Npc;
+import com.fancyinnovations.fancynpcs.api.NpcAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -35,6 +36,13 @@ public class HologramControllerImpl implements HologramController {
             }
 
             hologram.spawnTo(player);
+
+            if (ServerSoftware.isFolia() && FancyHologramsPlugin.get().getFHConfiguration().isFoliaVisibilityFixEnabled()) {
+                FancyHologramsPlugin.get().getHologramThread().schedule(() -> {
+                    hologram.despawnFrom(player);
+                    hologram.spawnTo(player);
+                }, 100, TimeUnit.MILLISECONDS);
+            }
         }
     }
 

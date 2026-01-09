@@ -5,7 +5,7 @@ import com.fancyinnovations.fancyholograms.commands.Subcommand;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import de.oliver.fancylib.MessageHelper;
-import de.oliver.fancynpcs.api.FancyNpcsPlugin;
+import com.fancyinnovations.fancynpcs.api.FancyNpcsPlugin;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

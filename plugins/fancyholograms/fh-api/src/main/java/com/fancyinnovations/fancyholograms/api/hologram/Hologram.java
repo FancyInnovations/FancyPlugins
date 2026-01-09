@@ -6,6 +6,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Sets;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
@@ -28,12 +30,9 @@ public abstract class Hologram {
     public static final int LINE_WIDTH = 1000;
     public static final Color TRANSPARENT = Color.fromARGB(0);
     protected static final int MINIMUM_PROTOCOL_VERSION = 762;
-
+    private static final UUID NULL_PLAYER_KEY = new UUID(0L, 0L);
     protected final @NotNull HologramData data;
     protected final @NotNull Set<UUID> viewers;
-
-    private static final UUID NULL_PLAYER_KEY = new UUID(0L, 0L);
-
     private final Cache<UUID, Component> cachedTextPerPlayer = CacheBuilder.newBuilder()
             .expireAfterWrite(1, TimeUnit.SECONDS)
             .maximumSize(512)
@@ -166,7 +165,7 @@ public abstract class Hologram {
 
     /**
      * Gets the text shown in the hologram, with lightweight caching to reduce repeated placeholder and color processing.
-     *
+     * <p>
      * Caching rules:
      * - Cache key: player UUID (or NULL_PLAYER_KEY for non-player specific text)
      * - Cache is invalidated whenever the underlying text changes via the onModify callback.
@@ -192,6 +191,10 @@ public abstract class Hologram {
         final Component cached = cachedTextPerPlayer.getIfPresent(cacheKey);
         if (cached != null) {
             return cached;
+        }
+
+        if (Bukkit.isStopping()) {
+            return MiniMessage.miniMessage().deserialize(rawText);
         }
 
         final Component translated = ModernChatColorHandler.translate(rawText, player);

@@ -16,6 +16,10 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-console-standalone:1.12.2")
 }
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
 tasks {
     test {
         useJUnitPlatform()

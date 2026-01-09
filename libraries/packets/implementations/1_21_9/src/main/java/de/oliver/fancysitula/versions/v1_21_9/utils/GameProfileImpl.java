@@ -1,6 +1,9 @@
 package de.oliver.fancysitula.versions.v1_21_9.utils;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 import de.oliver.fancysitula.api.utils.FS_GameProfile;
 
 import java.util.Map;
@@ -8,15 +11,15 @@ import java.util.Map;
 public class GameProfileImpl {
 
     public static GameProfile asVanilla(FS_GameProfile gameProfile) {
-        GameProfile gf = new GameProfile(gameProfile.getUUID(), gameProfile.getName());
-
+        // Build properties map first since GameProfile.properties() is immutable
+        ImmutableMultimap.Builder<String, Property> builder = ImmutableMultimap.builder();
         for (Map.Entry<String, FS_GameProfile.Property> entry : gameProfile.getProperties().entrySet()) {
             FS_GameProfile.Property property = entry.getValue();
-
-            gf.properties().put(entry.getKey(), new com.mojang.authlib.properties.Property(property.name(), property.value(), property.signature()));
+            builder.put(entry.getKey(), new Property(property.name(), property.value(), property.signature()));
         }
+        PropertyMap propertyMap = new PropertyMap(builder.build());
 
-        return gf;
+        return new GameProfile(gameProfile.getUUID(), gameProfile.getName(), propertyMap);
     }
 
     public static FS_GameProfile fromVanilla(GameProfile gameProfile) {

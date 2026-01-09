@@ -11,7 +11,7 @@ plugins {
 runPaper.folia.registerTask()
 
 allprojects {
-    group = "de.oliver"
+    group = "com.fancyinnovations"
     version = getFNVersion()
     description = "Simple, lightweight and fast NPC plugin using packets"
 
@@ -31,13 +31,6 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancynpcs:fn-api"))
-    implementation(project(":plugins:fancynpcs:implementation_1_21_11"))
-    implementation(project(":plugins:fancynpcs:implementation_1_21_9"))
-    implementation(project(":plugins:fancynpcs:implementation_1_21_6"))
-    implementation(project(":plugins:fancynpcs:implementation_1_21_5"))
-    implementation(project(":plugins:fancynpcs:implementation_1_21_4"))
-    implementation(project(":plugins:fancynpcs:implementation_1_21_3"))
-    implementation(project(":plugins:fancynpcs:implementation_1_21_1"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -65,9 +58,9 @@ dependencies {
 
 paper {
     name = "FancyNpcs"
-    main = "de.oliver.fancynpcs.FancyNpcs"
-    bootstrapper = "de.oliver.fancynpcs.loaders.FancyNpcsBootstrapper"
-    loader = "de.oliver.fancynpcs.loaders.FancyNpcsLoader"
+    main = "com.fancyinnovations.fancynpcs.FancyNpcs"
+    bootstrapper = "com.fancyinnovations.fancynpcs.loaders.FancyNpcsBootstrapper"
+    loader = "com.fancyinnovations.fancynpcs.loaders.FancyNpcsLoader"
     foliaSupported = true
     version = getFNVersion()
     description = "Simple, lightweight and fast NPC plugin using packets"
@@ -100,9 +93,18 @@ tasks {
         }
     }
 
+    register<Copy>("copyToTestServer") {
+        dependsOn(shadowJar)
+        from(shadowJar.get().archiveFile)
+        into("C:/Users/NISO/Desktop/1.21.10 - Copy/plugins")
+        doLast {
+            println("Copied FancyNpcs to test server plugins folder")
+        }
+    }
+
     shadowJar {
-        relocate("org.incendo", "de.oliver")
-        relocate("org.lushplugins.chatcolorhandler", "de.oliver.fancynpcs.libs.chatcolorhandler")
+        relocate("org.incendo", "com.fancyinnovations")
+        relocate("org.lushplugins.chatcolorhandler", "com.fancyinnovations.fancynpcs.libs.chatcolorhandler")
         archiveClassifier.set("")
         archiveBaseName.set("FancyNpcs")
         dependsOn(":plugins:fancynpcs:fn-api:shadowJar")

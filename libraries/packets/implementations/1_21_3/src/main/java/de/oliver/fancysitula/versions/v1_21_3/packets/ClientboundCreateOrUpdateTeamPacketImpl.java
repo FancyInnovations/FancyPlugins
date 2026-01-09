@@ -91,7 +91,7 @@ public class ClientboundCreateOrUpdateTeamPacketImpl extends FS_ClientboundCreat
         playerTeam.setPlayerPrefix(PaperAdventure.asVanilla(updateTeam.getPrefix()));
         playerTeam.setPlayerSuffix(PaperAdventure.asVanilla(updateTeam.getSuffix()));
 
-        return ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(playerTeam, true);
+        return ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(playerTeam, false);
     }
 
     private Object createAddEntityPacket() {

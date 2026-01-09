@@ -274,11 +274,11 @@ public abstract class Hologram {
     }
 
     public boolean isWithinVisibilityDistance(@NotNull final Player player) {
-        final var location = getData().getLocation();
-        if (!location.getWorld().equals(player.getWorld())) {
+        if (!data.matchesWorld(player.getWorld())) {
             return false;
         }
 
+        final var location = getData().getLocation();
         int visibilityDistance = data.getVisibilityDistance();
         double distanceSquared = location.distanceSquared(player.getLocation());
 

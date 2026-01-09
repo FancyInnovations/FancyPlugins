@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class HologramData implements YamlData {
 
@@ -28,6 +29,7 @@ public class HologramData implements YamlData {
     private Visibility visibility = DEFAULT_VISIBILITY;
     private boolean persistent = DEFAULT_PERSISTENCE;
     private String linkedNpcName;
+    private String worldPattern;
 
     /**
      * @param name     Name of hologram
@@ -134,6 +136,23 @@ public class HologramData implements YamlData {
         return this;
     }
 
+    public String getWorldPattern() {
+        return worldPattern;
+    }
+
+    public HologramData setWorldPattern(String worldPattern) {
+        this.worldPattern = worldPattern;
+        return this;
+    }
+
+    public boolean matchesWorld(World world) {
+        if (worldPattern == null || !worldPattern.contains("*") && !worldPattern.contains("?") && !worldPattern.contains("[") && !worldPattern.contains("{")) {
+            return location.getWorld().equals(world);
+        }
+        Pattern pattern = Pattern.compile(worldPattern.replace("*", ".*").replace("?", "."));
+        return pattern.matcher(world.getName()).matches();
+    }
+
     @Override
     public boolean read(ConfigurationSection section, String name) {
         String worldName = section.getString("location.world", "world");
@@ -143,13 +162,30 @@ public class HologramData implements YamlData {
         float yaw = (float) section.getDouble("location.yaw", 0);
         float pitch = (float) section.getDouble("location.pitch", 0);
 
-        World world = Bukkit.getWorld(worldName);
-        if (world == null) {
-            FancyHologramsPlugin.get().getFancyLogger().warn("Could not load hologram '" + name + "', because the world '" + worldName + "' is not loaded");
-            return false;
+        if (worldName.contains("*") || worldName.contains("?") || worldName.contains("[") || worldName.contains("{")) {
+            this.worldPattern = worldName;
+            World firstMatchingWorld = null;
+            Pattern pattern = Pattern.compile(worldName.replace("*", ".*").replace("?", "."));
+            for (World w : Bukkit.getWorlds()) {
+                if (pattern.matcher(w.getName()).matches()) {
+                    firstMatchingWorld = w;
+                    break;
+                }
+            }
+            if (firstMatchingWorld == null) {
+                FancyHologramsPlugin.get().getFancyLogger().warn("Could not load hologram '" + name + "', because no world matching pattern '" + worldName + "' is loaded");
+                return false;
+            }
+            location = new Location(firstMatchingWorld, x, y, z, yaw, pitch);
+        } else {
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                FancyHologramsPlugin.get().getFancyLogger().warn("Could not load hologram '" + name + "', because the world '" + worldName + "' is not loaded");
+                return false;
+            }
+            location = new Location(world, x, y, z, yaw, pitch);
         }
 
-        location = new Location(world, x, y, z, yaw, pitch);
         visibilityDistance = section.getInt("visibility_distance", DEFAULT_VISIBILITY_DISTANCE);
         visibility = Optional.ofNullable(section.getString("visibility"))
                 .flatMap(Visibility::byString)
@@ -165,7 +201,7 @@ public class HologramData implements YamlData {
     @Override
     public boolean write(ConfigurationSection section, String name) {
         section.set("type", type.name());
-        section.set("location.world", location.getWorld().getName());
+        section.set("location.world", worldPattern != null ? worldPattern : location.getWorld().getName());
         section.set("location.x", location.x());
         section.set("location.y", location.y());
         section.set("location.z", location.z());
@@ -185,6 +221,7 @@ public class HologramData implements YamlData {
                 .setVisibilityDistance(this.getVisibilityDistance())
                 .setVisibility(this.getVisibility())
                 .setPersistent(this.isPersistent())
-                .setLinkedNpcName(this.getLinkedNpcName());
+                .setLinkedNpcName(this.getLinkedNpcName())
+                .setWorldPattern(this.getWorldPattern());
     }
 }

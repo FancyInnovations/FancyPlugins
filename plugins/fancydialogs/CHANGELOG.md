@@ -1,1 +1,2 @@
-- Added support for 1.21.11
+- Added copy_to_clipboard action
+- Added configurable body width

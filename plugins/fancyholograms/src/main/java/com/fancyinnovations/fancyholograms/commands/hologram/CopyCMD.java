@@ -57,6 +57,7 @@ public class CopyCMD implements Subcommand {
         location.setPitch(originalLocation.getPitch());
         location.setYaw(originalLocation.getYaw());
         data.setLocation(location);
+        data.setFilePath(name);
 
         final var copy = FancyHologramsPlugin.get().getHologramFactory().apply(data);
         copy.getData().setHasChanges(true);
@@ -70,7 +71,9 @@ public class CopyCMD implements Subcommand {
 
         FancyHologramsPlugin.get().getRegistry().register(copy);
 
-        FancyHologramsPlugin.get().getStorage().save(copy.getData());
+        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
+            FancyHologramsPlugin.get().getStorage().save(copy.getData());
+        }
 
         MessageHelper.success(sender, "Copied the hologram");
         return true;

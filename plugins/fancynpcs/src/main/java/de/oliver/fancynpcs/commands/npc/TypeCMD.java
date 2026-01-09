@@ -24,6 +24,11 @@ public enum TypeCMD {
             final @NotNull Npc npc,
             final @NotNull EntityType type
     ) {
+        if (npc.getData().getModelName() != null) {
+            translator.translate("command_unsupported_model_npc").send(sender);
+            return;
+        }
+
         // Calling the event and updating the type if not cancelled.
         if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.TYPE, type, sender).callEvent()) {
             npc.getData().setType(type);

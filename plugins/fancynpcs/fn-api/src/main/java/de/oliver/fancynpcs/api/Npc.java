@@ -209,6 +209,8 @@ public abstract class Npc {
 
     public abstract int getEntityId();
 
+    public abstract org.bukkit.entity.Entity getEntity();
+
     public NpcData getData() {
         return data;
     }

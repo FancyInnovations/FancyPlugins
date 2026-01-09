@@ -21,6 +21,11 @@ public enum ScaleCMD {
             final @NotNull Npc npc,
             final float factor
     ) {
+        if (npc.getData().getModelName() != null) {
+            translator.translate("command_unsupported_model_npc").send(sender);
+            return;
+        }
+
         if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SCALE, factor, sender).callEvent()) {
             npc.getData().setScale(factor);
             npc.updateForAll();

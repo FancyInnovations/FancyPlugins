@@ -23,6 +23,11 @@ public enum ShowInTabCMD {
             final @NotNull Npc npc,
             final @Nullable Boolean state
     ) {
+        if (npc.getData().getModelName() != null) {
+            translator.translate("command_unsupported_model_npc").send(sender);
+            return;
+        }
+
         final boolean finalState = (state == null) ? !npc.getData().isShowInTab() : state;
         // Calling the event and updating the state if not cancelled.
         if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SHOW_IN_TAB, finalState, sender).callEvent()) {

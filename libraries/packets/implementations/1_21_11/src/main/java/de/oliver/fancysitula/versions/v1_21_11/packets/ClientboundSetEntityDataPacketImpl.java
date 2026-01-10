@@ -2,6 +2,8 @@ package de.oliver.fancysitula.versions.v1_21_11.packets;
 
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
+import de.oliver.fancysitula.api.utils.FS_GameProfile;
+import de.oliver.fancysitula.versions.v1_21_11.utils.GameProfileImpl;
 import de.oliver.fancysitula.api.utils.reflections.ReflectionUtils;
 import de.oliver.fancysitula.versions.v1_21_11.utils.VanillaPlayerAdapter;
 import io.papermc.paper.adventure.PaperAdventure;
@@ -47,14 +49,21 @@ import net.minecraft.world.entity.animal.fish.TropicalFish;
 import net.minecraft.world.entity.animal.equine.Horse;
 import net.minecraft.world.entity.animal.equine.Llama;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.decoration.Mannequin;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.illager.SpellcasterIllager;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.npc.villager.VillagerData;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.entity.npc.villager.VillagerType;
+import net.minecraft.world.entity.player.PlayerModelType;
+import net.minecraft.world.entity.player.PlayerSkin;
+import net.minecraft.core.ClientAsset;
+import com.mojang.datafixers.util.Either;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.CraftServer;
@@ -141,6 +150,9 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
 
         // Avatar (new in 1.21.11 - Player extends Avatar)
         ENTITY_CLASS_CACHE.put("net.minecraft.world.entity.Avatar", net.minecraft.world.entity.Avatar.class);
+
+        // Mannequin (new in 1.21.11 - player-like entity without tab list)
+        ENTITY_CLASS_CACHE.put("net.minecraft.world.entity.decoration.Mannequin", net.minecraft.world.entity.decoration.Mannequin.class);
     }
 
     public ClientboundSetEntityDataPacketImpl(int entityId, List<EntityData> entityData) {
@@ -379,6 +391,85 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     if (typeHolder != null && profHolder != null) {
                         vanillaValue = new VillagerData(typeHolder, profHolder, level);
                     }
+                }
+
+                // Handle FS_GameProfile -> ResolvableProfile for Mannequin
+                if (data.getValue() instanceof FS_GameProfile profile && accessorFieldName.equals("DATA_PROFILE")) {
+                    com.mojang.authlib.GameProfile authProfile = GameProfileImpl.asVanilla(profile);
+
+                    // Check if profile has resource pack texture assets
+                    if (profile.hasTextureAssets()) {
+                        // Build PlayerSkin.Patch with ResourceTexture for resource pack skins
+                        Optional<ClientAsset.ResourceTexture> bodyTexture = Optional.empty();
+                        Optional<ClientAsset.ResourceTexture> capeTexture = Optional.empty();
+                        Optional<ClientAsset.ResourceTexture> elytraTexture = Optional.empty();
+                        Optional<PlayerModelType> modelType = Optional.empty();
+
+                        if (profile.getSkinTextureAsset() != null) {
+                            bodyTexture = Optional.of(new ClientAsset.ResourceTexture(
+                                    Identifier.parse(profile.getSkinTextureAsset())
+                            ));
+                        }
+                        if (profile.getCapeTextureAsset() != null) {
+                            capeTexture = Optional.of(new ClientAsset.ResourceTexture(
+                                    Identifier.parse(profile.getCapeTextureAsset())
+                            ));
+                        }
+                        if (profile.getElytraTextureAsset() != null) {
+                            elytraTexture = Optional.of(new ClientAsset.ResourceTexture(
+                                    Identifier.parse(profile.getElytraTextureAsset())
+                            ));
+                        }
+                        if (profile.getModelType() != null) {
+                            modelType = Optional.of(
+                                    "SLIM".equalsIgnoreCase(profile.getModelType())
+                                            ? PlayerModelType.SLIM
+                                            : PlayerModelType.WIDE
+                            );
+                        }
+
+                        PlayerSkin.Patch skinPatch = PlayerSkin.Patch.create(
+                                bodyTexture, capeTexture, elytraTexture, modelType
+                        );
+
+                        // Create ResolvableProfile.Static with the skin patch
+                        vanillaValue = new ResolvableProfile.Static(
+                                Either.left(authProfile), skinPatch
+                        );
+                    } else {
+                        // No texture assets, use standard profile
+                        vanillaValue = ResolvableProfile.createResolved(authProfile);
+                    }
+                }
+
+                // Handle HumanoidArm for Avatar/Mannequin main hand
+                if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_PLAYER_MAIN_HAND")) {
+                    vanillaValue = s.equalsIgnoreCase("LEFT") ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
+                }
+
+                // Handle Pose enum for Mannequin and other entities
+                if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_POSE")) {
+                    vanillaValue = switch (s.toUpperCase()) {
+                        case "STANDING" -> net.minecraft.world.entity.Pose.STANDING;
+                        case "FALL_FLYING" -> net.minecraft.world.entity.Pose.FALL_FLYING;
+                        case "SLEEPING" -> net.minecraft.world.entity.Pose.SLEEPING;
+                        case "SWIMMING" -> net.minecraft.world.entity.Pose.SWIMMING;
+                        case "SPIN_ATTACK" -> net.minecraft.world.entity.Pose.SPIN_ATTACK;
+                        case "CROUCHING", "SNEAKING" -> net.minecraft.world.entity.Pose.CROUCHING;
+                        case "LONG_JUMPING" -> net.minecraft.world.entity.Pose.LONG_JUMPING;
+                        case "DYING" -> net.minecraft.world.entity.Pose.DYING;
+                        case "CROAKING" -> net.minecraft.world.entity.Pose.CROAKING;
+                        case "USING_TONGUE" -> net.minecraft.world.entity.Pose.USING_TONGUE;
+                        case "SITTING" -> net.minecraft.world.entity.Pose.SITTING;
+                        case "ROARING" -> net.minecraft.world.entity.Pose.ROARING;
+                        case "SNIFFING" -> net.minecraft.world.entity.Pose.SNIFFING;
+                        case "EMERGING" -> net.minecraft.world.entity.Pose.EMERGING;
+                        case "DIGGING" -> net.minecraft.world.entity.Pose.DIGGING;
+                        case "SLIDING" -> net.minecraft.world.entity.Pose.SLIDING;
+                        case "SHOOTING" -> net.minecraft.world.entity.Pose.SHOOTING;
+                        case "INHALING" -> net.minecraft.world.entity.Pose.INHALING;
+                        default -> net.minecraft.world.entity.Pose.STANDING;
+                    };
                 }
 
                 dataValues.add(SynchedEntityData.DataValue.create(accessor, vanillaValue));

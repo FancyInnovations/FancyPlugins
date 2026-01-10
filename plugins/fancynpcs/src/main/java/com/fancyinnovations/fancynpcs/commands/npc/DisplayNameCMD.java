@@ -28,6 +28,42 @@ public enum DisplayNameCMD {
     private static final List<String> NONE_SUGGESTIONS = List.of("@none");
     private final Translator translator = FancyNpcs.getInstance().getTranslator();
 
+    @Command("npc displayname <npc> scale <scale>")
+    @Permission("fancynpcs.command.npc.displayname")
+    public void onDisplayNameScale(
+            final @NotNull CommandSender sender,
+            final @NotNull Npc npc,
+            final float scale
+    ) {
+        // Validate scale value
+        if (scale <= 0) {
+            translator.translate("npc_displayname_scale_invalid").send(sender);
+            return;
+        }
+
+        // Calling the event and updating the state if not cancelled.
+        if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.DISPLAY_NAME, scale, sender).callEvent()) {
+            npc.getData().setDisplayNameScale(scale);
+            npc.updateForAll();
+            translator.translate("npc_displayname_scale_set")
+                    .replace("npc", npc.getData().getName())
+                    .replace("scale", String.valueOf(scale))
+                    .send(sender);
+        } else {
+            translator.translate("command_npc_modification_cancelled").send(sender);
+        }
+    }
+
+    @Command("npc displayname <npc> text <name>")
+    @Permission("fancynpcs.command.npc.displayname")
+    public void onDisplayNameText(
+            final @NotNull CommandSender sender,
+            final @NotNull Npc npc,
+            final @NotNull @Argument(suggestions = "DisplayNameCMD/none") @Greedy String name
+    ) {
+        onDisplayName(sender, npc, name);
+    }
+
     @Command("npc displayname <npc> <name>")
     @Permission("fancynpcs.command.npc.displayname")
     public void onDisplayName(

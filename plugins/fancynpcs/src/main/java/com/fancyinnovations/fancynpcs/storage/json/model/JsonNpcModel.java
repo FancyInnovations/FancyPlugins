@@ -11,6 +11,7 @@ public record JsonNpcModel(
         String name,
         String creator,
         String displayName,
+        Float displayNameScale,
         EntityType type,
         JsonLocation location,
         JsonSkin skin,
@@ -22,7 +23,9 @@ public record JsonNpcModel(
         String glowingColor,
         Boolean turnToPlayer,
         Integer turnToPlayerDistance,
-        Float interactionCooldown,
+        @Deprecated
+        Float interactionCooldown, // Deprecated: use triggerCooldowns
+        Map<String, Float> triggerCooldowns, // Cooldown per trigger (ANY_CLICK, LEFT_CLICK, RIGHT_CLICK)
         Float scale,
         Integer visibilityDistance,
         NpcVisibility visibility,
@@ -43,8 +46,16 @@ public record JsonNpcModel(
 
     public record JsonSkin(
             String identifier,
-            String variant
+            String variant,
+            // Resource pack texture skin fields (1.21.11+ Mannequin)
+            Boolean texturePackSkin,
+            String capeTextureAsset,
+            String elytraTextureAsset
     ) {
+        // Constructor for backwards compatibility
+        public JsonSkin(String identifier, String variant) {
+            this(identifier, variant, null, null, null);
+        }
     }
 
     public record JsonAction(

@@ -52,7 +52,8 @@ public class FS_TextDisplay extends FS_Display {
     }
 
     public byte getStyleFlags() {
-        return (byte) this.styleFlagsData.getValue();
+        Object value = this.styleFlagsData.getValue();
+        return value != null ? (byte) value : 0;
     }
 
     public void setStyleFlags(byte styleFlags) {

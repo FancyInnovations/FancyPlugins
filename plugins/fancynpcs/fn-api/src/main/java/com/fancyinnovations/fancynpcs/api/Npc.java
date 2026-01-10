@@ -28,7 +28,10 @@ public abstract class Npc {
     protected final Map<UUID, Boolean> isTeamCreated = new ConcurrentHashMap<>();
     protected final Map<UUID, Boolean> isVisibleForPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Boolean> isLookingAtPlayer = new ConcurrentHashMap<>();
-    protected final Map<UUID, Long> lastPlayerInteraction = new ConcurrentHashMap<>();
+    @Deprecated
+    protected final Map<UUID, Long> lastPlayerInteraction = new ConcurrentHashMap<>(); // Deprecated: use lastTriggerInteraction
+    // Per-player, per-trigger last interaction time
+    protected final Map<UUID, Map<ActionTrigger, Long>> lastTriggerInteraction = new ConcurrentHashMap<>();
     private final Translator translator = FancyNpcsPlugin.get().getTranslator();
     protected NpcData data;
     protected boolean saveToFile;
@@ -172,16 +175,38 @@ public abstract class Npc {
     }
 
     public void interact(Player player, ActionTrigger actionTrigger) {
-        if (data.getInteractionCooldown() > 0) {
+        // Check trigger-specific cooldown (new system)
+        float triggerCooldown = data.getTriggerCooldown(actionTrigger);
+        if (triggerCooldown > 0) {
+            final long cooldownMillis = (long) (triggerCooldown * 1000);
+            Map<ActionTrigger, Long> playerTriggerInteractions = lastTriggerInteraction.computeIfAbsent(
+                    player.getUniqueId(), k -> new ConcurrentHashMap<>());
+
+            // Check cooldown for the specific trigger (or ANY_CLICK if it applies)
+            ActionTrigger cooldownTrigger = data.getTriggerCooldowns().containsKey(ActionTrigger.ANY_CLICK)
+                    && (actionTrigger == ActionTrigger.LEFT_CLICK || actionTrigger == ActionTrigger.RIGHT_CLICK)
+                    ? ActionTrigger.ANY_CLICK : actionTrigger;
+
+            final long lastInteractionMillis = playerTriggerInteractions.getOrDefault(cooldownTrigger, 0L);
+            final Interval cooldownLeft = Interval.between(lastInteractionMillis + cooldownMillis, System.currentTimeMillis(), Unit.MILLISECONDS);
+
+            if (cooldownLeft.as(Unit.MILLISECONDS) > 0) {
+                if (!FancyNpcsPlugin.get().getFancyNpcConfig().isInteractionCooldownMessageDisabled()) {
+                    translator.translate("interaction_on_cooldown").replace("time", cooldownLeft.toString()).send(player);
+                }
+                return;
+            }
+            playerTriggerInteractions.put(cooldownTrigger, System.currentTimeMillis());
+        }
+        // Fallback to legacy global cooldown for backwards compatibility
+        else if (data.getInteractionCooldown() > 0) {
             final long interactionCooldownMillis = (long) (data.getInteractionCooldown() * 1000);
             final long lastInteractionMillis = lastPlayerInteraction.getOrDefault(player.getUniqueId(), 0L);
             final Interval interactionCooldownLeft = Interval.between(lastInteractionMillis + interactionCooldownMillis, System.currentTimeMillis(), Unit.MILLISECONDS);
             if (interactionCooldownLeft.as(Unit.MILLISECONDS) > 0) {
-
                 if (!FancyNpcsPlugin.get().getFancyNpcConfig().isInteractionCooldownMessageDisabled()) {
                     translator.translate("interaction_on_cooldown").replace("time", interactionCooldownLeft.toString()).send(player);
                 }
-
                 return;
             }
             lastPlayerInteraction.put(player.getUniqueId(), System.currentTimeMillis());

@@ -42,7 +42,10 @@ public class JsonNpcAdapter {
         if (data.getSkinData() != null) {
             jsonSkin = new JsonNpcModel.JsonSkin(
                     data.getSkinData().getIdentifier(),
-                    data.getSkinData().getVariant().name()
+                    data.getSkinData().getVariant().name(),
+                    data.getSkinData().isTexturePackSkin() ? true : null,
+                    data.getSkinData().getCapeTextureAsset(),
+                    data.getSkinData().getElytraTextureAsset()
             );
         }
 
@@ -82,11 +85,22 @@ public class JsonNpcAdapter {
             }
         }
 
+        // Convert trigger cooldowns
+        Map<String, Float> jsonTriggerCooldowns = new HashMap<>();
+        if (data.getTriggerCooldowns() != null) {
+            for (Map.Entry<ActionTrigger, Float> entry : data.getTriggerCooldowns().entrySet()) {
+                if (entry.getValue() != null && entry.getValue() > 0) {
+                    jsonTriggerCooldowns.put(entry.getKey().name(), entry.getValue());
+                }
+            }
+        }
+
         return new JsonNpcModel(
                 data.getId(),
                 data.getName(),
                 data.getCreator().toString(),
                 data.getDisplayName(),
+                data.getDisplayNameScale() != 1.0f ? data.getDisplayNameScale() : null,
                 data.getType(),
                 jsonLocation,
                 jsonSkin,
@@ -99,6 +113,7 @@ public class JsonNpcAdapter {
                 data.isTurnToPlayer(),
                 data.getTurnToPlayerDistance(),
                 data.getInteractionCooldown(),
+                jsonTriggerCooldowns.isEmpty() ? null : jsonTriggerCooldowns,
                 data.getScale(),
                 data.getVisibilityDistance(),
                 data.getVisibility(),
@@ -138,8 +153,21 @@ public class JsonNpcAdapter {
         if (model.skin() != null && model.skin().identifier() != null && !model.skin().identifier().isEmpty()) {
             try {
                 SkinData.SkinVariant skinVariant = SkinData.SkinVariant.valueOf(model.skin().variant());
-                skin = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(model.skin().identifier(), skinVariant);
-                skin.setIdentifier(model.skin().identifier());
+
+                // Check if this is a texture pack skin
+                if (model.skin().texturePackSkin() != null && model.skin().texturePackSkin()) {
+                    // Create texture pack skin directly without fetching from SkinManager
+                    skin = SkinData.texturePackSkin(
+                            model.skin().identifier(),
+                            model.skin().capeTextureAsset(),
+                            model.skin().elytraTextureAsset(),
+                            skinVariant
+                    );
+                } else {
+                    // Traditional skin - fetch from SkinManager
+                    skin = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(model.skin().identifier(), skinVariant);
+                    skin.setIdentifier(model.skin().identifier());
+                }
             } catch (final SkinLoadException e) {
                 FancyNpcs.getInstance().getFancyLogger().error("NPC named '" + model.name() + "' identified by '" + model.id() + "' could not have their skin loaded.");
                 FancyNpcs.getInstance().getFancyLogger().error("  " + e.getReason() + " " + e.getMessage());
@@ -239,6 +267,21 @@ public class JsonNpcAdapter {
         );
 
         data.setVisibility(model.visibility() != null ? model.visibility() : NpcVisibility.ALL);
+
+        // Load display name scale
+        if (model.displayNameScale() != null) {
+            data.setDisplayNameScale(model.displayNameScale());
+        }
+
+        // Load trigger cooldowns
+        if (model.triggerCooldowns() != null) {
+            for (Map.Entry<String, Float> entry : model.triggerCooldowns().entrySet()) {
+                ActionTrigger trigger = ActionTrigger.getByName(entry.getKey());
+                if (trigger != null && entry.getValue() != null && entry.getValue() > 0) {
+                    data.setTriggerCooldown(trigger, entry.getValue());
+                }
+            }
+        }
 
         return data;
     }

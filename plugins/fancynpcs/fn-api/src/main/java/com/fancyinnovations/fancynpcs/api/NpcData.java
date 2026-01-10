@@ -25,6 +25,7 @@ public class NpcData {
     private final String name;
     private final UUID creator;
     private String displayName;
+    private float displayNameScale = 1.0f; // Scale for display name (1.0 = normal, uses Text Display when != 1)
     private SkinData skin;
     private boolean mirrorSkin;
     private Location location;
@@ -39,7 +40,9 @@ public class NpcData {
     private Map<ActionTrigger, List<NpcAction.NpcActionData>> actions;
     private boolean turnToPlayer;
     private int turnToPlayerDistance = -1; // -1 means use the default from config
-    private float interactionCooldown;
+    @Deprecated
+    private float interactionCooldown; // Deprecated: use triggerCooldowns instead
+    private Map<ActionTrigger, Float> triggerCooldowns; // Cooldown per trigger (in seconds)
     private float scale;
     private int visibilityDistance;
     private Map<NpcAttribute, String> attributes;
@@ -91,6 +94,7 @@ public class NpcData {
         this.turnToPlayer = turnToPlayer;
         this.turnToPlayerDistance = turnToPlayerDistance;
         this.interactionCooldown = interactionCooldown;
+        this.triggerCooldowns = new ConcurrentHashMap<>();
         this.scale = scale;
         this.visibilityDistance = visibilityDistance;
         this.attributes = attributes;
@@ -119,6 +123,7 @@ public class NpcData {
         this.turnToPlayer = false;
         this.turnToPlayerDistance = -1; // Use default from config
         this.interactionCooldown = 0;
+        this.triggerCooldowns = new ConcurrentHashMap<>();
         this.scale = 1;
         this.visibilityDistance = -1;
         this.equipment = new ConcurrentHashMap<>();
@@ -147,6 +152,18 @@ public class NpcData {
     public NpcData setDisplayName(String displayName) {
         if (!Objects.equals(this.displayName, displayName)) {
             this.displayName = displayName;
+            setHasChanges(true);
+        }
+        return this;
+    }
+
+    public float getDisplayNameScale() {
+        return displayNameScale;
+    }
+
+    public NpcData setDisplayNameScale(float displayNameScale) {
+        if (this.displayNameScale != displayNameScale) {
+            this.displayNameScale = displayNameScale;
             setHasChanges(true);
         }
         return this;
@@ -379,15 +396,88 @@ public class NpcData {
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #getTriggerCooldown(ActionTrigger)} instead
+     */
+    @Deprecated
     public float getInteractionCooldown() {
         return interactionCooldown;
     }
 
+    /**
+     * @deprecated Use {@link #setTriggerCooldown(ActionTrigger, float)} instead
+     */
+    @Deprecated
     public NpcData setInteractionCooldown(float interactionCooldown) {
         if (this.interactionCooldown != interactionCooldown) {
             this.interactionCooldown = interactionCooldown;
             setHasChanges(true);
         }
+        return this;
+    }
+
+    /**
+     * Gets the cooldown for a specific trigger in seconds.
+     * If ANY_CLICK has a cooldown set, it applies to all click types.
+     *
+     * @param trigger the action trigger
+     * @return the cooldown in seconds, or 0 if no cooldown is set
+     */
+    public float getTriggerCooldown(ActionTrigger trigger) {
+        if (triggerCooldowns == null) {
+            triggerCooldowns = new ConcurrentHashMap<>();
+        }
+        // ANY_CLICK cooldown overrides specific click cooldowns
+        Float anyClickCooldown = triggerCooldowns.get(ActionTrigger.ANY_CLICK);
+        if (anyClickCooldown != null && anyClickCooldown > 0 &&
+            (trigger == ActionTrigger.LEFT_CLICK || trigger == ActionTrigger.RIGHT_CLICK)) {
+            return anyClickCooldown;
+        }
+        return triggerCooldowns.getOrDefault(trigger, 0f);
+    }
+
+    /**
+     * Sets the cooldown for a specific trigger.
+     * Setting ANY_CLICK cooldown will apply to all click types (overrides LEFT_CLICK and RIGHT_CLICK).
+     *
+     * @param trigger the action trigger
+     * @param cooldown the cooldown in seconds (0 to disable)
+     * @return this NpcData instance for method chaining
+     */
+    public NpcData setTriggerCooldown(ActionTrigger trigger, float cooldown) {
+        if (triggerCooldowns == null) {
+            triggerCooldowns = new ConcurrentHashMap<>();
+        }
+        if (cooldown <= 0) {
+            triggerCooldowns.remove(trigger);
+        } else {
+            triggerCooldowns.put(trigger, cooldown);
+        }
+        setHasChanges(true);
+        return this;
+    }
+
+    /**
+     * Gets all trigger cooldowns.
+     *
+     * @return map of trigger to cooldown in seconds
+     */
+    public Map<ActionTrigger, Float> getTriggerCooldowns() {
+        if (triggerCooldowns == null) {
+            triggerCooldowns = new ConcurrentHashMap<>();
+        }
+        return triggerCooldowns;
+    }
+
+    /**
+     * Sets all trigger cooldowns.
+     *
+     * @param triggerCooldowns map of trigger to cooldown in seconds
+     * @return this NpcData instance for method chaining
+     */
+    public NpcData setTriggerCooldowns(Map<ActionTrigger, Float> triggerCooldowns) {
+        this.triggerCooldowns = triggerCooldowns != null ? triggerCooldowns : new ConcurrentHashMap<>();
+        setHasChanges(true);
         return this;
     }
 

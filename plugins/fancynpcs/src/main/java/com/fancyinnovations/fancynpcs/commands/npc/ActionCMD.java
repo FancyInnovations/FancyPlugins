@@ -294,6 +294,100 @@ public enum ActionCMD {
                 .send(sender);
     }
 
+    @Command("npc action <npc> <trigger> cooldown <duration>")
+    @Permission("fancynpcs.command.npc.action.cooldown")
+    public void onActionCooldown(
+            final @NotNull CommandSender sender,
+            final @NotNull Npc npc,
+            final @NotNull ActionTrigger trigger,
+            final @NotNull @Greedy String duration
+    ) {
+        float seconds = parseDuration(duration);
+        if (seconds < 0) {
+            translator
+                    .translate("npc_action_cooldown_invalid_duration")
+                    .send(sender);
+            return;
+        }
+
+        npc.getData().setTriggerCooldown(trigger, seconds);
+
+        if (seconds == 0) {
+            translator
+                    .translate("npc_action_cooldown_disabled")
+                    .replaceStripped("trigger", trigger.name().toLowerCase())
+                    .send(sender);
+        } else {
+            translator
+                    .translate("npc_action_cooldown_set")
+                    .replaceStripped("trigger", trigger.name().toLowerCase())
+                    .replaceStripped("duration", formatDuration(seconds))
+                    .send(sender);
+        }
+    }
+
+    /**
+     * Parses a duration string into seconds.
+     * Supports formats: 5s, 5m, 5h, 1m30s, 90, etc.
+     *
+     * @param duration the duration string
+     * @return the duration in seconds, or -1 if invalid
+     */
+    private float parseDuration(String duration) {
+        if (duration == null || duration.isBlank()) {
+            return -1;
+        }
+
+        duration = duration.trim().toLowerCase();
+
+        // Handle "0" or "none" to disable cooldown
+        if (duration.equals("0") || duration.equals("none") || duration.equals("off") || duration.equals("disable")) {
+            return 0;
+        }
+
+        try {
+            // Try parsing as plain seconds first
+            if (duration.matches("^\\d+(\\.\\d+)?$")) {
+                return Float.parseFloat(duration);
+            }
+
+            float totalSeconds = 0;
+            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(\\d+(?:\\.\\d+)?)([smh]?)").matcher(duration);
+
+            while (matcher.find()) {
+                float value = Float.parseFloat(matcher.group(1));
+                String unit = matcher.group(2);
+
+                switch (unit) {
+                    case "h" -> totalSeconds += value * 3600;
+                    case "m" -> totalSeconds += value * 60;
+                    case "s", "" -> totalSeconds += value;
+                }
+            }
+
+            return totalSeconds > 0 ? totalSeconds : -1;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Formats seconds into a human-readable duration string.
+     */
+    private String formatDuration(float seconds) {
+        if (seconds < 60) {
+            return String.format("%.1fs", seconds);
+        } else if (seconds < 3600) {
+            int mins = (int) (seconds / 60);
+            float secs = seconds % 60;
+            return secs > 0 ? String.format("%dm%.0fs", mins, secs) : String.format("%dm", mins);
+        } else {
+            int hours = (int) (seconds / 3600);
+            int mins = (int) ((seconds % 3600) / 60);
+            return mins > 0 ? String.format("%dh%dm", hours, mins) : String.format("%dh", hours);
+        }
+    }
+
     @Command("npc action <npc> <trigger> list")
     @Permission("fancynpcs.command.npc.action.list")
     public void onActionList(
@@ -302,7 +396,9 @@ public enum ActionCMD {
             final @NotNull ActionTrigger trigger
     ) {
         List<NpcAction.NpcActionData> actions = npc.getData().getActions(trigger);
-        if (actions.isEmpty()) {
+        float cooldown = npc.getData().getTriggerCooldown(trigger);
+
+        if (actions.isEmpty() && cooldown <= 0) {
             translator
                     .translate("npc_action_list_failure_empty")
                     .send(sender);
@@ -313,6 +409,14 @@ public enum ActionCMD {
                 .translate("npc_action_list_header")
                 .replaceStripped("trigger", trigger.name())
                 .send(sender);
+
+        // Show cooldown if set
+        if (cooldown > 0) {
+            translator
+                    .translate("npc_action_list_cooldown")
+                    .replaceStripped("duration", formatDuration(cooldown))
+                    .send(sender);
+        }
 
         for (int i = 0; i < actions.size(); i++) {
             NpcAction.NpcActionData action = actions.get(i);

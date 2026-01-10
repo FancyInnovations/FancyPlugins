@@ -236,6 +236,18 @@ public class Attributes {
         // Skeleton - stray conversion (freezing/shaking)
         attributes.add(attr("stray_conversion", BOOLEAN_VALUES, List.of(EntityType.SKELETON)));
 
+        // ========== MANNEQUIN/PLAYER POSE ATTRIBUTES (1.21.9+) ==========
+        // Mannequin is a player-like entity that doesn't need tab list entries
+        // When Mannequin is available, PLAYER NPCs internally use Mannequin for performance
+        // So we register pose for PLAYER type as well (only applies when using Mannequin internally)
+        try {
+            EntityType.valueOf("MANNEQUIN"); // Check if Mannequin is available
+            // Register pose for PLAYER type (used internally as Mannequin on 1.21.9+)
+            attributes.add(attr("pose", List.of("standing", "crouching", "swimming", "flying", "sleeping"), List.of(EntityType.PLAYER)));
+        } catch (IllegalArgumentException ignored) {
+            // Mannequin not available on this version - PLAYER NPCs use fake players
+        }
+
         return attributes;
     }
 

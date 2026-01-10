@@ -1,8 +1,8 @@
 {
   "project_name": "FancyNpcs",
-  "plugin_jar_path": "/plugins/fancynpcs/build/libs/FancyNpcs-%VERSION%.jar",
-  "changelog_path": "/plugins/fancynpcs/CHANGELOG-SNAPSHOT.md",
-  "version_path": "/plugins/fancynpcs/VERSION",
+  "plugin_jar_path": "/plugins/fancynpcs-v2/build/libs/FancyNpcs-%VERSION%.jar",
+  "changelog_path": "/plugins/fancynpcs-v2/CHANGELOG-SNAPSHOT.md",
+  "version_path": "/plugins/fancynpcs-v2/VERSION",
   "fancyspaces": {
     "space_id": "fn",
     "platform": "paper",

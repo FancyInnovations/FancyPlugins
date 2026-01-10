@@ -6,7 +6,7 @@
   "fancyspaces": {
     "space_id": "fn",
     "platform": "paper",
-    "channel": "beta",
+    "channel": "alpha",
     "supported_versions": [
       "1.21",
       "1.21.1",
@@ -38,7 +38,7 @@
       "1.21.10",
       "1.21.11"
     ],
-    "channel": "beta",
+    "channel": "alpha",
     "loaders": [
       "paper",
       "folia"

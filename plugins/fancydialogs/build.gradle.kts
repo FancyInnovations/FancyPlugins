@@ -49,7 +49,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
-    compileOnly(project(":plugins:fancynpcs:fn-api"))
+    compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.12")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.12")

@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SkinManagerImpl implements SkinManager, Listener {
 
@@ -243,5 +244,23 @@ public class SkinManagerImpl implements SkinManager, Listener {
 
     public SkinCache getMemCache() {
         return memCache;
+    }
+
+    /**
+     * Shuts down the static executor.
+     * Should be called when the plugin is disabled to prevent resource leaks.
+     */
+    public static void shutdownExecutor() {
+        if (EXECUTOR != null && !EXECUTOR.isShutdown()) {
+            EXECUTOR.shutdown();
+            try {
+                if (!EXECUTOR.awaitTermination(2, TimeUnit.SECONDS)) {
+                    EXECUTOR.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                EXECUTOR.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }

@@ -350,6 +350,23 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
     @Override
     public void onDisable() {
         getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+
+        // Shutdown thread pool to prevent resource leaks
+        if (npcThread != null && !npcThread.isShutdown()) {
+            npcThread.shutdown();
+            try {
+                if (!npcThread.awaitTermination(2, TimeUnit.SECONDS)) {
+                    npcThread.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                npcThread.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        // Shutdown static skin executor
+        SkinManagerImpl.shutdownExecutor();
+
         if (npcManager != null) {
             // Fire the NpcsUnloadedEvent before saving and unloading
             new NpcsUnloadedEvent().callEvent();

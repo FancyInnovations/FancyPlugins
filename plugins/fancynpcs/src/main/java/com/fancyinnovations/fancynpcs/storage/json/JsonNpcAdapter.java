@@ -188,10 +188,14 @@ public class JsonNpcAdapter {
             for (Map.Entry<String, String> entry : model.equipment().entrySet()) {
                 try {
                     NpcEquipmentSlot slot = NpcEquipmentSlot.parse(entry.getKey());
+                    if (slot == null) {
+                        FancyNpcs.getInstance().getFancyLogger().warn("Could not parse equipment slot '" + entry.getKey() + "' for NPC '" + model.id() + "'");
+                        continue;
+                    }
                     ItemStack item = ItemStack.deserializeBytes(Base64.getDecoder().decode(entry.getValue()));
                     equipment.put(slot, item);
                 } catch (Exception e) {
-                    FancyNpcs.getInstance().getFancyLogger().warn("Could not parse equipment slot '" + entry.getKey() + "' for NPC '" + model.id() + "'");
+                    FancyNpcs.getInstance().getFancyLogger().warn("Could not load equipment for slot '" + entry.getKey() + "' for NPC '" + model.id() + "': " + e.getMessage());
                 }
             }
         }

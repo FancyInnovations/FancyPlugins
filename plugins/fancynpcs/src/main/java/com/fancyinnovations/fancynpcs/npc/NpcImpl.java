@@ -192,16 +192,23 @@ public class NpcImpl extends Npc {
 
         // Send scale attribute (always send so scale 1.0 can reset from other values)
         if (isLivingEntity(data.getType())) {
-            List<FS_ClientboundUpdateAttributesPacket.AttributeSnapshot> attributes = List.of(
-                    new FS_ClientboundUpdateAttributesPacket.AttributeSnapshot("minecraft:scale", data.getScale())
-            );
+            List<FS_ClientboundUpdateAttributesPacket.AttributeSnapshot> attributes = new ArrayList<>();
+            attributes.add(new FS_ClientboundUpdateAttributesPacket.AttributeSnapshot("minecraft:scale", data.getScale()));
+
+            // Hide health from indicator mods for fake players (not Mannequin)
+            // Mannequin entities don't have this issue as they don't use PlayerInfo
+            if (data.getType() == EntityType.PLAYER && !usingMannequin) {
+                attributes.add(new FS_ClientboundUpdateAttributesPacket.AttributeSnapshot("minecraft:generic.max_health", 1.0));
+            }
+
             FancySitula.PACKET_FACTORY.createUpdateAttributesPacket(fsEntity.getId(), attributes).send(fsPlayer);
         }
 
+        // Sync Text Display state BEFORE update() so team packet uses correct settings
+        syncTextDisplayName(player);
         update(player);
 
         // Spawn Text Display for multi-line display names
-        syncTextDisplayName(player);
         spawnTextDisplay(fsPlayer);
     }
 
@@ -320,6 +327,10 @@ public class NpcImpl extends Npc {
 
         syncWithData();
 
+        // Sync Text Display state BEFORE team packet so correct settings are used
+        boolean wasUsingTextDisplay = usingTextDisplayForName;
+        syncTextDisplayName(player);
+
         // Note: Custom name for non-player entities is handled differently
         // The display name is shown via team packet, not entity custom name
         // Setting custom name here would require vanilla Component conversion which is complex
@@ -330,6 +341,17 @@ public class NpcImpl extends Npc {
         // Mannequin skin is handled via DATA_PROFILE entity data
         if (data.getType() == EntityType.PLAYER && !usingMannequin) {
             sendPlayerInfo(fsPlayer, player, false);
+        }
+
+        // Handle Text Display spawning/updating after team packet
+        if (usingTextDisplayForName) {
+            if (!wasUsingTextDisplay) {
+                // Switched to Text Display - spawn it
+                spawnTextDisplay(fsPlayer);
+            } else {
+                // Already using Text Display - update its data
+                FancySitula.ENTITY_FACTORY.setEntityDataFor(fsPlayer, displayNameTextDisplay);
+            }
         }
 
         // Handle equipment for player-like entities (FS_Player and FS_Mannequin)
@@ -362,9 +384,14 @@ public class NpcImpl extends Npc {
         // Send scale packet first (before attributes that might fail)
         // Always send so scale 1.0 can reset from other values
         if (isLivingEntity(data.getType())) {
-            List<FS_ClientboundUpdateAttributesPacket.AttributeSnapshot> attributes = List.of(
-                    new FS_ClientboundUpdateAttributesPacket.AttributeSnapshot("minecraft:scale", data.getScale())
-            );
+            List<FS_ClientboundUpdateAttributesPacket.AttributeSnapshot> attributes = new ArrayList<>();
+            attributes.add(new FS_ClientboundUpdateAttributesPacket.AttributeSnapshot("minecraft:scale", data.getScale()));
+
+            // Hide health from indicator mods for fake players (not Mannequin)
+            if (data.getType() == EntityType.PLAYER && !usingMannequin) {
+                attributes.add(new FS_ClientboundUpdateAttributesPacket.AttributeSnapshot("minecraft:generic.max_health", 1.0));
+            }
+
             FancySitula.PACKET_FACTORY.createUpdateAttributesPacket(fsEntity.getId(), attributes).send(fsPlayer);
         }
 
@@ -391,20 +418,6 @@ public class NpcImpl extends Npc {
             if (babyAttr != null && data.getAttributes().containsKey(babyAttr)) {
                 boolean isBaby = Boolean.parseBoolean(data.getAttributes().get(babyAttr));
                 sendBabyAttribute(fsPlayer, isBaby);
-            }
-        }
-
-        // Update Text Display for multi-line display names
-        // This handles switching between native nametag and Text Display when display name changes
-        boolean wasUsingTextDisplay = usingTextDisplayForName;
-        syncTextDisplayName(player);
-        if (usingTextDisplayForName) {
-            if (!wasUsingTextDisplay) {
-                // Switched to Text Display - spawn it
-                spawnTextDisplay(fsPlayer);
-            } else {
-                // Already using Text Display - update its data
-                FancySitula.ENTITY_FACTORY.setEntityDataFor(fsPlayer, displayNameTextDisplay);
             }
         }
 
@@ -638,24 +651,24 @@ public class NpcImpl extends Npc {
 
         // For non-player entities: empty prefix (custom name via entity data)
         // For Mannequin: empty prefix (uses Text Display for display names)
-        // For fake player (FS_Player): display name as prefix unless using Text Display for scaling
+        // For fake player (FS_Player): display name as prefix unless using Text Display for scaling or multi-line
         Component teamPrefix;
         float displayNameScale = data.getDisplayNameScale();
         boolean usingTextDisplayForScaling = displayNameScale != 1.0f;
 
         if (data.getType() != EntityType.PLAYER) {
             teamPrefix = Component.empty();
-        } else if (usingMannequin || usingTextDisplayForScaling) {
+        } else if (usingMannequin || usingTextDisplayForScaling || usingTextDisplayForName) {
             // Mannequin uses Text Display, not team prefix
-            // Scaled display names also use Text Display instead of team prefix
+            // Scaled or multi-line display names use Text Display instead of team prefix
             teamPrefix = Component.empty();
         } else {
             teamPrefix = displayNameComponent;
         }
 
-        // Hide team nametag when using Text Display (for Mannequin, scaled names, or empty names)
+        // Hide team nametag when using Text Display (for Mannequin, scaled names, multi-line, or empty names)
         FS_NameTagVisibility visibility;
-        if (usingMannequin || data.getDisplayName().equalsIgnoreCase("<empty>") || usingTextDisplayForScaling) {
+        if (usingMannequin || data.getDisplayName().equalsIgnoreCase("<empty>") || usingTextDisplayForScaling || usingTextDisplayForName) {
             visibility = FS_NameTagVisibility.NEVER;
         } else {
             visibility = FS_NameTagVisibility.ALWAYS;

@@ -1,0 +1,54 @@
+name: Deploy FancyNpcs v2 (release)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '21'
+
+      - name: Modify gradlew permissions
+        run: chmod +x ./gradlew
+
+      - name: Build
+        env:
+          RELEASE_CHANNEL: 'release'
+        run: ./gradlew :plugins:fancynpcs-v2:shadowJar
+
+      - name: Get last commit SHA and message
+        id: last_commit
+        run: |
+          {
+            echo "commit_sha=$(git rev-parse --short HEAD)"
+            echo "commit_msg<<EOF"
+            git log -1 --pretty=%B
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Deploy
+        uses: fancyinnovations/fancyverteiler@main
+        with:
+          config_path: "/plugins/fancynpcs-v2/release_deployment_config.json"
+          commit_sha: ${{ steps.last_commit.outputs.commit_sha }}
+          commit_message: ${{ steps.last_commit.outputs.commit_msg }}
+          fancyspaces_api_key: ${{ secrets.FANCYSPACES_API_KEY }}
+          modrinth_api_key: ${{ secrets.MODRINTH_API_KEY }}
+          discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}

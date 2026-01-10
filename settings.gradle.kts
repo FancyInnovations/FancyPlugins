@@ -10,6 +10,16 @@ plugins {
 
 rootProject.name = "minecraft-plugins"
 
+include(":plugins:fancynpcs-v2:")
+include(":plugins:fancynpcs-v2:fn-v2-api")
+include(":plugins:fancynpcs-v2:implementation_1_21_11")
+include(":plugins:fancynpcs-v2:implementation_1_21_9")
+include(":plugins:fancynpcs-v2:implementation_1_21_6")
+include(":plugins:fancynpcs-v2:implementation_1_21_5")
+include(":plugins:fancynpcs-v2:implementation_1_21_4")
+include(":plugins:fancynpcs-v2:implementation_1_21_3")
+include(":plugins:fancynpcs-v2:implementation_1_21_1")
+
 include(":plugins:fancynpcs:")
 include(":plugins:fancynpcs:fn-api")
 

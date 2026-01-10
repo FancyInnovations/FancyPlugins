@@ -25,9 +25,6 @@ include(":plugins:fancynpcs:fn-api")
 
 include(":plugins:fancyholograms-v2")
 include(":plugins:fancyholograms-v2:api")
-include(":plugins:fancyholograms-v2:implementation_1_20_4")
-include(":plugins:fancyholograms-v2:implementation_1_20_2")
-include(":plugins:fancyholograms-v2:implementation_1_20_1")
 
 include(":plugins:fancyholograms")
 include(":plugins:fancyholograms:fh-api")

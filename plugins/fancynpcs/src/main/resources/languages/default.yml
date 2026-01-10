@@ -26,6 +26,8 @@ messages:
   chest: "Chest"
   legs: "Legs"
   feet: "Feet"
+  body: "Body"
+  saddle: "Saddle"
 
   # Common (Availability)
   unknown: "Unknown"
@@ -126,7 +128,7 @@ messages:
     npc_remove: "<dark_gray>› <gray>Syntax: {primaryColor}/npc remove {secondaryColor}(npc)"
     npc_rotate: "<dark_gray>› <gray>Syntax: {primaryColor}/npc rotate {secondaryColor}(npc) (yaw) (pitch)"
     npc_show_in_tab: "<dark_gray>› <gray>Syntax: {primaryColor}/npc show_in_tab {secondaryColor}(npc) (state)"
-    npc_skin: "<dark_gray>› <gray>Syntax: {primaryColor}/npc skin {secondaryColor}(npc) (@none | @mirror | name | uuid | placeholder | url | file name) [--slim]"
+    npc_skin: "<dark_gray>› <gray>Syntax: {primaryColor}/npc skin {secondaryColor}(npc) (@none | @mirror | @texturepack:namespace:path | name | uuid | placeholder | url | file name) [--slim]"
     npc_teleport: "<dark_gray>› <gray>Syntax: {primaryColor}/npc teleport {secondaryColor}(npc)"
     npc_turn_to_player: "<dark_gray>› <gray>Syntax: {primaryColor}/npc turn_to_player {secondaryColor}(npc) (state)"
     npc_turn_to_player_distance: "<dark_gray>› <gray>Syntax: {primaryColor}/npc turn_to_player_distance {secondaryColor}(npc) (state)"
@@ -209,6 +211,10 @@ messages:
   npc_action_list_entry: " <#848484>{number}. {warningColor}{action}<dark_gray>: <gray>{value}"
   npc_action_list_footer: "<newline><dark_gray><st>-------------</st>  <gray>Showing total of {warningColor}{total}<gray> entries  <dark_gray><st>-------------</st>"
   npc_action_list_failure_empty: "<dark_gray>› {errorColor}There are no actions in the list. Use {warningColor}/npc action (npc) (trigger) add (action){errorColor} to add your first action."
+  npc_action_list_cooldown: " <dark_gray>› <gray>Cooldown: {warningColor}{duration}"
+  npc_action_cooldown_set: "<dark_gray>› <gray>Cooldown for {warningColor}{trigger}<gray> has been set to {warningColor}{duration}<gray>."
+  npc_action_cooldown_disabled: "<dark_gray>› <gray>Cooldown for {warningColor}{trigger}<gray> has been disabled."
+  npc_action_cooldown_invalid_duration: "<dark_gray>› {errorColor}Invalid duration format. Use formats like: {warningColor}5s{errorColor}, {warningColor}1m30s{errorColor}, {warningColor}2h{errorColor}, or {warningColor}0{errorColor} to disable."
 
   # Commands (npc attribute)
   npc_attribute_set: "<dark_gray>› <gray>Attribute {warningColor}{attribute}<gray> has been set to {warningColor}{value}<gray>."
@@ -234,6 +240,8 @@ messages:
   # Commands (npc displayname)
   npc_displayname_set_name: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is now using <reset>{name}<reset><gray> as their display name."
   npc_displayname_set_empty: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is no longer showing display name."
+  npc_displayname_scale_set: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> display name scale has been set to {warningColor}{scale}<gray>."
+  npc_displayname_scale_invalid: "<dark_gray>› {errorColor}Display name scale must be greater than 0."
 
   # Commands (npc equipment)
   npc_equipment_set_item: "<dark_gray>› <gray>Equipment slot {warningColor}{slot}<gray> has been set to <reset><item><gray>."
@@ -244,6 +252,7 @@ messages:
   npc_equipment_list_entry: " <#848484>{slot}<dark_gray>: <reset><item>"
   npc_equipment_list_footer: "<newline><dark_gray><st>---------------------------------------------------</st>"
   npc_equipment_list_failure_empty: "<dark_gray>› {errorColor}There are no equipment slots set. Use {warningColor}/npc equipment (npc) set (slot) (@hand | @none | material){errorColor} to set an equipment slot."
+  npc_equipment_invalid_slot_for_entity: "<dark_gray>› {errorColor}The slot {warningColor}{slot}{errorColor} is not valid for entity type {warningColor}{type}{errorColor}."
 
   # Commands (npc fix)
   npc_fix_success: "<dark_gray>› <gray>Attempted to fix NPC {warningColor}{npc}<gray>... Still having issues? Please let us know."
@@ -325,6 +334,8 @@ messages:
   # Commands (npc show_in_tab)
   npc_show_in_tab_set_true: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is now shown in player-list."
   npc_show_in_tab_set_false: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is no longer shown in player-list."
+  npc_show_in_tab_not_supported: "<dark_gray>› {errorColor}Only PLAYER type NPCs can be shown in the tab list. This NPC is of type {warningColor}{type}{errorColor}."
+  npc_show_in_tab_not_supported_mannequin: "<dark_gray>› {errorColor}This feature is not available on Minecraft 1.21.9+. NPCs now use Mannequin entities which don't appear in the tab list."
 
   # Commands (npc skin)
   npc_skin_set: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is now using the {warningColor}{name}<gray> skin."
@@ -344,6 +355,11 @@ messages:
     - "<click:open_url:'https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/faq#placeholders-as-skin'><hover:show_text:'{warningColor}What does that mean?<newline><gray>Click here to find out more about this message.'><dark_gray>› {errorColor}Could not load skin from the specified placeholder."
     - "<dark_gray>› <gray>Ensure that the placeholder does not require"
     - "<dark_gray>›  <gray>a player instance to be parsed. <#848484>ℹ</hover>"
+  npc_skin_set_texturepack: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> is now using resource pack texture {warningColor}{asset}<gray>."
+  npc_skin_failure_invalid_texturepack:
+    - "<dark_gray>› {errorColor}Invalid texture pack skin format."
+    - "<dark_gray>› <gray>Use format: {warningColor}@texturepack:namespace:path/to/skin"
+    - "<dark_gray>› <gray>Example: {warningColor}@texturepack:myserver:skins/guard"
 
   # Commands (npc teleport)
   npc_teleport_success: "<dark_gray>› <gray>You have been teleported to NPC {warningColor}{npc}<gray>."

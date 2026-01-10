@@ -1,0 +1,57 @@
+package com.fancyinnovations.fancynpcs.commands.npc;
+
+import de.oliver.fancylib.translations.Translator;
+import com.fancyinnovations.fancynpcs.FancyNpcs;
+import com.fancyinnovations.fancynpcs.api.FancyNpcsPlugin;
+import com.fancyinnovations.fancynpcs.api.Npc;
+import com.fancyinnovations.fancynpcs.api.events.NpcModifyEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
+import org.incendo.cloud.annotations.Command;
+import org.incendo.cloud.annotations.Permission;
+import org.jetbrains.annotations.NotNull;
+
+public enum TypeCMD {
+    INSTANCE; // SINGLETON
+
+    private final Translator translator = FancyNpcs.getInstance().getTranslator();
+
+    @Command("npc type <npc> <type>")
+    @Permission("fancynpcs.command.npc.type")
+    public void onType(
+            final @NotNull CommandSender sender,
+            final @NotNull Npc npc,
+            final @NotNull EntityType type
+    ) {
+        // Calling the event and updating the type if not cancelled.
+        if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.TYPE, type, sender).callEvent()) {
+            npc.getData().setType(type);
+
+            if (type != EntityType.PLAYER) {
+                npc.getData().setShowInTab(false);
+                npc.getData().setSkinData(null);
+                npc.getData().setMirrorSkin(false);
+            }
+
+            if (!type.isAlive() && npc.getData().getEquipment() != null) {
+                npc.getData().getEquipment().clear();
+            }
+
+            if (type == EntityType.ENDER_DRAGON) {
+                npc.removeForAll();
+                npc.create();
+                Bukkit.getOnlinePlayers().forEach(npc::checkAndUpdateVisibility);
+            } else {
+                FancyNpcsPlugin.get().getNpcThread().submit(() -> {
+                    npc.removeForAll();
+                    npc.create();
+                    Bukkit.getOnlinePlayers().forEach(npc::checkAndUpdateVisibility);
+                });
+            }
+            translator.translate("npc_type_success").replace("npc", npc.getData().getName()).replace("type", type.name().toLowerCase()).send(sender);
+        } else {
+            translator.translate("command_npc_modification_cancelled").send(sender);
+        }
+    }
+}

@@ -2,6 +2,10 @@ plugins {
     id("java-library")
 }
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.8")

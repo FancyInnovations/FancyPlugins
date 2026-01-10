@@ -36,7 +36,7 @@ public class ClientboundPlayerInfoUpdatePacketImpl extends FS_ClientboundPlayerI
                     GameType.byId(entry.gameMode().getId()),
                     PaperAdventure.asVanilla(entry.displayName()),
                     -1,
-                    null // TODO: Add ChatSession support
+                    null // ChatSession not needed for NPCs
             ));
         }
 

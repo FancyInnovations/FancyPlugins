@@ -20,7 +20,7 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
 
-        relocate("org.lushplugins.chatcolorhandler", "de.oliver.fancynpcs.libs.chatcolorhandler")
+        relocate("org.lushplugins.chatcolorhandler", "com.fancyinnovations.fancynpcs.libs.chatcolorhandler")
     }
 
     publishing {
@@ -47,17 +47,12 @@ tasks {
         }
         publications {
             create<MavenPublication>("maven") {
-                groupId = "de.oliver"
+                groupId = "com.fancyinnovations"
                 artifactId = "FancyNpcs"
                 version = getFNVersion()
                 from(project.components["java"])
             }
         }
-    }
-
-    java {
-        withSourcesJar()
-        withJavadocJar()
     }
 
     javadoc {
@@ -66,9 +61,14 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 17
-
+        options.release = 21
     }
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    withSourcesJar()
+    withJavadocJar()
 }
 
 fun getFNVersion(): String {

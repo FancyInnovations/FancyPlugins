@@ -2,6 +2,8 @@ package de.oliver.fancysitula.versions.v1_21_5.packets;
 
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.api.packets.FS_ClientboundCreateOrUpdateTeamPacket;
+import de.oliver.fancysitula.api.teams.FS_CollisionRule;
+import de.oliver.fancysitula.api.teams.FS_NameTagVisibility;
 import de.oliver.fancysitula.versions.v1_21_5.utils.VanillaPlayerAdapter;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.minecraft.ChatFormatting;
@@ -55,8 +57,8 @@ public class ClientboundCreateOrUpdateTeamPacketImpl extends FS_ClientboundCreat
         playerTeam.setDisplayName(PaperAdventure.asVanilla(createTeam.getDisplayName()));
         playerTeam.setAllowFriendlyFire(createTeam.isAllowFriendlyFire());
         playerTeam.setSeeFriendlyInvisibles(createTeam.isCanSeeFriendlyInvisibles());
-        playerTeam.setNameTagVisibility(Team.Visibility.valueOf(createTeam.getNameTagVisibility().getName()));
-        playerTeam.setCollisionRule(PlayerTeam.CollisionRule.valueOf(createTeam.getCollisionRule().getName()));
+        playerTeam.setNameTagVisibility(convertVisibility(createTeam.getNameTagVisibility()));
+        playerTeam.setCollisionRule(convertCollisionRule(createTeam.getCollisionRule()));
         playerTeam.setColor(ChatFormatting.getById(createTeam.getColor().getId()));
         playerTeam.setPlayerPrefix(PaperAdventure.asVanilla(createTeam.getPrefix()));
         playerTeam.setPlayerSuffix(PaperAdventure.asVanilla(createTeam.getSuffix()));
@@ -85,13 +87,13 @@ public class ClientboundCreateOrUpdateTeamPacketImpl extends FS_ClientboundCreat
         playerTeam.setDisplayName(PaperAdventure.asVanilla(updateTeam.getDisplayName()));
         playerTeam.setAllowFriendlyFire(updateTeam.isAllowFriendlyFire());
         playerTeam.setSeeFriendlyInvisibles(updateTeam.isCanSeeFriendlyInvisibles());
-        playerTeam.setNameTagVisibility(Team.Visibility.valueOf(updateTeam.getNameTagVisibility().getName()));
-        playerTeam.setCollisionRule(PlayerTeam.CollisionRule.valueOf(updateTeam.getCollisionRule().getName()));
+        playerTeam.setNameTagVisibility(convertVisibility(updateTeam.getNameTagVisibility()));
+        playerTeam.setCollisionRule(convertCollisionRule(updateTeam.getCollisionRule()));
         playerTeam.setColor(ChatFormatting.getById(updateTeam.getColor().getId()));
         playerTeam.setPlayerPrefix(PaperAdventure.asVanilla(updateTeam.getPrefix()));
         playerTeam.setPlayerSuffix(PaperAdventure.asVanilla(updateTeam.getSuffix()));
 
-        return ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(playerTeam, true);
+        return ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(playerTeam, false);
     }
 
     private Object createAddEntityPacket() {
@@ -124,5 +126,23 @@ public class ClientboundCreateOrUpdateTeamPacketImpl extends FS_ClientboundCreat
 
         ServerPlayer vanillaPlayer = VanillaPlayerAdapter.asVanilla(player.getBukkitPlayer());
         vanillaPlayer.connection.send(packet);
+    }
+
+    private Team.Visibility convertVisibility(FS_NameTagVisibility visibility) {
+        return switch (visibility) {
+            case ALWAYS -> Team.Visibility.ALWAYS;
+            case NEVER -> Team.Visibility.NEVER;
+            case HIDE_FOR_OTHER_TEAMS -> Team.Visibility.HIDE_FOR_OTHER_TEAMS;
+            case HIDE_FOR_OWN_TEAM -> Team.Visibility.HIDE_FOR_OWN_TEAM;
+        };
+    }
+
+    private PlayerTeam.CollisionRule convertCollisionRule(FS_CollisionRule rule) {
+        return switch (rule) {
+            case ALWAYS -> PlayerTeam.CollisionRule.ALWAYS;
+            case NEVER -> PlayerTeam.CollisionRule.NEVER;
+            case PUSH_OTHER_TEAMS -> PlayerTeam.CollisionRule.PUSH_OTHER_TEAMS;
+            case PUSH_OWN_TEAM -> PlayerTeam.CollisionRule.PUSH_OWN_TEAM;
+        };
     }
 }

@@ -2,6 +2,7 @@ package de.oliver.fancyholograms.listeners;
 
 import de.oliver.fancyholograms.FancyHolograms;
 import de.oliver.fancyholograms.api.hologram.Hologram;
+import de.oliver.fancyholograms.util.PluginUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,6 +36,8 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(@NotNull final PlayerQuitEvent event) {
+        PluginUtils.clearProtocolCache(event.getPlayer().getUniqueId());
+
         FancyHolograms.get().getHologramThread().submit(() -> {
             for (final var hologram : this.plugin.getHologramsManager().getHolograms()) {
                 hologram.forceHideHologram(event.getPlayer());

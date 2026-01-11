@@ -16,13 +16,23 @@ public class OpenDialogNpcAction extends NpcAction {
 
     @Override
     public void execute(@NotNull ActionExecutionContext context, @Nullable String value) {
-        Dialog dialog = FancyDialogsPlugin.get().getDialogRegistry().get(value);
-        if (dialog == null) {
-            FancyDialogsPlugin.get().getFancyLogger().warn("Dialog with ID '" + value + "' not found for NPC action 'open_dialog'.");
+        if (value == null || value.isEmpty()) {
             return;
         }
 
-        dialog.open(context.getPlayer());
+        // Parse value as: dialogId [arg1] [arg2] ...
+        String[] parts = value.split(" ");
+        String dialogId = parts[0];
+        String[] args = new String[parts.length - 1];
+        System.arraycopy(parts, 1, args, 0, args.length);
+
+        Dialog dialog = FancyDialogsPlugin.get().getDialogRegistry().get(dialogId);
+        if (dialog == null) {
+            FancyDialogsPlugin.get().getFancyLogger().warn("Dialog with ID '" + dialogId + "' not found for NPC action 'open_dialog'.");
+            return;
+        }
+
+        dialog.open(context.getPlayer(), args);
     }
 
     public void register() {

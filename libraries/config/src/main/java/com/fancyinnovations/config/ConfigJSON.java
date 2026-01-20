@@ -27,6 +27,7 @@ public class ConfigJSON {
         this.values = new ConcurrentHashMap<>();
         this.gson = new GsonBuilder()
                 .serializeNulls()
+                .disableHtmlEscaping()
                 .setPrettyPrinting()
                 .create();
     }

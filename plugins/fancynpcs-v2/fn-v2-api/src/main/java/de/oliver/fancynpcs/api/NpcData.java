@@ -330,16 +330,16 @@ public class NpcData {
 
     /**
      * Gets the turn-to-player distance for this NPC.
-     * 
+     *
      * @return the custom distance value, or -1 if using the default from config
      */
     public int getTurnToPlayerDistance() {
         return turnToPlayerDistance;
     }
-    
+
     /**
      * Sets the turn-to-player distance for this NPC.
-     * 
+     *
      * @param distance the custom distance value, or -1 to use the default from config
      * @return this NpcData instance for method chaining
      */
@@ -384,6 +384,11 @@ public class NpcData {
 
     public void addAttribute(NpcAttribute attribute, String value) {
         attributes.put(attribute, value);
+        isDirty = true;
+    }
+
+    public void clearAttributes() {
+        attributes.clear();
         isDirty = true;
     }
 

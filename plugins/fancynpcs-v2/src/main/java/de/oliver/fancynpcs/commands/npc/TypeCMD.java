@@ -26,6 +26,8 @@ public enum TypeCMD {
     ) {
         // Calling the event and updating the type if not cancelled.
         if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.TYPE, type, sender).callEvent()) {
+            npc.getData().clearAttributes();
+
             npc.getData().setType(type);
 
             if (type != EntityType.PLAYER) {

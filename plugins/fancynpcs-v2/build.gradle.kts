@@ -93,8 +93,8 @@ tasks {
         minecraftVersion("1.21.11")
 
         downloadPlugins {
-//            hangar("ViaVersion", "5.4.0")
-//            hangar("ViaBackwards", "5.4.0")
+            hangar("ViaVersion", "5.7.1")
+            hangar("ViaBackwards", "5.7.1")
 //            hangar("PlaceholderAPI", "2.11.6")
 //            modrinth("multiverse-core", "5.0.2")
         }

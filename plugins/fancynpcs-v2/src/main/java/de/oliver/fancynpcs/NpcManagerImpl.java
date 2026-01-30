@@ -255,7 +255,10 @@ public class NpcManagerImpl implements NpcManager {
                 World world = Bukkit.getWorld(worldName);
 
                 if (world == null) {
-                    world = (!ServerSoftware.isFolia()) ? new WorldCreator(worldName).createWorld() : null;
+                    File worldFolder = new File(worldName);
+                    if (worldFolder.exists() && worldFolder.isDirectory()) {
+                        world = (!ServerSoftware.isFolia()) ? new WorldCreator(worldName).createWorld() : null;
+                    }
                 }
 
                 if (world == null) {

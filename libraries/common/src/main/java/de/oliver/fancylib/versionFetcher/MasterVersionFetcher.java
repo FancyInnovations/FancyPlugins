@@ -4,7 +4,7 @@ import org.apache.maven.artifact.versioning.ComparableVersion;
 
 import java.util.LinkedList;
 
-public class MasterVersionFetcher implements VersionFetcher{
+public class MasterVersionFetcher implements VersionFetcher {
 
     private final String pluginName;
     private ComparableVersion newestVersion;
@@ -15,6 +15,7 @@ public class MasterVersionFetcher implements VersionFetcher{
         this.fetchers = new LinkedList<>();
         fetchers.push(new ReposiliteVersionFetcher(pluginName));
         fetchers.push(new HangarVersionFetcher(pluginName));
+        fetchers.push(new FancySpacesVersionFetcher(pluginName));
         fetchers.push(new ModrinthVersionFetcher(pluginName));
     }
 
@@ -22,7 +23,7 @@ public class MasterVersionFetcher implements VersionFetcher{
     public ComparableVersion fetchNewestVersion() {
         for (VersionFetcher fetcher : fetchers) {
             ComparableVersion version = fetcher.fetchNewestVersion();
-            if(version == null) continue;
+            if (version == null) continue;
             newestVersion = version;
             return newestVersion;
         }

@@ -161,13 +161,11 @@ public class Npc_1_21_11 extends Npc {
         int removeNpcsFromPlayerlistDelay = FancyNpcsPlugin.get().getFancyNpcConfig().getRemoveNpcsFromPlayerlistDelay();
         if (!data.isShowInTab() && removeNpcsFromPlayerlistDelay > 0) {
             FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
-                ClientboundPlayerInfoRemovePacket playerInfoRemovePacket = new ClientboundPlayerInfoRemovePacket(List.of(npc.getUUID()));
-                serverPlayer.connection.send(playerInfoRemovePacket);
+                PacketHelper.sendPacketToPlayer(new ClientboundPlayerInfoRemovePacket(List.of(npc.getUUID())), serverPlayer);
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
         }
 
-        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
-        serverPlayer.connection.send(bundlePacket);
+        PacketHelper.sendPacketToPlayer(new ClientboundBundlePacket(packets), serverPlayer);
 
         update(player);
     }
@@ -181,18 +179,15 @@ public class Npc_1_21_11 extends Npc {
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
         if (npc instanceof ServerPlayer npcPlayer) {
-            ClientboundPlayerInfoRemovePacket playerInfoRemovePacket = new ClientboundPlayerInfoRemovePacket(List.of((npcPlayer.getUUID())));
-            serverPlayer.connection.send(playerInfoRemovePacket);
+            PacketHelper.sendPacketToPlayer(new ClientboundPlayerInfoRemovePacket(List.of((npcPlayer.getUUID()))), serverPlayer);
         }
 
         // remove entity
-        ClientboundRemoveEntitiesPacket removeEntitiesPacket = new ClientboundRemoveEntitiesPacket(npc.getId());
-        serverPlayer.connection.send(removeEntitiesPacket);
+        PacketHelper.sendPacketToPlayer(new ClientboundRemoveEntitiesPacket(npc.getId()), serverPlayer);
 
         // remove sitting vehicle
         if (sittingVehicle != null) {
-            ClientboundRemoveEntitiesPacket removeSittingVehiclePacket = new ClientboundRemoveEntitiesPacket(sittingVehicle.getId());
-            serverPlayer.connection.send(removeSittingVehiclePacket);
+            PacketHelper.sendPacketToPlayer(new ClientboundRemoveEntitiesPacket(sittingVehicle.getId()), serverPlayer);
         }
 
         isVisibleForPlayer.put(serverPlayer.getUUID(), false);
@@ -222,11 +217,10 @@ public class Npc_1_21_11 extends Npc {
                 Set.of(),
                 false
         );
-        serverPlayer.connection.send(teleportEntityPacket);
+        PacketHelper.sendPacketToPlayer(teleportEntityPacket, serverPlayer);
 
         float angelMultiplier = 256f / 360f;
-        ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (location.getYaw() * angelMultiplier));
-        serverPlayer.connection.send(rotateHeadPacket);
+        PacketHelper.sendPacketToPlayer(new ClientboundRotateHeadPacket(npc, (byte) (location.getYaw() * angelMultiplier)), serverPlayer);
     }
 
     @Override
@@ -356,8 +350,7 @@ public class Npc_1_21_11 extends Npc {
             packets.add(updateAttributesPacket);
         }
 
-        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
-        serverPlayer.connection.send(bundlePacket);
+        PacketHelper.sendPacketToPlayer(new ClientboundBundlePacket(packets), serverPlayer);
     }
 
     @Override
@@ -373,8 +366,7 @@ public class Npc_1_21_11 extends Npc {
         for (SynchedEntityData.DataItem<?> dataItem : itemsById) {
             entityData.add(dataItem.value());
         }
-        ClientboundSetEntityDataPacket setEntityDataPacket = new ClientboundSetEntityDataPacket(npc.getId(), entityData);
-        serverPlayer.connection.send(setEntityDataPacket);
+        PacketHelper.sendPacketToPlayer(new ClientboundSetEntityDataPacket(npc.getId(), entityData), serverPlayer);
     }
 
     @Override
@@ -402,15 +394,13 @@ public class Npc_1_21_11 extends Npc {
                 Set.of(),
                 false
         );
-        serverPlayer.connection.send(teleportEntityPacket);
+        PacketHelper.sendPacketToPlayer(teleportEntityPacket, serverPlayer);
 
         float angelMultiplier = 256f / 360f;
-        ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (data.getLocation().getYaw() * angelMultiplier));
-        serverPlayer.connection.send(rotateHeadPacket);
+        PacketHelper.sendPacketToPlayer(new ClientboundRotateHeadPacket(npc, (byte) (data.getLocation().getYaw() * angelMultiplier)), serverPlayer);
 
         if (swingArm && npc instanceof ServerPlayer) {
-            ClientboundAnimatePacket animatePacket = new ClientboundAnimatePacket(npc, 0);
-            serverPlayer.connection.send(animatePacket);
+            PacketHelper.sendPacketToPlayer(new ClientboundAnimatePacket(npc, 0), serverPlayer);
         }
     }
 
@@ -463,12 +453,12 @@ public class Npc_1_21_11 extends Npc {
                 Set.of()
         );
         ClientboundAddEntityPacket addEntityPacket = new ClientboundAddEntityPacket(sittingVehicle, serverEntity);
-        serverPlayer.connection.send(addEntityPacket);
+        PacketHelper.sendPacketToPlayer(addEntityPacket, serverPlayer);
 
         sittingVehicle.passengers = ImmutableList.of(npc);
 
         ClientboundSetPassengersPacket packet = new ClientboundSetPassengersPacket(sittingVehicle);
-        serverPlayer.connection.send(packet);
+        PacketHelper.sendPacketToPlayer(packet, serverPlayer);
     }
 
     @Override

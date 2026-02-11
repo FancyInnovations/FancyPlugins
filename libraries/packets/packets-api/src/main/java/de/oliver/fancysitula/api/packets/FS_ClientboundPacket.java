@@ -1,5 +1,7 @@
 package de.oliver.fancysitula.api.packets;
 
+import de.oliver.fancylib.FancyLib;
+import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import de.oliver.fancysitula.api.IFancySitula;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import org.jetbrains.annotations.ApiStatus;
@@ -25,6 +27,16 @@ public abstract class FS_ClientboundPacket {
      */
     public final void send(FS_RealPlayer player) {
         IFancySitula.LOGGER.debug("Sending packet '" + this.getClass().getSimpleName() + "' to " + player.getBukkitPlayer().getName());
+
+        if (ServerSoftware.isFolia()) {
+            player.getBukkitPlayer().getScheduler().run(
+                    FancyLib.getInstance().getPlugin(),
+                    (t) -> sendPacketTo(player),
+                    null
+            );
+
+            return;
+        }
 
         sendPacketTo(player);
     }

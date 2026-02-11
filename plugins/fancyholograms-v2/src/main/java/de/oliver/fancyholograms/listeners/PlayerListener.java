@@ -9,7 +9,11 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class PlayerListener implements Listener {
 
@@ -19,7 +23,7 @@ public final class PlayerListener implements Listener {
 
     public PlayerListener(@NotNull final FancyHolograms plugin) {
         this.plugin = plugin;
-        this.loadingResourcePacks = new HashMap<>();
+        this.loadingResourcePacks = new ConcurrentHashMap<>();
     }
 
     // For 1.20.2 and higher this method returns actual pack identifier, while for older versions, the identifier is a dummy UUID full of zeroes.

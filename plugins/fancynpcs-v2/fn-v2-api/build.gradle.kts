@@ -4,10 +4,10 @@ plugins {
     id("com.gradleup.shadow")
 }
 
-val minecraftVersion = "1.20"
+val minecraftVersion = "1.21.11"
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    compileOnly("dev.folia:folia-api:$minecraftVersion-R0.1-SNAPSHOT")
 
     compileOnly(project(":libraries:common"))
     compileOnly(project(":libraries:config"))
@@ -108,7 +108,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 17
+        options.release = 21
 
     }
 }

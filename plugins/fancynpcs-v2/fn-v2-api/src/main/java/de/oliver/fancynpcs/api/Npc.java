@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -249,5 +250,25 @@ public abstract class Npc {
 
     public void setSaveToFile(boolean saveToFile) {
         this.saveToFile = saveToFile;
+    }
+
+    /**
+     * Runs a task on the player's scheduler, when using Folia
+     *
+     * @param player The player whose scheduler to run the task on.
+     * @param task   The task to run.
+     */
+    @ApiStatus.Internal
+    protected void runOnPlayerScheduler(Player player, Runnable task) {
+        if (ServerSoftware.isFolia()) {
+            player.getScheduler().run(
+                    FancyNpcsPlugin.get().getPlugin(),
+                    (t) -> task.run(),
+                    null
+            );
+            return;
+        }
+
+        task.run();
     }
 }

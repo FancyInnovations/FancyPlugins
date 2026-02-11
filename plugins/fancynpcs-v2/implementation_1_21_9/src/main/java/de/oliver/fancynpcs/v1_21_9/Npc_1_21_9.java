@@ -162,12 +162,12 @@ public class Npc_1_21_9 extends Npc {
         if (!data.isShowInTab() && removeNpcsFromPlayerlistDelay > 0) {
             FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
                 ClientboundPlayerInfoRemovePacket playerInfoRemovePacket = new ClientboundPlayerInfoRemovePacket(List.of(npc.getUUID()));
-                serverPlayer.connection.send(playerInfoRemovePacket);
+                runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(playerInfoRemovePacket));
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
         }
 
         ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
-        serverPlayer.connection.send(bundlePacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(bundlePacket));
 
         update(player);
     }
@@ -182,17 +182,17 @@ public class Npc_1_21_9 extends Npc {
 
         if (npc instanceof ServerPlayer npcPlayer) {
             ClientboundPlayerInfoRemovePacket playerInfoRemovePacket = new ClientboundPlayerInfoRemovePacket(List.of((npcPlayer.getUUID())));
-            serverPlayer.connection.send(playerInfoRemovePacket);
+            runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(playerInfoRemovePacket));
         }
 
         // remove entity
         ClientboundRemoveEntitiesPacket removeEntitiesPacket = new ClientboundRemoveEntitiesPacket(npc.getId());
-        serverPlayer.connection.send(removeEntitiesPacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(removeEntitiesPacket));
 
         // remove sitting vehicle
         if (sittingVehicle != null) {
             ClientboundRemoveEntitiesPacket removeSittingVehiclePacket = new ClientboundRemoveEntitiesPacket(sittingVehicle.getId());
-            serverPlayer.connection.send(removeSittingVehiclePacket);
+            runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(removeSittingVehiclePacket));
         }
 
         isVisibleForPlayer.put(serverPlayer.getUUID(), false);
@@ -222,11 +222,11 @@ public class Npc_1_21_9 extends Npc {
                 Set.of(),
                 false
         );
-        serverPlayer.connection.send(teleportEntityPacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(teleportEntityPacket));
 
         float angelMultiplier = 256f / 360f;
         ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (location.getYaw() * angelMultiplier));
-        serverPlayer.connection.send(rotateHeadPacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(rotateHeadPacket));
     }
 
     @Override
@@ -253,7 +253,7 @@ public class Npc_1_21_9 extends Npc {
 
         net.kyori.adventure.text.Component displayName = ModernChatColorHandler.translate(data.getDisplayName(), serverPlayer.getBukkitEntity());
         Component vanillaComponent = PaperAdventure.asVanilla(displayName);
-        
+
         // Validate MiniMessage syntax
         try {
             ComponentSerialization.CODEC.encodeStart(JavaOps.INSTANCE, vanillaComponent);
@@ -357,7 +357,7 @@ public class Npc_1_21_9 extends Npc {
         }
 
         ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
-        serverPlayer.connection.send(bundlePacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(bundlePacket));
     }
 
     @Override
@@ -374,7 +374,7 @@ public class Npc_1_21_9 extends Npc {
             entityData.add(dataItem.value());
         }
         ClientboundSetEntityDataPacket setEntityDataPacket = new ClientboundSetEntityDataPacket(npc.getId(), entityData);
-        serverPlayer.connection.send(setEntityDataPacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(setEntityDataPacket));
     }
 
     @Override
@@ -402,15 +402,15 @@ public class Npc_1_21_9 extends Npc {
                 Set.of(),
                 false
         );
-        serverPlayer.connection.send(teleportEntityPacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(teleportEntityPacket));
 
         float angelMultiplier = 256f / 360f;
         ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (data.getLocation().getYaw() * angelMultiplier));
-        serverPlayer.connection.send(rotateHeadPacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(rotateHeadPacket));
 
         if (swingArm && npc instanceof ServerPlayer) {
             ClientboundAnimatePacket animatePacket = new ClientboundAnimatePacket(npc, 0);
-            serverPlayer.connection.send(animatePacket);
+            runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(animatePacket));
         }
     }
 
@@ -463,12 +463,12 @@ public class Npc_1_21_9 extends Npc {
                 Set.of()
         );
         ClientboundAddEntityPacket addEntityPacket = new ClientboundAddEntityPacket(sittingVehicle, serverEntity);
-        serverPlayer.connection.send(addEntityPacket);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(addEntityPacket));
 
         sittingVehicle.passengers = ImmutableList.of(npc);
 
         ClientboundSetPassengersPacket packet = new ClientboundSetPassengersPacket(sittingVehicle);
-        serverPlayer.connection.send(packet);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(packet));
     }
 
     @Override

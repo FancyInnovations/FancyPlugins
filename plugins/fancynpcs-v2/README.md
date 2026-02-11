@@ -35,7 +35,7 @@ Check out **[images section](#images)** down below.
 
 ## Installation
 
-Paper **1.21** - **latest** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
+Paper **1.21.2** - **latest** with **Java 21** (or higher) is required. Plugin should also work on **Paper** forks.
 
 **Spigot** is **not** supported.
 

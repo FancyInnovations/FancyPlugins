@@ -1,7 +1,5 @@
 package com.fancyinnovations.fancynpcs.commands;
 
-import de.oliver.fancylib.translations.Translator;
-import de.oliver.fancylib.translations.message.Message;
 import com.fancyinnovations.fancynpcs.FancyNpcs;
 import com.fancyinnovations.fancynpcs.api.data.property.NpcVisibility;
 import com.fancyinnovations.fancynpcs.commands.arguments.ActionTriggerArgument;
@@ -11,6 +9,8 @@ import com.fancyinnovations.fancynpcs.commands.arguments.NpcArgument;
 import com.fancyinnovations.fancynpcs.commands.exceptions.ReplyingParseException;
 import com.fancyinnovations.fancynpcs.commands.npc.*;
 import com.fancyinnovations.fancynpcs.utils.GlowingColor;
+import de.oliver.fancylib.translations.Translator;
+import de.oliver.fancylib.translations.message.Message;
 import io.leangen.geantyref.TypeToken;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -203,7 +203,7 @@ public final class CloudCommandManager {
             annotationParser.parse(FancyNpcsDebugCMD.INSTANCE);
         }
 
-        if (Set.of("1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11").contains(Bukkit.getMinecraftVersion())) {
+        if (Set.of("1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11").contains(Bukkit.getMinecraftVersion())) {
             annotationParser.parse(ScaleCMD.INSTANCE);
         }
 

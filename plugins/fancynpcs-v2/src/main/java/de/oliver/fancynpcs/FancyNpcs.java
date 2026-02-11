@@ -45,7 +45,6 @@ import de.oliver.fancynpcs.tests.PlaceholderApiEnv;
 import de.oliver.fancynpcs.tracker.TurnToPlayerTracker;
 import de.oliver.fancynpcs.tracker.VisibilityTracker;
 import de.oliver.fancynpcs.utils.OldSkinCacheMigrator;
-import de.oliver.fancynpcs.v1_21_1.Npc_1_21_1;
 import de.oliver.fancynpcs.v1_21_11.Npc_1_21_11;
 import de.oliver.fancynpcs.v1_21_3.Npc_1_21_3;
 import de.oliver.fancynpcs.v1_21_4.Npc_1_21_4;
@@ -165,7 +164,6 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             case "1.21.5" -> Npc_1_21_5::new;
             case "1.21.4" -> Npc_1_21_4::new;
             case "1.21.2", "1.21.3" -> Npc_1_21_3::new;
-            case "1.21", "1.21.1" -> Npc_1_21_1::new;
             default -> null;
         };
 
@@ -178,7 +176,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             fancyLogger.error("Unsupported minecraft server version.");
             getLogger().warning("--------------------------------------------------");
             getLogger().warning("Unsupported minecraft server version.");
-            getLogger().warning("This plugin only supports 1.21 - latest");
+            getLogger().warning("This plugin only supports 1.21.2 - latest");
             getLogger().warning("Disabling the FancyNpcs plugin.");
             getLogger().warning("--------------------------------------------------");
             Bukkit.getPluginManager().disablePlugin(this);

@@ -51,7 +51,10 @@ jobs:
           commit_message: ${{ steps.last_commit.outputs.commit_msg }}
           fancyspaces_api_key: ${{ secrets.FANCYSPACES_API_KEY }}
           modrinth_api_key: ${{ secrets.MODRINTH_API_KEY }}
+          hangar_api_key: ${{ secrets.HANGAR_API_KEY }}
           discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-#      - name: Publish to reposilite (snapshots)
-#        run: ./gradlew :plugins:fancyholograms:fh-api:publishAllPublicationsToFancyinnovationsSnapshotsRepository
+      - name: Publish to maven snapshots repo
+        run: ./gradlew :plugins:fancyholograms:fh-api:publishMavenPublicationToFancyspacesSnapshotsRepository
+        env:
+          FANCYSPACES_API_KEY: ${{ secrets.FANCYSPACES_API_KEY }}

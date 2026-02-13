@@ -47,6 +47,7 @@ jobs:
         uses: fancyinnovations/fancyverteiler@main
         with:
           config_path: "/plugins/fancydialogs/release_deployment_config.json"
+          github_repo_url: "https://github.com/FancyInnovations/FancyPlugins"
           commit_sha: ${{ steps.last_commit.outputs.commit_sha }}
           commit_message: ${{ steps.last_commit.outputs.commit_msg }}
           fancyspaces_api_key: ${{ secrets.FANCYSPACES_API_KEY }}

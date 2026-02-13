@@ -25,12 +25,15 @@ public class PlayerNametagScheduler {
      */
     private final DistributedWorkload<PlayerNametag> workload;
 
-    public PlayerNametagScheduler(ExecutorService workerExecutor, int bucketSize) {
+    private final long updateIntervalMs;
+
+    public PlayerNametagScheduler(ExecutorService workerExecutor, int bucketSize, long updateIntervalMs) {
         this.schedulerExecutor = Executors.newSingleThreadScheduledExecutor(
                 new ThreadFactoryBuilder()
                         .setNameFormat("PlayerNametagScheduler")
                         .build()
         );
+        this.updateIntervalMs = updateIntervalMs;
 
         this.workload = new DistributedWorkload<>(
                 "PlayerNametagWorkload",
@@ -48,10 +51,14 @@ public class PlayerNametagScheduler {
      * 25 seconds between subsequent executions.
      */
     public void init() {
-        schedulerExecutor.scheduleWithFixedDelay(workload, 1000, 250, TimeUnit.MILLISECONDS);
+        schedulerExecutor.scheduleWithFixedDelay(workload, updateIntervalMs, updateIntervalMs, TimeUnit.MILLISECONDS);
     }
 
     public void add(PlayerNametag nametag) {
         workload.addValue(() -> nametag);
+    }
+
+    public void shutdown() {
+        schedulerExecutor.shutdownNow();
     }
 }

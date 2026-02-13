@@ -102,7 +102,7 @@ tasks {
             modrinth("fancynpcs", "2.7.0")
 //            hangar("ViaVersion", "5.3.2")
 //            hangar("ViaBackwards", "5.3.2")
-//            modrinth("multiverse-core", "4.3.11")
+            modrinth("multiverse-core", "5.5.2")
             hangar("PlaceholderAPI", "2.11.6")
 //            modrinth("DecentHolograms", "2.8.12")
         }

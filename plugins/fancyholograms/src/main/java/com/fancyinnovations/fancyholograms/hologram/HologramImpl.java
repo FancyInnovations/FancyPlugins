@@ -16,13 +16,17 @@ import org.joml.Quaternionf;
 
 public final class HologramImpl extends Hologram {
 
+    private final long minSyncIntervalMs = FancyHologramsPlugin.get().getFHConfiguration().getHologramUpdateInterval();
     private FS_Display fsDisplay;
     private long lastSyncTime = 0L;
-    private final long minSyncIntervalMs = FancyHologramsPlugin.get().getFHConfiguration().getHologramUpdateInterval();
 
     public HologramImpl(@NotNull final HologramData data) {
         super(data);
 
+        createFsDisplay();
+    }
+
+    private void createFsDisplay() {
         final var location = data.getLocation();
         if (!location.isWorldLoaded()) {
             return;
@@ -43,6 +47,7 @@ public final class HologramImpl extends Hologram {
         }
 
         if (fsDisplay == null) {
+            createFsDisplay();
             return; // could not be created, nothing to show
         }
 

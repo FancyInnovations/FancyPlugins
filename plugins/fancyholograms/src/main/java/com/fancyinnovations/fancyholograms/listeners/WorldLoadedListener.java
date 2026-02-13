@@ -15,7 +15,18 @@ public class WorldLoadedListener implements Listener {
             HologramData data = hologram.getData();
 
             if (data.getLocation().getWorld() == null && data.getWorldName().equals(event.getWorld().getName())) {
-                data.getLocation().setWorld(event.getWorld());
+                data.setWorld(event.getWorld());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onWorldUnload(org.bukkit.event.world.WorldUnloadEvent event) {
+        for (Hologram hologram : FancyHologramsPlugin.get().getRegistry().getAll()) {
+            HologramData data = hologram.getData();
+
+            if (data.getLocation().getWorld() != null && data.getLocation().getWorld().getName().equals(event.getWorld().getName())) {
+                data.setWorld(null);
             }
         }
     }

@@ -112,6 +112,18 @@ public class HologramData implements YamlData {
         return this;
     }
 
+    @ApiStatus.Internal
+    public HologramData setWorld(World world) {
+        if (this.location == null) {
+            this.location = new Location(world, 0, 0, 0);
+        } else {
+            this.location.setWorld(world);
+        }
+
+        setHasChanges(true);
+        return this;
+    }
+
     /**
      * @return Whether the hologram needs to send an update to players
      */

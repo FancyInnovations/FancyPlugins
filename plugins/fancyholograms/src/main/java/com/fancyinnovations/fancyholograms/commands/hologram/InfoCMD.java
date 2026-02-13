@@ -32,6 +32,10 @@ public class InfoCMD implements Subcommand {
         MessageHelper.info(player, "Name: <gray>" + hologram.getData().getName());
         MessageHelper.info(player, "Type: <gray>" + hologram.getData().getType().name());
         MessageHelper.info(player, "Location: <gray>" + data.getWorldName() + " " + data.getLocation().getX() + " / " + data.getLocation().getY() + " / " + data.getLocation().getZ());
+        if (data.getLocation().getWorld() == null) {
+            MessageHelper.warning(player, "The world of this hologram is not loaded.");
+        }
+
         MessageHelper.info(player, "Visibility distance: <gray>" + data.getVisibilityDistance() + " blocks");
 
         if (data instanceof com.fancyinnovations.fancyholograms.api.data.DisplayHologramData displayData) {

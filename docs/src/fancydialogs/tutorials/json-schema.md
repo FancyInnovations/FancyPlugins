@@ -36,7 +36,10 @@ Below is an example of a simple dialog defined using the FancyDialogs JSON schem
         "label": "<color:#ff7300>What is your favorite color?</color>",
         "placeholder": "gold",
         "maxLength": 50,
-        "maxLines": 1
+        "maxLines": 1,
+        "requirements": {
+          "type": ""
+        }
       }
     ]
   },
@@ -49,7 +52,10 @@ Below is an example of a simple dialog defined using the FancyDialogs JSON schem
           "name": "message",
           "data": "Your favorite color is: <color:{fav_color}>{fav_color}</color>"
         }
-      ]
+      ],
+      "requirements": {
+        "type": ""
+      }
     }
   ]
 }
@@ -85,6 +91,13 @@ Items will be supported in the body section in a future release.
 
 `selects`: A list of select fields - see [Select Fields](#select-fields) for details
 
+`requirements`: The requirement for this field to display
+- `type`: Either `permission` or `string match`.
+- `permission`: If type is `permission`, this is the permission to check for.
+- `input`: If type is `string match`, this is the string being matched against `output`.
+- `output`: If type is `string match`, this is the string being matched against `input`.
+
+
 !!!info
 More input types will be added in future releases, such as checkboxes and number sliders.
 !!!
@@ -103,6 +116,13 @@ More input types will be added in future releases, such as checkboxes and number
 
 `maxLines`: The maximum number of lines for the input (greater than 1 will create a multiline text field)
 
+`requirements`: The requirement for this field to display
+- `type`: Either `permission` or `string match`.
+- `permission`: If type is `permission`, this is the permission to check for.
+- `input`: If type is `string match`, this is the string being matched against `output`.
+- `output`: If type is `string match`, this is the string being matched against `input`.
+
+
 #### Select Fields
 
 `key`: The key to use to store the input value (can be used as a placeholder in actions)
@@ -116,11 +136,23 @@ More input types will be added in future releases, such as checkboxes and number
 - `display`: The text to display in the select field (supports MiniMessage & PlaceholderAPI)
 - `initial`: Whether this option is selected by default (default: false)
 
+`requirements`: The requirement for this field to display
+- `type`: Either `permission` or `string match`.
+- `permission`: If type is `permission`, this is the permission to check for.
+- `input`: If type is `string match`, this is the string being matched against `output`.
+- `output`: If type is `string match`, this is the string being matched against `input`.
+
 ### Button fields
 
 - `label`: The text to display on the button (supports MiniMessage & PlaceholderAPI)
 - `tooltip`: The tooltip to display when hovering over the button (supports MiniMessage & PlaceholderAPI)
 - `actions`: A list of actions that will be executed when the button is clicked - see [Actions](#actions) for details
+  
+- `requirements`: The requirement for this field to display
+  - `type`: Either `permission` or `string match`.
+  - `permission`: If type is `permission`, this is the permission to check for.
+  - `input`: If type is `string match`, this is the string being matched against `output`.
+  - `output`: If type is `string match`, this is the string being matched against `input`.
 
 #### Actions
 

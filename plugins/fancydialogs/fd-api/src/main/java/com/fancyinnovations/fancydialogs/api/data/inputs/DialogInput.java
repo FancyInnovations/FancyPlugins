@@ -13,7 +13,7 @@ public abstract class DialogInput {
         this.key = key;
         this.label = label;
         this.order = order;
-        this.requirements = requirements;
+        this.requirements = Map.copyOf(requirements);
     }
 
     public String getKey() {

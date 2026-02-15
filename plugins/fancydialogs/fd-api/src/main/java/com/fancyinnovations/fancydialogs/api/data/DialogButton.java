@@ -17,7 +17,7 @@ public class DialogButton {
         this.label = label;
         this.tooltip = tooltip;
         this.actions = actions;
-        this.requirements = requirements;
+        this.requirements = Map.copyOf(requirements);
     }
 
     public String id() {

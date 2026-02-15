@@ -9,6 +9,7 @@ import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.events.HologramsLoadedEvent;
 import de.oliver.fancyholograms.api.events.HologramsUnloadedEvent;
 import de.oliver.fancyholograms.api.hologram.Hologram;
+import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -41,6 +42,10 @@ public final class HologramManagerImpl implements HologramManager {
      */
     private final Map<String, Hologram> holograms = new ConcurrentHashMap<>();
     /**
+     * Whether hologram loading should be logged on world loading.
+     */
+    private final boolean hologramLoadLogging;
+    /**
      * Whether holograms are loaded or not
      */
     private boolean isLoaded = false;
@@ -50,12 +55,6 @@ public final class HologramManagerImpl implements HologramManager {
         this.adapter = adapter;
         this.hologramLoadLogging = plugin.getHologramConfiguration().isHologramLoadLogging();
     }
-
-    /**
-     * Whether hologram loading should be logged on world loading.
-     */
-    private final boolean hologramLoadLogging;
-
 
     /**
      * @return A read-only collection of loaded holograms.
@@ -171,7 +170,8 @@ public final class HologramManagerImpl implements HologramManager {
             }
         });
 
-        if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
+        if (hologramLoadLogging)
+            FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
     }
 
     @Override
@@ -211,7 +211,17 @@ public final class HologramManagerImpl implements HologramManager {
             hologramThread.scheduleAtFixedRate(() -> {
                 for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
                     for (final Player player : Bukkit.getOnlinePlayers()) {
-                        hologram.forceUpdateShownStateFor(player);
+
+                        // Use player scheduler for Folia to updating visibility
+                        if (ServerSoftware.isFolia()) {
+                            player.getScheduler().run(
+                                    FancyHolograms.get().getPlugin(),
+                                    (t) -> hologram.forceUpdateShownStateFor(player),
+                                    null
+                            );
+                        } else {
+                            hologram.forceUpdateShownStateFor(player);
+                        }
                     }
                 }
             }, 0, this.plugin.getHologramConfiguration().getUpdateVisibilityInterval() * 50L, TimeUnit.MILLISECONDS);

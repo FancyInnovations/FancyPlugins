@@ -1,4 +1,4 @@
-package de.oliver.fancyvisuals.nametags.listeners;
+package de.oliver.fancyvisuals.titles;
 
 import de.oliver.fancyvisuals.FancyVisuals;
 import org.bukkit.entity.Player;
@@ -8,35 +8,35 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class NametagListeners implements Listener {
+public class TitleListeners implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!FancyVisuals.get().getNametagConfig().isEnabled()) {
+        if (!FancyVisuals.get().getFancyVisualsConfig().isTitlesEnabled()) {
             return;
         }
 
         Player player = event.getPlayer();
-        FancyVisuals.get().getNametagManager().handlePlayerUpdate(player);
-    }
-
-    @EventHandler
-    public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
-        if (!FancyVisuals.get().getNametagConfig().isEnabled()) {
-            return;
-        }
-
-        Player player = event.getPlayer();
-        FancyVisuals.get().getNametagManager().handlePlayerUpdate(player);
+        FancyVisuals.get().getTitleManager().handleJoin(player);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        if (!FancyVisuals.get().getNametagConfig().isEnabled()) {
+        if (!FancyVisuals.get().getFancyVisualsConfig().isTitlesEnabled()) {
             return;
         }
 
         Player player = event.getPlayer();
-        FancyVisuals.get().getNametagManager().handleQuit(player);
+        FancyVisuals.get().getTitleManager().handleQuit(player);
+    }
+
+    @EventHandler
+    public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
+        if (!FancyVisuals.get().getFancyVisualsConfig().isTitlesEnabled()) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        FancyVisuals.get().getTitleManager().handleContextChange(player);
     }
 }

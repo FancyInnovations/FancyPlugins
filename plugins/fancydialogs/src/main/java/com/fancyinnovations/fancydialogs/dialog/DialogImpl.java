@@ -26,6 +26,7 @@ import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.factories.FancySitula;
 import org.bukkit.entity.Player;
 import org.lushplugins.chatcolorhandler.ChatColorHandler;
+import org.lushplugins.chatcolorhandler.parsers.Parser;
 import org.lushplugins.chatcolorhandler.parsers.ParserTypes;
 
 import java.util.ArrayList;
@@ -54,6 +55,29 @@ public class DialogImpl extends Dialog {
         return result;
     }
 
+    private boolean checkPerm(Player player, String perm) {
+        if (perm == null) {
+            return true;
+        }
+        if (!perm.equals("") && !player.hasPermission(perm)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkRequirements(Player player, Map<String, String> requirements) {
+        if (requirements == null) { return true; }
+        if (requirements.get("type") == null) { return true; }
+        if (requirements.get("type").equals("permission")) {
+            return checkPerm(player, requirements.get("permission"));
+        }
+        if (requirements.get("type").equals("stringMatch")) {
+            if (requirements.get("input") == null || requirements.get("output") == null) { return true; }
+            return ChatColorHandler.translate(requirements.get("input"), player, ParserTypes.placeholder()).equals(ChatColorHandler.translate(requirements.get("output"), player, ParserTypes.placeholder()));
+        }
+        return true;
+    }
+
     private FS_Dialog buildForPlayer(Player player, String[] args) {
         List<FS_DialogBody> body = new ArrayList<>();
         for (DialogBodyData bodyData : data.body()) {
@@ -73,6 +97,7 @@ public class DialogImpl extends Dialog {
         List<FS_DialogInput> inputs = new ArrayList<>();
         if (data.inputs() != null) {
             for (DialogInput input : data.inputs().all()) {
+                if (!checkRequirements(player, input.getRequirements())) { continue; }
                 FS_DialogInputControl control = null;
                 if (input instanceof DialogTextField textField) {
                     String label = replaceArgs(textField.getLabel(), args);
@@ -122,6 +147,7 @@ public class DialogImpl extends Dialog {
         List<FS_DialogActionButton> actions = new ArrayList<>();
         for (DialogButton button : data.buttons()) {
             FS_DialogActionButtonAction buttonAction;
+            if (!checkRequirements(player, button.requirements())) { continue; }
 
             if (button.actions().size() == 1 &&
                 button.actions().get(0).name().equals("copy_to_clipboard")) {

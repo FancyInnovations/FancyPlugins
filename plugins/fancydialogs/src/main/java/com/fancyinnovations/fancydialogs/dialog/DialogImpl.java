@@ -71,7 +71,7 @@ public class DialogImpl extends Dialog {
         if (requirements.get("type").equals("permission")) {
             return checkPerm(player, requirements.get("permission"));
         }
-        if (requirements.get("type").equals("string match")) {
+        if (requirements.get("type").equals("stringMatch")) {
             if (requirements.get("input") == null || requirements.get("output") == null) { return true; }
             return ChatColorHandler.translate(requirements.get("input"), player, ParserTypes.placeholder()).equals(ChatColorHandler.translate(requirements.get("output"), player, ParserTypes.placeholder()));
         }

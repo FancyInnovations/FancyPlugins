@@ -92,10 +92,10 @@ Items will be supported in the body section in a future release.
 `selects`: A list of select fields - see [Select Fields](#select-fields) for details
 
 `requirements`: The requirement for this field to display
-- `type`: Either `permission` or `string match`.
+- `type`: Either `permission` or `stringMatch`.
 - `permission`: If type is `permission`, this is the permission to check for.
-- `input`: If type is `string match`, this is the string being matched against `output`.
-- `output`: If type is `string match`, this is the string being matched against `input`.
+- `input`: If type is `stringMatch`, this is the string being matched against `output`.
+- `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
 
 !!!info
@@ -117,10 +117,10 @@ More input types will be added in future releases, such as checkboxes and number
 `maxLines`: The maximum number of lines for the input (greater than 1 will create a multiline text field)
 
 `requirements`: The requirement for this field to display
-- `type`: Either `permission` or `string match`.
+- `type`: Either `permission` or `stringMatch`.
 - `permission`: If type is `permission`, this is the permission to check for.
-- `input`: If type is `string match`, this is the string being matched against `output`.
-- `output`: If type is `string match`, this is the string being matched against `input`.
+- `input`: If type is `stringMatch`, this is the string being matched against `output`.
+- `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
 
 #### Select Fields
@@ -137,10 +137,10 @@ More input types will be added in future releases, such as checkboxes and number
 - `initial`: Whether this option is selected by default (default: false)
 
 `requirements`: The requirement for this field to display
-- `type`: Either `permission` or `string match`.
+- `type`: Either `permission` or `stringMatch`.
 - `permission`: If type is `permission`, this is the permission to check for.
-- `input`: If type is `string match`, this is the string being matched against `output`.
-- `output`: If type is `string match`, this is the string being matched against `input`.
+- `input`: If type is `stringMatch`, this is the string being matched against `output`.
+- `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
 ### Button fields
 
@@ -149,10 +149,10 @@ More input types will be added in future releases, such as checkboxes and number
 - `actions`: A list of actions that will be executed when the button is clicked - see [Actions](#actions) for details
   
 - `requirements`: The requirement for this field to display
-  - `type`: Either `permission` or `string match`.
+  - `type`: Either `permission` or `stringMatch`.
   - `permission`: If type is `permission`, this is the permission to check for.
-  - `input`: If type is `string match`, this is the string being matched against `output`.
-  - `output`: If type is `string match`, this is the string being matched against `input`.
+  - `input`: If type is `stringMatch`, this is the string being matched against `output`.
+  - `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
 #### Actions
 

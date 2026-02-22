@@ -1,3 +1,5 @@
+Change: Made registry based attributes support identifiers from namespaces other than 'minecraft'
+
 Commit hash: %COMMIT_HASH%
 
 Commit message: %COMMIT_MESSAGE%

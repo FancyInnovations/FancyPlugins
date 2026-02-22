@@ -99,7 +99,8 @@ public class ConfirmationDialog {
                 confirmText,
                 List.of(
                         new DialogButton.DialogAction("confirm", "")
-                )
+                ),
+                Map.of("", "")
         );
         this.confirmButtonId = confirmBtn.id();
 
@@ -108,14 +109,15 @@ public class ConfirmationDialog {
                 cancelText,
                 List.of(
                         new DialogButton.DialogAction("cancel", "")
-                )
+                ),
+                Map.of("", "")
         );
         this.cancelButtonId = cancelBtn.id();
 
         List<DialogTextField> textFields = null;
         if (expectedUserInput != null && !expectedUserInput.isEmpty()) {
             textFields = List.of(
-                    new DialogTextField("confirmation_user_input", "Type '" + expectedUserInput + "' to confirm", 0, "", expectedUserInput.length(), 1)
+                    new DialogTextField("confirmation_user_input", "Type '" + expectedUserInput + "' to confirm", 0, "", expectedUserInput.length(), 1, Map.of("type", ""))
             );
         }
 

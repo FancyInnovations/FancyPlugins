@@ -25,7 +25,10 @@ public class CowAttributes {
                 "variant",
                 getCowVariantRegistry()
                         .listElementIds()
-                        .map(id -> id.location().getPath())
+                        .map(id -> {
+                            ResourceLocation location = id.location();
+                            return location.getNamespace().equals("minecraft") ? location.getPath() : location.toString();
+                        })
                         .toList(),
                 List.of(EntityType.COW),
                 CowAttributes::setVariant
@@ -40,7 +43,7 @@ public class CowAttributes {
         Holder<CowVariant> variant = getCowVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.COW_VARIANT,
-                        ResourceLocation.withDefaultNamespace(value.toLowerCase())
+                        ResourceLocation.parse(value.toLowerCase())
                 ))
                 .orElseThrow();
 

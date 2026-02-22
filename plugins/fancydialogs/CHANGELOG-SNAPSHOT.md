@@ -1,5 +1,3 @@
-Changes: Add requirements to buttons & inputs (#201)
-
 Commit hash: %COMMIT_HASH%
 
 Commit message: %COMMIT_MESSAGE%

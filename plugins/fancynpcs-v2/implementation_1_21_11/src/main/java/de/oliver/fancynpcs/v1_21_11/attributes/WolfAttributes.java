@@ -40,7 +40,10 @@ public class WolfAttributes {
                 "variant",
                 getWolfVariantRegistry()
                         .listElementIds()
-                        .map(id -> id.identifier().getPath())
+                        .map(id -> {
+                            Identifier identifier = id.identifier();
+                            return identifier.getNamespace().equals("minecraft") ? identifier.getPath() : identifier.toString();
+                        })
                         .toList(),
                 List.of(EntityType.WOLF),
                 WolfAttributes::setVariant

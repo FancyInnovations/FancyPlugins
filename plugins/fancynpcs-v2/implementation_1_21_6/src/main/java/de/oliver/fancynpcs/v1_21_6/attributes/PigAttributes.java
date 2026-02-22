@@ -27,7 +27,10 @@ public class PigAttributes {
                 "variant",
                 getPigVariantRegistry()
                         .listElementIds()
-                        .map(id -> id.location().getPath())
+                        .map(id -> {
+                            ResourceLocation location = id.location();
+                            return location.getNamespace().equals("minecraft") ? location.getPath() : location.toString();
+                        })
                         .toList(),
                 List.of(EntityType.PIG),
                 PigAttributes::setVariant
@@ -49,7 +52,7 @@ public class PigAttributes {
         Holder<PigVariant> variant = getPigVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.PIG_VARIANT,
-                        ResourceLocation.withDefaultNamespace(value.toLowerCase())
+                        ResourceLocation.parse(value.toLowerCase())
                 ))
                 .orElseThrow();
 

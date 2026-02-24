@@ -20,13 +20,13 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
-    compileOnly("com.google.code.gson:gson:2.13.1")
-    implementation("org.jetbrains:annotations:26.0.2")
+    compileOnly("com.google.code.gson:gson:2.13.2")
+    implementation("org.jetbrains:annotations:26.1.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.2")
-    testImplementation("org.junit.platform:junit-platform-console-standalone:1.12.2")
-    testImplementation("com.google.code.gson:gson:2.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.3")
+    testImplementation("org.junit.platform:junit-platform-console-standalone:6.0.3")
+    testImplementation("com.google.code.gson:gson:2.13.2")
 }
 
 tasks {

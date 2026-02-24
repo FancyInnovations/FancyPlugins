@@ -48,8 +48,8 @@ dependencies {
     implementation(project(":libraries:plugin-tests"))
     implementation(project(":libraries:config"))
     compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
     implementation("org.incendo:cloud-paper:2.0.0-beta.13")
@@ -57,9 +57,9 @@ dependencies {
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
 
-    compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.6")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.14")
+    compileOnly("me.clip:placeholderapi:2.12.2")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.11")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.17")
 }
 
 paper {

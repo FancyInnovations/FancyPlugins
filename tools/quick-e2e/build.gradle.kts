@@ -18,11 +18,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.google.code.gson:gson:2.13.1")
+    compileOnly("com.google.code.gson:gson:2.13.2")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("org.jetbrains:annotations:26.0.2")
+    implementation("org.jetbrains:annotations:26.1.0")
 
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 }
 

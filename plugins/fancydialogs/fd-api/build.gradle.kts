@@ -14,7 +14,7 @@ dependencies {
 
     implementation("org.lushplugins:ChatColorHandler:6.0.4")
 
-    implementation("org.jetbrains:annotations:24.0.0")
+    implementation("org.jetbrains:annotations:26.1.0")
 }
 
 tasks {

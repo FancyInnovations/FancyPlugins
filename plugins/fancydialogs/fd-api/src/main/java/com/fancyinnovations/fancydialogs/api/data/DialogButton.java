@@ -11,13 +11,15 @@ public class DialogButton {
     private final List<DialogAction> actions;
     private transient String id;
     private final Map<String, String> requirements;
+    private final Integer width;
 
-    public DialogButton(String label, String tooltip, List<DialogAction> actions, Map<String, String> requirements) {
+    public DialogButton(String label, String tooltip, List<DialogAction> actions, Map<String, String> requirements, int width) {
         this.id = UUID.randomUUID().toString();
         this.label = label;
         this.tooltip = tooltip;
         this.actions = actions;
         this.requirements = Map.copyOf(requirements);
+        this.width = width;
     }
 
     public String id() {
@@ -40,6 +42,8 @@ public class DialogButton {
     public List<DialogAction> actions() {
         return actions;
     }
+
+    public Integer width() { return width; }
 
     public record DialogAction(
             String name,

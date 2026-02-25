@@ -28,7 +28,9 @@ public class NoticeDialog {
                         new DialogBodyData(this.text)
                 ),
                 DialogInputs.EMPTY,
-                List.of()
+                List.of(),
+                null,
+                null
         );
     }
 

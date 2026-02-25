@@ -26,7 +26,10 @@ public class CatAttributes {
                 "variant",
                 getCatVariantRegistry()
                         .listElementIds()
-                        .map(id -> id.location().getPath())
+                        .map(id -> {
+                            ResourceLocation location = id.location();
+                            return location.getNamespace().equals("minecraft") ? location.getPath() : location.toString();
+                        })
                         .toList(),
                 List.of(EntityType.CAT),
                 CatAttributes::setVariant
@@ -55,7 +58,7 @@ public class CatAttributes {
         Holder<CatVariant> variant = getCatVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.CAT_VARIANT,
-                        ResourceLocation.withDefaultNamespace(value.toLowerCase())
+                        ResourceLocation.parse(value.toLowerCase())
                 ))
                 .orElseThrow();
 

@@ -26,7 +26,10 @@ public class CatAttributes {
                 "variant",
                 getCatVariantRegistry()
                         .listElementIds()
-                        .map(id -> id.identifier().getPath())
+                        .map(id -> {
+                            Identifier identifier = id.identifier();
+                            return identifier.getNamespace().equals("minecraft") ? identifier.getPath() : identifier.toString();
+                        })
                         .toList(),
                 List.of(EntityType.CAT),
                 CatAttributes::setVariant
@@ -55,7 +58,7 @@ public class CatAttributes {
         Holder<CatVariant> variant = getCatVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.CAT_VARIANT,
-                        Identifier.withDefaultNamespace(value.toLowerCase())
+                        Identifier.parse(value.toLowerCase())
                 ))
                 .orElseThrow();
 

@@ -23,14 +23,14 @@ dependencies {
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.8")
 
     // database drivers
-    compileOnly("org.xerial:sqlite-jdbc:3.49.1.0")
-    compileOnly("mysql:mysql-connector-java:8.0.33")
+    compileOnly("org.xerial:sqlite-jdbc:3.51.2.0")
+    compileOnly("com.mysql:mysql-connector-j:9.6.0")
 
     // testing
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.2")
-    testImplementation("org.junit.platform:junit-platform-console-standalone:1.12.2")
-    testImplementation("com.google.code.gson:gson:2.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.3")
+    testImplementation("org.junit.platform:junit-platform-console-standalone:6.0.3")
+    testImplementation("com.google.code.gson:gson:2.13.2")
 }
 
 tasks {

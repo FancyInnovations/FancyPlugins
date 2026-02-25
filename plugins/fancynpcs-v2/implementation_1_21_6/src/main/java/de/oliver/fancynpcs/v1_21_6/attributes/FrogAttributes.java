@@ -25,7 +25,10 @@ public class FrogAttributes {
                 "variant",
                 getFrogVariantRegistry()
                         .listElementIds()
-                        .map(id -> id.location().getPath())
+                        .map(id -> {
+                            ResourceLocation location = id.location();
+                            return location.getNamespace().equals("minecraft") ? location.getPath() : location.toString();
+                        })
                         .toList(),
                 List.of(EntityType.FROG),
                 FrogAttributes::setVariant
@@ -40,7 +43,7 @@ public class FrogAttributes {
         Holder<FrogVariant> variant = getFrogVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.FROG_VARIANT,
-                        ResourceLocation.withDefaultNamespace(value.toLowerCase())
+                        ResourceLocation.parse(value.toLowerCase())
                 ))
                 .orElseThrow();
 

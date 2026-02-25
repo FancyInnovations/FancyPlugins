@@ -25,7 +25,10 @@ public class ChickenAttributes {
                 "variant",
                 getChickenVariantRegistry()
                         .listElementIds()
-                        .map(id -> id.location().getPath())
+                        .map(id -> {
+                            ResourceLocation location = id.location();
+                            return location.getNamespace().equals("minecraft") ? location.getPath() : location.toString();
+                        })
                         .toList(),
                 List.of(EntityType.CHICKEN),
                 ChickenAttributes::setVariant
@@ -40,7 +43,7 @@ public class ChickenAttributes {
         Holder<ChickenVariant> variant = getChickenVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.CHICKEN_VARIANT,
-                        ResourceLocation.withDefaultNamespace(value.toLowerCase())
+                        ResourceLocation.parse(value.toLowerCase())
                 ))
                 .orElseThrow();
 

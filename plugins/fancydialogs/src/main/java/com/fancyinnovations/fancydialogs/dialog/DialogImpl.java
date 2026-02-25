@@ -103,7 +103,7 @@ public class DialogImpl extends Dialog {
                     String label = replaceArgs(textField.getLabel(), args);
                     String placeholder = replaceArgs(textField.getPlaceholder(), args);
                     control = new FS_DialogTextInput(
-                            (textField.getWidth() == 0) ? 200 : textField.getWidth(), // default width
+                            (textField.getWidth() <= 0 || textField.getWidth() >= 1024) ? 200 : textField.getWidth(), // default width
                             ChatColorHandler.translate(label, player, ParserTypes.placeholder()),
                             !label.isEmpty(),
                             ChatColorHandler.translate(placeholder, player, ParserTypes.placeholder()),
@@ -125,7 +125,7 @@ public class DialogImpl extends Dialog {
                     }
                     String selectLabel = replaceArgs(select.getLabel(), args);
                     control = new FS_DialogSingleOptionInput(
-                            (select.getWidth() <= 0) ? 200 : select.getWidth(),
+                            (select.getWidth() <= 0 || select.getWidth() >= 1024) ? 200 : select.getWidth(),
                             entries,
                             ChatColorHandler.translate(selectLabel, player, ParserTypes.placeholder()),
                             !selectLabel.isEmpty()
@@ -181,7 +181,7 @@ public class DialogImpl extends Dialog {
                     new FS_CommonButtonData(
                             ChatColorHandler.translate(buttonLabel, player, ParserTypes.placeholder()),
                             ChatColorHandler.translate(buttonTooltip, player, ParserTypes.placeholder()),
-                            (button.width() <= 0) ? 150 : button.width()
+                            (button.width() <= 0 || button.width() >= 1024) ? 150 : button.width()
                     ),
                     buttonAction
             );
@@ -222,7 +222,7 @@ public class DialogImpl extends Dialog {
                     new FS_CommonButtonData(
                             ChatColorHandler.translate(buttonLabel, player, ParserTypes.placeholder()),
                             ChatColorHandler.translate(buttonTooltip, player, ParserTypes.placeholder()),
-                            (data.exitAction().width() <= 0) ? 150 : data.exitAction().width()
+                            (data.exitAction().width() <= 0 || data.exitAction().width() >= 1024) ? 150 : data.exitAction().width()
                     ),
                     buttonAction
             );

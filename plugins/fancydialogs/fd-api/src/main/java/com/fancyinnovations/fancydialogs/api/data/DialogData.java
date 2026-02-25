@@ -12,7 +12,9 @@ public record DialogData(
         boolean canCloseWithEscape,
         @NotNull List<DialogBodyData> body,
         @Nullable DialogInputs inputs,
-        @NotNull List<DialogButton> buttons
+        @NotNull List<DialogButton> buttons,
+        @Nullable DialogButton exitAction,
+        int columns
 ) {
 
     public DialogButton getButtonById(@NotNull String buttonId) {

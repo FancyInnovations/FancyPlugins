@@ -54,7 +54,8 @@ public class DefaultDialogs {
                                         "",
                                         50,
                                         1,
-                                        Map.of("type", "")
+                                        Map.of("type", ""),
+                                        200
                                 )
                         ),
                         List.of(
@@ -68,7 +69,8 @@ public class DefaultDialogs {
                                                 new DialogSelect.Entry("blue", "<color:blue>Blue</color>", false),
                                                 new DialogSelect.Entry("yellow", "<color:yellow>Yellow</color>", false)
                                         ),
-                                        Map.of("type", "")
+                                        Map.of("type", ""),
+                                        200
                                 )
                         ),
                         List.of(
@@ -86,7 +88,8 @@ public class DefaultDialogs {
                                 "<color:#ff4f19>Close</color>",
                                 "<color:#ff4f19>Enjoy using FancyDialogs</color>",
                                 List.of(),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#ffd000>Show favourite color</color>",
@@ -94,7 +97,8 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("message", "Hi {nickname}, your favorite color is: <color:{color_choice}>{color_choice}</color>")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#ffd000>Check if you are cool</color>",
@@ -102,9 +106,12 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("message", "Hi {nickname}, are you cool: {is_cool}")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         )
-                )
+                ),
+                null,
+                2
         );
 
         register(data);
@@ -129,13 +136,15 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("open_dialog", "rules")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#00ff5e>Start playing</color>",
                                 "<color:#00ff5e>Click to start playing!</color>",
                                 List.of(),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#1787ff>Join our Discord</color>",
@@ -143,7 +152,8 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("message", "Join our Discord server here: LINK TO DISCORD")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#ffee00>Visit our website</color>",
@@ -151,9 +161,12 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("message", "Visit our website here: LINK TO WEBSITE")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         )
-                )
+                ),
+                null,
+                2
         );
 
         register(data);
@@ -175,7 +188,8 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("message", "Visit our website here: LINK TO WEBSITE")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#ffee00>Read the rules</color>",
@@ -183,7 +197,8 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("open_dialog", "rules")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#ffee00>Join our Discord</color>",
@@ -191,7 +206,8 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("message", "Join our Discord server here: LINK TO DISCORD")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:#ffee00>Support us</color>",
@@ -199,15 +215,25 @@ public class DefaultDialogs {
                                 List.of(
                                         new DialogButton.DialogAction("message", "Support us by donating here: LINK TO DONATE")
                                 ),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         ),
                         new DialogButton(
                                 "<color:red>Close</color>",
                                 "<color:red>Click to close this dialog!</color>",
                                 List.of(),
-                                Map.of("type", "")
+                                Map.of("type", ""),
+                                150
                         )
-                )
+                ),
+                new DialogButton(
+                        "<color:red>Close</color>",
+                        "<color:red>Click to close this dialog!</color>",
+                        List.of(),
+                        Map.of("type", ""),
+                        150
+                ),
+                2
         );
 
         register(data);

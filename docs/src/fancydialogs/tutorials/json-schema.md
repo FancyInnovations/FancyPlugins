@@ -62,6 +62,10 @@ Below is an example of a simple dialog defined using the FancyDialogs JSON schem
       "width": 100
     }
   ],
+  "exitAction": {
+    "label": "Close",
+    "actions": []
+  },
   "columns": 2
 }
 ```

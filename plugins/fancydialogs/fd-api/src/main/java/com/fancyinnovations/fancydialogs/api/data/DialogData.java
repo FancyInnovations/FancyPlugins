@@ -14,7 +14,7 @@ public record DialogData(
         @Nullable DialogInputs inputs,
         @NotNull List<DialogButton> buttons,
         @Nullable DialogButton exitAction,
-        int columns
+        @Nullable Integer columns
 ) {
 
     public DialogButton getButtonById(@NotNull String buttonId) {

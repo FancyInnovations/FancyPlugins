@@ -133,7 +133,7 @@ public class ConfirmationDialog {
                 inputs,
                 List.of(confirmBtn, cancelBtn),
                 null,
-                0
+                null
         );
 
         this.dialog = FancyDialogs.get().createDialog(dialogData);

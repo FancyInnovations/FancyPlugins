@@ -30,7 +30,7 @@ public class NoticeDialog {
                 DialogInputs.EMPTY,
                 List.of(),
                 null,
-                0
+                null
         );
     }
 

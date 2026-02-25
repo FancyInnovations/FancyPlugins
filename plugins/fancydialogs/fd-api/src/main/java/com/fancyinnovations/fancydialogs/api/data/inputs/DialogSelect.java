@@ -6,9 +6,9 @@ import java.util.Map;
 public class DialogSelect extends DialogInput {
 
     private final List<Entry> options;
-    private final int width;
+    private final Integer width;
 
-    public DialogSelect(String key, String label, int order, List<Entry> options, Map<String, String> requirements, int width) {
+    public DialogSelect(String key, String label, int order, List<Entry> options, Map<String, String> requirements, Integer width) {
         super(key, label, order, requirements);
         this.options = options;
         this.width = width;
@@ -18,7 +18,7 @@ public class DialogSelect extends DialogInput {
         return options;
     }
 
-    public int getWidth() { return width; }
+    public Integer getWidth() { return width; }
 
     public record Entry(
             String value,

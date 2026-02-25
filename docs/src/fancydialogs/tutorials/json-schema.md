@@ -26,7 +26,9 @@ Below is an example of a simple dialog defined using the FancyDialogs JSON schem
   "title": "My Fancy Dialog",
   "canCloseWithEscape": true,
   "body": [
-    { "text": "This is my first dialog created with FancyDialogs!" }
+    {
+      "text": "This is my first dialog created with FancyDialogs!"
+    }
   ],
   "inputs": {
     "textFields": [
@@ -39,7 +41,8 @@ Below is an example of a simple dialog defined using the FancyDialogs JSON schem
         "maxLines": 1,
         "requirements": {
           "type": ""
-        }
+        },
+        "width": 200
       }
     ]
   },
@@ -55,9 +58,11 @@ Below is an example of a simple dialog defined using the FancyDialogs JSON schem
       ],
       "requirements": {
         "type": ""
-      }
+      },
+      "width": 100
     }
-  ]
+  ],
+  "columns": 2
 }
 ```
 
@@ -76,6 +81,8 @@ Below is an example of a simple dialog defined using the FancyDialogs JSON schem
 `inputs`: The inputs of the dialog - see [Input Section](#input-fields) for details
 
 `buttons`: The buttons of the dialog - see [Button Section](#button-fields) for details
+
+`columns': The amount of columns in the dialog (only works for multi action dialogs)
 
 ### Body fields
 
@@ -122,6 +129,7 @@ More input types will be added in future releases, such as checkboxes and number
 - `input`: If type is `stringMatch`, this is the string being matched against `output`.
 - `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
+`width`: The size of the input between 1-1024.
 
 #### Select Fields
 
@@ -142,6 +150,8 @@ More input types will be added in future releases, such as checkboxes and number
 - `input`: If type is `stringMatch`, this is the string being matched against `output`.
 - `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
+`width`: The size of the input between 1-1024.
+
 ### Button fields
 
 - `label`: The text to display on the button (supports MiniMessage & PlaceholderAPI)
@@ -153,6 +163,8 @@ More input types will be added in future releases, such as checkboxes and number
   - `permission`: If type is `permission`, this is the permission to check for.
   - `input`: If type is `stringMatch`, this is the string being matched against `output`.
   - `output`: If type is `stringMatch`, this is the string being matched against `input`.
+
+`width`: The size of the input between 1-1024.
 
 #### Actions
 

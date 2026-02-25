@@ -150,8 +150,8 @@ public class DialogImpl extends Dialog {
             if (!checkRequirements(player, button.requirements())) { continue; }
 
             if (button.actions().size() == 1 &&
-                button.actions().get(0).name().equals("copy_to_clipboard")) {
-                String clipboardData = replaceArgs(button.actions().get(0).data(), args);
+                button.actions().getFirst().name().equals("copy_to_clipboard")) {
+                String clipboardData = replaceArgs(button.actions().getFirst().data(), args);
                 String text = ChatColorHandler.translate(
                         clipboardData,
                         player,
@@ -192,8 +192,8 @@ public class DialogImpl extends Dialog {
         if (data.exitAction() != null && checkRequirements(player, data.exitAction().requirements())) {
             FS_DialogActionButtonAction buttonAction;
             if (data.exitAction().actions().size() == 1 &&
-                    data.exitAction().actions().get(0).name().equals("copy_to_clipboard")) {
-                String clipboardData = replaceArgs(data.exitAction().actions().get(0).data(), args);
+                    data.exitAction().actions().getFirst().name().equals("copy_to_clipboard")) {
+                String clipboardData = replaceArgs(data.exitAction().actions().getFirst().data(), args);
                 String text = ChatColorHandler.translate(
                         clipboardData,
                         player,

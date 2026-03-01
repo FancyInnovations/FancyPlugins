@@ -24,6 +24,7 @@ public class HologramData implements YamlData {
     public static final Visibility DEFAULT_VISIBILITY = Visibility.ALL;
     public static final boolean DEFAULT_IS_VISIBLE = true;
     public static final boolean DEFAULT_PERSISTENCE = true;
+    public static final float DEFAULT_Y_OFFSET = 0.0f;
     protected final @NotNull HologramTraitTrait traitTrait;
     private final String name;
     private final HologramType type;
@@ -36,6 +37,7 @@ public class HologramData implements YamlData {
     private Visibility visibility = DEFAULT_VISIBILITY;
     private boolean persistent = DEFAULT_PERSISTENCE;
     private String linkedNpcName;
+    private float yOffset = DEFAULT_Y_OFFSET;
 
     /**
      * @param name     Name of hologram
@@ -209,6 +211,19 @@ public class HologramData implements YamlData {
         return this;
     }
 
+    public float getYOffset() {
+        return yOffset;
+    }
+
+    public HologramData setYOffset(float yOffset) {
+        if (Float.compare(this.yOffset, yOffset) != 0) {
+            this.yOffset = yOffset;
+            setHasChanges(true);
+        }
+
+        return this;
+    }
+
     @ApiStatus.Experimental
     public @NotNull HologramTraitTrait getTraitTrait() {
         return traitTrait;
@@ -254,6 +269,7 @@ public class HologramData implements YamlData {
                     return visibleByDefault ? Visibility.ALL : Visibility.PERMISSION_REQUIRED;
                 });
         linkedNpcName = section.getString("linkedNpc");
+        yOffset = (float) section.getDouble("y_offset", DEFAULT_Y_OFFSET);
 
         return true;
     }
@@ -273,6 +289,7 @@ public class HologramData implements YamlData {
         section.set("visibility", visibility.name());
         section.set("persistent", persistent);
         section.set("linkedNpc", linkedNpcName);
+        section.set("y_offset", yOffset);
 
         return true;
     }
@@ -282,6 +299,7 @@ public class HologramData implements YamlData {
                 .setVisibilityDistance(this.getVisibilityDistance())
                 .setVisibility(this.getVisibility())
                 .setPersistent(this.isPersistent())
-                .setLinkedNpcName(this.getLinkedNpcName());
+                .setLinkedNpcName(this.getLinkedNpcName())
+                .setYOffset(this.getYOffset());
     }
 }

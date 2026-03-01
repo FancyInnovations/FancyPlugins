@@ -52,14 +52,12 @@ public class JsonNametagStore implements NametagStore {
 
     @Override
     public @NotNull List<Nametag> getNametags() {
-        List<Nametag> nametags = new ArrayList<>();
-
         try {
-            jdb.getAll(context.getName(), Nametag.class);
+            return jdb.getAll(context.getName(), Nametag.class);
         } catch (IOException e) {
             FancyVisuals.getFancyLogger().error("Failed to get all nametags", ThrowableProperty.of(e));
         }
 
-        return nametags;
+        return new ArrayList<>();
     }
 }

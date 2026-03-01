@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public final class PlayerListener implements Listener {
 
@@ -39,12 +40,17 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(@NotNull final PlayerJoinEvent event) {
-        FancyHologramsPlugin.get().getHologramThread().submit(() -> {
-            for (final var hologram : this.plugin.getRegistry().getAll()) {
-                hologram.removeViewer(event.getPlayer().getUniqueId());
-                FancyHologramsPlugin.get().getController().refreshHologram(hologram, event.getPlayer());
-            }
-        });
+        FancyHologramsPlugin.get().getHologramThread().schedule(() -> {
+                    for (final var hologram : this.plugin.getRegistry().getAll()) {
+                        hologram.despawnFrom(event.getPlayer());
+                        hologram.removeViewer(event.getPlayer().getUniqueId());
+                        FancyHologramsPlugin.get().getController().refreshHologram(hologram, event.getPlayer());
+                        System.out.println("Refreshed hologram " + hologram.getData().getName() + " for player " + event.getPlayer().getName() + " on join.");
+                    }
+                },
+                FancyHologramsPlugin.get().getHologramConfiguration().getSpawnDelayOnJoin(),
+                TimeUnit.MILLISECONDS
+        );
 
         if (!this.plugin.getHologramConfiguration().areVersionNotificationsMuted() && event.getPlayer().hasPermission("fancyholograms.admin")) {
             FancyHologramsPlugin.get().getHologramThread().submit(() -> FancyHologramsPlugin.get().getVersionConfig().checkVersionAndDisplay(event.getPlayer(), true));

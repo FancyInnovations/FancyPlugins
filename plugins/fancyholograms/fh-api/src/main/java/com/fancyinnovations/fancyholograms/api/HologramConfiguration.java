@@ -38,6 +38,13 @@ public interface HologramConfiguration {
     int getDefaultVisibilityDistance();
 
     /**
+     * Returns the delay after player join before holograms are spawned.
+     *
+     * @return The spawn delay on player join in milliseconds.
+     */
+    int getSpawnDelayOnJoin();
+
+    /**
      * Returns whether the plugin should register its commands.
      *
      * @return {@code true} if the plugin should register its commands, {@code false} otherwise.

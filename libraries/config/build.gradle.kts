@@ -32,7 +32,7 @@ tasks {
 
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = providers
+                    value = "ApiKey " + providers
                         .gradleProperty("fancyspacesApiKey")
                         .orElse(
                             providers
@@ -53,7 +53,7 @@ tasks {
 
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = providers
+                    value = "ApiKey " + providers
                         .gradleProperty("fancyspacesApiKey")
                         .orElse(
                             providers

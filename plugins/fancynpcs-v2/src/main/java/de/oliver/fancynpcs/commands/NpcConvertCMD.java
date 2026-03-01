@@ -1,5 +1,6 @@
 package de.oliver.fancynpcs.commands;
 
+import de.oliver.fancyanalytics.sdk.events.Event;
 import de.oliver.fancylib.ReflectionUtils;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancynpcs.FancyNpcs;
@@ -26,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -162,6 +164,11 @@ public final class NpcConvertCMD {
                     .send(sender);
             return;
         }
+
+        Event event = new Event("NpcsConverted", new HashMap<>())
+                .withProperty("source_plugin", "Citizens")
+                .withProperty("count", String.valueOf(convertedCount));
+        FancyNpcs.getInstance().getFancyAnalytics().sendEvent(event);
 
         translator.translate("npcconvert_success")
                 .replace("source_plugin", "Citizens")

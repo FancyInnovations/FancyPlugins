@@ -24,6 +24,7 @@ allprojects {
         maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for cloud command framework
         maven(url = "https://repo.extendedclip.com/releases/") // for PlaceholderAPI
         maven(url = "https://maven.enginehub.org/repo/") // for WorldEdit
+        maven(url = "https://maven.citizensnpcs.co/repo") // for Citizens
     }
 }
 
@@ -60,6 +61,9 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.11")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.17")
+    compileOnly("net.citizensnpcs:citizens-main:2.0.41-SNAPSHOT") {
+        exclude(group = "*", module = "*")
+    }
 }
 
 paper {
@@ -81,6 +85,10 @@ paper {
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }
         register("PlotSquared") {
+            required = false
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+        register("Citizens") {
             required = false
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }

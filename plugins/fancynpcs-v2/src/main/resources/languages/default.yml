@@ -368,3 +368,8 @@ messages:
   # Commands (npc center)
   npc_center_success: "<dark_gray>› <gray>NPC {warningColor}{npc}<gray> has been centered to {warningColor}{x}<gray>, {warningColor}{y}<gray>, {warningColor}{z}<gray>."
   npc_center_failure_no_location: "<dark_gray>› {errorColor}NPC {warningColor}{npc}{errorColor} has no valid location."
+
+  # Commands (npcconvert)
+  npcconvert_plugin_not_found: "<dark_gray>› {errorColor}Source plugin {warningColor}{source_plugin}{errorColor} is not supported or not found."
+  npcconvert_success: "<dark_gray>› <gray>Converted {warningColor}{converted_count}<gray> NPCs from {warningColor}{source_plugin}<gray> to {warningColor}FancyNpcs<gray>."
+  npcconvert_no_npcs_found: "<dark_gray>› {errorColor}No NPCs found for conversion from {warningColor}{source_plugin}<gray>."

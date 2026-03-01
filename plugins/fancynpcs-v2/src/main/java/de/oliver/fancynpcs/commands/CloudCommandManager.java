@@ -170,6 +170,9 @@ public final class CloudCommandManager {
      * Registers plugin commands to the {@link LegacyPaperCommandManager}.
      */
     public @NotNull CloudCommandManager registerCommands() {
+        annotationParser.parse(FancyNpcsCMD.INSTANCE);
+        annotationParser.parse(NpcConvertCMD.INSTANCE);
+
         annotationParser.parse(AttributeCMD.INSTANCE);
         annotationParser.parse(CenterCMD.INSTANCE);
         annotationParser.parse(CollidableCMD.INSTANCE);
@@ -177,7 +180,6 @@ public final class CloudCommandManager {
         annotationParser.parse(CreateCMD.INSTANCE);
         annotationParser.parse(DisplayNameCMD.INSTANCE);
         annotationParser.parse(EquipmentCMD.INSTANCE);
-        annotationParser.parse(FancyNpcsCMD.INSTANCE);
         annotationParser.parse(FixCMD.INSTANCE);
         annotationParser.parse(GlowingCMD.INSTANCE);
         annotationParser.parse(InfoCMD.INSTANCE);

@@ -11,28 +11,44 @@ import java.util.Arrays;
 
 public class ServerSoftware {
 
+    private static Boolean isFolia;
+    private static Boolean isPaper;
+    private static Boolean isBukkit;
+
     public static boolean isFolia() {
-        return Arrays.stream(PluginMeta.class.getDeclaredMethods())
+        if (isFolia == null) {
+            isFolia = Arrays.stream(PluginMeta.class.getDeclaredMethods())
                 .map(Method::getName)
                 .anyMatch(s -> s.equals("isFoliaSupported"));
+        }
+
+        return isFolia;
     }
 
     public static boolean isPaper() {
-        try {
-            Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
+        if (isPaper == null) {
+            try {
+                Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
+                isPaper = true;
+            } catch (ClassNotFoundException e) {
+                isPaper = false;
+            }
         }
+
+        return isPaper;
     }
 
     public static boolean isBukkit() {
-        try {
-            Class.forName("org.bukkit.Bukkit");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
+        if (isBukkit == null) {
+            try {
+                Class.forName("org.bukkit.Bukkit");
+                isBukkit = true;
+            } catch (ClassNotFoundException e) {
+                isBukkit = false;
+            }
         }
+
+        return isBukkit;
     }
 
     public static FancyScheduler getCorrectScheduler(JavaPlugin plugin) {

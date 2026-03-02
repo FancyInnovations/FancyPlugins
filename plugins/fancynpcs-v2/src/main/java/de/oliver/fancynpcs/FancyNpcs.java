@@ -51,6 +51,7 @@ import de.oliver.fancynpcs.v1_21_4.Npc_1_21_4;
 import de.oliver.fancynpcs.v1_21_5.Npc_1_21_5;
 import de.oliver.fancynpcs.v1_21_6.Npc_1_21_6;
 import de.oliver.fancynpcs.v1_21_9.Npc_1_21_9;
+import de.oliver.fancynpcs.v26_1.Npc_26_1;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -158,6 +159,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         String mcVersion = Bukkit.getMinecraftVersion();
 
         npcAdapter = switch (mcVersion) {
+            case "26.1" -> Npc_26_1::new;
             case "1.21.11" -> Npc_1_21_11::new;
             case "1.21.9", "1.21.10" -> Npc_1_21_9::new;
             case "1.21.6", "1.21.7", "1.21.8" -> Npc_1_21_6::new;
@@ -265,7 +267,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         pluginManager.registerEvents(new PlayerTeleportListener(), instance);
         pluginManager.registerEvents(new PlayerChangedWorldListener(), instance);
         pluginManager.registerEvents(skinManager, instance);
-        if (Set.of("1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11").contains(Bukkit.getMinecraftVersion())) {
+        if (Set.of("1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11", "26.1").contains(Bukkit.getMinecraftVersion())) {
             getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
         }
 

@@ -48,6 +48,7 @@ include(":libraries:packets:implementations:1_21_5")
 include(":libraries:packets:implementations:1_21_6")
 include(":libraries:packets:implementations:1_21_9")
 include(":libraries:packets:implementations:1_21_11")
+include(":libraries:packets:implementations:26_1")
 
 
 include(":tools:quick-e2e")

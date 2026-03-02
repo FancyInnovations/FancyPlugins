@@ -209,6 +209,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         actionManager.registerAction(new ExecuteRandomActionAction());
         actionManager.registerAction(new BlockUntilDoneAction());
         actionManager.registerAction(new NeedPermissionAction());
+        actionManager.registerAction(new NeedItemAction());
         actionManager.registerAction(new PlaySoundAction());
 
         skinManager = new SkinManagerImpl(new UUIDFileCache(), new SkinCacheFile(), new SkinCacheMemory(), MojangQueue.get(), MineSkinQueue.get());

@@ -206,7 +206,9 @@ public class HologramControllerImpl implements HologramController {
             displayData.setScale(new Vector3f(npcScale));
         }
 
-        Location location = npc.getData().getLocation().clone().add(0, (npc.getEyeHeight() * npcScale) + (0.5 * npcScale), 0);
+        float yOffset = hologram.getData().getYOffset();
+
+        Location location = npc.getData().getLocation().clone().add(0, (npc.getEyeHeight() * npcScale) + (0.5 * npcScale) + yOffset, 0);
 
         for (Map.Entry<NpcAttribute, String> entry : npc.getData().getAttributes().entrySet()) {
             NpcAttribute attribute = entry.getKey();

@@ -49,7 +49,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
-    implementation("org.incendo:cloud-paper:2.0.0-LOCAL-SNAPSHOT")
+    implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
     implementation("org.incendo:cloud-annotations:2.0.0")
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")

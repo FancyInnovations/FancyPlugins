@@ -12,9 +12,14 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven("https://repo.papermc.io/repository/maven-public/")
-        maven("https://repo.fancyinnovations.com/releases")
+
         maven(url = "https://maven.fancyspaces.net/fancyinnovations/releases")
+        maven(url = "https://maven.fancyspaces.net/fancyinnovations/snapshots")
+        maven(url = "https://repo.fancyinnovations.com/releases")
+        maven(url = "https://repo.fancyinnovations.com/snapshots")
+
+        maven(url = "https://repo.lushplugins.org/releases")
+        maven(url = "https://repo.papermc.io/repository/maven-public/")
 //        maven(url = "https://jitpack.io")
     }
 }

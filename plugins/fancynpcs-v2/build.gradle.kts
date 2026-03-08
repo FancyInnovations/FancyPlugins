@@ -16,12 +16,7 @@ allprojects {
     description = "Simple, lightweight and fast NPC plugin using packets"
 
     repositories {
-        mavenLocal()
-        mavenCentral()
-        maven(url = "https://repo.papermc.io/repository/maven-public/")
-        maven(url = "https://repo.fancyinnovations.com/releases")
-        maven(url = "https://repo.lushplugins.org/releases")
-        maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for cloud command framework
+        maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for MineSkin
         maven(url = "https://repo.extendedclip.com/releases/") // for PlaceholderAPI
         maven(url = "https://maven.enginehub.org/repo/") // for WorldEdit
         maven(url = "https://maven.citizensnpcs.co/repo") // for Citizens

@@ -9,13 +9,6 @@ plugins {
 
 runPaper.folia.registerTask()
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven(url = "https://repo.papermc.io/repository/maven-public/")
-    maven(url = "https://repo.fancyinnovations.com/releases")
-}
-
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 

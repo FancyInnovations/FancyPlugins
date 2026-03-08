@@ -5,6 +5,7 @@ pluginManagement {
         maven(url = "https://maven.fancyspaces.net/fancyinnovations/releases")
         maven(url = "https://repo.fancyinnovations.com/releases")
         gradlePluginPortal()
+        mavenLocal()
     }
 }
 

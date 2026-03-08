@@ -37,6 +37,7 @@ import net.minecraft.server.dialog.body.ItemBody;
 import net.minecraft.server.dialog.body.PlainMessage;
 import net.minecraft.server.dialog.input.*;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStackTemplate;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 
 import java.util.ArrayList;
@@ -168,7 +169,7 @@ public class ClientboundShowDialogPacketImpl extends FS_ClientboundShowDialogPac
                         Optional.empty();
 
                 nmsBodies.add(new ItemBody(
-                        CraftItemStack.asNMSCopy(itemBody.getItem()),
+                        ItemStackTemplate.fromNonEmptyStack(CraftItemStack.asNMSCopy(itemBody.getItem())),
                         description,
                         itemBody.isShowDecorations(),
                         itemBody.isShowTooltip(),

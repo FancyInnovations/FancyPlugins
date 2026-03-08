@@ -98,7 +98,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-        options.release = 21
+        options.release = 25
         // For cloud-annotations, see https://cloud.incendo.org/annotations/#command-components
         options.compilerArgs.add("-parameters")
     }
@@ -129,7 +129,7 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 fun getCurrentCommitHash(): String {

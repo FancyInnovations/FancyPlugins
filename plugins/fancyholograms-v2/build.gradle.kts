@@ -87,7 +87,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.1-snapshot-11")
+        serverJar(file("../../libraries/paper-server/paper-bundler-26.1-snapshot-11-R0.1-SNAPSHOT.jar"))
 
         downloadPlugins {
 //            modrinth("fancynpcs", "2.5.2")
@@ -108,7 +109,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-        options.release = 21
+        options.release = 25
         // For cloud-annotations, see https://cloud.incendo.org/annotations/#command-components
         options.compilerArgs.add("-parameters")
     }
@@ -141,7 +142,7 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 val gitCommitHash: Provider<String> = providers.exec {

@@ -98,12 +98,13 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.1-snapshot-11")
+        serverJar(file("../../libraries/paper-server/paper-bundler-26.1-snapshot-11-R0.1-SNAPSHOT.jar"))
 
         downloadPlugins {
-            hangar("kite", "1.2.4+12")
-            hangar("ViaVersion", "5.7.1")
-            hangar("ViaBackwards", "5.7.1")
+//            hangar("kite", "1.2.4+12")
+//            hangar("ViaVersion", "5.7.1")
+//            hangar("ViaBackwards", "5.7.1")
 //            hangar("PlaceholderAPI", "2.11.6")
 //            modrinth("multiverse-core", "5.0.2")
         }

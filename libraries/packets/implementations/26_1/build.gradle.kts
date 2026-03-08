@@ -6,7 +6,7 @@ plugins {
 dependencies {
 //    paperweight.paperDevBundle("26.1-snapshot-11-R0.1-SNAPSHOT")
     compileOnly(fileTree("../../../../libraries/paper-server") { include("**/*.jar") })
-    compileOnly("io.papermc.paper:paper-api:26.1-snapshot-11-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     compileOnly(project(":libraries:packets:packets-api"))
 

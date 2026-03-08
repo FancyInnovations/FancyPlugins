@@ -9,7 +9,7 @@ version = findProperty("plugintestsVersion") as String
 description = "Library for defining and running tests in a Minecraft server environment"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 repositories {
@@ -109,7 +109,7 @@ tasks {
 
         // Set the release flag. This configures what version bytecode the compiler will emit, as well as what JDK APIs are usable.
         // See https://openjdk.java.net/jeps/247 for more information.
-        options.release.set(21)
+        options.release.set(25)
     }
 
     java {

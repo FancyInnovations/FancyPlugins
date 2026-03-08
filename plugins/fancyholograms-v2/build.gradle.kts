@@ -18,15 +18,7 @@ allprojects {
     description = "Simple, lightweight and fast hologram plugin using display entities"
 
     repositories {
-        mavenLocal()
-        mavenCentral()
-
-        maven(url = "https://repo.papermc.io/repository/maven-public/")
-        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-
-        maven(url = "https://repo.fancyinnovations.com/snapshots")
-        maven(url = "https://repo.fancyinnovations.com/releases")
-        maven(url = "https://repo.lushplugins.org/releases")
+        maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
         maven(url = "https://repo.viaversion.com/")
         maven(url = "https://repo.opencollab.dev/main/")
     }

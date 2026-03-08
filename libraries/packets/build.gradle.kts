@@ -8,13 +8,6 @@ allprojects {
     group = "de.oliver"
     version = findProperty("fancysitulaVersion") as String
     description = "Simple, lightweight and fast library for minecraft internals"
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven(url = "https://repo.papermc.io/repository/maven-public/")
-        maven(url = "https://repo.fancyinnovations.com/releases")
-    }
 }
 
 dependencies {

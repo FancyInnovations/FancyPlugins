@@ -7,12 +7,6 @@ plugins {
 group = "de.oliver"
 description = "Library for plugin configuration"
 
-repositories {
-    mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.fancyinnovations.com/releases")
-}
-
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")

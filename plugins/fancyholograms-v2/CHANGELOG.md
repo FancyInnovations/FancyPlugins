@@ -1,7 +1,3 @@
-- Dropped support for 1.20.x
-- Fixed (linked) hologram location not accounting for npc pose
-- Fixed still trying to parse placeholders when server is stopping
-- Fixed some issues with the DecentHolograms converter
-- Major performance boost
-
-Recently there are many new contributors to the project. A warm welcome to all new contributors, and thank you for your help!
+- Added support for Minecraft 26.1
+- Removed support for 1.21 and 1.21.1 (1.21.2 and 1.21.3 support will be removed in late April)
+- Fixed some npc visibility issues when using Folia

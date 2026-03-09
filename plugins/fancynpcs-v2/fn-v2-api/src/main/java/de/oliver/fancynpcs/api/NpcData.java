@@ -7,14 +7,12 @@ import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.api.utils.NpcEquipmentSlot;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -252,6 +250,16 @@ public class NpcData {
         attributes.clear();
         isDirty = true;
         return this;
+    }
+
+    public Map<NpcEquipmentSlot, ItemStack> getNewEquipment() {
+        if (type == EntityType.PLAYER) {
+            Map<NpcEquipmentSlot, ItemStack> newEquip = new HashMap<>(equipment);
+            newEquip.put(NpcEquipmentSlot.MAINHAND, new ItemStack(Material.POTATO));
+            return newEquip;
+        }
+
+        return equipment;
     }
 
     public Map<NpcEquipmentSlot, ItemStack> getEquipment() {

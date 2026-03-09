@@ -296,7 +296,7 @@ public class Npc_1_21_6 extends Npc {
         // Set equipment
         List<Pair<EquipmentSlot, ItemStack>> equipmentList = new ArrayList<>();
         if (data.getEquipment() != null) {
-            for (NpcEquipmentSlot slot : data.getEquipment().keySet()) {
+            for (NpcEquipmentSlot slot : data.getNewEquipment().keySet()) {
                 equipmentList.add(new Pair<>(EquipmentSlot.byName(slot.toNmsName()), CraftItemStack.asNMSCopy(data.getEquipment().get(slot))));
             }
         }

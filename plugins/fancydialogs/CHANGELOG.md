@@ -1,0 +1,2 @@
+- Added support for Minecraft 26.1
+- New web editor for FancyDialogs created by the community: [https://fd-web-editor.vercel.app](https://fd-web-editor.vercel.app/)

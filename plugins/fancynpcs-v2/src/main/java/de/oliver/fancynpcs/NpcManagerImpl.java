@@ -191,7 +191,7 @@ public class NpcManagerImpl implements NpcManager {
             }
             npcConfig.set("npcs." + data.getId() + ".skin.mirrorSkin", data.isMirrorSkin());
 
-            if (data.getEquipment() != null) {
+            if (data.getNewEquipment() != null) {
                 for (Map.Entry<NpcEquipmentSlot, ItemStack> entry : data.getEquipment().entrySet()) {
                     npcConfig.set("npcs." + data.getId() + ".equipment." + entry.getKey().name(), entry.getValue());
                 }

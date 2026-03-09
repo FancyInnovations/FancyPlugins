@@ -9,6 +9,9 @@ import de.oliver.fancynpcs.api.actions.executor.ActionExecutor;
 import de.oliver.fancynpcs.api.events.NpcInteractEvent;
 import de.oliver.fancynpcs.api.utils.Interval;
 import de.oliver.fancynpcs.api.utils.Interval.Unit;
+import de.oliver.fancysitula.api.entities.FS_RealPlayer;
+import de.oliver.fancysitula.factories.FancySitula;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -173,6 +176,35 @@ public abstract class Npc {
     }
 
     public void interact(Player player, ActionTrigger actionTrigger) {
+        if (RandomUtils.random(50)) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<red><b>Yooo, don't hurt me like that!"));
+
+            FancyNpcsPlugin.get().getNpcThread().submit(() -> {
+                for (int i = 0; i < 4; i++) {
+                    // look at player
+                    Location adjustedNpcLocation = data.getLocation().clone();
+                    adjustedNpcLocation.setY(data.getLocation().getY() + (1.62 * data.getScale()));
+                    Location playerEyeLocation = player.getLocation().clone();
+                    playerEyeLocation.setY(player.getLocation().getY() + player.getEyeHeight());
+                    Location newLoc = playerEyeLocation.clone();
+                    newLoc.setDirection(newLoc.subtract(adjustedNpcLocation).toVector());
+                    lookAt(player, newLoc);
+
+                    // hit player
+                    FancySitula.PACKET_FACTORY
+                            .createAnimatePacket(getEntityId(), 0)
+                            .send(new FS_RealPlayer(player));
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+
+                    }
+                }
+            });
+
+            return;
+        }
+
         if (data.getInteractionCooldown() > 0) {
             final long interactionCooldownMillis = (long) (data.getInteractionCooldown() * 1000);
             final long lastInteractionMillis = lastPlayerInteraction.getOrDefault(player.getUniqueId(), 0L);

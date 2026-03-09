@@ -9,6 +9,9 @@ val minecraftVersion = "1.21.11"
 dependencies {
     compileOnly("dev.folia:folia-api:$minecraftVersion-R0.1-SNAPSHOT")
 
+    compileOnly(project(":libraries:packets"))
+    compileOnly(project(":libraries:packets:packets-api"))
+
     compileOnly(project(":libraries:common"))
     compileOnly(project(":libraries:config"))
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")

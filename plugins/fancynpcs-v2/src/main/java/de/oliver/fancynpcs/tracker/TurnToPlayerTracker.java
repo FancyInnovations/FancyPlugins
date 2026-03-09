@@ -51,7 +51,7 @@ public class TurnToPlayerTracker implements Runnable {
                     playerEyeLocation.setY(playerLocation.getY() + player.getEyeHeight());
 
                     Location newLoc = playerEyeLocation.clone();
-                    newLoc.setDirection(newLoc.subtract(adjustedNpcLocation).toVector());
+//                    newLoc.setDirection(newLoc.subtract(adjustedNpcLocation).toVector());
                     npc.lookAt(player, newLoc);
                     // Setting NPC to be looking at the player and getting the value previously stored (or not) inside a map.
                     Boolean wasPreviouslyLooking = npc.getIsLookingAtPlayer().put(player.getUniqueId(), true);

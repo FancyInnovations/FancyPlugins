@@ -12,12 +12,6 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-repositories {
-    mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.fancyinnovations.com/releases")
-}
-
 dependencies {
     compileOnly("com.google.code.gson:gson:2.13.2")
     implementation("org.jetbrains:annotations:26.1.0")

@@ -14,15 +14,10 @@ allprojects {
     group = "de.oliver"
     version = getFVVersion()
     description = "Simple, lightweight and fast visual plugin using packets"
+}
 
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven(url = "https://repo.papermc.io/repository/maven-public/")
-        maven(url = "https://repo.fancyinnovations.com/releases")
-        maven(url = "https://repo.lushplugins.org/releases")
-        maven(url = "https://jitpack.io")
-    }
+repositories {
+    maven(url = "https://nexus.hc.to/content/repositories/pub_releases")
 }
 
 dependencies {
@@ -41,7 +36,7 @@ dependencies {
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10") // loaded in FancyVisualLoader
 
     implementation("org.lushplugins:ChatColorHandler:6.0.4")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
+    compileOnly("net.milkbowl.vault:VaultAPI:1.7")
 
     // commands
     implementation("org.incendo:cloud-core:2.0.0")
@@ -98,7 +93,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-        options.release = 21
+        options.release = 25
         // For cloud-annotations, see https://cloud.incendo.org/annotations/#command-components
         options.compilerArgs.add("-parameters")
     }
@@ -129,7 +124,7 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 fun getCurrentCommitHash(): String {

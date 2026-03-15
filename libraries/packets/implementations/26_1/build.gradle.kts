@@ -1,12 +1,13 @@
 plugins {
     id("java-library")
-    id("io.papermc.paperweight.userdev")
+//    id("io.papermc.paperweight.userdev")
 }
 
-paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
-
 dependencies {
-    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+//    paperweight.paperDevBundle("26.1-snapshot-11-R0.1-SNAPSHOT")
+    compileOnly(fileTree("../../../../libraries/paper-server") { include("**/*.jar") })
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+
     compileOnly(project(":libraries:packets:packets-api"))
 
     testImplementation(project(":libraries:packets"))
@@ -17,7 +18,7 @@ dependencies {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 tasks {

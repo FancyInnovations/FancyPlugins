@@ -93,8 +93,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.1-pre-2")
-        serverJar(file("../../libraries/paper-server/paper-bundler-26.1-pre-2-R0.1-SNAPSHOT.jar"))
+        minecraftVersion("26.1-pre-3")
+        serverJar(file("../../libraries/paper-server/paper-bundler-26.1-pre-3-R0.1-SNAPSHOT.jar"))
 
         downloadPlugins {
             modrinth("fancynpcs", "2.7.0")

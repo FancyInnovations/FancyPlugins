@@ -39,17 +39,22 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.PrimaryLevelData;
 import net.minecraft.world.level.validation.ContentValidationException;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.generator.BiomeProvider;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class PaperWorldPlatformView implements WorldPlatformView {
@@ -63,6 +68,9 @@ public class PaperWorldPlatformView implements WorldPlatformView {
 
     @Override
     public CompletableFuture<World> createWorld(FWorldImpl world) {
+        if (shouldUseLegacyCreator(world)) {
+            return createLegacyWorld(world);
+        }
         return plugin.supplyGlobal(() -> createWorldInternal(world));
     }
 
@@ -125,6 +133,7 @@ public class PaperWorldPlatformView implements WorldPlatformView {
         final var console = server.getServer();
         final var directory = plugin.getServer().getWorldContainer().toPath().resolve(fworld.getName());
         final var environment = resolveEnvironment(fworld, directory);
+        final ChunkGenerator chunkGenerator = resolveChunkGenerator(fworld);
 
         final ResourceKey<LevelStem> levelStemKey;
         try {
@@ -238,6 +247,7 @@ public class PaperWorldPlatformView implements WorldPlatformView {
                 stem.generator(),
                 console.registryAccess()
         );
+        final BiomeProvider biomeProvider = chunkGenerator != null ? chunkGenerator.getDefaultBiomeProvider(worldInfo) : null;
 
         final ResourceKey<net.minecraft.world.level.Level> dimensionKey = resolveDimensionKey(server, fworld.getName(), environment);
         final ServerLevel serverLevel = new ServerLevel(
@@ -253,8 +263,8 @@ public class PaperWorldPlatformView implements WorldPlatformView {
                 true,
                 console.overworld().getRandomSequences(),
                 environment,
-                null,
-                null
+                chunkGenerator,
+                biomeProvider
         );
 
         if (server.getWorld(fworld.getName()) == null) {
@@ -268,6 +278,41 @@ public class PaperWorldPlatformView implements WorldPlatformView {
         console.prepareLevel(serverLevel);
 
         return CompletableFuture.completedFuture(serverLevel.getWorld());
+    }
+
+    private boolean shouldUseLegacyCreator(FWorldImpl world) {
+        return world.getEnvironment() == World.Environment.CUSTOM;
+    }
+
+    private CompletableFuture<World> createLegacyWorld(FWorldImpl world) {
+        return plugin.supplyGlobal(() -> {
+            try {
+                final World created = world.toWorldCreator().createWorld();
+                if (created == null) {
+                    return CompletableFuture.failedFuture(new IllegalStateException("Failed to create world " + world.getName() + " via WorldCreator"));
+                }
+                return CompletableFuture.completedFuture(created);
+            } catch (Exception e) {
+                return CompletableFuture.failedFuture(e);
+            }
+        });
+    }
+
+    private ChunkGenerator resolveChunkGenerator(FWorldImpl world) {
+        if (world.getGenerator() == null) {
+            return null;
+        }
+        if (isBuiltInGenerator(world.getGenerator())) {
+            return null;
+        }
+        return WorldCreator.getGeneratorForName(world.getName(), world.getGenerator(), plugin.getServer().getConsoleSender());
+    }
+
+    private boolean isBuiltInGenerator(String generator) {
+        return switch (generator.toLowerCase(Locale.ROOT)) {
+            case "", "default", "normal", "flat", "amplified", "large_biomes" -> true;
+            default -> false;
+        };
     }
 
     private World.Environment resolveEnvironment(FWorldImpl world, Path directory) {
@@ -306,9 +351,21 @@ public class PaperWorldPlatformView implements WorldPlatformView {
     }
 
     private String createWorldKey(String worldName) {
-        return worldName.toLowerCase(Locale.ROOT)
-                .replaceAll("[^a-z0-9_\\-./ ]+", "")
-                .replace(" ", "_");
+        String sanitized = worldName.toLowerCase(Locale.ROOT)
+                .replace(" ", "_")
+                .replaceAll("[^a-z0-9_\\-./]+", "");
+        if (sanitized.isBlank()) {
+            sanitized = "world";
+        }
+        if (sanitized.length() > 48) {
+            sanitized = sanitized.substring(0, 48);
+        }
+
+        final String uniqueSuffix = UUID.nameUUIDFromBytes(worldName.getBytes(StandardCharsets.UTF_8))
+                .toString()
+                .replace("-", "")
+                .substring(0, 12);
+        return sanitized + "_" + uniqueSuffix;
     }
 
     private JsonObject createGeneratorSettings(String generator) {

@@ -7,15 +7,15 @@ import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldStorage;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWConfigCMD;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWVersionCMD;
-import com.fancyinnovations.fancyworlds.commands.world.SeedCMD;
 import com.fancyinnovations.fancyworlds.commands.types.FWorldCommandType;
 import com.fancyinnovations.fancyworlds.commands.types.GameruleCommandType;
 import com.fancyinnovations.fancyworlds.commands.world.*;
 import com.fancyinnovations.fancyworlds.config.FancyWorldsConfigImpl;
 import com.fancyinnovations.fancyworlds.listeners.WorldLoadListener;
 import com.fancyinnovations.fancyworlds.listeners.WorldUnloadListener;
+import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import com.fancyinnovations.fancyworlds.worlds.service.WorldServiceImpl;
-import com.fancyinnovations.fancyworlds.worlds.storage.fake.FakeWorldStorage;
+import com.fancyinnovations.fancyworlds.worlds.storage.json.JsonWorldStorage;
 import com.fancyinnovations.fancyworlds.worlds.view.FoliaWorldPlatformView;
 import com.fancyinnovations.fancyworlds.worlds.view.PaperWorldPlatformView;
 import com.fancyinnovations.fancyworlds.worlds.view.WorldPlatformView;
@@ -24,6 +24,7 @@ import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
 import de.oliver.fancyanalytics.logger.appender.ConsoleAppender;
 import de.oliver.fancyanalytics.logger.appender.JsonAppender;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.VersionConfig;
 import de.oliver.fancylib.logging.PluginMiddleware;
 import de.oliver.fancylib.translations.Language;
@@ -36,6 +37,7 @@ import net.kyori.adventure.key.Key;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import revxrsal.commands.Lamp;
 import revxrsal.commands.bukkit.BukkitLamp;
@@ -123,7 +125,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         registerTranslator();
 
         // Services
-        worldStorage = new FakeWorldStorage();
+        worldStorage = new JsonWorldStorage();
         worldService = new WorldServiceImpl(worldStorage);
 
         fancyLogger.info("Successfully loaded FancyWorlds version %s".formatted(getDescription().getVersion()));
@@ -161,6 +163,28 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
                 Bukkit.getPluginManager().disablePlugin(this);
             }
         }); // 20s
+
+        for (FWorld world : worldService.getAllWorlds()) {
+            if (world.isWorldLoaded()) {
+                continue;
+            }
+
+            fancyLogger.info("Loading world %s...".formatted(world.getName()));
+
+            FWorldImpl impl = (FWorldImpl) world;
+            World alreadyLoaded = Bukkit.getWorld(world.getName());
+            if (alreadyLoaded != null) {
+                impl.setBukkitWorld(alreadyLoaded);
+                continue;
+            }
+
+            try {
+                World bukkitWorld = getWorldPlatformView().createWorld(impl).join();
+                impl.setBukkitWorld(bukkitWorld);
+            } catch (Exception e) {
+                fancyLogger.error("Failed to load world " + world.getName(), ThrowableProperty.of(e));
+            }
+        }
 
         registerCommands();
 
@@ -204,12 +228,15 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         lamp.register(WorldCreateCMD.INSTANCE);
         lamp.register(WorldTeleportCMD.INSTANCE);
         lamp.register(WorldLoadCMD.INSTANCE);
+        lamp.register(WorldDeleteCMD.INSTANCE);
         lamp.register(WorldUnloadCMD.INSTANCE);
         lamp.register(WorldGamerulesCMD.INSTANCE);
         lamp.register(WorldTimeCMD.INSTANCE);
+        lamp.register(WorldSetSpawnCMD.INSTANCE);
+        lamp.register(WorldDifficultyCMD.INSTANCE);
 
         // Other
-        lamp.register(SeedCMD.INSTANCE);
+        lamp.register(WorldSeedCMD.INSTANCE);
     }
 
     private void registerListeners() {

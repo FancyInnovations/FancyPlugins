@@ -9,9 +9,9 @@ import revxrsal.commands.annotation.Optional;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public class SeedCMD extends FancyContext {
+public class WorldSeedCMD extends FancyContext {
 
-    public static final SeedCMD INSTANCE = new SeedCMD();
+    public static final WorldSeedCMD INSTANCE = new WorldSeedCMD();
 
     @Command({"world seed", "seed"})
     @Description("Shows the seed of the world")

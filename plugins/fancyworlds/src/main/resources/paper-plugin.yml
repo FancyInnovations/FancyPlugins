@@ -9,7 +9,7 @@ authors:
   - "OliverSchlueter"
 api-version: "1.21"
 folia-supported: true
-load: STARTUP
+load: POSTWORLD
 dependencies:
   server:
     FancyDialogs:

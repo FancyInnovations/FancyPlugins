@@ -16,6 +16,9 @@ import com.fancyinnovations.fancyworlds.listeners.WorldLoadListener;
 import com.fancyinnovations.fancyworlds.listeners.WorldUnloadListener;
 import com.fancyinnovations.fancyworlds.worlds.service.WorldServiceImpl;
 import com.fancyinnovations.fancyworlds.worlds.storage.fake.FakeWorldStorage;
+import com.fancyinnovations.fancyworlds.worlds.view.FoliaWorldPlatformView;
+import com.fancyinnovations.fancyworlds.worlds.view.PaperWorldPlatformView;
+import com.fancyinnovations.fancyworlds.worlds.view.WorldPlatformView;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
@@ -28,6 +31,8 @@ import de.oliver.fancylib.translations.TextConfig;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.versionFetcher.FancySpacesVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
+import io.papermc.paper.ServerBuildInfo;
+import net.kyori.adventure.key.Key;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -38,16 +43,24 @@ import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
+    private static final long NANOSECONDS_PER_TICK = 50_000_000L;
+    public static final boolean RUNNING_FOLIA = ServerBuildInfo.buildInfo().isBrandCompatible(Key.key("papermc", "folia"));
 
     private static FancyWorldsPlugin INSTANCE;
     private final ExtendedFancyLogger fancyLogger;
+    private final WorldPlatformView worldPlatformView = RUNNING_FOLIA
+            ? new FoliaWorldPlatformView(this)
+            : new PaperWorldPlatformView(this);
 
     private FancyWorldsConfigImpl fancyWorldsConfig;
     private VersionFetcher versionFetcher;
@@ -135,7 +148,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
                     """);
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(INSTANCE, () -> {
+        runTaskLaterAsynchronously(20L * 20, () -> {
             if (!Bukkit.getPluginManager().isPluginEnabled("FancyDialogs")) {
                 fancyLogger.error("""
                         
@@ -146,9 +159,8 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
                         --------------------------------------------------
                         """);
                 Bukkit.getPluginManager().disablePlugin(this);
-                return;
             }
-        }, 20L * 20); // 20s
+        }); // 20s
 
         registerCommands();
 
@@ -266,6 +278,10 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         return translator;
     }
 
+    public WorldPlatformView getWorldPlatformView() {
+        return worldPlatformView;
+    }
+
     @Override
     public WorldStorage getWorldStorage() {
         return worldStorage;
@@ -274,5 +290,62 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
     @Override
     public WorldService getWorldService() {
         return worldService;
+    }
+
+    public void runGlobalTask(Runnable task) {
+        supplyGlobal(() -> {
+            task.run();
+            return CompletableFuture.completedFuture(null);
+        });
+    }
+
+    public void runTaskLaterAsynchronously(long delay, Runnable task) {
+        if (RUNNING_FOLIA) {
+            getServer().getAsyncScheduler().runDelayed(this, scheduledTask -> task.run(), delay * NANOSECONDS_PER_TICK, TimeUnit.NANOSECONDS);
+            return;
+        }
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this, task, delay);
+    }
+
+    public <T> CompletableFuture<T> supplyGlobal(Supplier<CompletableFuture<T>> supplier) {
+        if (!RUNNING_FOLIA) {
+            if (Bukkit.isPrimaryThread()) {
+                try {
+                    return supplier.get();
+                } catch (Exception e) {
+                    return CompletableFuture.failedFuture(e);
+                }
+            }
+            return scheduleBukkitMain(supplier);
+        }
+
+        if (getServer().isGlobalTickThread()) {
+            try {
+                return supplier.get();
+            } catch (Exception e) {
+                return CompletableFuture.failedFuture(e);
+            }
+        }
+
+        CompletableFuture<T> future = new CompletableFuture<>();
+        getServer().getGlobalRegionScheduler().execute(this, () -> completeFuture(future, supplier));
+        return future;
+    }
+
+    private <T> CompletableFuture<T> scheduleBukkitMain(Supplier<CompletableFuture<T>> supplier) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        Bukkit.getScheduler().runTask(this, () -> completeFuture(future, supplier));
+        return future;
+    }
+
+    private <T> void completeFuture(CompletableFuture<T> future, Supplier<CompletableFuture<T>> supplier) {
+        try {
+            supplier.get().thenAccept(future::complete).exceptionally(error -> {
+                future.completeExceptionally(error);
+                return null;
+            });
+        } catch (Exception e) {
+            future.completeExceptionally(e);
+        }
     }
 }

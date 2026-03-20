@@ -8,6 +8,7 @@ website: "https://fancyinnovations.com/docs/minecraft-plugins/fancyworlds"
 authors:
   - "OliverSchlueter"
 api-version: "1.21"
+folia-supported: true
 load: STARTUP
 dependencies:
   server:

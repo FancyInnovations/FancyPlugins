@@ -13,6 +13,7 @@ public record JsonHologramData(
         Integer visibilityDistance,
         Visibility visibility,
         String linkedNpcName,
+        Float yOffset,
         List<String> traits
 ) {
 }

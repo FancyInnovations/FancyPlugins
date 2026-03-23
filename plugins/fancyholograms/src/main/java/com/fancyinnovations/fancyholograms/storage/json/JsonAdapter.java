@@ -33,6 +33,7 @@ public class JsonAdapter {
                 data.getVisibilityDistance(),
                 data.getVisibility(),
                 data.getLinkedNpcName(),
+                data.getYOffset(),
                 data.getTraitTrait().getTraits().stream()
                         .map(HologramTrait::getName)
                         .toList()
@@ -177,7 +178,8 @@ public class JsonAdapter {
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())
-                            .setLinkedNpcName(data.hologram_data().linkedNpcName());
+                            .setLinkedNpcName(data.hologram_data().linkedNpcName())
+                            .setYOffset(data.hologram_data().yOffset() == null ? 0f : data.hologram_data().yOffset());
 
             case ITEM ->
                     new com.fancyinnovations.fancyholograms.api.data.ItemHologramData(data.hologram_data().name(), loc)
@@ -192,7 +194,8 @@ public class JsonAdapter {
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())
-                            .setLinkedNpcName(data.hologram_data().linkedNpcName());
+                            .setLinkedNpcName(data.hologram_data().linkedNpcName())
+                            .setYOffset(data.hologram_data().yOffset() == null ? 0f : data.hologram_data().yOffset());
             case BLOCK ->
                     new com.fancyinnovations.fancyholograms.api.data.BlockHologramData(data.hologram_data().name(), loc)
                             .setBlock(Material.getMaterial(data.block_data().block_material())) // block data
@@ -206,7 +209,8 @@ public class JsonAdapter {
                             .setWorldName(data.hologram_data().worldName())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibilityDistance())
                             .setVisibility(data.hologram_data().visibility())
-                            .setLinkedNpcName(data.hologram_data().linkedNpcName());
+                            .setLinkedNpcName(data.hologram_data().linkedNpcName())
+                            .setYOffset(data.hologram_data().yOffset() == null ? 0f : data.hologram_data().yOffset());
         };
 
         for (String traitName : data.hologram_data().traits()) {

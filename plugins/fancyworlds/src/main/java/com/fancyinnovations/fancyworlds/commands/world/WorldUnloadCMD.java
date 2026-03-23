@@ -16,6 +16,8 @@ import revxrsal.commands.annotation.Switch;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.concurrent.CompletableFuture;
+
 public class WorldUnloadCMD extends FancyContext {
 
     public static final WorldUnloadCMD INSTANCE = new WorldUnloadCMD();
@@ -52,7 +54,7 @@ public class WorldUnloadCMD extends FancyContext {
 
             new ConfirmationDialog(question.getMessage())
                     .withTitle("Confirm unload")
-                    .withOnConfirm(() -> Bukkit.getScheduler().runTask(plugin, () -> unloadImpl(actor, world, true)))
+                    .withOnConfirm(() -> plugin.runGlobalTask(() -> unloadImpl(actor, world, true)))
                     .withOnCancel(
                             () -> translator.translate("commands.world.unload.cancelled")
                                     .withPrefix()
@@ -70,8 +72,19 @@ public class WorldUnloadCMD extends FancyContext {
             final FWorld world,
             final boolean force
     ) {
+        CompletableFuture<Void> teleportFuture = CompletableFuture.completedFuture(null);
         if (world.getBukkitWorld().getPlayerCount() > 0 && force) {
-            World fallbackWorld = Bukkit.getWorlds().getFirst();
+            World fallbackWorld = Bukkit.getWorlds().stream()
+                    .filter(loadedWorld -> !loadedWorld.equals(world.getBukkitWorld()))
+                    .findFirst()
+                    .orElse(null);
+            if (fallbackWorld == null) {
+                translator.translate("commands.world.unload.failed")
+                        .withPrefix()
+                        .replace("worldName", world.getName())
+                        .send(actor.sender());
+                return;
+            }
 
             translator.translate("commands.world.unload.teleporting_players")
                     .withPrefix()
@@ -80,23 +93,39 @@ public class WorldUnloadCMD extends FancyContext {
                     .replace("playerCount", String.valueOf(world.getBukkitWorld().getPlayerCount()))
                     .send(actor.sender());
 
-            for (Player player : world.getBukkitWorld().getPlayers()) {
-                player.teleport(fallbackWorld.getSpawnLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
-            }
+            teleportFuture = CompletableFuture.allOf(world.getBukkitWorld().getPlayers().stream()
+                    .map(player -> player.teleportAsync(fallbackWorld.getSpawnLocation(), PlayerTeleportEvent.TeleportCause.COMMAND)
+                            .thenAccept(success -> {
+                                if (!success) {
+                                    player.kick(translator.translate("commands.world.unload.failed")
+                                            .replace("worldName", world.getName())
+                                            .buildComponent());
+                                }
+                            }))
+                    .toArray(CompletableFuture[]::new));
         }
 
-        if (Bukkit.unloadWorld(world.getBukkitWorld(), true)) {
-            ((FWorldImpl) world).setBukkitWorld(null);
+        teleportFuture.thenCompose(ignored -> plugin.getWorldPlatformView().unloadWorld(world.getBukkitWorld(), true))
+                .thenAccept(success -> {
+                    if (success) {
+                        ((FWorldImpl) world).setBukkitWorld(null);
 
-            translator.translate("commands.world.unload.success")
-                    .withPrefix()
-                    .replace("worldName", world.getName())
-                    .send(actor.sender());
-        } else {
-            translator.translate("commands.world.unload.failed")
-                    .withPrefix()
-                    .replace("worldName", world.getName())
-                    .send(actor.sender());
-        }
+                        translator.translate("commands.world.unload.success")
+                                .withPrefix()
+                                .replace("worldName", world.getName())
+                                .send(actor.sender());
+                    } else {
+                        translator.translate("commands.world.unload.failed")
+                                .withPrefix()
+                                .replace("worldName", world.getName())
+                                .send(actor.sender());
+                    }
+                }).exceptionally(throwable -> {
+                    translator.translate("commands.world.unload.failed")
+                            .withPrefix()
+                            .replace("worldName", world.getName())
+                            .send(actor.sender());
+                    return null;
+                });
     }
 }

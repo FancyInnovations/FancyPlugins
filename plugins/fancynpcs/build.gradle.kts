@@ -16,12 +16,7 @@ allprojects {
     description = "Simple, lightweight and fast NPC plugin using packets"
 
     repositories {
-        mavenLocal()
-        mavenCentral()
-        maven(url = "https://repo.papermc.io/repository/maven-public/")
-        maven(url = "https://repo.fancyinnovations.com/releases")
-        maven(url = "https://repo.lushplugins.org/releases")
-        maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for cloud command framework
+        maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for MineSkin
         maven(url = "https://repo.extendedclip.com/releases/") // for PlaceholderAPI
         maven(url = "https://maven.enginehub.org/repo/") // for WorldEdit
     }
@@ -83,7 +78,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.1")
+        serverJar(file("../../libraries/paper-server/paper-bundler-26.1-R0.1-SNAPSHOT.jar"))
 
         downloadPlugins {
 //            hangar("ViaVersion", "5.4.0")
@@ -144,7 +140,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-        options.release = 21
+        options.release = 25
         // For cloud-annotations, see https://cloud.incendo.org/annotations/#command-components
         options.compilerArgs.add("-parameters")
     }
@@ -177,7 +173,7 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 val gitCommitHash: Provider<String> = providers.exec {

@@ -16,12 +16,7 @@ allprojects {
     description = "Simple, lightweight and fast NPC plugin using packets"
 
     repositories {
-        mavenLocal()
-        mavenCentral()
-        maven(url = "https://repo.papermc.io/repository/maven-public/")
-        maven(url = "https://repo.fancyinnovations.com/releases")
-        maven(url = "https://repo.lushplugins.org/releases")
-        maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for cloud command framework
+        maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for MineSkin
         maven(url = "https://repo.extendedclip.com/releases/") // for PlaceholderAPI
         maven(url = "https://maven.enginehub.org/repo/") // for WorldEdit
         maven(url = "https://maven.citizensnpcs.co/repo") // for Citizens
@@ -54,7 +49,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
-    implementation("org.incendo:cloud-paper:2.0.0-beta.13")
+    implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
     implementation("org.incendo:cloud-annotations:2.0.0")
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
@@ -98,12 +93,13 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.1")
+        serverJar(file("../../libraries/paper-server/paper-bundler-26.1-R0.1-SNAPSHOT.jar"))
 
         downloadPlugins {
-            hangar("kite", "1.2.4+12")
-            hangar("ViaVersion", "5.7.1")
-            hangar("ViaBackwards", "5.7.1")
+//            hangar("kite", "1.2.4+12")
+//            hangar("ViaVersion", "5.7.1")
+//            hangar("ViaBackwards", "5.7.1")
 //            hangar("PlaceholderAPI", "2.11.6")
 //            modrinth("multiverse-core", "5.0.2")
         }
@@ -151,7 +147,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-        options.release = 21
+        options.release = 25
         // For cloud-annotations, see https://cloud.incendo.org/annotations/#command-components
         options.compilerArgs.add("-parameters")
     }
@@ -184,7 +180,7 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 val gitCommitHash: Provider<String> = providers.exec {

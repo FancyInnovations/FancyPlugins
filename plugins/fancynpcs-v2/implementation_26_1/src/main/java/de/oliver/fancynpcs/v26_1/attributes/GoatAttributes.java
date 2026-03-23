@@ -28,8 +28,14 @@ public class GoatAttributes {
         Goat goat = ReflectionHelper.getEntity(npc);
 
         switch (value.toLowerCase()) {
-            case "none" -> goat.removeHorns();
-            case "both" -> goat.addHorns();
+            case "none" -> {
+                goat.getEntityData().set(Goat.DATA_HAS_LEFT_HORN, false);
+                goat.getEntityData().set(Goat.DATA_HAS_RIGHT_HORN, false);
+            }
+            case "both" -> {
+                goat.getEntityData().set(Goat.DATA_HAS_LEFT_HORN, true);
+                goat.getEntityData().set(Goat.DATA_HAS_RIGHT_HORN, true);
+            }
             case "left" -> {
                 goat.getEntityData().set(Goat.DATA_HAS_LEFT_HORN, true);
                 goat.getEntityData().set(Goat.DATA_HAS_RIGHT_HORN, false);

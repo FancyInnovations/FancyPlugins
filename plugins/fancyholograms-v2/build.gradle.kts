@@ -50,7 +50,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
+    compileOnly("org.lushplugins.chatcolorhandler:paper:7.0.0")
     compileOnly("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
 }
 

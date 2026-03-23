@@ -4,8 +4,8 @@ import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.executor.ActionExecutionContext;
 import org.jetbrains.annotations.NotNull;
-import org.lushplugins.chatcolorhandler.ChatColorHandler;
-import org.lushplugins.chatcolorhandler.parsers.ParserTypes;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
+import org.lushplugins.chatcolorhandler.paper.parser.ParserTypes;
 
 public class PlaySoundAction extends NpcAction {
 
@@ -23,7 +23,7 @@ public class PlaySoundAction extends NpcAction {
             return;
         }
 
-        String sound = ChatColorHandler.translate(value, context.getPlayer(), ParserTypes.placeholder());
+        String sound = PaperColor.handler().translateRaw(value, context.getPlayer(), ParserTypes.placeholder());
 
         FancyNpcsPlugin.get().getScheduler().runTask(
                 context.getPlayer().getLocation(),

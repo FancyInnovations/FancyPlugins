@@ -42,7 +42,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
 
     compileOnly("de.oliver:FancyDialogs:1.1.2")
-    compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
+    compileOnly("org.lushplugins.chatcolorhandler:paper:7.0.0")
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.16")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.16")
 

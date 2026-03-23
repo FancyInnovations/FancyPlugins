@@ -13,7 +13,7 @@ import de.oliver.fancynpcs.skins.cache.SkinCacheData;
 import de.oliver.fancynpcs.skins.uuidcache.UUIDCache;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.lushplugins.chatcolorhandler.ChatColorHandler;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 import org.mineskin.data.Variant;
 import org.mineskin.request.GenerateRequest;
 
@@ -74,7 +74,7 @@ public class SkinManagerImpl implements SkinManager, Listener {
         }
 
         if (SkinUtils.isPlaceholder(identifier)) {
-            String parsed = ChatColorHandler.translate(identifier);
+            String parsed = PaperColor.handler().translateRaw(identifier);
 
             if (parsed.isBlank() || parsed.equalsIgnoreCase("null") || SkinUtils.isPlaceholder(parsed)) {
                 throw new SkinLoadException(SkinLoadException.Reason.INVALID_PLACEHOLDER, "(RAW = '" + identifier + "'; PARSED = '" + parsed + "')");

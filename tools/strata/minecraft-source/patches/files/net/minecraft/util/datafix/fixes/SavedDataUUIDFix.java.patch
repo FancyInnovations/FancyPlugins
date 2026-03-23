@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/SavedDataUUIDFix.java
++++ b/net/minecraft/util/datafix/fixes/SavedDataUUIDFix.java
+@@ -30,7 +_,7 @@
+                            raid -> raid.update(
+                               "HeroesOfTheVillage",
+                               heros -> heros.createList(
+-                                 heros.asStream().map(hero -> (Dynamic)createUUIDFromLongs(hero, "UUIDMost", "UUIDLeast").orElseGet(() -> {
++                                 heros.asStream().map(hero -> createUUIDFromLongs(hero, "UUIDMost", "UUIDLeast").orElseGet(() -> {
+                                     LOGGER.warn("HeroesOfTheVillage contained invalid UUIDs.");
+                                     return hero;
+                                  }))

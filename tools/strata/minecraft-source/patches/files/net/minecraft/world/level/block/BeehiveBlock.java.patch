@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/BeehiveBlock.java
++++ b/net/minecraft/world/level/block/BeehiveBlock.java
+@@ -327,7 +_,7 @@
+    protected ItemStack getCloneItemStack(final LevelReader level, final BlockPos pos, final BlockState state, final boolean includeData) {
+       ItemStack itemStack = super.getCloneItemStack(level, pos, state, includeData);
+       if (includeData) {
+-         itemStack.set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(HONEY_LEVEL, (Integer & Comparable)state.getValue(HONEY_LEVEL)));
++         itemStack.set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(HONEY_LEVEL, state.getValue(HONEY_LEVEL)));
+       }
+ 
+       return itemStack;

@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/biome/Climate.java
++++ b/net/minecraft/world/level/biome/Climate.java
+@@ -154,7 +_,7 @@
+ 
+       public static <T> Codec<Climate.ParameterList<T>> codec(final MapCodec<T> valueCodec) {
+          return ExtraCodecs.nonEmptyList(
+-               RecordCodecBuilder.create(
++                         RecordCodecBuilder.<Pair<Climate.ParameterPoint, T>>create(
+                      i -> i.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), valueCodec.forGetter(Pair::getSecond))
+                         .apply(i, Pair::of)
+                   )

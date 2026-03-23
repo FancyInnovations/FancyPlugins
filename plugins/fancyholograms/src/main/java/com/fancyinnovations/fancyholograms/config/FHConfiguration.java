@@ -15,6 +15,7 @@ public final class FHConfiguration implements HologramConfiguration {
 
     public static final String SAVE_ON_CHANGED_PATH = "settings.saving.save_on_changed";
     public static final String VISIBILITY_DISTANCE_PATH = "settings.visibility_distance";
+    public static final String SPAWN_DELAY_ON_JOIN_PATH = "settings.spawn_delay_on_join_ms";
 
     public static final String REGISTER_COMMANDS_PATH = "settings.register_commands";
 
@@ -83,6 +84,15 @@ public final class FHConfiguration implements HologramConfiguration {
                 "The default visibility distance for holograms.",
                 false,
                 20,
+                false,
+                Integer.class
+        ));
+
+        config.addField(new ConfigField<>(
+                SPAWN_DELAY_ON_JOIN_PATH,
+                "The delay after player join before holograms are spawned, in milliseconds.",
+                false,
+                300,
                 false,
                 Integer.class
         ));
@@ -188,6 +198,11 @@ public final class FHConfiguration implements HologramConfiguration {
     @Override
     public int getDefaultVisibilityDistance() {
         return config.get(VISIBILITY_DISTANCE_PATH);
+    }
+
+    @Override
+    public int getSpawnDelayOnJoin() {
+        return config.get(SPAWN_DELAY_ON_JOIN_PATH);
     }
 
     @Override

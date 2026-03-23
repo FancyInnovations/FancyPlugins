@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java
++++ b/net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java
+@@ -33,7 +_,7 @@
+    public static final int MAX_TOTAL_STRUCTURE_RANGE = 128;
+    public static final int MIN_DEPTH = 0;
+    public static final int MAX_DEPTH = 20;
+-   public static final MapCodec<JigsawStructure> CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<JigsawStructure> CODEC = RecordCodecBuilder.<JigsawStructure>mapCodec(
+          i -> i.group(
+                settingsCodec(i),
+                StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(j -> j.startPool),

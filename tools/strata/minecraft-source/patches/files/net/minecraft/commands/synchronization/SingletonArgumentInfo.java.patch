@@ -1,0 +1,11 @@
+--- a/net/minecraft/commands/synchronization/SingletonArgumentInfo.java
++++ b/net/minecraft/commands/synchronization/SingletonArgumentInfo.java
+@@ -16,7 +_,7 @@
+    }
+ 
+    public static <T extends ArgumentType<?>> SingletonArgumentInfo<T> contextFree(final Supplier<T> constructor) {
+-      return new SingletonArgumentInfo<>(context -> (ArgumentType)constructor.get());
++      return new SingletonArgumentInfo<>(context -> constructor.get());
+    }
+ 
+    public static <T extends ArgumentType<?>> SingletonArgumentInfo<T> contextAware(final Function<CommandBuildContext, T> constructor) {

@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/AttributeModifierIdFix.java
++++ b/net/minecraft/util/datafix/fixes/AttributeModifierIdFix.java
+@@ -18,7 +_,7 @@
+ import org.jspecify.annotations.Nullable;
+ 
+ public class AttributeModifierIdFix extends DataFix {
+-   private static final Map<UUID, String> ID_MAP = ImmutableMap.builder()
++   private static final Map<UUID, String> ID_MAP = ImmutableMap.<UUID, String>builder()
+       .put(UUID.fromString("736565d2-e1a7-403d-a3f8-1aeb3e302542"), "minecraft:creative_mode_block_range")
+       .put(UUID.fromString("98491ef6-97b1-4584-ae82-71a8cc85cf73"), "minecraft:creative_mode_entity_range")
+       .put(UUID.fromString("91AEAA56-376B-4498-935B-2F7F68070635"), "minecraft:effect.speed")

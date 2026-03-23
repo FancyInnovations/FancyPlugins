@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/gameevent/vibrations/VibrationSelector.java
++++ b/net/minecraft/world/level/gameevent/vibrations/VibrationSelector.java
+@@ -54,7 +_,7 @@
+       if (this.currentVibrationData.isEmpty()) {
+          return Optional.empty();
+       } else {
+-         return ((Pair)this.currentVibrationData.get()).getRight() < time
++         return (this.currentVibrationData.get()).getRight() < time
+             ? Optional.of((VibrationInfo)((Pair)this.currentVibrationData.get()).getLeft())
+             : Optional.empty();
+       }

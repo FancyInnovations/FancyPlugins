@@ -1,0 +1,26 @@
+--- a/net/minecraft/world/attribute/EnvironmentAttributeMap.java
++++ b/net/minecraft/world/attribute/EnvironmentAttributeMap.java
+@@ -18,7 +_,7 @@
+ public final class EnvironmentAttributeMap {
+    public static final EnvironmentAttributeMap EMPTY = new EnvironmentAttributeMap(Map.of());
+    public static final Codec<EnvironmentAttributeMap> CODEC = Codec.lazyInitialized(
+-      () -> Codec.dispatchedMap(EnvironmentAttributes.CODEC, Util.memoize(EnvironmentAttributeMap.Entry::createCodec))
++           () -> Codec.dispatchedMap(EnvironmentAttributes.CODEC, Util.memoize((java.util.function.Function<EnvironmentAttribute<?>, Codec<? extends Entry<?, ?>>>) EnvironmentAttributeMap.Entry::createCodec))
+          .xmap(EnvironmentAttributeMap::new, v -> v.entries)
+    );
+    public static final Codec<EnvironmentAttributeMap> NETWORK_CODEC = CODEC.xmap(
+@@ -107,11 +_,11 @@
+       private static <Value> Codec<EnvironmentAttributeMap.Entry<Value, ?>> createCodec(final EnvironmentAttribute<Value> attribute) {
+          Codec<EnvironmentAttributeMap.Entry<Value, ?>> fullCodec = attribute.type()
+             .modifierCodec()
+-            .dispatch("modifier", EnvironmentAttributeMap.Entry::modifier, Util.memoize((Function)(modifier -> createFullCodec(attribute, modifier))));
++            .dispatch("modifier", EnvironmentAttributeMap.Entry::modifier, Util.memoize((modifier -> createFullCodec(attribute, modifier))));
+          return Codec.either(attribute.valueCodec(), fullCodec)
+             .xmap(
+-               either -> (EnvironmentAttributeMap.Entry)either.map(value -> new EnvironmentAttributeMap.Entry<>(value, AttributeModifier.override()), e -> e),
+-               entry -> entry.modifier == AttributeModifier.override() ? Either.left(entry.argument()) : Either.right(entry)
++               either -> either.map(value -> new EnvironmentAttributeMap.Entry<>(value, AttributeModifier.override()), e -> e),
++               entry -> entry.modifier == AttributeModifier.override() ? Either.left((Value)entry.argument()) : Either.right(entry)
+             );
+       }
+ 

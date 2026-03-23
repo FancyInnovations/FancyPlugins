@@ -9,6 +9,7 @@ import de.oliver.fancynpcs.api.NpcData;
 import de.oliver.fancynpcs.api.NpcManager;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
 import de.oliver.fancynpcs.api.actions.NpcAction;
+import de.oliver.fancynpcs.api.actions.types.UnknownActionAction;
 import de.oliver.fancynpcs.api.data.property.NpcVisibility;
 import de.oliver.fancynpcs.api.events.NpcsLoadedEvent;
 import de.oliver.fancynpcs.api.skins.SkinData;
@@ -208,8 +209,13 @@ public class NpcManagerImpl implements NpcManager {
                         continue;
                     }
 
-                    npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".action", actionData.action().getName());
-                    npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".value", actionData.value());
+                    if (actionData.action() instanceof UnknownActionAction unknownActionAction) {
+                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".action", unknownActionAction.getUnknownActionName());
+                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".value", unknownActionAction.getUnknownActionValue());
+                    } else {
+                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".action", actionData.action().getName());
+                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".value", actionData.value());
+                    }
                 }
             }
 
@@ -365,7 +371,7 @@ public class NpcManagerImpl implements NpcManager {
                             NpcAction action = FancyNpcs.getInstance().getActionManager().getActionByName(actionName);
                             if (action == null) {
                                 logger.warn("Could not find action: " + actionName);
-                                return;
+                                action = new UnknownActionAction(actionTrigger, actionName, value, Integer.parseInt(order));
                             }
 
                             try {

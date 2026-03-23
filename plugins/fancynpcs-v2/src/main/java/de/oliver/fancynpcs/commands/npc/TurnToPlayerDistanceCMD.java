@@ -32,29 +32,31 @@ public enum TurnToPlayerDistanceCMD {
             final @Argument(parserName = "TurnToPlayerDistanceCMD/distance") int distance
     ) {
         if (distance < -1) {
-            translator.translate("npc_turn_to_player_distance_invalid").send(sender);
+            translator.translate("npc_turn_to_player_distance_invalid").withPrefix().send(sender);
             return;
         }
-        
+
         if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.TURN_TO_PLAYER_DISTANCE, distance, sender).callEvent()) {
             npc.getData().setTurnToPlayerDistance(distance);
-            
+
             if (distance == -1) {
                 // Using default distance
                 int defaultDistance = FancyNpcs.getInstance().getFancyNpcConfig().getTurnToPlayerDistance();
                 translator.translate("npc_turn_to_player_distance_default")
+                        .withPrefix()
                         .replace("npc", npc.getData().getName())
                         .replace("distance", String.valueOf(defaultDistance))
                         .send(sender);
             } else {
                 // Using custom distance
                 translator.translate("npc_turn_to_player_distance_set")
+                        .withPrefix()
                         .replace("npc", npc.getData().getName())
                         .replace("distance", String.valueOf(distance))
                         .send(sender);
             }
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 

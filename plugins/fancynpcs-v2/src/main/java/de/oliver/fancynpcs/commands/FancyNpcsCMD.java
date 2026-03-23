@@ -41,14 +41,14 @@ public final class FancyNpcsCMD {
         // NOTE: This sometimes creates duplicated NPCs on the client-side.
         plugin.getNpcManagerImpl().reloadNpcs();
         // Sending success message to the sender.
-        translator.translate("fancynpcs_reload_success").send(sender);
+        translator.translate("fancynpcs_reload_success").withPrefix().send(sender);
     }
 
     @Command("fancynpcs save")
     @Permission("fancynpcs.command.fancynpcs.save")
     public void onSave(final CommandSender sender) {
         plugin.getNpcManagerImpl().saveNpcs(true);
-        translator.translate("fancynpcs_save_success").send(sender);
+        translator.translate("fancynpcs_save_success").withPrefix().send(sender);
     }
 
     // NOTE: In the future, if there is more than a few feature flags, we might consider listing entries automatically by iterating, just like in 'list' sub-command.

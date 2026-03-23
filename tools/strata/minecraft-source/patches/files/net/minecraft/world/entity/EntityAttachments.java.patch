@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/EntityAttachments.java
++++ b/net/minecraft/world/entity/EntityAttachments.java
+@@ -28,7 +_,7 @@
+       return new EntityAttachments(Util.makeEnumMap(EntityAttachment.class, attachment -> {
+          List<Vec3> list = new ArrayList();
+ 
+-         for (Vec3 vec3 : (List)this.attachments.get(attachment)) {
++         for (Vec3 vec3 : this.attachments.get(attachment)) {
+             list.add(vec3.multiply(x, y, z));
+          }
+ 

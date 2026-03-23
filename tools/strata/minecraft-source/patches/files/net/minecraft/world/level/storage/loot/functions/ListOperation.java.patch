@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/storage/loot/functions/ListOperation.java
++++ b/net/minecraft/world/level/storage/loot/functions/ListOperation.java
+@@ -18,7 +_,7 @@
+    MapCodec<ListOperation> UNLIMITED_CODEC = codec(Integer.MAX_VALUE);
+ 
+    static MapCodec<ListOperation> codec(final int maxSize) {
+-      return ListOperation.Type.CODEC.dispatchMap("mode", ListOperation::mode, e -> e.mapCodec).validate(op -> {
++      return ListOperation.Type.CODEC.<ListOperation>dispatchMap("mode", ListOperation::mode, e -> e.mapCodec).validate(op -> {
+          if (op instanceof ListOperation.ReplaceSection section && section.size().isPresent()) {
+             int size = (Integer)section.size().get();
+             if (size > maxSize) {

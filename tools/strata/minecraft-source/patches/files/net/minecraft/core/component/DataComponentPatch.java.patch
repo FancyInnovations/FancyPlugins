@@ -1,0 +1,40 @@
+--- a/net/minecraft/core/component/DataComponentPatch.java
++++ b/net/minecraft/core/component/DataComponentPatch.java
+@@ -22,15 +_,15 @@
+ 
+ public final class DataComponentPatch {
+    public static final DataComponentPatch EMPTY = new DataComponentPatch(Reference2ObjectMaps.emptyMap());
+-   public static final Codec<DataComponentPatch> CODEC = Codec.dispatchedMap(DataComponentPatch.PatchKey.CODEC, DataComponentPatch.PatchKey::valueCodec)
++   public static final Codec<DataComponentPatch> CODEC = Codec.<PatchKey, Object>dispatchedMap(DataComponentPatch.PatchKey.CODEC, DataComponentPatch.PatchKey::valueCodec)
+       .xmap(data -> {
+          if (data.isEmpty()) {
+             return EMPTY;
+          } else {
+-            Reference2ObjectMap<DataComponentType<?>, Optional<?>> map = new Reference2ObjectArrayMap(data.size());
++            Reference2ObjectMap<DataComponentType<?>, Optional<?>> map = new Reference2ObjectArrayMap<>(data.size());
+ 
+             for (Entry<DataComponentPatch.PatchKey, ?> entry : data.entrySet()) {
+-               DataComponentPatch.PatchKey key = (DataComponentPatch.PatchKey)entry.getKey();
++               DataComponentPatch.PatchKey key = entry.getKey();
+                if (key.removed()) {
+                   map.put(key.type(), Optional.empty());
+                } else {
+@@ -41,14 +_,12 @@
+             return new DataComponentPatch(map);
+          }
+       }, patch -> {
+-         Reference2ObjectMap<DataComponentPatch.PatchKey, Object> map = new Reference2ObjectArrayMap(patch.map.size());
+-         Iterator i$ = Reference2ObjectMaps.fastIterable(patch.map).iterator();
++         Reference2ObjectMap<DataComponentPatch.PatchKey, Object> map = new Reference2ObjectArrayMap<>(patch.map.size());
+ 
+-         while (i$.hasNext()) {
+-            Entry<DataComponentType<?>, Optional<?>> entry = (Entry<DataComponentType<?>, Optional<?>>)i$.next();
+-            DataComponentType<?> type = (DataComponentType<?>)entry.getKey();
++         for (Entry<DataComponentType<?>, Optional<?>> entry : Reference2ObjectMaps.fastIterable(patch.map)) {
++            DataComponentType<?> type = entry.getKey();
+             if (!type.isTransient()) {
+-               Optional<?> value = (Optional<?>)entry.getValue();
++               Optional<?> value = entry.getValue();
+                if (value.isPresent()) {
+                   map.put(new DataComponentPatch.PatchKey(type, false), value.get());
+                } else {

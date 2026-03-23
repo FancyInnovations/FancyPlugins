@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/profiling/jfr/serialize/JfrResultJsonSerializer.java
++++ b/net/minecraft/util/profiling/jfr/serialize/JfrResultJsonSerializer.java
+@@ -98,7 +_,7 @@
+          TimedStatSummary<StructureGenStat> summary = (TimedStatSummary<StructureGenStat>)optionalSummary.get();
+          JsonArray structureJsonArray = new JsonArray();
+          root.add("structure", structureJsonArray);
+-         ((Map)structureGenStats.stream().collect(Collectors.groupingBy(StructureGenStat::structureName)))
++         (structureGenStats.stream().collect(Collectors.groupingBy(StructureGenStat::structureName)))
+             .forEach(
+                (structureName, timedStat) -> {
+                   Optional<TimedStatSummary<StructureGenStat>> optionalStatSummary = TimedStatSummary.summary(timedStat);

@@ -1,0 +1,46 @@
+--- a/net/minecraft/world/entity/monster/piglin/PiglinAi.java
++++ b/net/minecraft/world/entity/monster/piglin/PiglinAi.java
+@@ -59,6 +_,7 @@
+ import net.minecraft.world.entity.ai.behavior.StopBeingAngryIfTargetDead;
+ import net.minecraft.world.entity.ai.behavior.TriggerGate;
+ import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
++import net.minecraft.world.entity.ai.behavior.declarative.Trigger;
+ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+ import net.minecraft.world.entity.ai.sensing.Sensor;
+ import net.minecraft.world.entity.ai.util.LandRandomPos;
+@@ -180,7 +_,7 @@
+             new SpearAttack(1.0, 1.0, 2.0F),
+             new SpearRetreat(1.0),
+             MeleeAttack.create(20),
+-            new CrossbowAttack(),
++            new CrossbowAttack<>(),
+             RememberIfHoglinWasKilled.create(),
+             EraseMemoryIf.create(PiglinAi::isNearZombified, MemoryModuleType.ATTACK_TARGET)
+          ),
+@@ -200,7 +_,7 @@
+                body -> body instanceof Piglin && !body.isDancing(), GoToTargetLocation.create(MemoryModuleType.CELEBRATE_LOCATION, 2, 1.0F)
+             ),
+             BehaviorBuilder.triggerIf(Piglin::isDancing, GoToTargetLocation.create(MemoryModuleType.CELEBRATE_LOCATION, 4, 0.6F)),
+-            new RunOne(
++            new RunOne<>(
+                ImmutableList.of(
+                   Pair.of(SetEntityLookTarget.create(EntityType.PIGLIN, 8.0F), 1),
+                   Pair.of(RandomStroll.stroll(0.6F, 2, 1), 1),
+@@ -249,7 +_,7 @@
+             BehaviorBuilder.sequence(
+                BehaviorBuilder.triggerIf(Entity::isPassenger),
+                TriggerGate.triggerOneShuffled(
+-                  ImmutableList.builder().addAll(createLookBehaviors()).add(Pair.of(BehaviorBuilder.triggerIf((Predicate)(e -> true)), 1)).build()
++                       ImmutableList.<Pair<? extends Trigger<? super LivingEntity>, Integer>>builder().addAll(createLookBehaviors()).add(Pair.of(BehaviorBuilder.triggerIf((e -> true)), 1)).build()
+                )
+             ),
+             DismountOrSkipMounting.create(8, PiglinAi::wantsToStopRiding)
+@@ -267,7 +_,7 @@
+    }
+ 
+    private static RunOne<LivingEntity> createIdleLookBehaviors() {
+-      return new RunOne<>(ImmutableList.builder().addAll(createLookBehaviors()).add(Pair.of(new DoNothing(30, 60), 1)).build());
++      return new RunOne<>(ImmutableList.<Pair<? extends BehaviorControl<? super LivingEntity>, Integer>>builder().addAll(createLookBehaviors()).add(Pair.of(new DoNothing(30, 60), 1)).build());
+    }
+ 
+    private static RunOne<Piglin> createIdleMovementBehaviors() {

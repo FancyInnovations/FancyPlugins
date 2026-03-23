@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/RenamedCoralFix.java
++++ b/net/minecraft/util/datafix/fixes/RenamedCoralFix.java
+@@ -4,7 +_,7 @@
+ import java.util.Map;
+ 
+ public class RenamedCoralFix {
+-   public static final Map<String, String> RENAMED_IDS = ImmutableMap.builder()
++   public static final Map<String, String> RENAMED_IDS = ImmutableMap.<String, String>builder()
+       .put("minecraft:blue_coral", "minecraft:tube_coral_block")
+       .put("minecraft:pink_coral", "minecraft:brain_coral_block")
+       .put("minecraft:purple_coral", "minecraft:bubble_coral_block")

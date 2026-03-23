@@ -10,7 +10,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
 
     compileOnly(project(":libraries:common"))
-    compileOnly("de.oliver.FancyAnalytics:logger:0.0.8")
+    compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
 
     implementation("org.lushplugins:ChatColorHandler:6.0.4")
 }
@@ -30,7 +30,7 @@ tasks {
 
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = providers
+                    value = "ApiKey " + providers
                         .gradleProperty("fancyspacesApiKey")
                         .orElse(
                             providers
@@ -51,7 +51,7 @@ tasks {
 
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = providers
+                    value = "ApiKey " + providers
                         .gradleProperty("fancyspacesApiKey")
                         .orElse(
                             providers

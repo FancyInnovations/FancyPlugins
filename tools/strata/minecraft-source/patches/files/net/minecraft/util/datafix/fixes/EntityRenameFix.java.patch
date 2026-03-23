@@ -1,0 +1,13 @@
+--- a/net/minecraft/util/datafix/fixes/EntityRenameFix.java
++++ b/net/minecraft/util/datafix/fixes/EntityRenameFix.java
+@@ -22,8 +_,8 @@
+    }
+ 
+    public TypeRewriteRule makeRule() {
+-      TaggedChoiceType<String> oldType = this.getInputSchema().findChoiceType(References.ENTITY);
+-      TaggedChoiceType<String> newType = this.getOutputSchema().findChoiceType(References.ENTITY);
++      TaggedChoiceType<String> oldType = (TaggedChoiceType<String>) this.getInputSchema().findChoiceType(References.ENTITY);
++      TaggedChoiceType<String> newType = (TaggedChoiceType<String>) this.getOutputSchema().findChoiceType(References.ENTITY);
+       Function<String, Type<?>> patchedInputTypes = Util.memoize((Function<String, Type<?>>)(name -> {
+          Type<?> type = (Type<?>)oldType.types().get(name);
+          return ExtraDataFixUtils.patchSubType(type, oldType, newType);

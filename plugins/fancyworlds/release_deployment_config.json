@@ -1,0 +1,34 @@
+{
+  "project_name": "FancyWorlds",
+  "plugin_jar_path": "/plugins/fancyworlds/build/libs/FancyWorlds-%VERSION%.jar",
+  "changelog_path": "/plugins/fancyworlds/CHANGELOG.md",
+  "version_path": "/plugins/fancyworlds/VERSION",
+  "fancyspaces": {
+    "space_id": "s1gGcHj5",
+    "platform": "paper",
+    "channel": "release",
+    "supported_versions": [
+      "1.21.11"
+    ]
+  },
+  "modrinth": {
+    "project_id": "TODO",
+    "supported_versions": [
+      "1.21.11"
+    ],
+    "channel": "release",
+    "loaders": [
+      "paper",
+      "folia"
+    ],
+    "featured": true
+  },
+  "hangar": {
+    "author": "oliver",
+    "project_id": "TODO",
+    "supported_versions": [
+      "1.21.11"
+    ],
+    "channel": "Release"
+  }
+}

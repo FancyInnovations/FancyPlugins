@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/camel/Camel.java
++++ b/net/minecraft/world/entity/animal/camel/Camel.java
+@@ -150,7 +_,7 @@
+ 
+    @Override
+    public Brain<Camel> getBrain() {
+-      return super.getBrain();
++      return (Brain<Camel>) super.getBrain();
+    }
+ 
+    @Override

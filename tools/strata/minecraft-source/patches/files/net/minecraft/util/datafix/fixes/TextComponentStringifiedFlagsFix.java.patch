@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/TextComponentStringifiedFlagsFix.java
++++ b/net/minecraft/util/datafix/fixes/TextComponentStringifiedFlagsFix.java
+@@ -15,7 +_,7 @@
+    }
+ 
+    protected TypeRewriteRule makeRule() {
+-      Type<Pair<String, Either<?, Pair<?, Pair<?, Pair<?, Dynamic<?>>>>>>> textComponentType = this.getInputSchema().getType(References.TEXT_COMPONENT);
++      Type<Pair<String, Either<?, Pair<?, Pair<?, Pair<?, Dynamic<?>>>>>>> textComponentType = (Type<Pair<String, Either<?, Pair<?, Pair<?, Pair<?, Dynamic<?>>>>>>>) this.getInputSchema().getType(References.TEXT_COMPONENT);
+       return this.fixTypeEverywhere(
+          "TextComponentStringyFlagsFix",
+          textComponentType,

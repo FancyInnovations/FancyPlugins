@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/state/StateHolder.java
++++ b/net/minecraft/world/level/block/state/StateHolder.java
+@@ -154,7 +_,7 @@
+             S defaultValue = (S)defaultState.apply(o);
+             return definition.isSingletonState()
+                ? MapCodec.unit(defaultValue)
+-               : definition.propertiesCodec().codec().lenientOptionalFieldOf("Properties").xmap(oo -> (StateHolder)oo.orElse(defaultValue), Optional::of);
++               : definition.propertiesCodec().codec().lenientOptionalFieldOf("Properties").xmap(oo -> oo.orElse(defaultValue), Optional::of);
+          }
+       );
+    }

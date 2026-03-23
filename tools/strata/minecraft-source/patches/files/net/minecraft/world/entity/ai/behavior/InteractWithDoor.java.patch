@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/behavior/InteractWithDoor.java
++++ b/net/minecraft/world/entity/ai/behavior/InteractWithDoor.java
+@@ -116,7 +_,7 @@
+    private static boolean areOtherMobsComingThroughDoor(final LivingEntity body, final BlockPos doorPos, final Optional<List<LivingEntity>> nearestEntities) {
+       return nearestEntities.isEmpty()
+          ? false
+-         : ((List)nearestEntities.get())
++         : (nearestEntities.get())
+             .stream()
+             .filter(otherMob -> otherMob.getType() == body.getType())
+             .filter(otherMob -> doorPos.closerToCenterThan(otherMob.position(), 2.0))

@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/dialog/CommonDialogData.java
++++ b/net/minecraft/server/dialog/CommonDialogData.java
+@@ -19,7 +_,7 @@
+    List<DialogBody> body,
+    List<Input> inputs
+ ) {
+-   public static final MapCodec<CommonDialogData> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<CommonDialogData> MAP_CODEC = RecordCodecBuilder.<CommonDialogData>mapCodec(
+          i -> i.group(
+                ComponentSerialization.CODEC.fieldOf("title").forGetter(CommonDialogData::title),
+                ComponentSerialization.CODEC.optionalFieldOf("external_title").forGetter(CommonDialogData::externalTitle),

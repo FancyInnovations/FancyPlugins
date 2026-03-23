@@ -1,0 +1,11 @@
+--- a/net/minecraft/commands/arguments/ResourceOrIdArgument.java
++++ b/net/minecraft/commands/arguments/ResourceOrIdArgument.java
+@@ -65,7 +_,7 @@
+    }
+ 
+    public static <T, O> Grammar<ResourceOrIdArgument.Result<T, O>> createGrammar(final ResourceKey<? extends Registry<T>> registryKey, final DynamicOps<O> ops) {
+-      Grammar<O> inlineValueGrammar = SnbtGrammar.createParser((DynamicOps<T>)ops);
++      Grammar<O> inlineValueGrammar = SnbtGrammar.createParser(ops);
+       Dictionary<StringReader> rules = new Dictionary<>();
+       Atom<ResourceOrIdArgument.Result<T, O>> result = Atom.of("result");
+       Atom<Identifier> id = Atom.of("id");

@@ -1,0 +1,29 @@
+--- a/net/minecraft/data/recipes/RecipeProvider.java
++++ b/net/minecraft/data/recipes/RecipeProvider.java
+@@ -63,7 +_,7 @@
+    protected final HolderLookup.Provider registries;
+    private final HolderGetter<Item> items;
+    protected final RecipeOutput output;
+-   private static final Map<BlockFamily.Variant, RecipeProvider.FamilyCraftingRecipeProvider> SHAPE_BUILDERS = ImmutableMap.builder()
++   private static final Map<BlockFamily.Variant, RecipeProvider.FamilyCraftingRecipeProvider> SHAPE_BUILDERS = ImmutableMap.<BlockFamily.Variant, RecipeProvider.FamilyCraftingRecipeProvider>builder()
+       .put(
+          BlockFamily.Variant.BUTTON, (RecipeProvider.FamilyCraftingRecipeProvider)(context, result, base) -> context.buttonBuilder(result, Ingredient.of(base))
+       )
+@@ -134,7 +_,7 @@
+          )
+       )
+       .build();
+-   private static final Map<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider> STONECUTTER_RECIPE_BUILDERS = ImmutableMap.builder()
++   private static final Map<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider> STONECUTTER_RECIPE_BUILDERS = ImmutableMap.<BlockFamily.Variant, RecipeProvider.FamilyStonecutterRecipeProvider>builder()
+       .put(
+          BlockFamily.Variant.SLAB,
+          (RecipeProvider.FamilyStonecutterRecipeProvider)(context, result, base) -> context.stonecutterResultFromBase(
+@@ -722,7 +_,7 @@
+    }
+ 
+    protected void waxRecipes(final FeatureFlagSet flagSet) {
+-      ((BiMap)HoneycombItem.WAXABLES.get())
++      (HoneycombItem.WAXABLES.get())
+          .forEach(
+             (block, waxedBlock) -> {
+                if (waxedBlock.requiredFeatures().isSubsetOf(flagSet)) {

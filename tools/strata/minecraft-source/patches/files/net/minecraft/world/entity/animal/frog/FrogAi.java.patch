@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/entity/animal/frog/FrogAi.java
++++ b/net/minecraft/world/entity/animal/frog/FrogAi.java
+@@ -73,7 +_,7 @@
+          Activity.CORE,
+          0,
+          ImmutableList.of(
+-            new AnimalPanic(2.0F),
++            new AnimalPanic<>(2.0F),
+             new LookAtTargetSink(45, 90),
+             new MoveToTargetSink(),
+             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS),
+@@ -173,7 +_,7 @@
+             Pair.of(0, new LongJumpMidJump(TIME_BETWEEN_LONG_JUMPS, SoundEvents.FROG_STEP)),
+             Pair.of(
+                1,
+-               new LongJumpToPreferredBlock(
++               new LongJumpToPreferredBlock<>(
+                   TIME_BETWEEN_LONG_JUMPS,
+                   2,
+                   4,

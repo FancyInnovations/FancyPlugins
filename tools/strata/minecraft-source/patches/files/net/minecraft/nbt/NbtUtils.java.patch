@@ -1,0 +1,33 @@
+--- a/net/minecraft/nbt/NbtUtils.java
++++ b/net/minecraft/nbt/NbtUtils.java
+@@ -40,10 +_,10 @@
+ import org.slf4j.Logger;
+ 
+ public final class NbtUtils {
+-   private static final Comparator<ListTag> YXZ_LISTTAG_INT_COMPARATOR = Comparator.comparingInt(list -> list.getIntOr(1, 0))
++   private static final Comparator<ListTag> YXZ_LISTTAG_INT_COMPARATOR = Comparator.<ListTag>comparingInt(list -> list.getIntOr(1, 0))
+       .thenComparingInt(list -> list.getIntOr(0, 0))
+       .thenComparingInt(list -> list.getIntOr(2, 0));
+-   private static final Comparator<ListTag> YXZ_LISTTAG_DOUBLE_COMPARATOR = Comparator.comparingDouble(list -> list.getDoubleOr(1, 0.0))
++   private static final Comparator<ListTag> YXZ_LISTTAG_DOUBLE_COMPARATOR = Comparator.<ListTag>comparingDouble(list -> list.getDoubleOr(1, 0.0))
+       .thenComparingDouble(list -> list.getDoubleOr(0, 0.0))
+       .thenComparingDouble(list -> list.getDoubleOr(2, 0.0));
+    private static final Codec<ResourceKey<Block>> BLOCK_NAME_CODEC = ResourceKey.codec(Registries.BLOCK);
+@@ -142,7 +_,7 @@
+    ) {
+       Optional<T> value = properties.getString(key).flatMap(property::getValue);
+       if (value.isPresent()) {
+-         return result.setValue(property, (Comparable)value.get());
++         return result.setValue(property, value.get());
+       } else {
+          LOGGER.warn("Unable to read property: {} with value: {} for blockstate: {}", new Object[]{key, properties.get(key), tag});
+          return result;
+@@ -415,7 +_,7 @@
+    @VisibleForTesting
+    static CompoundTag unpackStructureTemplate(final CompoundTag template) {
+       ListTag packedPalette = template.getListOrEmpty("palette");
+-      Map<String, Tag> palette = (Map<String, Tag>)packedPalette.stream()
++      Map<String, Tag> palette = packedPalette.stream()
+          .flatMap(tag -> tag.asString().stream())
+          .collect(ImmutableMap.toImmutableMap(Function.identity(), NbtUtils::unpackBlockState));
+       Optional<ListTag> oldPalettes = template.getList("palettes");

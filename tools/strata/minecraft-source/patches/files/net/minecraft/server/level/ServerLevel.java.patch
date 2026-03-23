@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/level/ServerLevel.java
++++ b/net/minecraft/server/level/ServerLevel.java
+@@ -478,7 +_,7 @@
+ 
+    private void wakeUpAllPlayers() {
+       this.sleepStatus.removeAllSleepers();
+-      ((List)this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList())).forEach(player -> player.stopSleepInBed(false, false));
++      (this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList())).forEach(player -> player.stopSleepInBed(false, false));
+    }
+ 
+    public void tickChunk(final LevelChunk chunk, final int tickSpeed) {

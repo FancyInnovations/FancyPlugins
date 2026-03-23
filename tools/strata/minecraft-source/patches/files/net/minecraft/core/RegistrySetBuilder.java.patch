@@ -1,0 +1,46 @@
+--- a/net/minecraft/core/RegistrySetBuilder.java
++++ b/net/minecraft/core/RegistrySetBuilder.java
+@@ -120,9 +_,6 @@
+          @Override
+          public <V> RegistryOps<V> createSerializationContext(final DynamicOps<V> parent) {
+             return RegistryOps.create(parent, new RegistryOps.RegistryInfoLookup() {
+-               {
+-                  Objects.requireNonNull(<VAR_NAMELESS_ENCLOSURE>);
+-               }
+ 
+                @Override
+                public <T> Optional<RegistryOps.RegistryInfo<T>> lookup(final ResourceKey<? extends Registry<? extends T>> registryKey) {
+@@ -152,7 +_,7 @@
+    ) {
+       RegistrySetBuilder.UniversalOwner fullPatchedOwner = new RegistrySetBuilder.UniversalOwner();
+       MutableObject<HolderLookup.Provider> resultReference = new MutableObject();
+-      List<HolderLookup.RegistryLookup<?>> lazyFullRegistries = (List<HolderLookup.RegistryLookup<?>>)newRegistries.keySet()
++      List<HolderLookup.RegistryLookup<?>> lazyFullRegistries = newRegistries.keySet()
+          .stream()
+          .map(
+             registryKey -> this.createLazyFullPatchedRegistries(
+@@ -399,7 +_,7 @@
+             if (key.isFor(this.key)) {
+                RegistrySetBuilder.RegisteredValue<T> value = (RegistrySetBuilder.RegisteredValue<T>)entry.getValue();
+                Holder.Reference<T> holder = (Holder.Reference<T>)state.lookup.holders.remove(key);
+-               result.put(key, new RegistrySetBuilder.ValueAndHolder<>(value, Optional.ofNullable(holder)));
++               result.put((ResourceKey<T>)key, new RegistrySetBuilder.ValueAndHolder<>(value, Optional.ofNullable(holder)));
+                iterator.remove();
+             }
+          }
+@@ -421,13 +_,13 @@
+       }
+ 
+       private <T> Holder.Reference<T> getOrCreate(final ResourceKey<T> id) {
+-         return (Holder.Reference<T>)this.holders.computeIfAbsent(id, k -> Holder.Reference.createStandAlone(this.owner, k));
++         return (Holder.Reference<T>)this.holders.computeIfAbsent((ResourceKey<Object>) id, k -> Holder.Reference.createStandAlone(this.owner, (ResourceKey<Object>)k));
+       }
+    }
+ 
+    private static class UniversalOwner implements HolderOwner<Object> {
+       public <T> HolderOwner<T> cast() {
+-         return this;
++         return (HolderOwner<T>) this;
+       }
+    }
+ 

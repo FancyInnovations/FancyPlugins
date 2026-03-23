@@ -35,6 +35,7 @@ public final class ConfigCMD {
                 .toList();
 
         translator.translate("commands.fancyholograms.config.show.settings_header")
+                .withPrefix()
                 .send(actor.sender());
 
         for (ConfigField<?> field : fields) {
@@ -52,6 +53,7 @@ public final class ConfigCMD {
         actor.sender().sendMessage(" ");
 
         translator.translate("commands.fancyholograms.config.show.experimental_header")
+                .withPrefix()
                 .send(actor.sender());
 
         for (ConfigField<?> field : fields) {

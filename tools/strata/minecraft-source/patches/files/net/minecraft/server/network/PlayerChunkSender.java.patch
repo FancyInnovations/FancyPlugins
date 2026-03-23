@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/network/PlayerChunkSender.java
++++ b/net/minecraft/server/network/PlayerChunkSender.java
+@@ -87,7 +_,7 @@
+       int maxBatchSize = Mth.floor(this.batchQuota);
+       List<LevelChunk> chunks;
+       if (!this.memoryConnection && this.pendingChunks.size() > maxBatchSize) {
+-         chunks = ((List)this.pendingChunks.stream().collect(Comparators.least(maxBatchSize, Comparator.comparingInt(playerPos::distanceSquared))))
++         chunks = (this.pendingChunks.stream().collect(Comparators.least(maxBatchSize, Comparator.comparingInt(playerPos::distanceSquared))))
+             .stream()
+             .mapToLong(Long::longValue)
+             .mapToObj(chunkMap::getChunkToSend)

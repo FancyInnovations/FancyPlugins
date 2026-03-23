@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/timeline/Timeline.java
++++ b/net/minecraft/world/timeline/Timeline.java
+@@ -34,7 +_,7 @@
+    private static final Codec<Map<EnvironmentAttribute<?>, AttributeTrack<?, ?>>> TRACKS_CODEC = Codec.dispatchedMap(
+       EnvironmentAttributes.CODEC, Util.memoize(AttributeTrack::createCodec)
+    );
+-   public static final Codec<Timeline> DIRECT_CODEC = RecordCodecBuilder.create(
++   public static final Codec<Timeline> DIRECT_CODEC = RecordCodecBuilder.<Timeline>create(
+          i -> i.group(
+                WorldClock.CODEC.fieldOf("clock").forGetter(t -> t.clock),
+                ExtraCodecs.POSITIVE_INT.optionalFieldOf("period_ticks").forGetter(t -> t.periodTicks),

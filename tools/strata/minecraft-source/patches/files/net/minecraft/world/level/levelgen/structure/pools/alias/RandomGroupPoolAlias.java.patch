@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/levelgen/structure/pools/alias/RandomGroupPoolAlias.java
++++ b/net/minecraft/world/level/levelgen/structure/pools/alias/RandomGroupPoolAlias.java
+@@ -26,7 +_,7 @@
+ 
+    @Override
+    public Stream<ResourceKey<StructureTemplatePool>> allTargets() {
+-      return this.groups.unwrap().stream().flatMap(weightedEntry -> ((List)weightedEntry.value()).stream()).flatMap(PoolAliasBinding::allTargets);
++      return this.groups.unwrap().stream().flatMap(weightedEntry -> (weightedEntry.value()).stream()).flatMap(PoolAliasBinding::allTargets);
+    }
+ 
+    @Override

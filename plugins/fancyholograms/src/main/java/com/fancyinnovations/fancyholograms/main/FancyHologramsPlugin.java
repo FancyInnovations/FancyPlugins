@@ -10,6 +10,8 @@ import com.fancyinnovations.fancyholograms.api.trait.HologramTraitRegistry;
 import com.fancyinnovations.fancyholograms.commands.FancyHologramsCMD;
 import com.fancyinnovations.fancyholograms.commands.FancyHologramsTestCMD;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HologramTraitCondition;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HologramTypeCondition;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.ConfigCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.*;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.GlowingColorCommandType;
@@ -69,7 +71,7 @@ import java.util.function.Function;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
+public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
 
     private static @Nullable FancyHologramsPlugin INSTANCE;
 
@@ -136,7 +138,16 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
 
         configuration = new FHConfiguration();
 
-        translator = new Translator(new TextConfig("#32e347", "#35ad1d", "#81E366", "#E3CA66", "#E36666", ""));
+        translator = new Translator(
+                new TextConfig(
+                        "#ffcc24", // color to highlight important information
+                        "gray", // text color for regular messages
+                        "#81E366",
+                        "#E3CA66",
+                        "#E36666",
+                        "<color:#ba8813>[</color><gradient:#ffae00:#fffb00:#ffae00>FancyHolograms</gradient><color:#ba8813>]</color> <gray>"
+                )
+        );
     }
 
     public static @NotNull FancyHologramsPlugin get() {
@@ -290,16 +301,24 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
         Lamp.Builder<BukkitCommandActor> lampBuilder = BukkitLamp
                 .builder(this);
 
+        // conditions
+        lampBuilder
+                .commandCondition(HologramTypeCondition.INSTANCE)
+                .commandCondition(HologramTraitCondition.INSTANCE);
+
+        // parameter types
         lampBuilder.parameterTypes(builder -> {
             builder.addParameterType(Hologram.class, HologramCommandType.INSTANCE);
             builder.addParameterType(HologramTraitRegistry.TraitInfo.class, TraitCommandType.INSTANCE);
             builder.addParameterType(de.oliver.fancylib.colors.GlowingColor.class, GlowingColorCommandType.INSTANCE);
         });
 
+        // exception handlers
         lampBuilder
                 .exceptionHandler(HologramCommandType.INSTANCE)
                 .exceptionHandler(TraitCommandType.INSTANCE)
-                .exceptionHandler(GlowingColorCommandType.INSTANCE);
+                .exceptionHandler(GlowingColorCommandType.INSTANCE)
+                .exceptionHandler(HologramTypeCondition.INSTANCE);
 
         Lamp<BukkitCommandActor> lamp = lampBuilder.build();
 
@@ -307,6 +326,7 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
         lamp.register(ConfigCMD.INSTANCE);
 
         // hologram commands
+        lamp.register(CreateCMD.INSTANCE);
         lamp.register(TraitCMD.INSTANCE);
         lamp.register(MoveUpCMD.INSTANCE);
         lamp.register(MoveDownCMD.INSTANCE);
@@ -318,7 +338,7 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldLoadedListener(), this);
 
-        if (Set.of("1.21.4", "1.21.5", "1.21.6").contains(Bukkit.getMinecraftVersion())) {
+        if (Set.of("1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11", "26.1").contains(Bukkit.getMinecraftVersion())) {
             getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
         }
 
@@ -326,7 +346,7 @@ public final class FancyHologramsPlugin extends JavaPlugin implements FancyHolog
             getServer().getPluginManager().registerEvents(new NpcListener(this), this);
         }
 
-        if (configuration.isHologramsForBedrockPlayersEnabled() && PluginUtils.isFloodgateEnabled()) {
+        if (PluginUtils.isFloodgateEnabled()) {
             getServer().getPluginManager().registerEvents(new BedrockPlayerListener(), this);
         }
     }

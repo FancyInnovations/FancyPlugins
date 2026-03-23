@@ -1,0 +1,64 @@
+--- a/net/minecraft/util/datafix/fixes/EquipmentFormatFix.java
++++ b/net/minecraft/util/datafix/fixes/EquipmentFormatFix.java
+@@ -74,12 +_,12 @@
+                };
+                return namedOldEquipment -> {
+                   String typeName = (String)namedOldEquipment.getFirst();
+-                  Pair<Either<List<ItemStackOld>, Unit>, Pair<Either<List<ItemStackOld>, Unit>, Pair<Either<ItemStackOld, Unit>, Either<ItemStackOld, Unit>>>> oldEquipment = (Pair<Either<List<ItemStackOld>, Unit>, Pair<Either<List<ItemStackOld>, Unit>, Pair<Either<ItemStackOld, Unit>, Either<ItemStackOld, Unit>>>>)namedOldEquipment.getSecond();
+-                  List<ItemStackOld> armorItems = (List<ItemStackOld>)((Either)oldEquipment.getFirst()).map(Function.identity(), ignored -> List.of());
+-                  List<ItemStackOld> handItems = (List<ItemStackOld>)((Either)((Pair)oldEquipment.getSecond()).getFirst())
++                  Pair<Either<List<ItemStackOld>, Unit>, Pair<Either<List<ItemStackOld>, Unit>, Pair<Either<ItemStackOld, Unit>, Either<ItemStackOld, Unit>>>> oldEquipment = namedOldEquipment.getSecond();
++                  List<ItemStackOld> armorItems = (oldEquipment.getFirst()).map(Function.identity(), ignored -> List.of());
++                  List<ItemStackOld> handItems = ((oldEquipment.getSecond()).getFirst())
+                      .map(Function.identity(), ignored -> List.of());
+-                  Either<ItemStackOld, Unit> body = (Either<ItemStackOld, Unit>)((Pair)((Pair)oldEquipment.getSecond()).getSecond()).getFirst();
+-                  Either<ItemStackOld, Unit> saddle = (Either<ItemStackOld, Unit>)((Pair)((Pair)oldEquipment.getSecond()).getSecond()).getSecond();
++                  Either<ItemStackOld, Unit> body = ((oldEquipment.getSecond()).getSecond()).getFirst();
++                  Either<ItemStackOld, Unit> saddle = ((oldEquipment.getSecond()).getSecond()).getSecond();
+                   Either<ItemStackOld, Unit> feet = getItemFromList(0, armorItems, isPlaceholder);
+                   Either<ItemStackOld, Unit> legs = getItemFromList(1, armorItems, isPlaceholder);
+                   Either<ItemStackOld, Unit> chest = getItemFromList(2, armorItems, isPlaceholder);
+@@ -87,16 +_,33 @@
+                   Either<ItemStackOld, Unit> mainhand = getItemFromList(0, handItems, isPlaceholder);
+                   Either<ItemStackOld, Unit> offhand = getItemFromList(1, handItems, isPlaceholder);
+                   return areAllEmpty(body, saddle, feet, legs, chest, head, mainhand, offhand)
+-                     ? Pair.of(typeName, Either.right(Unit.INSTANCE))
+-                     : Pair.of(
+-                        typeName,
+-                        Either.left(
+-                           Pair.of(
+-                              mainhand,
+-                              Pair.of(offhand, Pair.of(feet, Pair.of(legs, Pair.of(chest, Pair.of(head, Pair.of(body, Pair.of(saddle, new Dynamic(ops))))))))
+-                           )
+-                        )
+-                     );
++                          ? Pair.of(typeName, Either.right(Unit.INSTANCE))
++                          : Pair.of(
++                          typeName,
++                          Either.left(
++                                  Pair.of(
++                                          (Either<ItemStackNew, Unit>)mainhand,
++                                          Pair.of(
++                                                  (Either<ItemStackNew, Unit>)offhand,
++                                                  Pair.of(
++                                                          (Either<ItemStackNew, Unit>)feet,
++                                                          Pair.of(
++                                                                  (Either<ItemStackNew, Unit>)legs,
++                                                                  Pair.of(
++                                                                          (Either<ItemStackNew, Unit>)chest,
++                                                                          Pair.of(
++                                                                                  (Either<ItemStackNew, Unit>)head,
++                                                                                  Pair.of(
++                                                                                          (Either<ItemStackNew, Unit>)body, Pair.of((Either<ItemStackNew, Unit>)saddle, new Dynamic(ops))
++                                                                                  )
++                                                                          )
++                                                                  )
++                                                          )
++                                                  )
++                                          )
++                                  )
++                          )
++                  );
+                };
+             }
+          );

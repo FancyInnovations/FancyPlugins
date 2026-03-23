@@ -39,7 +39,7 @@ public enum DisplayNameCMD {
         final String finalName = name.equalsIgnoreCase("@none") ? "<empty>" : name;
         // Sending error message in case banned command has been found in the input.
         if (hasBlockedCommands(finalName)) {
-            translator.translate("command_input_contains_blocked_command").send(sender);
+            translator.translate("command_input_contains_blocked_command").withPrefix().send(sender);
             return;
         }
         // Calling the event and updating the state if not cancelled.
@@ -47,11 +47,12 @@ public enum DisplayNameCMD {
             npc.getData().setDisplayName(finalName);
             npc.updateForAll();
             translator.translate(finalName.equalsIgnoreCase("<empty>") ? "npc_displayname_set_empty" : "npc_displayname_set_name")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("name", finalName)
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 

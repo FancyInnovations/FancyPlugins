@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/FileZipper.java
++++ b/net/minecraft/util/FileZipper.java
+@@ -67,7 +_,7 @@
+             Stream<Path> sourceFiles = Files.find(path, Integer.MAX_VALUE, (p, a) -> a.isRegularFile(), new FileVisitOption[0]);
+ 
+             try {
+-               for (Path sourceFile : (List)sourceFiles.collect(Collectors.toList())) {
++               for (Path sourceFile : sourceFiles.collect(Collectors.toList())) {
+                   Path targetFile = root.resolve(path.relativize(sourceFile).toString());
+                   Files.createDirectories(targetFile.getParent());
+                   Files.copy(sourceFile, targetFile);

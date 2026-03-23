@@ -1,0 +1,16 @@
+--- a/net/minecraft/server/level/ServerPlayer.java
++++ b/net/minecraft/server/level/ServerPlayer.java
+@@ -281,12 +_,7 @@
+             .maximumSize(256L)
+             .build(
+                new CacheLoader<TypedDataComponent<?>, Integer>() {
+-                  private final DynamicOps<HashCode> registryHashOps;
+-
+-                  {
+-                     Objects.requireNonNull(<VAR_NAMELESS_ENCLOSURE>);
+-                     this.registryHashOps = ServerPlayer.this.registryAccess().createSerializationContext(HashOps.CRC32C_INSTANCE);
+-                  }
++                  private final DynamicOps<HashCode> registryHashOps = ServerPlayer.this.registryAccess().createSerializationContext(HashOps.CRC32C_INSTANCE);
+ 
+                   public Integer load(final TypedDataComponent<?> component) {
+                      return ((HashCode)component.encodeValue(this.registryHashOps)

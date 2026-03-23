@@ -1,0 +1,20 @@
+--- a/net/minecraft/util/datafix/fixes/LegacyHoverEventFix.java
++++ b/net/minecraft/util/datafix/fixes/LegacyHoverEventFix.java
+@@ -24,7 +_,7 @@
+    }
+ 
+    protected TypeRewriteRule makeRule() {
+-      Type<? extends Pair<String, ?>> hoverEventType = this.getInputSchema().getType(References.TEXT_COMPONENT).findFieldType("hoverEvent");
++      Type<? extends Pair<String, ?>> hoverEventType = (Type<? extends Pair<String, ?>>) this.getInputSchema().getType(References.TEXT_COMPONENT).findFieldType("hoverEvent");
+       return this.createFixer(this.getInputSchema().getTypeRaw(References.TEXT_COMPONENT), hoverEventType);
+    }
+ 
+@@ -60,7 +_,7 @@
+                      if (legacyHoverValue.isEmpty()) {
+                         return hoverAndRemainder;
+                      } else {
+-                        String hoverAction = (String)((Either)hoverAndRemainder.getFirst()).left().map(Pair::getFirst).orElse("");
++                        String hoverAction = (String)(hoverAndRemainder.getFirst()).left().map(Pair::getFirst).orElse("");
+                         H newHoverEvent = this.fixHoverEvent(hoverEventType, hoverAction, (Dynamic<?>)hoverEvent.get());
+                         return hoverAndRemainder.mapFirst(ignored -> Either.left(newHoverEvent));
+                      }

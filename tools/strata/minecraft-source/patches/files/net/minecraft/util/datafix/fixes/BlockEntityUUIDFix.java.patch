@@ -1,0 +1,18 @@
+--- a/net/minecraft/util/datafix/fixes/BlockEntityUUIDFix.java
++++ b/net/minecraft/util/datafix/fixes/BlockEntityUUIDFix.java
+@@ -17,12 +_,12 @@
+    }
+ 
+    private Dynamic<?> updateSkull(final Dynamic<?> tag) {
+-      return (Dynamic<?>)tag.get("Owner")
++      return tag.get("Owner")
+          .get()
+-         .map(ownerTag -> (Dynamic)replaceUUIDString(ownerTag, "Id", "Id").orElse(ownerTag))
++         .map(ownerTag -> replaceUUIDString(ownerTag, "Id", "Id").orElse(ownerTag))
+          .map(ownerTag -> tag.remove("Owner").set("SkullOwner", ownerTag))
+          .result()
+-         .orElse(tag);
++         .orElse((Dynamic) tag);
+    }
+ 
+    private Dynamic<?> updateConduit(final Dynamic<?> tag) {

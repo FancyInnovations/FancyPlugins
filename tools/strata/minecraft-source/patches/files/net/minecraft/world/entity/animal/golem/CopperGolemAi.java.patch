@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/golem/CopperGolemAi.java
++++ b/net/minecraft/world/entity/animal/golem/CopperGolemAi.java
+@@ -56,7 +_,7 @@
+          Activity.CORE,
+          0,
+          ImmutableList.of(
+-            new AnimalPanic(1.5F),
++            new AnimalPanic<>(1.5F),
+             new LookAtTargetSink(45, 90),
+             new MoveToTargetSink(),
+             InteractWithDoor.create(),

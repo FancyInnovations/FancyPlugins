@@ -30,12 +30,14 @@ public final class FancyNpcsDebugCMD {
 
         if (tested) {
             translator.translate("fancynpcs_test_success")
+                    .withPrefix()
                     .replace("player", player.getName())
                     .replace("time", dateTimeFormatter.format(new Date().toInstant().atZone(ZoneId.of("Europe/Berlin"))))
                     .replace("count", String.valueOf(tests.getTestCount()))
                     .send(player);
         } else {
             translator.translate("fancynpcs_test_failure")
+                    .withPrefix()
                     .replace("player", player.getName())
                     .replace("time", dateTimeFormatter.format(new Date().toInstant().atZone(ZoneId.of("Europe/Berlin"))))
                     .send(player);
@@ -51,7 +53,7 @@ public final class FancyNpcsDebugCMD {
         MineSkinQueue.get().run();
         MojangQueue.get().run();
 
-        translator.translate("fancynpcs_skin_system_restart_schedulers_success").send(player);
+        translator.translate("fancynpcs_skin_system_restart_schedulers_success").withPrefix().send(player);
     }
 
     @Command("fancynpcs skin_system scheduler_status")
@@ -60,6 +62,7 @@ public final class FancyNpcsDebugCMD {
         String mineSkinStatus = MineSkinQueue.get().getScheduler().toString();
         FancyNpcs.getInstance().getFancyLogger().info("MineSkinAPI Status: " + mineSkinStatus);
         translator.translate("fancynpcs_skin_system_scheduler_status")
+                .withPrefix()
                 .replace("scheduler", "MineSkinAPI")
                 .replace("status", mineSkinStatus)
                 .send(player);
@@ -67,6 +70,7 @@ public final class FancyNpcsDebugCMD {
         String mojangStatus = MojangQueue.get().getScheduler().toString();
         FancyNpcs.getInstance().getFancyLogger().info("MojangAPI Status: " + mojangStatus);
         translator.translate("fancynpcs_skin_system_scheduler_status")
+                .withPrefix()
                 .replace("scheduler", "MojangAPI")
                 .replace("status", mojangStatus)
                 .send(player);
@@ -78,7 +82,7 @@ public final class FancyNpcsDebugCMD {
         MineSkinQueue.get().clear();
         MojangQueue.get().clear();
 
-        translator.translate("fancynpcs_skin_system_clear_queues_success").send(player);
+        translator.translate("fancynpcs_skin_system_clear_queues_success").withPrefix().send(player);
     }
 
     @Command("fancynpcs skin_system clear_cache")
@@ -87,13 +91,13 @@ public final class FancyNpcsDebugCMD {
         FancyNpcs.getInstance().getSkinManagerImpl().getMemCache().clear();
         FancyNpcs.getInstance().getSkinManagerImpl().getFileCache().clear();
 
-        translator.translate("fancynpcs_skin_system_clear_cache_success").send(player);
+        translator.translate("fancynpcs_skin_system_clear_cache_success").withPrefix().send(player);
     }
 
     @Command("fancynpcs skin_system clear_uuid_cache")
     @Permission("fancynpcs.command.fancynpcs.skin_system.clear_uuid_cache")
     public void onInvalidateUUidCache(final Player player) {
         FancyNpcs.getInstance().getSkinManagerImpl().getUuidCache().clearCache();
-        translator.translate("fancynpcs_skin_system_clear_uuid_cache_success").send(player);
+        translator.translate("fancynpcs_skin_system_clear_uuid_cache_success").withPrefix().send(player);
     }
 }

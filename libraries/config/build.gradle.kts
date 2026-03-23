@@ -15,12 +15,12 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
-    compileOnly("de.oliver.FancyAnalytics:logger:0.0.8")
-    compileOnly("org.jetbrains:annotations:26.0.2")
+    compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
+    compileOnly("org.jetbrains:annotations:26.1.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.2")
-    testImplementation("org.junit.platform:junit-platform-console-standalone:1.12.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.3")
+    testImplementation("org.junit.platform:junit-platform-console-standalone:6.0.3")
 }
 
 tasks {
@@ -32,7 +32,7 @@ tasks {
 
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = providers
+                    value = "ApiKey " + providers
                         .gradleProperty("fancyspacesApiKey")
                         .orElse(
                             providers
@@ -53,7 +53,7 @@ tasks {
 
                 credentials(HttpHeaderCredentials::class) {
                     name = "Authorization"
-                    value = providers
+                    value = "ApiKey " + providers
                         .gradleProperty("fancyspacesApiKey")
                         .orElse(
                             providers

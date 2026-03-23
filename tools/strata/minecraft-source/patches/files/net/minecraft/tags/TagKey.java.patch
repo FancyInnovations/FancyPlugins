@@ -1,0 +1,11 @@
+--- a/net/minecraft/tags/TagKey.java
++++ b/net/minecraft/tags/TagKey.java
+@@ -45,7 +_,7 @@
+    }
+ 
+    public <E> Optional<TagKey<E>> cast(final ResourceKey<? extends Registry<E>> registry) {
+-      return this.isFor(registry) ? Optional.of(this) : Optional.empty();
++      return this.isFor(registry) ? Optional.of((TagKey<E>) this) : Optional.empty();
+    }
+ 
+    public String toString() {

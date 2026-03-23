@@ -1,0 +1,25 @@
+--- a/net/minecraft/advancements/criterion/SlideDownBlockTrigger.java
++++ b/net/minecraft/advancements/criterion/SlideDownBlockTrigger.java
+@@ -24,7 +_,7 @@
+ 
+    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Holder<Block>> block, Optional<StatePropertiesPredicate> state)
+       implements SimpleCriterionTrigger.SimpleInstance {
+-      public static final Codec<SlideDownBlockTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(
++      public static final Codec<SlideDownBlockTrigger.TriggerInstance> CODEC = RecordCodecBuilder.<SlideDownBlockTrigger.TriggerInstance>create(
+             i -> i.group(
+                   EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(SlideDownBlockTrigger.TriggerInstance::player),
+                   BuiltInRegistries.BLOCK.holderByNameCodec().optionalFieldOf("block").forGetter(SlideDownBlockTrigger.TriggerInstance::block),
+@@ -35,10 +_,10 @@
+          .validate(SlideDownBlockTrigger.TriggerInstance::validate);
+ 
+       private static DataResult<SlideDownBlockTrigger.TriggerInstance> validate(final SlideDownBlockTrigger.TriggerInstance trigger) {
+-         return (DataResult<SlideDownBlockTrigger.TriggerInstance>)trigger.block
+-            .flatMap(
++         return trigger.block
++                 .<DataResult<SlideDownBlockTrigger.TriggerInstance>>flatMap(
+                block -> trigger.state
+-                  .flatMap(state -> state.checkState(((Block)block.value()).getStateDefinition()))
++                  .flatMap(state -> state.checkState((block.value()).getStateDefinition()))
+                   .map(property -> DataResult.error(() -> "Block" + block + " has no property " + property))
+             )
+             .orElseGet(() -> DataResult.success(trigger));

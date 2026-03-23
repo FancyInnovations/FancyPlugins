@@ -1,0 +1,14 @@
+{
+  "project_name": "FancyWorlds",
+  "plugin_jar_path": "/plugins/fancyworlds/build/libs/FancyWorlds-%VERSION%.jar",
+  "changelog_path": "/plugins/fancyworlds/CHANGELOG-SNAPSHOT.md",
+  "version_path": "/plugins/fancyworlds/VERSION",
+  "fancyspaces": {
+    "space_id": "s1gGcHj5",
+    "platform": "paper",
+    "channel": "alpha",
+    "supported_versions": [
+      "1.21.11"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+--- a/net/minecraft/advancements/Advancement.java
++++ b/net/minecraft/advancements/Advancement.java
+@@ -36,7 +_,7 @@
+ ) {
+    private static final Codec<Map<String, Criterion<?>>> CRITERIA_CODEC = Codec.unboundedMap(Codec.STRING, Criterion.CODEC)
+       .validate(criteria -> criteria.isEmpty() ? DataResult.error(() -> "Advancement criteria cannot be empty") : DataResult.success(criteria));
+-   public static final Codec<Advancement> CODEC = RecordCodecBuilder.create(
++   public static final Codec<Advancement> CODEC = RecordCodecBuilder.<Advancement>create(
+          i -> i.group(
+                Identifier.CODEC.optionalFieldOf("parent").forGetter(Advancement::parent),
+                DisplayInfo.CODEC.optionalFieldOf("display").forGetter(Advancement::display),

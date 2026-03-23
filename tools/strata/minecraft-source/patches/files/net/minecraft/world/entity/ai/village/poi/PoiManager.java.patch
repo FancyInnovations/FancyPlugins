@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/village/poi/PoiManager.java
++++ b/net/minecraft/world/entity/ai/village/poi/PoiManager.java
+@@ -285,7 +_,7 @@
+             ChunkPos.containing(center), Math.floorDiv(radius, 16), this.levelHeightAccessor.getMinSectionY(), this.levelHeightAccessor.getMaxSectionY()
+          )
+          .map(pos -> Pair.of(pos, this.getOrLoad(pos.asLong())))
+-         .filter(poiSection -> !(Boolean)((Optional)poiSection.getSecond()).map(PoiSection::isValid).orElse(false))
++         .filter(poiSection -> !(Boolean)(poiSection.getSecond()).map(PoiSection::isValid).orElse(false))
+          .map(p -> ((SectionPos)p.getFirst()).chunk())
+          .filter(pos -> this.loadedChunks.add(pos.pack()))
+          .forEach(pos -> reader.getChunk(pos.x(), pos.z(), ChunkStatus.EMPTY));

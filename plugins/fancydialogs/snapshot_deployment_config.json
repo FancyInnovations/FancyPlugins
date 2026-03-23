@@ -45,5 +45,18 @@
       "1.21.11"
     ],
     "channel": "Beta"
+  },
+  "curseforge": {
+    "project_id": "1480059",
+    "game_versions": [
+      13473,
+      13574,
+      13683,
+      13933,
+      13966,
+      14417
+    ],
+    "release_type": "beta",
+    "type": "plugin"
   }
 }

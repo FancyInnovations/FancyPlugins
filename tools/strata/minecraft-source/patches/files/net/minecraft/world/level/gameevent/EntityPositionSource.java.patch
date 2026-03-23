@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/gameevent/EntityPositionSource.java
++++ b/net/minecraft/world/level/gameevent/EntityPositionSource.java
+@@ -53,7 +_,7 @@
+    }
+ 
+    private void resolveEntity(final Level level) {
+-      ((Optional)this.entityOrUuidOrId
++      (this.entityOrUuidOrId
+             .map(
+                Optional::of,
+                uuidOrId -> Optional.ofNullable(

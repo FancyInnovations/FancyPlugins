@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/levelgen/structure/structures/OceanMonumentPieces.java
++++ b/net/minecraft/world/level/levelgen/structure/structures/OceanMonumentPieces.java
+@@ -1424,7 +_,7 @@
+       protected static final BlockState LAMP_BLOCK = Blocks.SEA_LANTERN.defaultBlockState();
+       protected static final boolean DO_FILL = true;
+       protected static final BlockState FILL_BLOCK = Blocks.WATER.defaultBlockState();
+-      protected static final Set<Block> FILL_KEEP = ImmutableSet.builder()
++      protected static final Set<Block> FILL_KEEP = ImmutableSet.<Block>builder()
+          .add(Blocks.ICE)
+          .add(Blocks.PACKED_ICE)
+          .add(Blocks.BLUE_ICE)

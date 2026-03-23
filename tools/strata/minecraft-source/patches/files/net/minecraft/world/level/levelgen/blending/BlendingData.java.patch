@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/levelgen/blending/BlendingData.java
++++ b/net/minecraft/world/level/levelgen/blending/BlendingData.java
+@@ -400,7 +_,7 @@
+ 
+    public record Packed(int minSection, int maxSection, Optional<double[]> heights) {
+       private static final Codec<double[]> DOUBLE_ARRAY_CODEC = Codec.DOUBLE.listOf().xmap(Doubles::toArray, Doubles::asList);
+-      public static final Codec<BlendingData.Packed> CODEC = RecordCodecBuilder.create(
++      public static final Codec<BlendingData.Packed> CODEC = RecordCodecBuilder.<BlendingData.Packed>create(
+             i -> i.group(
+                   Codec.INT.fieldOf("min_section").forGetter(BlendingData.Packed::minSection),
+                   Codec.INT.fieldOf("max_section").forGetter(BlendingData.Packed::maxSection),

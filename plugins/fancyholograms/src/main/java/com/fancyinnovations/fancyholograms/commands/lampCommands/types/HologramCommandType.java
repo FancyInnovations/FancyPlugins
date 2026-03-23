@@ -39,6 +39,7 @@ public class HologramCommandType extends BukkitExceptionHandler implements Param
     public void onInvalidHologram(InvalidHologramException e, BukkitCommandActor actor) {
         FancyHologramsPlugin.get().getTranslator()
                 .translate("common.hologram.not_found")
+                .withPrefix()
                 .replace("name", e.input())
                 .send(actor.sender());
     }

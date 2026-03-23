@@ -1,0 +1,16 @@
+--- a/net/minecraft/core/HolderLookup.java
++++ b/net/minecraft/core/HolderLookup.java
+@@ -42,11 +_,11 @@
+       }
+ 
+       default <V> RegistryOps<V> createSerializationContext(final DynamicOps<V> parent) {
+-         return RegistryOps.create((DynamicOps<T>)parent, this);
++         return RegistryOps.create(parent, this);
+       }
+ 
+       static HolderLookup.Provider create(final Stream<HolderLookup.RegistryLookup<?>> lookups) {
+-         final Map<ResourceKey<? extends Registry<?>>, HolderLookup.RegistryLookup<?>> map = (Map<ResourceKey<? extends Registry<?>>, HolderLookup.RegistryLookup<?>>)lookups.collect(
++         final Map<ResourceKey<? extends Registry<?>>, HolderLookup.RegistryLookup<?>> map = lookups.collect(
+             Collectors.toUnmodifiableMap(HolderLookup.RegistryLookup::key, e -> e)
+          );
+          return new HolderLookup.Provider() {

@@ -34,6 +34,7 @@ public class GlowingColorCommandType extends BukkitExceptionHandler implements P
     public void onInvalidColor(InvalidGlowingColorException e, BukkitCommandActor actor) {
         FancyHologramsPlugin.get().getTranslator()
                 .translate("commands.hologram.edit.glowing.invalid_color")
+                .withPrefix()
                 .replace("color", e.input())
                 .send(actor.sender());
     }

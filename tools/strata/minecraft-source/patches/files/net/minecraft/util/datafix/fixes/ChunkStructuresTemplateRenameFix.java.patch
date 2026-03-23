@@ -1,0 +1,43 @@
+--- a/net/minecraft/util/datafix/fixes/ChunkStructuresTemplateRenameFix.java
++++ b/net/minecraft/util/datafix/fixes/ChunkStructuresTemplateRenameFix.java
+@@ -10,19 +_,19 @@
+ import com.mojang.serialization.Dynamic;
+ 
+ public class ChunkStructuresTemplateRenameFix extends DataFix {
+-   private static final ImmutableMap<String, Pair<String, ImmutableMap<String, String>>> RENAMES = ImmutableMap.builder()
++   private static final ImmutableMap<String, Pair<String, ImmutableMap<String, String>>> RENAMES = ImmutableMap.<String, Pair<String, ImmutableMap<String, String>>>builder()
+       .put(
+          "EndCity",
+          Pair.of(
+             "ECP",
+-            ImmutableMap.builder().put("second_floor", "second_floor_1").put("third_floor", "third_floor_1").put("third_floor_c", "third_floor_2").build()
++            ImmutableMap.<String, String>builder().put("second_floor", "second_floor_1").put("third_floor", "third_floor_1").put("third_floor_c", "third_floor_2").build()
+          )
+       )
+       .put(
+          "Mansion",
+          Pair.of(
+             "WMP",
+-            ImmutableMap.builder()
++            ImmutableMap.<String, String>builder()
+                .put("carpet_south", "carpet_south_1")
+                .put("carpet_west", "carpet_west_1")
+                .put("indoors_door", "indoors_door_1")
+@@ -34,7 +_,7 @@
+          "Igloo",
+          Pair.of(
+             "Iglu",
+-            ImmutableMap.builder()
++            ImmutableMap.<String, String>builder()
+                .put("minecraft:igloo/igloo_bottom", "minecraft:igloo/bottom")
+                .put("minecraft:igloo/igloo_middle", "minecraft:igloo/middle")
+                .put("minecraft:igloo/igloo_top", "minecraft:igloo/top")
+@@ -45,7 +_,7 @@
+          "Ocean_Ruin",
+          Pair.of(
+             "ORP",
+-            ImmutableMap.builder()
++            ImmutableMap.<String, String>builder()
+                .put("minecraft:ruin/big_ruin1_brick", "minecraft:underwater_ruin/big_brick_1")
+                .put("minecraft:ruin/big_ruin2_brick", "minecraft:underwater_ruin/big_brick_2")
+                .put("minecraft:ruin/big_ruin3_brick", "minecraft:underwater_ruin/big_brick_3")

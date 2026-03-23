@@ -1,0 +1,24 @@
+--- a/net/minecraft/util/datafix/fixes/BlockEntitySignDoubleSidedEditableTextFix.java
++++ b/net/minecraft/util/datafix/fixes/BlockEntitySignDoubleSidedEditableTextFix.java
+@@ -35,16 +_,16 @@
+ 
+    private static <T> Dynamic<T> fixFrontTextTag(final Dynamic<T> tag) {
+       Dynamic<T> emptyLine = LegacyComponentDataFixUtils.createEmptyComponent(tag.getOps());
+-      List<Dynamic<T>> lines = getLines(tag, "Text").map(line -> (Dynamic)line.orElse(emptyLine)).toList();
++      List<Dynamic<T>> lines = getLines(tag, "Text").map(line -> line.orElse(emptyLine)).toList();
+       Dynamic<T> text = tag.emptyMap()
+          .set("messages", tag.createList(lines.stream()))
+-         .set("color", (Dynamic)tag.get("Color").result().orElse(tag.createString("black")))
+-         .set("has_glowing_text", (Dynamic)tag.get("GlowingText").result().orElse(tag.createBoolean(false)));
++         .set("color", tag.get("Color").result().orElse(tag.createString("black")))
++         .set("has_glowing_text", tag.get("GlowingText").result().orElse(tag.createBoolean(false)));
+       List<Optional<Dynamic<T>>> filteredLines = getLines(tag, "FilteredText").toList();
+       if (filteredLines.stream().anyMatch(Optional::isPresent)) {
+          text = text.set("filtered_messages", tag.createList(Streams.mapWithIndex(filteredLines.stream(), (line, index) -> {
+-            Dynamic<T> fallbackLine = (Dynamic<T>)lines.get((int)index);
+-            return (Dynamic)line.orElse(fallbackLine);
++            Dynamic<T> fallbackLine = lines.get((int)index);
++            return line.orElse(fallbackLine);
+          })));
+       }
+ 

@@ -1,0 +1,30 @@
+--- a/net/minecraft/util/datafix/fixes/ChunkBedBlockEntityInjecterFix.java
++++ b/net/minecraft/util/datafix/fixes/ChunkBedBlockEntityInjecterFix.java
+@@ -11,6 +_,7 @@
+ import com.mojang.datafixers.schemas.Schema;
+ import com.mojang.datafixers.types.Type;
+ import com.mojang.datafixers.types.templates.List.ListType;
++import com.mojang.datafixers.types.templates.TaggedChoice;
+ import com.mojang.datafixers.util.Pair;
+ import com.mojang.serialization.Dynamic;
+ import java.util.List;
+@@ -40,8 +_,8 @@
+       return TypeRewriteRule.seq(
+          this.fixTypeEverywhere(
+             "InjectBedBlockEntityType",
+-            this.getInputSchema().findChoiceType(References.BLOCK_ENTITY),
+-            this.getOutputSchema().findChoiceType(References.BLOCK_ENTITY),
++                 (TaggedChoice.TaggedChoiceType<String>) this.getInputSchema().findChoiceType(References.BLOCK_ENTITY),
++                 (TaggedChoice.TaggedChoiceType<String>) this.getOutputSchema().findChoiceType(References.BLOCK_ENTITY),
+             ops -> v -> v
+          ),
+          this.fixTypeEverywhereTyped(
+@@ -77,7 +_,7 @@
+                         bedTag -> {
+                            if (bedTag != null) {
+                               tileEntities.add(
+-                                 ((Pair)tileEntityType.read(sectionTag.createMap(bedTag))
++                                 (tileEntityType.read(sectionTag.createMap(bedTag))
+                                        .result()
+                                        .orElseThrow(() -> new IllegalStateException("Could not parse newly created bed block entity.")))
+                                     .getFirst()

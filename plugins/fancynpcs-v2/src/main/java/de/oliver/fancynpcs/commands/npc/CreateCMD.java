@@ -38,24 +38,24 @@ public enum CreateCMD {
     ) {
         // Sending error message if name does not match configured pattern.
         if (!NPC_NAME_PATTERN.matcher(name).find()) {
-            translator.translate("npc_create_failure_invalid_name").replaceStripped("name", name).send(sender);
+            translator.translate("npc_create_failure_invalid_name").withPrefix().replaceStripped("name", name).send(sender);
             return;
         }
         // Getting the NPC creator unique identifier. The UUID is always empty (all zeroes) for non-player senders.
         final UUID creator = (sender instanceof Player player) ? player.getUniqueId() : EMPTY_UUID;
         // Sending error message if NPC with such name already exist.
         if (FancyNpcs.PLAYER_NPCS_FEATURE_FLAG.isEnabled() && FancyNpcs.getInstance().getNpcManager().getNpc(name, creator) != null || !FancyNpcs.PLAYER_NPCS_FEATURE_FLAG.isEnabled() && FancyNpcs.getInstance().getNpcManager().getNpc(name) != null) {
-            translator.translate("npc_create_failure_already_exists").replace("npc", FancyNpcs.getInstance().getNpcManager().getNpc(name).getData().getName()).send(sender);
+            translator.translate("npc_create_failure_already_exists").withPrefix().replace("npc", FancyNpcs.getInstance().getNpcManager().getNpc(name).getData().getName()).send(sender);
             return;
         }
         // Sending error message if sender is console and location has not been specified.
         if (sender instanceof ConsoleCommandSender && location == null) {
-            translator.translate("npc_create_failure_must_specify_location").send(sender);
+            translator.translate("npc_create_failure_must_specify_location").withPrefix().send(sender);
             return;
         }
         // Sending error message if sender is console and world has not been specified.
         if (sender instanceof ConsoleCommandSender && world == null) {
-            translator.translate("npc_create_failure_must_specify_world").send(sender);
+            translator.translate("npc_create_failure_must_specify_world").withPrefix().send(sender);
             return;
         }
         // Finalizing Location argument. This argument is optional and defaults to player's current location.
@@ -72,9 +72,9 @@ public enum CreateCMD {
             npc.create();
             FancyNpcs.getInstance().getNpcManagerImpl().registerNpc(npc);
             npc.spawnForAll();
-            translator.translate("npc_create_success").replace("npc", name).send(sender);
+            translator.translate("npc_create_success").withPrefix().replace("npc", name).send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 

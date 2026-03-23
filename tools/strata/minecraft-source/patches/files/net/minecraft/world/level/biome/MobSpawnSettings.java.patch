@@ -1,0 +1,24 @@
+--- a/net/minecraft/world/level/biome/MobSpawnSettings.java
++++ b/net/minecraft/world/level/biome/MobSpawnSettings.java
+@@ -91,10 +_,10 @@
+       public MobSpawnSettings build() {
+          return new MobSpawnSettings(
+             this.creatureGenerationProbability,
+-            (Map<MobCategory, WeightedList<MobSpawnSettings.SpawnerData>>)this.spawners
++            this.spawners
+                .entrySet()
+                .stream()
+-               .collect(ImmutableMap.toImmutableMap(Entry::getKey, e -> ((WeightedList.Builder)e.getValue()).build())),
++               .collect(ImmutableMap.toImmutableMap(Entry::getKey, e -> (e.getValue()).build())),
+             ImmutableMap.copyOf(this.mobSpawnCosts)
+          );
+       }
+@@ -108,7 +_,7 @@
+    }
+ 
+    public record SpawnerData(EntityType<?> type, int minCount, int maxCount) {
+-      public static final MapCodec<MobSpawnSettings.SpawnerData> CODEC = RecordCodecBuilder.mapCodec(
++      public static final MapCodec<MobSpawnSettings.SpawnerData> CODEC = RecordCodecBuilder.<MobSpawnSettings.SpawnerData>mapCodec(
+             i -> i.group(
+                   BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(d -> d.type),
+                   ExtraCodecs.POSITIVE_INT.fieldOf("minCount").forGetter(e -> e.minCount),

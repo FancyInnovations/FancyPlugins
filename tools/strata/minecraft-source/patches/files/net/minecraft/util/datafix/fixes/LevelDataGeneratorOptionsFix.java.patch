@@ -1,0 +1,18 @@
+--- a/net/minecraft/util/datafix/fixes/LevelDataGeneratorOptionsFix.java
++++ b/net/minecraft/util/datafix/fixes/LevelDataGeneratorOptionsFix.java
+@@ -184,13 +_,13 @@
+             )
+       );
+       T structures = (T)ops.createMap(
+-         (Map)structuresOptions.entrySet()
++         structuresOptions.entrySet()
+             .stream()
+             .map(
+                entry -> Pair.of(
+                   ops.createString(((String)entry.getKey()).toLowerCase(Locale.ROOT)),
+                   ops.createMap(
+-                     (Map)((Map)entry.getValue())
++                     (entry.getValue())
+                         .entrySet()
+                         .stream()
+                         .map(option -> Pair.of(ops.createString((String)option.getKey()), ops.createString((String)option.getValue())))

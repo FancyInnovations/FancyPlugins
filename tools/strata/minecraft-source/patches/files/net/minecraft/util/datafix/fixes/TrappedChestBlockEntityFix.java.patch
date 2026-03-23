@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/TrappedChestBlockEntityFix.java
++++ b/net/minecraft/util/datafix/fixes/TrappedChestBlockEntityFix.java
+@@ -76,7 +_,7 @@
+                            Dynamic<?> levelTag = (Dynamic<?>)level.get(DSL.remainderFinder());
+                            int chunkX = levelTag.get("xPos").asInt(0);
+                            int chunkZ = levelTag.get("zPos").asInt(0);
+-                           TaggedChoiceType<String> tileEntityChoiceType = this.getInputSchema().findChoiceType(References.BLOCK_ENTITY);
++                           TaggedChoiceType<String> tileEntityChoiceType = (TaggedChoiceType<String>) this.getInputSchema().findChoiceType(References.BLOCK_ENTITY);
+                            return level.updateTyped(
+                               tileEntitiesF,
+                               tileEntities -> tileEntities.updateTyped(

@@ -1,0 +1,20 @@
+--- a/net/minecraft/tags/TagNetworkSerialization.java
++++ b/net/minecraft/tags/TagNetworkSerialization.java
+@@ -21,7 +_,7 @@
+    public static Map<ResourceKey<? extends Registry<?>>, TagNetworkSerialization.NetworkPayload> serializeTagsToNetwork(
+       final LayeredRegistryAccess<RegistryLayer> registries
+    ) {
+-      return (Map<ResourceKey<? extends Registry<?>>, TagNetworkSerialization.NetworkPayload>)RegistrySynchronization.networkSafeRegistries(registries)
++      return RegistrySynchronization.networkSafeRegistries(registries)
+          .map(e -> Pair.of(e.key(), serializeToNetwork(e.value())))
+          .filter(e -> !((TagNetworkSerialization.NetworkPayload)e.getSecond()).isEmpty())
+          .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+@@ -50,7 +_,7 @@
+       Map<TagKey<T>, List<Holder<T>>> tags = new HashMap();
+       payload.tags.forEach((key, ids) -> {
+          TagKey<T> tagKey = TagKey.create(registryKey, key);
+-         List<Holder<T>> values = (List<Holder<T>>)ids.intStream().mapToObj(registry::get).flatMap(Optional::stream).collect(Collectors.toUnmodifiableList());
++         List<Holder<T>> values = ids.intStream().mapToObj(registry::get).flatMap(Optional::stream).collect(Collectors.toUnmodifiableList());
+          tags.put(tagKey, values);
+       });
+       return new TagLoader.LoadResult<>(registryKey, tags);

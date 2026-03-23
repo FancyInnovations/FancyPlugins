@@ -18,6 +18,10 @@ public class PluginMiddleware implements Middleware {
 
     @Override
     public @Nullable LogEntry process(LogEntry logEntry) {
+        if (plugin == null) {
+            return logEntry;
+        }
+
         // server info
         logEntry.addProperty("server_software", plugin.getServer().getName());
         logEntry.addProperty("server_version", plugin.getServer().getBukkitVersion());

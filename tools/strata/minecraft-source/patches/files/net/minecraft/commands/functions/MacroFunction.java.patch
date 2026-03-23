@@ -1,0 +1,54 @@
+--- a/net/minecraft/commands/functions/MacroFunction.java
++++ b/net/minecraft/commands/functions/MacroFunction.java
+@@ -87,46 +_,11 @@
+       Objects.requireNonNull(tag);
+ 
+       return switch (tag) {
+-         case FloatTag(float var41) -> {
+-            float var25 = var41;
+-            if (true) {
+-               yield DECIMAL_FORMAT.format(var25);
+-            }
+-
+-            byte var45 = 1;
+-         }
+-         case DoubleTag(double var39) -> {
+-            double var26 = var39;
+-            if (true) {
+-               yield DECIMAL_FORMAT.format(var26);
+-            }
+-
+-            byte var44 = 2;
+-         }
+-         case ByteTag(byte var37) -> {
+-            byte var27 = var37;
+-            if (true) {
+-               yield String.valueOf(var27);
+-            }
+-
+-            byte var43 = 3;
+-         }
+-         case ShortTag(short var35) -> {
+-            short var28 = var35;
+-            if (true) {
+-               yield String.valueOf(var28);
+-            }
+-
+-            byte var42 = 4;
+-         }
+-         case LongTag(long var33) -> {
+-            long var29 = var33;
+-            if (true) {
+-               yield String.valueOf(var29);
+-            }
+-
+-            byte var2 = 5;
+-         }
++         case FloatTag(float floatValue) -> DECIMAL_FORMAT.format(floatValue);
++         case DoubleTag(double doubleValue) -> DECIMAL_FORMAT.format(doubleValue);
++         case ByteTag(byte byteValue) -> String.valueOf(byteValue);
++         case ShortTag(short shortValue) -> String.valueOf(shortValue);
++         case LongTag(long longValue) -> String.valueOf(longValue);
+          case StringTag(String var17) -> var17;
+          default -> tag.toString();
+       };

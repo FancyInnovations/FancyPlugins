@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/dialog/input/TextInput.java
++++ b/net/minecraft/server/dialog/input/TextInput.java
+@@ -12,7 +_,7 @@
+ 
+ public record TextInput(int width, Component label, boolean labelVisible, String initial, int maxLength, Optional<TextInput.MultilineOptions> multiline)
+    implements InputControl {
+-   public static final MapCodec<TextInput> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<TextInput> MAP_CODEC = RecordCodecBuilder.<TextInput>mapCodec(
+          i -> i.group(
+                Dialog.WIDTH_CODEC.optionalFieldOf("width", 200).forGetter(TextInput::width),
+                ComponentSerialization.CODEC.fieldOf("label").forGetter(TextInput::label),

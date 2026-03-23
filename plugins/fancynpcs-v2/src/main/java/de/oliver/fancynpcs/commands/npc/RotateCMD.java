@@ -32,12 +32,13 @@ public enum RotateCMD {
             npc.getData().setLocation(newLocation);
             npc.updateForAll();
             translator.translate("npc_rotate_set_success")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("yaw", String.valueOf(yaw))
                     .replace("pitch", String.valueOf(pitch))
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 }

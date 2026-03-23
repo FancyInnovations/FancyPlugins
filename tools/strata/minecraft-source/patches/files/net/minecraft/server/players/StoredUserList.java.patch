@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/players/StoredUserList.java
++++ b/net/minecraft/server/players/StoredUserList.java
+@@ -168,7 +_,7 @@
+                   JsonObject object = GsonHelper.convertToJsonObject(element, "entry");
+                   StoredUserEntry<K> entry = this.createEntry(object);
+                   if (entry.getUser() != null) {
+-                     this.map.put(this.getKeyForUser(entry.getUser()), entry);
++                     this.map.put(this.getKeyForUser(entry.getUser()), (V) entry);
+                   }
+                }
+             } catch (Throwable var8) {

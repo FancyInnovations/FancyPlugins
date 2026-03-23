@@ -1,0 +1,11 @@
+--- a/net/minecraft/core/BlockPos.java
++++ b/net/minecraft/core/BlockPos.java
+@@ -492,7 +_,7 @@
+                }
+ 
+                if (depth < maxDepth) {
+-                  neighbourProvider.accept(currentPos, (Consumer)pos -> nodes.add(Pair.of(pos, depth + 1)));
++                  neighbourProvider.accept(currentPos, pos -> nodes.add(Pair.of(pos, depth + 1)));
+                }
+             }
+          }

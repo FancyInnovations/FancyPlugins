@@ -1,0 +1,23 @@
+--- a/net/minecraft/util/datafix/fixes/ItemStackComponentizationFix.java
++++ b/net/minecraft/util/datafix/fixes/ItemStackComponentizationFix.java
+@@ -383,9 +_,9 @@
+             .set(
+                "predicates",
+                dynamic.createList(
+-                  ((Dynamic)oldPredicate.get())
++                  (oldPredicate.get())
+                      .asStream()
+-                     .map(value -> (Dynamic)DataFixUtils.orElse(value.asString().map(string -> fixBlockStatePredicate(value, string)).result(), value))
++                     .map(value -> DataFixUtils.orElse(value.asString().map(string -> fixBlockStatePredicate(value, string)).result(), value))
+                )
+             );
+          if (hideInTooltip) {
+@@ -690,7 +_,7 @@
+             properties.entrySet()
+                .stream()
+                .flatMap(
+-                  entry -> ((List)entry.getValue())
++                  entry -> (entry.getValue())
+                      .stream()
+                      .map(
+                         pair -> {

@@ -1,0 +1,31 @@
+--- a/net/minecraft/world/entity/animal/goat/GoatAi.java
++++ b/net/minecraft/world/entity/animal/goat/GoatAi.java
+@@ -72,8 +_,8 @@
+          Activity.CORE,
+          0,
+          ImmutableList.of(
+-            new Swim(0.8F),
+-            new AnimalPanic(2.0F),
++            new Swim<>(0.8F),
++            new AnimalPanic<>(2.0F),
+             new LookAtTargetSink(45, 90),
+             new MoveToTargetSink(),
+             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS),
+@@ -113,7 +_,7 @@
+             Pair.of(0, new LongJumpMidJump(TIME_BETWEEN_LONG_JUMPS, SoundEvents.GOAT_STEP)),
+             Pair.of(
+                1,
+-               new LongJumpToRandomPos(
++               new LongJumpToRandomPos<>(
+                   TIME_BETWEEN_LONG_JUMPS, 5, 5, 3.5714288F, goat -> goat.isScreamingGoat() ? SoundEvents.GOAT_SCREAMING_LONG_JUMP : SoundEvents.GOAT_LONG_JUMP
+                )
+             )
+@@ -144,7 +_,7 @@
+             ),
+             Pair.of(
+                1,
+-               new PrepareRamNearestTarget(
++               new PrepareRamNearestTarget<>(
+                   mob -> mob.isScreamingGoat() ? TIME_BETWEEN_RAMS_SCREAMER.minInclusive() : TIME_BETWEEN_RAMS.minInclusive(),
+                   4,
+                   7,

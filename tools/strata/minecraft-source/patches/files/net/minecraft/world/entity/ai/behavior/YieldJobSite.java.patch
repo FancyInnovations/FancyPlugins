@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/behavior/YieldJobSite.java
++++ b/net/minecraft/world/entity/ai/behavior/YieldJobSite.java
+@@ -37,7 +_,7 @@
+                      if (poiType.isEmpty()) {
+                         return true;
+                      } else {
+-                        i.<List>get(nearestEntities)
++                        i.<List<LivingEntity>>get(nearestEntities)
+                            .stream()
+                            .filter(v -> v instanceof Villager && v != body)
+                            .map(v -> (Villager)v)

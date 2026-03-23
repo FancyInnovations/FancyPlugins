@@ -33,9 +33,9 @@ public enum GlowingCMD {
             if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.GLOWING, isGlowingToggled, sender).callEvent()) {
                 npc.getData().setGlowing(isGlowingToggled);
                 npc.updateForAll();
-                translator.translate(isGlowingToggled ? "npc_glowing_set_true" : "npc_glowing_set_false").replace("npc", npc.getData().getName()).send(sender);
+                translator.translate(isGlowingToggled ? "npc_glowing_set_true" : "npc_glowing_set_false").withPrefix().replace("npc", npc.getData().getName()).send(sender);
             } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
+                translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
             }
         }
         // Handling 'disabled' state, which means disabling glowing state.
@@ -44,11 +44,11 @@ public enum GlowingCMD {
             if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.GLOWING, false, sender).callEvent()) {
                 npc.getData().setGlowing(false);
                 npc.updateForAll();
-                translator.translate("npc_glowing_set_false").replace("npc", npc.getData().getName()).send(sender);
+                translator.translate("npc_glowing_set_false").withPrefix().replace("npc", npc.getData().getName()).send(sender);
             } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
+                translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
             }
-        // Handling 'color' state, which means enabling glowing and changing the color to desired one.
+            // Handling 'color' state, which means enabling glowing and changing the color to desired one.
         } else if (npc.getData().isGlowing() || new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.GLOWING, true, sender).callEvent()) {
             // Calling the event and updating the glowing color if not cancelled.
             if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.GLOWING_COLOR, color.getColor(), sender).callEvent()) {
@@ -58,14 +58,15 @@ public enum GlowingCMD {
                     npc.getData().setGlowing(true);
                 npc.updateForAll();
                 translator.translate("npc_glowing_set_color_success")
+                        .withPrefix()
                         .replace("npc", npc.getData().getName())
                         .replace("color", ((SimpleMessage) translator.translate(color.getTranslationKey())).getMessage())
                         .send(sender);
             } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
+                translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
             }
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 

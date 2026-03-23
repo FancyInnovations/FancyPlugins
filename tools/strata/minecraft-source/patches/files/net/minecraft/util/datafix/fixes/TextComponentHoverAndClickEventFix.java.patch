@@ -1,0 +1,36 @@
+--- a/net/minecraft/util/datafix/fixes/TextComponentHoverAndClickEventFix.java
++++ b/net/minecraft/util/datafix/fixes/TextComponentHoverAndClickEventFix.java
+@@ -24,7 +_,7 @@
+    }
+ 
+    protected TypeRewriteRule makeRule() {
+-      Type<? extends Pair<String, ?>> hoverEventType = this.getInputSchema().getType(References.TEXT_COMPONENT).findFieldType("hoverEvent");
++      Type<? extends Pair<String, ?>> hoverEventType = (Type<? extends Pair<String, ?>>)this.getInputSchema().getType(References.TEXT_COMPONENT).findFieldType("hoverEvent");
+       return this.createFixer(
+          this.getInputSchema().getTypeRaw(References.TEXT_COMPONENT), this.getOutputSchema().getType(References.TEXT_COMPONENT), hoverEventType
+       );
+@@ -56,20 +_,20 @@
+             oldTextComponentType,
+             newTextComponentType,
+             ops -> textComponent -> {
+-               boolean hasHoverOrClick = (Boolean)((Either)textComponent.getSecond()).map(simple -> false, full -> {
+-                  Pair<Either<H, Unit>, Dynamic<?>> hoverAndRemainder = (Pair<Either<H, Unit>, Dynamic<?>>)((Pair)full.getSecond()).getSecond();
++               boolean hasHoverOrClick = (textComponent.getSecond()).map(simple -> false, full -> {
++                  Pair<Either<H, Unit>, Dynamic<?>> hoverAndRemainder = (Pair<Either<H, Unit>, Dynamic<?>>)(full.getSecond()).getSecond();
+                   boolean hasHover = ((Either)hoverAndRemainder.getFirst()).left().isPresent();
+                   boolean hasClick = ((Dynamic)hoverAndRemainder.getSecond()).get("clickEvent").result().isPresent();
+                   return hasHover || hasClick;
+                });
+-               return !hasHoverOrClick
++               return (C2) (!hasHoverOrClick
+                   ? textComponent
+                   : Util.writeAndReadTypedOrThrow(
+                         ExtraDataFixUtils.cast(patchedInputType, textComponent, ops),
+                         newTextComponentType,
+                         TextComponentHoverAndClickEventFix::fixTextComponent
+                      )
+-                     .getValue();
++                     .getValue());
+             }
+          );
+       }

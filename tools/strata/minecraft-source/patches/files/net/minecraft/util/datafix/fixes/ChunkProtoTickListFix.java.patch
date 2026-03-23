@@ -1,0 +1,20 @@
+--- a/net/minecraft/util/datafix/fixes/ChunkProtoTickListFix.java
++++ b/net/minecraft/util/datafix/fixes/ChunkProtoTickListFix.java
+@@ -134,7 +_,7 @@
+          Supplier<ChunkProtoTickListFix.PoorMansPalettedContainer> container = (Supplier<ChunkProtoTickListFix.PoorMansPalettedContainer>)palettedContainers.get(
+             sectionY
+          );
+-         Stream<? extends Dynamic<?>> newTickListForSection = ((Dynamic)ticksPerSection.get(sectionYIndex))
++         Stream<? extends Dynamic<?>> newTickListForSection = (ticksPerSection.get(sectionYIndex))
+             .asStream()
+             .mapToInt(pos -> pos.asShort((short)-1))
+             .filter(pos -> pos > 0)
+@@ -182,7 +_,7 @@
+          container != null ? ((ChunkProtoTickListFix.PoorMansPalettedContainer)container.get()).get(relativeX, relativeY, relativeZ) : null
+       );
+       return tag.createMap(
+-         ImmutableMap.builder()
++              ImmutableMap.<Dynamic<?>, Dynamic<?>>builder()
+             .put(tag.createString("i"), tag.createString(type))
+             .put(tag.createString("x"), tag.createInt(sectionX * 16 + relativeX))
+             .put(tag.createString("y"), tag.createInt(sectionY * 16 + relativeY))

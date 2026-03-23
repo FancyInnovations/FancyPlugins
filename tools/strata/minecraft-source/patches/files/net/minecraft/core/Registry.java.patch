@@ -1,0 +1,20 @@
+--- a/net/minecraft/core/Registry.java
++++ b/net/minecraft/core/Registry.java
+@@ -38,7 +_,7 @@
+    private Codec<Holder.Reference<T>> referenceHolderWithLifecycle() {
+       Codec<Holder.Reference<T>> referenceCodec = Identifier.CODEC
+          .comapFlatMap(
+-            name -> (DataResult)this.get(name)
++            name -> this.get(name)
+                .map(DataResult::success)
+                .orElseGet(() -> DataResult.error(() -> "Unknown registry key in " + this.key() + ": " + name)),
+             holder -> holder.key().identifier()
+@@ -163,7 +_,7 @@
+          }
+ 
+          public Iterator<Holder<T>> iterator() {
+-            return Registry.this.listElements().map(e -> e).iterator();
++            return Registry.this.listElements().map(e -> (Holder<T>)e).iterator();
+          }
+       };
+    }

@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/timeline/AttributeTrack.java
++++ b/net/minecraft/world/timeline/AttributeTrack.java
+@@ -16,7 +_,7 @@
+ public record AttributeTrack<Value, Argument>(AttributeModifier<Value, Argument> modifier, KeyframeTrack<Argument> argumentTrack) {
+    public static <Value> Codec<AttributeTrack<Value, ?>> createCodec(final EnvironmentAttribute<Value> attribute) {
+       MapCodec<AttributeModifier<Value, ?>> modifierCodec = attribute.type().modifierCodec().optionalFieldOf("modifier", AttributeModifier.override());
+-      return modifierCodec.dispatch(AttributeTrack::modifier, Util.memoize((Function)(modifier -> createCodecWithModifier(attribute, modifier))));
++      return modifierCodec.dispatch(AttributeTrack::modifier, Util.memoize(modifier -> createCodecWithModifier(attribute, (AttributeModifier<Value, ?>)modifier)));
+    }
+ 
+    private static <Value, Argument> MapCodec<AttributeTrack<Value, Argument>> createCodecWithModifier(

@@ -29,10 +29,10 @@ public enum CollidableCMD {
             npc.getData().setCollidable(finalState);
             npc.removeForAll();
             npc.spawnForAll();
-            translator.translate(finalState ? "npc_collidable_set_true" : "npc_collidable_set_false").replace("npc", npc.getData().getName()).send(sender);
+            translator.translate(finalState ? "npc_collidable_set_true" : "npc_collidable_set_false").withPrefix().replace("npc", npc.getData().getName()).send(sender);
             return;
         }
-        translator.translate("command_npc_modification_cancelled").send(sender);
+        translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
     }
 
 }

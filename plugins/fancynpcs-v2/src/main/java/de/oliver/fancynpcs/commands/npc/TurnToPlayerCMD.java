@@ -26,15 +26,17 @@ public enum TurnToPlayerCMD {
             if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.TURN_TO_PLAYER, state, sender).callEvent()) {
                 npc.getData().setTurnToPlayer(state);
                 translator.translate(state ? "npc_turn_to_player_set_true" : "npc_turn_to_player_set_false")
+                        .withPrefix()
                         .replace("npc", npc.getData().getName())
                         .send(sender);
             } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
+                translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
             }
         } else if (state == null) {
             // If no state provided, just display current state
             boolean currentState = npc.getData().isTurnToPlayer();
             translator.translate(currentState ? "npc_turn_to_player_set_true" : "npc_turn_to_player_set_false")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .send(sender);
         }

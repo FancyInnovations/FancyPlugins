@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/SaddleEquipmentSlotFix.java
++++ b/net/minecraft/util/datafix/fixes/SaddleEquipmentSlotFix.java
+@@ -35,7 +_,7 @@
+    }
+ 
+    protected TypeRewriteRule makeRule() {
+-      TaggedChoiceType<String> entityIdType = this.getInputSchema().findChoiceType(References.ENTITY);
++      TaggedChoiceType<String> entityIdType = (TaggedChoiceType<String>) this.getInputSchema().findChoiceType(References.ENTITY);
+       OpticFinder<Pair<String, ?>> entityIdF = DSL.typeFinder(entityIdType);
+       Type<?> inputType = this.getInputSchema().getType(References.ENTITY);
+       Type<?> outputType = this.getOutputSchema().getType(References.ENTITY);

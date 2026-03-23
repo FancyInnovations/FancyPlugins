@@ -1,0 +1,11 @@
+--- a/net/minecraft/data/worldgen/placement/VegetationPlacements.java
++++ b/net/minecraft/data/worldgen/placement/VegetationPlacements.java
+@@ -150,7 +_,7 @@
+    }
+ 
+    private static Builder<PlacementModifier> treePlacementBase(final PlacementModifier frequency) {
+-      return ImmutableList.builder()
++      return ImmutableList.<PlacementModifier>builder()
+          .add(frequency)
+          .add(InSquarePlacement.spread())
+          .add(TREE_THRESHOLD)

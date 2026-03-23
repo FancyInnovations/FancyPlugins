@@ -61,7 +61,7 @@ public class NpcArgument {
         }
 
         if (npc == null) {
-            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_npc").replaceStripped("input", value).send(context.sender()));
+            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_npc").withPrefix().replaceStripped("input", value).send(context.sender()));
         }
 
         return npc;

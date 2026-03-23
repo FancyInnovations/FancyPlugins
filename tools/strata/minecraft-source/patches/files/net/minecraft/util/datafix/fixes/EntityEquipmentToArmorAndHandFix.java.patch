@@ -1,0 +1,38 @@
+--- a/net/minecraft/util/datafix/fixes/EntityEquipmentToArmorAndHandFix.java
++++ b/net/minecraft/util/datafix/fixes/EntityEquipmentToArmorAndHandFix.java
+@@ -54,7 +_,7 @@
+                oldEquipmentType,
+                newEquipmentType,
+                ops -> {
+-                  ItemStackNew emptyStack = (ItemStackNew)((Pair)newItemStackType.read(new Dynamic(ops).emptyMap())
++                  ItemStackNew emptyStack = (ItemStackNew)(newItemStackType.read(new Dynamic<>(ops).emptyMap())
+                         .result()
+                         .orElseThrow(() -> new IllegalStateException("Could not parse newly created empty itemstack.")))
+                      .getFirst();
+@@ -64,14 +_,14 @@
+                      Either<List<ItemStackNew>, Unit> handItems = Either.right(DSL.unit());
+                      Either<List<ItemStackNew>, Unit> armorItems = Either.right(DSL.unit());
+                      if (!items.isEmpty()) {
+-                        handItems = Either.left(Lists.newArrayList(new Object[]{items.getFirst(), emptyStack}));
++                        handItems = Either.left(Lists.newArrayList((ItemStackNew[])(new Object[]{items.getFirst(), emptyStack})));
+                      }
+ 
+                      if (items.size() > 1) {
+-                        List<ItemStackNew> armor = Lists.newArrayList(new Object[]{emptyStack, emptyStack, emptyStack, emptyStack});
++                        List<ItemStackNew> armor = Lists.newArrayList(emptyStack, emptyStack, emptyStack, emptyStack);
+ 
+                         for (int i = 1; i < Math.min(items.size(), 5); i++) {
+-                           armor.set(i - 1, items.get(i));
++                           armor.set(i - 1, (ItemStackNew)items.get(i));
+                         }
+ 
+                         armorItems = Either.left(armor);
+@@ -89,7 +_,7 @@
+       Optional<? extends Stream<? extends Dynamic<?>>> dropChances = tag.get("DropChances").asStreamOpt().result();
+       tag = tag.remove("DropChances");
+       if (dropChances.isPresent()) {
+-         Iterator<Float> chances = Stream.concat(((Stream)dropChances.get()).map(value -> value.asFloat(0.0F)), Stream.generate(() -> 0.0F)).iterator();
++         Iterator<Float> chances = Stream.concat((dropChances.get()).map(value -> value.asFloat(0.0F)), Stream.generate(() -> 0.0F)).iterator();
+          float handChance = (Float)chances.next();
+          if (tag.get("HandDropChances").result().isEmpty()) {
+             tag = tag.set("HandDropChances", tag.createList(Stream.of(handChance, 0.0F).map(tag::createFloat)));

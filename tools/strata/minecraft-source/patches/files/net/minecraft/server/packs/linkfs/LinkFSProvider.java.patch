@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/packs/linkfs/LinkFSProvider.java
++++ b/net/minecraft/server/packs/linkfs/LinkFSProvider.java
+@@ -83,7 +_,7 @@
+                   } catch (IOException var3) {
+                      throw new DirectoryIteratorException(var3);
+                   }
+-               }).map(path -> path).iterator();
++               }).map(path -> (Path)path).iterator();
+             }
+ 
+             public void close() {

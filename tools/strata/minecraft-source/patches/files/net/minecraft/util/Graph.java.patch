@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/Graph.java
++++ b/net/minecraft/util/Graph.java
+@@ -19,7 +_,7 @@
+       } else {
+          currentlyVisiting.add(current);
+ 
+-         for (T next : (Set)edges.getOrDefault(current, ImmutableSet.of())) {
++         for (T next : edges.getOrDefault(current, ImmutableSet.of())) {
+             if (depthFirstSearch(edges, discovered, currentlyVisiting, reverseTopologicalOrder, next)) {
+                return true;
+             }

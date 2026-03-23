@@ -1,0 +1,11 @@
+--- a/net/minecraft/gametest/framework/TestEnvironmentDefinition.java
++++ b/net/minecraft/gametest/framework/TestEnvironmentDefinition.java
+@@ -87,7 +_,7 @@
+       }
+ 
+       public List<? extends TestEnvironmentDefinition.Activation<?>> setup(final ServerLevel level) {
+-         return this.definitions.stream().map(b -> TestEnvironmentDefinition.activate((TestEnvironmentDefinition)b.value(), level)).toList();
++         return this.definitions.stream().map(b -> TestEnvironmentDefinition.activate(b.value(), level)).toList();
+       }
+ 
+       public void teardown(final ServerLevel level, final List<? extends TestEnvironmentDefinition.Activation<?>> activations) {

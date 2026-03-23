@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/LevelUUIDFix.java
++++ b/net/minecraft/util/datafix/fixes/LevelUUIDFix.java
+@@ -54,7 +_,7 @@
+    }
+ 
+    private Dynamic<?> updateCustomBossEvent(final Dynamic<?> tag) {
+-      return tag.update("Players", players -> tag.createList(players.asStream().map(player -> (Dynamic)createUUIDFromML(player).orElseGet(() -> {
++      return tag.update("Players", players -> tag.createList(players.asStream().map(player -> createUUIDFromML(player).orElseGet(() -> {
+          LOGGER.warn("CustomBossEvents contains invalid UUIDs.");
+          return player;
+       }))));

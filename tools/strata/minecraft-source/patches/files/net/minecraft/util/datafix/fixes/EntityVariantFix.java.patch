@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/EntityVariantFix.java
++++ b/net/minecraft/util/datafix/fixes/EntityVariantFix.java
+@@ -32,7 +_,7 @@
+    ) {
+       return input.map(v -> {
+          DynamicOps<T> ops = input.getOps();
+-         Function<T, T> liftedFunction = value -> ((Dynamic)function.apply(new Dynamic(ops, value))).getValue();
++         Function<T, T> liftedFunction = value -> (function.apply(new Dynamic<>(ops, value))).getValue();
+          return ops.get(v, oldKey).map(fieldValue -> ops.set(v, newKey, liftedFunction.apply(fieldValue))).result().orElse(v);
+       });
+    }

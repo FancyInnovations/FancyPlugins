@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/valueproviders/UniformFloat.java
++++ b/net/minecraft/util/valueproviders/UniformFloat.java
+@@ -8,7 +_,7 @@
+ import net.minecraft.util.RandomSource;
+ 
+ public record UniformFloat(float min, float max) implements FloatProvider {
+-   public static final MapCodec<UniformFloat> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<UniformFloat> MAP_CODEC = RecordCodecBuilder.<UniformFloat>mapCodec(
+          i -> i.group(Codec.FLOAT.fieldOf("min_inclusive").forGetter(UniformFloat::min), Codec.FLOAT.fieldOf("max_exclusive").forGetter(UniformFloat::max))
+             .apply(i, UniformFloat::new)
+       )

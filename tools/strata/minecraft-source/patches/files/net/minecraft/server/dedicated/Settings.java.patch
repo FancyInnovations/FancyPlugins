@@ -1,0 +1,20 @@
+--- a/net/minecraft/server/dedicated/Settings.java
++++ b/net/minecraft/server/dedicated/Settings.java
+@@ -124,7 +_,7 @@
+    private static <V extends Number> Function<String, @Nullable V> wrapNumberDeserializer(final Function<String, V> inner) {
+       return s -> {
+          try {
+-            return (Number)inner.apply(s);
++            return inner.apply(s);
+          } catch (NumberFormatException var3) {
+             return null;
+          }
+@@ -170,7 +_,7 @@
+       String value = this.getStringRaw(key);
+       V result = (V)MoreObjects.firstNonNull(value != null ? deserializer.apply(value) : null, defaultValue);
+       this.properties.put(key, serializer.apply(result));
+-      return new Settings.MutableValue<>(key, result, serializer);
++      return new Settings.MutableValue(key, result, serializer);
+    }
+ 
+    protected <V> V get(

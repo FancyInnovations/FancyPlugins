@@ -1,0 +1,24 @@
+--- a/net/minecraft/world/item/component/KineticWeapon.java
++++ b/net/minecraft/world/item/component/KineticWeapon.java
+@@ -6,6 +_,8 @@
+ import java.util.Collection;
+ import java.util.List;
+ import java.util.Optional;
++import java.util.function.Function;
++
+ import net.minecraft.advancements.CriteriaTriggers;
+ import net.minecraft.core.Holder;
+ import net.minecraft.network.RegistryFriendlyByteBuf;
+@@ -106,10 +_,10 @@
+          double baseMobDamage = livingEntity.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+          boolean affected = false;
+ 
+-         for (EntityHitResult hitResult : (Collection)ProjectileUtil.getHitEntitiesAlong(
++         for (EntityHitResult hitResult : ProjectileUtil.getHitEntitiesAlong(
+                livingEntity, attackRange, e -> PiercingWeapon.canHitEntity(livingEntity, e), ClipContext.Block.COLLIDER
+             )
+-            .map(a -> List.of(), e -> e)) {
++            .map(a -> List.<EntityHitResult>of(), Function.identity())) {
+             Entity otherEntity = hitResult.getEntity();
+             if (otherEntity instanceof EnderDragonPart dragonPart) {
+                otherEntity = dragonPart.parentMob;

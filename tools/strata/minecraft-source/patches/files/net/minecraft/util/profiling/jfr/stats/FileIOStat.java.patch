@@ -1,0 +1,17 @@
+--- a/net/minecraft/util/profiling/jfr/stats/FileIOStat.java
++++ b/net/minecraft/util/profiling/jfr/stats/FileIOStat.java
+@@ -16,11 +_,11 @@
+          (double)totalBytes / recordingDuration.getSeconds(),
+          ioStats.size(),
+          (double)ioStats.size() / recordingDuration.getSeconds(),
+-         (Duration)ioStats.stream().map(FileIOStat::duration).reduce(Duration.ZERO, Duration::plus),
+-         ((Map)ioStats.stream().filter(it -> it.path != null).collect(Collectors.groupingBy(stat -> stat.path, Collectors.summingLong(it -> it.bytes))))
++         ioStats.stream().map(FileIOStat::duration).reduce(Duration.ZERO, Duration::plus),
++         (ioStats.stream().filter(it -> it.path != null).collect(Collectors.groupingBy(stat -> stat.path, Collectors.summingLong(it -> it.bytes))))
+             .entrySet()
+             .stream()
+-            .sorted(Entry.comparingByValue().reversed())
++            .sorted(Entry.<String, Long>comparingByValue().reversed())
+             .map(e -> Pair.of((String)e.getKey(), (Long)e.getValue()))
+             .limit(10L)
+             .toList()

@@ -24,7 +24,7 @@ public enum FixCMD {
         npc.removeForAll();
         npc.create();
         Bukkit.getOnlinePlayers().forEach(npc::checkAndUpdateVisibility);
-        translator.translate("npc_fix_success").replace("npc", npc.getData().getName()).send(sender);
+        translator.translate("npc_fix_success").withPrefix().replace("npc", npc.getData().getName()).send(sender);
     }
 
 }

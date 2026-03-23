@@ -36,6 +36,7 @@ public class TraitCommandType extends BukkitExceptionHandler implements Paramete
     public void onInvalidTrait(InvalidTraitException e, BukkitCommandActor actor) {
         FancyHologramsPlugin.get().getTranslator()
                 .translate("commands.hologram.edit.trait.not_found")
+                .withPrefix()
                 .replace("name", e.input())
                 .send(actor.sender());
     }

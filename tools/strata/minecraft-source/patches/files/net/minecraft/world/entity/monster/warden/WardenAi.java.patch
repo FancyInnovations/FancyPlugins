@@ -1,0 +1,42 @@
+--- a/net/minecraft/world/entity/monster/warden/WardenAi.java
++++ b/net/minecraft/world/entity/monster/warden/WardenAi.java
+@@ -82,18 +_,18 @@
+ 
+    private static ActivityData<Warden> initCoreActivity() {
+       return ActivityData.create(
+-         Activity.CORE, 0, ImmutableList.of(new Swim(0.8F), SetWardenLookTarget.create(), new LookAtTargetSink(45, 90), new MoveToTargetSink())
++         Activity.CORE, 0, ImmutableList.of(new Swim<>(0.8F), SetWardenLookTarget.create(), new LookAtTargetSink(45, 90), new MoveToTargetSink())
+       );
+    }
+ 
+    private static ActivityData<Warden> initEmergeActivity() {
+-      return ActivityData.create(Activity.EMERGE, 5, ImmutableList.of(new Emerging(EMERGE_DURATION)), MemoryModuleType.IS_EMERGING);
++      return ActivityData.create(Activity.EMERGE, 5, ImmutableList.of(new Emerging<>(EMERGE_DURATION)), MemoryModuleType.IS_EMERGING);
+    }
+ 
+    private static ActivityData<Warden> initDiggingActivity() {
+       return ActivityData.create(
+          Activity.DIG,
+-         ImmutableList.of(Pair.of(0, new ForceUnmount()), Pair.of(1, new Digging(DIGGING_DURATION))),
++         ImmutableList.of(Pair.of(0, new ForceUnmount()), Pair.of(1, new Digging<>(DIGGING_DURATION))),
+          ImmutableSet.of(Pair.of(MemoryModuleType.ROAR_TARGET, MemoryStatus.VALUE_ABSENT), Pair.of(MemoryModuleType.DIG_COOLDOWN, MemoryStatus.VALUE_ABSENT))
+       );
+    }
+@@ -105,7 +_,7 @@
+          ImmutableList.of(
+             SetRoarTarget.create(Warden::getEntityAngryAt),
+             TryToSniff.create(),
+-            new RunOne(
++            new RunOne<>(
+                ImmutableMap.of(MemoryModuleType.IS_SNIFFING, MemoryStatus.VALUE_ABSENT),
+                ImmutableList.of(Pair.of(RandomStroll.stroll(0.5F), 2), Pair.of(new DoNothing(30, 60), 1))
+             )
+@@ -124,7 +_,7 @@
+ 
+    private static ActivityData<Warden> initSniffingActivity() {
+       return ActivityData.create(
+-         Activity.SNIFF, 5, ImmutableList.of(SetRoarTarget.create(Warden::getEntityAngryAt), new Sniffing(SNIFFING_DURATION)), MemoryModuleType.IS_SNIFFING
++         Activity.SNIFF, 5, ImmutableList.of(SetRoarTarget.create(Warden::getEntityAngryAt), new Sniffing<>(SNIFFING_DURATION)), MemoryModuleType.IS_SNIFFING
+       );
+    }
+ 

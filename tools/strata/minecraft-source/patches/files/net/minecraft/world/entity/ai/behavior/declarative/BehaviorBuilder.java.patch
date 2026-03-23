@@ -1,0 +1,66 @@
+--- a/net/minecraft/world/entity/ai/behavior/declarative/BehaviorBuilder.java
++++ b/net/minecraft/world/entity/ai/behavior/declarative/BehaviorBuilder.java
+@@ -216,9 +_,7 @@
+       }
+ 
+       public <T, R> BehaviorBuilder<E, R> map(final Function<? super T, ? extends R> func, final App<BehaviorBuilder.Mu<E>, T> ts) {
+-         final BehaviorBuilder.TriggerWithResult<E, T> tTrigger = (BehaviorBuilder.TriggerWithResult<E, T>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)ts
+-         );
++         final BehaviorBuilder.TriggerWithResult<E, T> tTrigger = BehaviorBuilder.get(ts);
+          return BehaviorBuilder.create(new BehaviorBuilder.TriggerWithResult<E, R>() {
+             {
+                Objects.requireNonNull(Instance.this);
+@@ -249,8 +_,8 @@
+       public <A, B, R> BehaviorBuilder<E, R> ap2(
+          final App<BehaviorBuilder.Mu<E>, BiFunction<A, B, R>> func, final App<BehaviorBuilder.Mu<E>, A> a, final App<BehaviorBuilder.Mu<E>, B> b
+       ) {
+-         final BehaviorBuilder.TriggerWithResult<E, A> aTrigger = (BehaviorBuilder.TriggerWithResult<E, A>)BehaviorBuilder.get((App<BehaviorBuilder.Mu<E>, M>)a);
+-         final BehaviorBuilder.TriggerWithResult<E, B> bTrigger = (BehaviorBuilder.TriggerWithResult<E, B>)BehaviorBuilder.get((App<BehaviorBuilder.Mu<E>, M>)b);
++         final BehaviorBuilder.TriggerWithResult<E, A> aTrigger = BehaviorBuilder.get(a);
++         final BehaviorBuilder.TriggerWithResult<E, B> bTrigger = BehaviorBuilder.get(b);
+          final BehaviorBuilder.TriggerWithResult<E, BiFunction<A, B, R>> fTrigger = BehaviorBuilder.get(func);
+          return BehaviorBuilder.create(new BehaviorBuilder.TriggerWithResult<E, R>() {
+             {
+@@ -299,15 +_,9 @@
+          final App<BehaviorBuilder.Mu<E>, T2> t2,
+          final App<BehaviorBuilder.Mu<E>, T3> t3
+       ) {
+-         final BehaviorBuilder.TriggerWithResult<E, T1> t1Trigger = (BehaviorBuilder.TriggerWithResult<E, T1>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)t1
+-         );
+-         final BehaviorBuilder.TriggerWithResult<E, T2> t2Trigger = (BehaviorBuilder.TriggerWithResult<E, T2>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)t2
+-         );
+-         final BehaviorBuilder.TriggerWithResult<E, T3> t3Trigger = (BehaviorBuilder.TriggerWithResult<E, T3>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)t3
+-         );
++         final BehaviorBuilder.TriggerWithResult<E, T1> t1Trigger = BehaviorBuilder.get(t1);
++         final BehaviorBuilder.TriggerWithResult<E, T2> t2Trigger = BehaviorBuilder.get(t2);
++         final BehaviorBuilder.TriggerWithResult<E, T3> t3Trigger = BehaviorBuilder.get(t3);
+          final BehaviorBuilder.TriggerWithResult<E, Function3<T1, T2, T3, R>> fTrigger = BehaviorBuilder.get(func);
+          return BehaviorBuilder.create(new BehaviorBuilder.TriggerWithResult<E, R>() {
+             {
+@@ -363,18 +_,10 @@
+          final App<BehaviorBuilder.Mu<E>, T3> t3,
+          final App<BehaviorBuilder.Mu<E>, T4> t4
+       ) {
+-         final BehaviorBuilder.TriggerWithResult<E, T1> t1Trigger = (BehaviorBuilder.TriggerWithResult<E, T1>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)t1
+-         );
+-         final BehaviorBuilder.TriggerWithResult<E, T2> t2Trigger = (BehaviorBuilder.TriggerWithResult<E, T2>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)t2
+-         );
+-         final BehaviorBuilder.TriggerWithResult<E, T3> t3Trigger = (BehaviorBuilder.TriggerWithResult<E, T3>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)t3
+-         );
+-         final BehaviorBuilder.TriggerWithResult<E, T4> t4Trigger = (BehaviorBuilder.TriggerWithResult<E, T4>)BehaviorBuilder.get(
+-            (App<BehaviorBuilder.Mu<E>, M>)t4
+-         );
++         final BehaviorBuilder.TriggerWithResult<E, T1> t1Trigger = BehaviorBuilder.get(t1);
++         final BehaviorBuilder.TriggerWithResult<E, T2> t2Trigger = BehaviorBuilder.get(t2);
++         final BehaviorBuilder.TriggerWithResult<E, T3> t3Trigger = BehaviorBuilder.get(t3);
++         final BehaviorBuilder.TriggerWithResult<E, T4> t4Trigger = BehaviorBuilder.get(t4);
+          final BehaviorBuilder.TriggerWithResult<E, Function4<T1, T2, T3, T4, R>> fTrigger = BehaviorBuilder.get(func);
+          return BehaviorBuilder.create(
+             new BehaviorBuilder.TriggerWithResult<E, R>() {

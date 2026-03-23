@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/commands/LootCommand.java
++++ b/net/minecraft/server/commands/LootCommand.java
+@@ -58,7 +_,7 @@
+    public static void register(final CommandDispatcher<CommandSourceStack> dispatcher, final CommandBuildContext context) {
+       dispatcher.register(
+          addTargets(
+-            (LiteralArgumentBuilder & ArgumentBuilder)Commands.literal("loot").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)),
++            Commands.literal("loot").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)),
+             (target, output) -> target.then(
+                   Commands.literal("fish")
+                      .then(

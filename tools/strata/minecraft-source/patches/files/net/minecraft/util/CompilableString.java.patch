@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/CompilableString.java
++++ b/net/minecraft/util/CompilableString.java
+@@ -19,7 +_,7 @@
+    }
+ 
+    public static <T> Codec<CompilableString<T>> codec(final Function<String, DataResult<T>> compiler) {
+-      return Codec.STRING.comapFlatMap(s -> ((DataResult)compiler.apply(s)).map(compiled -> new CompilableString<>(s, compiled)), CompilableString::source);
++      return Codec.STRING.comapFlatMap(s -> (compiler.apply(s)).map(compiled -> new CompilableString<>(s, compiled)), CompilableString::source);
+    }
+ 
+    public String source() {

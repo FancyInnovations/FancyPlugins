@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
++++ b/net/minecraft/world/level/block/entity/BeehiveBlockEntity.java
+@@ -298,7 +_,7 @@
+    protected void loadAdditional(final ValueInput input) {
+       super.loadAdditional(input);
+       this.stored.clear();
+-      ((List)input.read("bees", BeehiveBlockEntity.Occupant.LIST_CODEC).orElse(List.of())).forEach(this::storeBee);
++      (input.read("bees", BeehiveBlockEntity.Occupant.LIST_CODEC).orElse(List.of())).forEach(this::storeBee);
+       this.savedFlowerPos = (BlockPos)input.read("flower_pos", BlockPos.CODEC).orElse(null);
+    }
+ 

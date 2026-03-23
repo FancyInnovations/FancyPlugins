@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/random/WeightedRandom.java
++++ b/net/minecraft/util/random/WeightedRandom.java
+@@ -26,7 +_,7 @@
+ 
+    public static <T> Optional<T> getRandomItem(final RandomSource random, final List<T> items, final int totalWeight, final ToIntFunction<T> weightGetter) {
+       if (totalWeight < 0) {
+-         throw (IllegalArgumentException)Util.pauseInIde((T)(new IllegalArgumentException("Negative total weight in getRandomItem")));
++         throw (IllegalArgumentException)Util.pauseInIde((new IllegalArgumentException("Negative total weight in getRandomItem")));
+       } else if (totalWeight == 0) {
+          return Optional.empty();
+       } else {

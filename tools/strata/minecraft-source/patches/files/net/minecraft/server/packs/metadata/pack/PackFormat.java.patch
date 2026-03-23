@@ -1,0 +1,20 @@
+--- a/net/minecraft/server/packs/metadata/pack/PackFormat.java
++++ b/net/minecraft/server/packs/metadata/pack/PackFormat.java
+@@ -53,7 +_,7 @@
+                return DataResult.error(((Error)entryResult.error().get())::message);
+             }
+ 
+-            result.add(constructor.apply(entry, (InclusiveRange)entryResult.getOrThrow()));
++            result.add(constructor.apply(entry, entryResult.getOrThrow()));
+          }
+       }
+ 
+@@ -309,7 +_,7 @@
+                }
+             }
+ 
+-            return DataResult.success(new InclusiveRange(min, max).map(PackFormat::of));
++            return DataResult.success(new InclusiveRange<>(min, max).map(PackFormat::of));
+          }
+       }
+ 

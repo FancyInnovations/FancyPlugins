@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
++++ b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
+@@ -385,7 +_,7 @@
+ 
+    @Override
+    public Brain<HappyGhast> getBrain() {
+-      return super.getBrain();
++      return (Brain<HappyGhast>) super.getBrain();
+    }
+ 
+    @Override

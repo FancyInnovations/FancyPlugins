@@ -1,11 +1,11 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
-import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
 import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
-import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.colors.GlowingColor;
 import de.oliver.fancylib.translations.Translator;
@@ -26,6 +26,7 @@ public final class GlowingCMD {
     private GlowingCMD() {
     }
 
+    @IsHologramType(types = {HologramType.ITEM, HologramType.BLOCK})
     @Command("hologram-new edit <hologram> glowing")
     @Description("Toggle glowing on/off for item and block holograms")
     @CommandPermission("fancyholograms.commands.hologram.glowing")
@@ -33,13 +34,7 @@ public final class GlowingCMD {
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram
     ) {
-        // Check if hologram is ITEM or BLOCK type
-        if (!(hologram.getData() instanceof DisplayHologramData displayData) ||
-            (!(hologram.getData() instanceof ItemHologramData) && !(hologram.getData() instanceof BlockHologramData))) {
-            translator.translate("commands.hologram.edit.glowing.only_item_block")
-                    .send(actor.sender());
-            return;
-        }
+        DisplayHologramData displayData = (DisplayHologramData) hologram.getData();
 
         // Toggle: if currently disabled, enable with white; if enabled, disable
         final GlowingColor newColor = displayData.getGlowingColor() == GlowingColor.DISABLED
@@ -66,16 +61,19 @@ public final class GlowingCMD {
         // Send success message
         if (newColor == GlowingColor.DISABLED) {
             translator.translate("commands.hologram.edit.glowing.disabled")
+                    .withPrefix()
                     .replace("hologram", hologram.getData().getName())
                     .send(actor.sender());
         } else {
             translator.translate("commands.hologram.edit.glowing.enabled")
+                    .withPrefix()
                     .replace("hologram", hologram.getData().getName())
                     .replace("color", ((SimpleMessage) translator.translate(newColor.getTranslationKey())).getMessage())
                     .send(actor.sender());
         }
     }
 
+    @IsHologramType(types = {HologramType.ITEM, HologramType.BLOCK})
     @Command("hologram-new edit <hologram> glowing <color>")
     @Description("Set glowing color for item and block holograms")
     @CommandPermission("fancyholograms.commands.hologram.glowing")
@@ -84,13 +82,7 @@ public final class GlowingCMD {
             final @NotNull Hologram hologram,
             final @NotNull GlowingColor color
     ) {
-        // Check if hologram is ITEM or BLOCK type
-        if (!(hologram.getData() instanceof DisplayHologramData displayData) ||
-            (!(hologram.getData() instanceof ItemHologramData) && !(hologram.getData() instanceof BlockHologramData))) {
-            translator.translate("commands.hologram.edit.glowing.only_item_block")
-                    .send(actor.sender());
-            return;
-        }
+        DisplayHologramData displayData = (DisplayHologramData) hologram.getData();
 
         // Handle disabled state
         if (color == GlowingColor.DISABLED) {
@@ -112,6 +104,7 @@ public final class GlowingCMD {
             }
 
             translator.translate("commands.hologram.edit.glowing.disabled")
+                    .withPrefix()
                     .replace("hologram", hologram.getData().getName())
                     .send(actor.sender());
         } else {
@@ -133,6 +126,7 @@ public final class GlowingCMD {
             }
 
             translator.translate("commands.hologram.edit.glowing.color_set")
+                    .withPrefix()
                     .replace("hologram", hologram.getData().getName())
                     .replace("color", ((SimpleMessage) translator.translate(color.getTranslationKey())).getMessage())
                     .send(actor.sender());

@@ -25,7 +25,7 @@ public class ActionTypeArgument {
         final String value = input.readString();
         final @Nullable NpcAction action = PLUGIN.getActionManager().getActionByName(value);
         if (action == null)
-            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_action_type").replaceStripped("input", value).send(context.sender()));
+            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_action_type").withPrefix().replaceStripped("input", value).send(context.sender()));
         return action;
     }
 

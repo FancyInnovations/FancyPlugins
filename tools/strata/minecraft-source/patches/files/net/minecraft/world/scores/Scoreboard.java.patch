@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/scores/Scoreboard.java
++++ b/net/minecraft/world/scores/Scoreboard.java
+@@ -61,7 +_,7 @@
+    }
+ 
+    public final void forAllObjectives(final ObjectiveCriteria criteria, final ScoreHolder name, final Consumer<ScoreAccess> operation) {
+-      ((List)this.objectivesByCriteria.getOrDefault(criteria, Collections.emptyList()))
++      (this.objectivesByCriteria.getOrDefault(criteria, Collections.emptyList()))
+          .forEach(o -> operation.accept(this.getOrCreatePlayerScore(name, o, true)));
+    }
+ 

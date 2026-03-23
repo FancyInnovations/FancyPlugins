@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/packs/repository/BuiltInPackSource.java
++++ b/net/minecraft/server/packs/repository/BuiltInPackSource.java
+@@ -77,7 +_,7 @@
+             FolderRepositorySource.discoverPacks(
+                targetDir,
+                this.validator,
+-               (path, resources) -> discoveredPacks.accept(pathToId(path), (Function)id -> this.createBuiltinPack(id, resources, this.getPackTitle(id)))
++               (path, resources) -> discoveredPacks.accept(pathToId(path), id -> this.createBuiltinPack(id, resources, this.getPackTitle(id)))
+             );
+          } catch (IOException var4) {
+             LOGGER.warn("Failed to discover packs in {}", targetDir, var4);

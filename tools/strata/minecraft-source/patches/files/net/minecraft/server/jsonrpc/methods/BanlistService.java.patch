@@ -1,0 +1,29 @@
+--- a/net/minecraft/server/jsonrpc/methods/BanlistService.java
++++ b/net/minecraft/server/jsonrpc/methods/BanlistService.java
+@@ -39,7 +_,7 @@
+          .map(banx -> minecraftApi.playerListService().getUser(banx.player().id(), banx.player().name()).thenApply(u -> u.map(banx::toUserBan)))
+          .toList();
+ 
+-      for (Optional<BanlistService.UserBan> ban : (List)Util.sequence(fetch).join()) {
++      for (Optional<BanlistService.UserBan> ban : Util.sequence(fetch).join()) {
+          if (!ban.isEmpty()) {
+             BanlistService.UserBan userBan = (BanlistService.UserBan)ban.get();
+             minecraftApi.banListService().addUserBan(userBan.toBanEntry(), clientInfo);
+@@ -63,7 +_,7 @@
+          .map(playerDto -> minecraftApi.playerListService().getUser(playerDto.id(), playerDto.name()))
+          .toList();
+ 
+-      for (Optional<NameAndId> user : (List)Util.sequence(fetch).join()) {
++      for (Optional<NameAndId> user : Util.sequence(fetch).join()) {
+          if (!user.isEmpty()) {
+             minecraftApi.banListService().removeUserBan((NameAndId)user.get(), clientInfo);
+          }
+@@ -76,7 +_,7 @@
+       List<CompletableFuture<Optional<BanlistService.UserBan>>> fetch = bans.stream()
+          .map(ban -> minecraftApi.playerListService().getUser(ban.player().id(), ban.player().name()).thenApply(u -> u.map(ban::toUserBan)))
+          .toList();
+-      Set<BanlistService.UserBan> finalAllowList = (Set<BanlistService.UserBan>)((List)Util.sequence(fetch).join())
++      Set<BanlistService.UserBan> finalAllowList = (Set<BanlistService.UserBan>)(Util.sequence(fetch).join())
+          .stream()
+          .flatMap(Optional::stream)
+          .collect(Collectors.toSet());

@@ -12,7 +12,6 @@ import de.oliver.fancynpcs.commands.exceptions.ReplyingParseException;
 import de.oliver.fancynpcs.commands.npc.*;
 import de.oliver.fancynpcs.utils.GlowingColor;
 import io.leangen.geantyref.TypeToken;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.incendo.cloud.annotations.AnnotationParser;
@@ -35,7 +34,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static org.incendo.cloud.exception.handling.ExceptionHandler.unwrappingHandler;
 
@@ -85,14 +83,19 @@ public final class CloudCommandManager {
         commandManager.exceptionController().registerHandler(ArgumentParseException.class, unwrappingHandler(ReplyingParseException.class));
         // Overriding some default handlers to send specialized messages.
         commandManager.exceptionController().registerHandler(NoPermissionException.class, (exceptionContext) -> {
-            translator.translate("command_missing_permissions").send(exceptionContext.context().sender());
+            translator.translate("command_missing_permissions")
+                    .withPrefix()
+                    .send(exceptionContext.context().sender());
         });
         // DEV NOTE: No need to compare sender types until we decide to make a console-only command. Should get the job done for the time being.
         commandManager.exceptionController().registerHandler(InvalidCommandSenderException.class, (exceptionContext) -> {
-            translator.translate("command_player_only").send(exceptionContext.context().sender());
+            translator.translate("command_player_only")
+                    .withPrefix()
+                    .send(exceptionContext.context().sender());
         });
         commandManager.exceptionController().registerHandler(NumberParseException.class, (exceptionContext) -> {
             translator.translate("command_invalid_number")
+                    .withPrefix()
                     .replaceStripped("input", exceptionContext.exception().input())
                     .replace("min", exceptionContext.exception().range().min().toString())
                     .replace("max", exceptionContext.exception().range().max().toString())
@@ -100,11 +103,13 @@ public final class CloudCommandManager {
         });
         commandManager.exceptionController().registerHandler(BooleanParser.BooleanParseException.class, (exceptionContext) -> {
             translator.translate("command_invalid_boolean")
+                    .withPrefix()
                     .replaceStripped("input", exceptionContext.exception().input())
                     .send(exceptionContext.context().sender());
         });
         commandManager.exceptionController().registerHandler(WorldParser.WorldParseException.class, (exceptionContext) -> {
             translator.translate("command_invalid_world")
+                    .withPrefix()
                     .replaceStripped("input", exceptionContext.exception().input())
                     .send(exceptionContext.context().sender());
         });
@@ -115,6 +120,7 @@ public final class CloudCommandManager {
                     final ParserException exception = (ParserException) exceptionContext.exception().getCause();
                     final String input = exception.captionVariables()[0].value(); // Should never throw.
                     translator.translate("command_invalid_location")
+                            .withPrefix()
                             .replaceStripped("input", !input.isBlank() ? input : "N/A") // Under certain conditions, input is not passed to the exception.
                             .send(exceptionContext.context().sender());
                 }).build()
@@ -134,6 +140,7 @@ public final class CloudCommandManager {
                 translationKey = "command_invalid_npc_visibility";
             // Sending error message to the sender. In case no specialized message has been found, a generic one is used instead.
             translator.translate(translationKey)
+                    .withPrefix()
                     .replaceStripped("input", exceptionContext.exception().input())
                     .replace("enum", exceptionContext.exception().enumClass().getSimpleName().toLowerCase())
                     .send(exceptionContext.context().sender());
@@ -156,6 +163,7 @@ public final class CloudCommandManager {
             // "Fall-backing" to generic syntax error, if no specialized syntax message has been defined in the language file.
             if (message == null) {
                 plugin.getTranslator().translate("command_invalid_syntax_generic")
+                        .withPrefix()
                         .replace("syntax", exceptionContext.exception().correctSyntax())
                         .send(exceptionContext.context().sender());
                 return;
@@ -170,6 +178,9 @@ public final class CloudCommandManager {
      * Registers plugin commands to the {@link LegacyPaperCommandManager}.
      */
     public @NotNull CloudCommandManager registerCommands() {
+        annotationParser.parse(FancyNpcsCMD.INSTANCE);
+        annotationParser.parse(NpcConvertCMD.INSTANCE);
+
         annotationParser.parse(AttributeCMD.INSTANCE);
         annotationParser.parse(CenterCMD.INSTANCE);
         annotationParser.parse(CollidableCMD.INSTANCE);
@@ -177,7 +188,6 @@ public final class CloudCommandManager {
         annotationParser.parse(CreateCMD.INSTANCE);
         annotationParser.parse(DisplayNameCMD.INSTANCE);
         annotationParser.parse(EquipmentCMD.INSTANCE);
-        annotationParser.parse(FancyNpcsCMD.INSTANCE);
         annotationParser.parse(FixCMD.INSTANCE);
         annotationParser.parse(GlowingCMD.INSTANCE);
         annotationParser.parse(InfoCMD.INSTANCE);
@@ -198,14 +208,12 @@ public final class CloudCommandManager {
         annotationParser.parse(ActionCMD.INSTANCE);
         annotationParser.parse(VisibilityDistanceCMD.INSTANCE);
         annotationParser.parse(VisibilityCMD.INSTANCE);
+        annotationParser.parse(ScaleCMD.INSTANCE);
 
         if (FancyNpcs.ENABLE_DEBUG_MODE_FEATURE_FLAG.isEnabled()) {
             annotationParser.parse(FancyNpcsDebugCMD.INSTANCE);
         }
 
-        if (Set.of("1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11").contains(Bukkit.getMinecraftVersion())) {
-            annotationParser.parse(ScaleCMD.INSTANCE);
-        }
 
         return this;
     }

@@ -1,0 +1,11 @@
+--- a/net/minecraft/core/NonNullList.java
++++ b/net/minecraft/core/NonNullList.java
+@@ -23,7 +_,7 @@
+       Objects.requireNonNull(defaultValue);
+       Object[] objects = new Object[size];
+       Arrays.fill(objects, defaultValue);
+-      return new NonNullList<>(Arrays.asList(objects), defaultValue);
++      return new NonNullList<>(Arrays.asList((E[])objects), defaultValue);
+    }
+ 
+    @SafeVarargs

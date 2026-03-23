@@ -1,0 +1,29 @@
+--- a/net/minecraft/server/jsonrpc/methods/AllowlistService.java
++++ b/net/minecraft/server/jsonrpc/methods/AllowlistService.java
+@@ -22,7 +_,7 @@
+          .map(playerDto -> minecraftApi.playerListService().getUser(playerDto.id(), playerDto.name()))
+          .toList();
+ 
+-      for (Optional<NameAndId> user : (List)Util.sequence(fetch).join()) {
++      for (Optional<NameAndId> user : Util.sequence(fetch).join()) {
+          user.ifPresent(nameAndId -> minecraftApi.allowListService().add(new UserWhiteListEntry(nameAndId), clientInfo));
+       }
+ 
+@@ -39,7 +_,7 @@
+          .map(playerDto -> minecraftApi.playerListService().getUser(playerDto.id(), playerDto.name()))
+          .toList();
+ 
+-      for (Optional<NameAndId> user : (List)Util.sequence(fetch).join()) {
++      for (Optional<NameAndId> user : Util.sequence(fetch).join()) {
+          user.ifPresent(nameAndId -> minecraftApi.allowListService().remove(nameAndId, clientInfo));
+       }
+ 
+@@ -51,7 +_,7 @@
+       List<CompletableFuture<Optional<NameAndId>>> fetch = playerDtos.stream()
+          .map(playerDto -> minecraftApi.playerListService().getUser(playerDto.id(), playerDto.name()))
+          .toList();
+-      Set<NameAndId> finalAllowList = (Set<NameAndId>)((List)Util.sequence(fetch).join()).stream().flatMap(Optional::stream).collect(Collectors.toSet());
++      Set<NameAndId> finalAllowList = (Util.sequence(fetch).join()).stream().flatMap(Optional::stream).collect(Collectors.toSet());
+       Set<NameAndId> currentAllowList = (Set<NameAndId>)minecraftApi.allowListService()
+          .getEntries()
+          .stream()

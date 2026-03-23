@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/level/block/Block.java
++++ b/net/minecraft/world/level/block/Block.java
+@@ -581,7 +_,7 @@
+    }
+ 
+    protected Function<BlockState, VoxelShape> getShapeForEachState(final Function<BlockState, VoxelShape> shapeCalculator) {
+-      return ((ImmutableMap)this.stateDefinition.getPossibleStates().stream().collect(ImmutableMap.toImmutableMap(Function.identity(), shapeCalculator)))::get;
++      return this.stateDefinition.getPossibleStates().stream().collect(ImmutableMap.toImmutableMap(Function.identity(), shapeCalculator))::get;
+    }
+ 
+    protected Function<BlockState, VoxelShape> getShapeForEachState(
+@@ -604,7 +_,7 @@
+    }
+ 
+    private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValueHelper(final S state, final Property<T> property, final Object value) {
+-      return state.setValue(property, (Comparable)value);
++      return state.setValue(property, (T)value);
+    }
+ 
+    @Deprecated

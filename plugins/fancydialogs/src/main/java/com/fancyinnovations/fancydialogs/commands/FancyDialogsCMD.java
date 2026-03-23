@@ -36,6 +36,7 @@ public final class FancyDialogsCMD {
         String version = plugin.getPluginMeta().getVersion();
 
         translator.translate("commands.fancydialogs.version")
+                .withPrefix()
                 .replace("version", version)
                 .send(actor.sender());
     }
@@ -50,7 +51,7 @@ public final class FancyDialogsCMD {
             new ConfirmationDialog("Are you sure you want to reload the configuration? This will reset all changes made to the config file.")
                     .withTitle("Confirm reload")
                     .withOnConfirm(() -> reloadConfig(actor))
-                    .withOnCancel(() -> translator.translate("commands.fancydialogs.config.reload.cancelled").send(actor.sender()))
+                    .withOnCancel(() -> translator.translate("commands.fancydialogs.config.reload.cancelled").withPrefix().send(actor.sender()))
                     .ask(actor.asPlayer());
         } else {
             reloadConfig(actor);
@@ -70,6 +71,7 @@ public final class FancyDialogsCMD {
         translator.setSelectedLanguage(selectedLanguage);
 
         translator.translate("commands.fancydialogs.config.reload.success")
+                .withPrefix()
                 .send(actor.sender());
     }
 
@@ -86,6 +88,7 @@ public final class FancyDialogsCMD {
         plugin.getDialogStorage().saveBatch(dialogs);
 
         translator.translate("commands.fancydialogs.storage.save.success")
+                .withPrefix()
                 .replace("count", String.valueOf(dialogs.size()))
                 .send(actor.sender());
     }
@@ -100,7 +103,7 @@ public final class FancyDialogsCMD {
             new ConfirmationDialog("Are you sure you want to load all dialog data from the storage? This will overwrite any existing dialogs.")
                     .withTitle("Confirm load")
                     .withOnConfirm(() -> loadStorage(actor))
-                    .withOnCancel(() -> translator.translate("commands.fancydialogs.storage.load.cancelled").send(actor.sender()))
+                    .withOnCancel(() -> translator.translate("commands.fancydialogs.storage.load.cancelled").withPrefix().send(actor.sender()))
                     .ask(actor.asPlayer());
         } else {
             loadStorage(actor);
@@ -116,6 +119,7 @@ public final class FancyDialogsCMD {
         }
 
         translator.translate("commands.fancydialogs.storage.load.success")
+                .withPrefix()
                 .replace("count", String.valueOf(dialogs.size()))
                 .send(actor.sender());
     }
@@ -130,7 +134,7 @@ public final class FancyDialogsCMD {
             new ConfirmationDialog("Are you sure you want to reload all dialog data from the storage? This will clear the dialog registry and overwrite any existing dialogs.")
                     .withTitle("Confirm reload")
                     .withOnConfirm(() -> reloadStorage(actor))
-                    .withOnCancel(() -> translator.translate("commands.fancydialogs.storage.reload.cancelled").send(actor.sender()))
+                    .withOnCancel(() -> translator.translate("commands.fancydialogs.storage.reload.cancelled").withPrefix().send(actor.sender()))
                     .ask(actor.asPlayer());
         } else {
             reloadStorage(actor);
@@ -147,6 +151,7 @@ public final class FancyDialogsCMD {
         }
 
         translator.translate("commands.fancydialogs.storage.reload.success")
+                .withPrefix()
                 .replace("count", String.valueOf(dialogs.size()))
                 .send(actor.sender());
     }
@@ -159,11 +164,14 @@ public final class FancyDialogsCMD {
     ) {
         Collection<Dialog> dialogs = plugin.getDialogRegistry().getAll();
         if (dialogs.isEmpty()) {
-            translator.translate("commands.dialog.list.empty").send(actor.sender());
+            translator.translate("commands.dialog.list.empty")
+                    .withPrefix()
+                    .send(actor.sender());
             return;
         }
 
         translator.translate("commands.dialog.list.header")
+                .withPrefix()
                 .replace("count", String.valueOf(dialogs.size()))
                 .send(actor.sender());
 
@@ -185,7 +193,7 @@ public final class FancyDialogsCMD {
             new ConfirmationDialog("Are you sure you want to clear the dialog registry? This will remove all registered dialogs.")
                     .withTitle("Confirm clear")
                     .withOnConfirm(() -> clearRegistry(actor))
-                    .withOnCancel(() -> translator.translate("commands.fancydialogs.registry.clear.cancelled").send(actor.sender()))
+                    .withOnCancel(() -> translator.translate("commands.fancydialogs.registry.clear.cancelled").withPrefix().send(actor.sender()))
                     .ask(actor.asPlayer());
         } else {
             clearRegistry(actor);
@@ -194,7 +202,9 @@ public final class FancyDialogsCMD {
 
     private void clearRegistry(BukkitCommandActor actor) {
         plugin.getDialogRegistry().clear();
-        translator.translate("commands.fancydialogs.registry.clear.success").send(actor.sender());
+        translator.translate("commands.fancydialogs.registry.clear.success")
+                .withPrefix()
+                .send(actor.sender());
     }
 
     @Command("fancydialogs registry unregister <dialog>")
@@ -208,7 +218,7 @@ public final class FancyDialogsCMD {
             new ConfirmationDialog("Are you sure you want to unregister the dialog with ID '" + dialog.getId() + "'? This will remove it from the registry.")
                     .withTitle("Confirm unregister")
                     .withOnConfirm(() -> unregisterDialog(actor, dialog))
-                    .withOnCancel(() -> translator.translate("commands.fancydialogs.registry.unregister.cancelled").send(actor.sender()))
+                    .withOnCancel(() -> translator.translate("commands.fancydialogs.registry.unregister.cancelled").withPrefix().send(actor.sender()))
                     .ask(actor.asPlayer());
         } else {
             unregisterDialog(actor, dialog);
@@ -221,6 +231,7 @@ public final class FancyDialogsCMD {
     ) {
         plugin.getDialogRegistry().unregister(dialog.getId());
         translator.translate("commands.fancydialogs.registry.unregister.success")
+                .withPrefix()
                 .replace("id", dialog.getId())
                 .send(actor.sender());
     }
@@ -235,7 +246,7 @@ public final class FancyDialogsCMD {
             new ConfirmationDialog("Are you sure you want to clear the joined players cache?")
                     .withTitle("Confirm clear")
                     .withOnConfirm(() -> clearJoinedPlayersCache(actor))
-                    .withOnCancel(() -> translator.translate("commands.fancydialogs.joined_players_cache.clear.cancelled").send(actor.sender()))
+                    .withOnCancel(() -> translator.translate("commands.fancydialogs.joined_players_cache.clear.cancelled").withPrefix().send(actor.sender()))
                     .ask(actor.asPlayer());
         } else {
             clearJoinedPlayersCache(actor);
@@ -247,6 +258,7 @@ public final class FancyDialogsCMD {
     ) {
         plugin.getJoinedPlayersCache().clear();
         translator.translate("commands.fancydialogs.joined_players_cache.clear.success")
+                .withPrefix()
                 .send(actor.sender());
     }
 }

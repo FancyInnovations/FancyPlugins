@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/level/levelgen/flat/FlatLevelGeneratorSettings.java
++++ b/net/minecraft/world/level/levelgen/flat/FlatLevelGeneratorSettings.java
+@@ -33,7 +_,7 @@
+ 
+ public class FlatLevelGeneratorSettings {
+    private static final Logger LOGGER = LogUtils.getLogger();
+-   public static final Codec<FlatLevelGeneratorSettings> CODEC = RecordCodecBuilder.create(
++   public static final Codec<FlatLevelGeneratorSettings> CODEC = RecordCodecBuilder.<FlatLevelGeneratorSettings>create(
+          i -> i.group(
+                RegistryCodecs.homogeneousList(Registries.STRUCTURE_SET).lenientOptionalFieldOf("structure_overrides").forGetter(c -> c.structureOverrides),
+                FlatLayerInfo.CODEC.listOf().fieldOf("layers").forGetter(FlatLevelGeneratorSettings::getLayersInfo),
+@@ -154,7 +_,7 @@
+                if (stepIndex != GenerationStep.Decoration.UNDERGROUND_STRUCTURES.ordinal()
+                   && stepIndex != GenerationStep.Decoration.SURFACE_STRUCTURES.ordinal()
+                   && (!this.addLakes || stepIndex != GenerationStep.Decoration.LAKES.ordinal())) {
+-                  for (Holder<PlacedFeature> feature : (HolderSet)features.get(stepIndex)) {
++                  for (Holder<PlacedFeature> feature : features.get(stepIndex)) {
+                      newGenerationSettings.addFeature(stepIndex, feature);
+                   }
+                }

@@ -1,0 +1,20 @@
+--- a/net/minecraft/tags/TagLoader.java
++++ b/net/minecraft/tags/TagLoader.java
+@@ -53,7 +_,7 @@
+          Identifier location = (Identifier)entry.getKey();
+          Identifier id = lister.fileToId(location);
+ 
+-         for (Resource resource : (List)entry.getValue()) {
++         for (Resource resource : entry.getValue()) {
+             try {
+                Reader reader = resource.openAsReader();
+ 
+@@ -142,7 +_,7 @@
+    }
+ 
+    public static List<Registry.PendingTags<?>> loadTagsForExistingRegistries(final ResourceManager manager, final RegistryAccess layer) {
+-      return (List<Registry.PendingTags<?>>)layer.registries()
++      return layer.registries()
+          .map(entry -> loadPendingTags(manager, entry.value()))
+          .flatMap(Optional::stream)
+          .collect(Collectors.toUnmodifiableList());

@@ -33,9 +33,9 @@ public enum MoveHereCMD {
                 npc.removeForAll();
                 npc.spawnForAll();
             }
-            translator.translate("npc_move_here_success").replace("npc", npc.getData().getName()).send(sender);
+            translator.translate("npc_move_here_success").withPrefix().replace("npc", npc.getData().getName()).send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 }

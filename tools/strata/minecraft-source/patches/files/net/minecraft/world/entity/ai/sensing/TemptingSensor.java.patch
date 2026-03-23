@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/sensing/TemptingSensor.java
++++ b/net/minecraft/world/entity/ai/sensing/TemptingSensor.java
+@@ -37,7 +_,7 @@
+    protected void doTick(final ServerLevel level, final PathfinderMob body) {
+       Brain<?> brain = body.getBrain();
+       TargetingConditions targeting = TEMPT_TARGETING.copy().range((float)body.getAttributeValue(Attributes.TEMPT_RANGE));
+-      List<Player> players = (List<Player>)level.players()
++      List<Player> players = level.players()
+          .stream()
+          .filter(EntitySelector.NO_SPECTATORS)
+          .filter(playerx -> targeting.test(level, body, playerx))

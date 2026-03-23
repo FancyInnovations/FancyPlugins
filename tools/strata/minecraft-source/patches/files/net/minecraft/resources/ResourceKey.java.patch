@@ -1,0 +1,11 @@
+--- a/net/minecraft/resources/ResourceKey.java
++++ b/net/minecraft/resources/ResourceKey.java
+@@ -48,7 +_,7 @@
+    }
+ 
+    public <E> Optional<ResourceKey<E>> cast(final ResourceKey<? extends Registry<E>> registry) {
+-      return this.isFor(registry) ? Optional.of(this) : Optional.empty();
++      return this.isFor(registry) ? Optional.of((ResourceKey<E>)this) : Optional.empty();
+    }
+ 
+    public Identifier identifier() {

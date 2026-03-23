@@ -1,0 +1,13 @@
+--- a/net/minecraft/world/level/storage/loot/predicates/EnvironmentAttributeCheck.java
++++ b/net/minecraft/world/level/storage/loot/predicates/EnvironmentAttributeCheck.java
+@@ -17,8 +_,8 @@
+    }
+ 
+    @Override
+-   public MapCodec<EnvironmentAttributeCheck<Value>> codec() {
+-      return (MapCodec<EnvironmentAttributeCheck<Value>>)MAP_CODEC;
++   public MapCodec<EnvironmentAttributeCheck<?>> codec() {
++      return MAP_CODEC;
+    }
+ 
+    @Override

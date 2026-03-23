@@ -35,6 +35,7 @@ public final class TraitCMD {
     ) {
         if (hologram.getData().getTraitTrait().isTraitAttached(trait.clazz())) {
             translator.translate("commands.hologram.edit.trait.attach.already_attached")
+                    .withPrefix()
                     .replace("hologram", hologram.getData().getName())
                     .replace("name", trait.name())
                     .send(actor.sender());
@@ -44,6 +45,7 @@ public final class TraitCMD {
         hologram.getData().addTrait(trait.clazz());
 
         translator.translate("commands.hologram.edit.trait.attach.success")
+                .withPrefix()
                 .replace("hologram", hologram.getData().getName())
                 .replace("name", trait.name())
                 .send(actor.sender());
@@ -59,6 +61,7 @@ public final class TraitCMD {
     ) {
         if (!hologram.getData().getTraitTrait().isTraitAttached(trait.clazz())) {
             translator.translate("commands.hologram.edit.trait.detach.not_attached")
+                    .withPrefix()
                     .replace("hologram", hologram.getData().getName())
                     .replace("name", trait.name())
                     .send(actor.sender());
@@ -68,6 +71,7 @@ public final class TraitCMD {
         hologram.getData().getTraitTrait().removeTrait(trait.clazz());
 
         translator.translate("commands.hologram.edit.trait.detach.success")
+                .withPrefix()
                 .replace("hologram", hologram.getData().getName())
                 .replace("name", trait.name())
                 .send(actor.sender());
@@ -83,6 +87,7 @@ public final class TraitCMD {
         HologramTraitTrait traitTrait = hologram.getData().getTraitTrait();
         if (traitTrait.getTraits().isEmpty()) {
             translator.translate("commands.hologram.edit.trait.list.no_traits")
+                    .withPrefix()
                     .replace("hologram", hologram.getData().getName())
                     .send(actor.sender());
             return;
@@ -90,6 +95,7 @@ public final class TraitCMD {
 
         translator.translate("commands.hologram.edit.trait.list.header")
                 .replace("hologram", hologram.getData().getName())
+                .withPrefix()
                 .send(actor.sender());
 
         for (HologramTrait trait : traitTrait.getTraits()) {

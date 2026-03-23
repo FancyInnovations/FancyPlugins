@@ -21,9 +21,8 @@ import org.jetbrains.annotations.Nullable;
 public enum MoveToCMD {
     INSTANCE; // SINGLETON
 
-    private final Translator translator = FancyNpcs.getInstance().getTranslator();
-
     private static final DecimalFormat COORDS_FORMAT = new DecimalFormat("#.##");
+    private final Translator translator = FancyNpcs.getInstance().getTranslator();
 
     @Command("npc move_to <npc> <location> [world]")
     @Permission("fancynpcs.command.npc.move_to")
@@ -38,7 +37,7 @@ public enum MoveToCMD {
         final World finalWorld = (world == null && sender instanceof Player player) ? player.getWorld() : world;
         // Sending error message if finalized World argument ended up being null. This can happen when command is executed by console and 'world' argument was not specified.
         if (finalWorld == null) {
-            translator.translate("npc_move_to_failure_must_specify_world").send(sender);
+            translator.translate("npc_move_to_failure_must_specify_world").withPrefix().send(sender);
             return;
         }
         // Updating World of the finalized Location. This should never pass a null value.
@@ -51,6 +50,7 @@ public enum MoveToCMD {
             npc.getData().setLocation(location);
             npc.updateForAll();
             translator.translate("npc_move_to_success")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("x", COORDS_FORMAT.format(location.x()))
                     .replace("y", COORDS_FORMAT.format(location.y()))
@@ -58,7 +58,7 @@ public enum MoveToCMD {
                     .replace("world", finalWorld.getName())
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 }

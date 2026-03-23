@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/ChunkToProtochunkFix.java
++++ b/net/minecraft/util/datafix/fixes/ChunkToProtochunkFix.java
+@@ -66,7 +_,7 @@
+             .result()
+             .map(
+                ticks -> {
+-                  List<ShortList> toBeTickedTag = (List<ShortList>)IntStream.range(0, 16).mapToObj(i -> new ShortArrayList()).collect(Collectors.toList());
++                  List<ShortList> toBeTickedTag = IntStream.range(0, 16).mapToObj(i -> new ShortArrayList()).collect(Collectors.toList());
+                   ticks.forEach(pendingTickTag -> {
+                      int x = pendingTickTag.get("x").asInt(0);
+                      int y = pendingTickTag.get("y").asInt(0);

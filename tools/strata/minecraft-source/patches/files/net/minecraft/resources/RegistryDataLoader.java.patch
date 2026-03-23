@@ -1,0 +1,29 @@
+--- a/net/minecraft/resources/RegistryDataLoader.java
++++ b/net/minecraft/resources/RegistryDataLoader.java
+@@ -79,7 +_,7 @@
+ 
+ public class RegistryDataLoader {
+    private static final Logger LOGGER = LogUtils.getLogger();
+-   private static final Comparator<ResourceKey<?>> ERROR_KEY_COMPARATOR = Comparator.comparing(ResourceKey::registry).thenComparing(ResourceKey::identifier);
++   private static final Comparator<ResourceKey<?>> ERROR_KEY_COMPARATOR = Comparator.<ResourceKey<?>, Identifier>comparing(ResourceKey::registry).thenComparing(ResourceKey::identifier);
+    public static final List<RegistryDataLoader.RegistryData<?>> WORLDGEN_REGISTRIES = List.of(
+       new RegistryDataLoader.RegistryData<>(Registries.DIMENSION_TYPE, DimensionType.DIRECT_CODEC),
+       new RegistryDataLoader.RegistryData<>(Registries.BIOME, Biome.DIRECT_CODEC),
+@@ -201,7 +_,7 @@
+       return CompletableFuture.supplyAsync(
+             () -> {
+                Map<ResourceKey<?>, Exception> loadingErrors = new ConcurrentHashMap();
+-               List<RegistryLoadTask<?>> loadTasks = (List<RegistryLoadTask<?>>)registriesToLoad.stream()
++               List<RegistryLoadTask<?>> loadTasks = registriesToLoad.stream()
+                   .map(r -> loaderFactory.create(r, loadingErrors))
+                   .collect(Collectors.toUnmodifiableList());
+                RegistryOps.RegistryInfoLookup contextAndNewRegistries = createContext(contextRegistries, loadTasks);
+@@ -264,7 +_,7 @@
+          );
+       errorsByRegistry.entrySet().stream().sorted(Entry.comparingByKey()).forEach(registryEntry -> {
+          errorPrinter.printf(Locale.ROOT, "> Errors in registry %s:%n", registryEntry.getKey());
+-         ((Map)registryEntry.getValue()).entrySet().stream().sorted(Entry.comparingByKey()).forEach(elementError -> {
++         (registryEntry.getValue()).entrySet().stream().sorted(Entry.comparingByKey()).forEach(elementError -> {
+             errorPrinter.printf(Locale.ROOT, ">> Errors in element %s:%n", elementError.getKey());
+             ((Exception)elementError.getValue()).printStackTrace(errorPrinter);
+          });

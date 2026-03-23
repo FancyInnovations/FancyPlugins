@@ -15,10 +15,9 @@ import org.incendo.cloud.annotations.parser.Parser;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.context.CommandInput;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
 
 public enum AttributeCMD {
     INSTANCE; // SINGLETON
@@ -37,9 +36,15 @@ public enum AttributeCMD {
         if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.ATTRIBUTE, new Object[]{attribute, attributeValue}, sender).callEvent()) {
             npc.getData().addAttribute(attribute, attributeValue);
             npc.updateForAll();
-            translator.translate("npc_attribute_set").replace("attribute", attribute.getName()).replaceStripped("value", attributeValue.toLowerCase()).send(sender);
+            translator.translate("npc_attribute_set")
+                    .withPrefix()
+                    .replace("attribute", attribute.getName())
+                    .replaceStripped("value", attributeValue.toLowerCase())
+                    .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled")
+                    .withPrefix()
+                    .send(sender);
         }
     }
 
@@ -51,10 +56,13 @@ public enum AttributeCMD {
     ) {
         // Sending error message if the list is empty.
         if (npc.getData().getAttributes().isEmpty()) {
-            translator.translate("npc_attribute_list_failure_empty").send(sender);
+            translator.translate("npc_attribute_list_failure_empty")
+                    .withPrefix()
+                    .send(sender);
             return;
         }
-        translator.translate("npc_attribute_list_header").send(sender);
+        translator.translate("npc_attribute_list_header")
+                .send(sender);
         // Iterating over all attributes set on this NPC and sending them to the sender.
         npc.getData().getAttributes().forEach((attribute, value) -> {
             translator.translate("npc_attribute_list_entry")
@@ -78,7 +86,7 @@ public enum AttributeCMD {
         final NpcAttribute attribute = attributeManager.getAttributeByName(npc.getData().getType(), value);
         // Throwing exception when non-existent attribute has been provided.
         if (attribute == null)
-            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_attribute").replaceStripped("input", value).send(context.sender()));
+            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_attribute").withPrefix().replaceStripped("input", value).send(context.sender()));
         // Otherwise, returning the attribute from the parser.
         return attribute;
     }
@@ -91,7 +99,7 @@ public enum AttributeCMD {
         final String value = input.read(input.remainingLength());
         // Sending error message if attribute is null or cannot accept provided value.
         if (!attribute.isValidValue(value))
-            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_attribute_value").replaceStripped("input", value).send(context.sender()));
+            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_attribute_value").withPrefix().replaceStripped("input", value).send(context.sender()));
         // Otherwise, returning the attribute from the parser.
         return value;
     }

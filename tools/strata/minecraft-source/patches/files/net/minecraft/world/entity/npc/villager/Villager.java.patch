@@ -1,0 +1,29 @@
+--- a/net/minecraft/world/entity/npc/villager/Villager.java
++++ b/net/minecraft/world/entity/npc/villager/Villager.java
+@@ -171,13 +_,13 @@
+    );
+    public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holder<PoiType>>> POI_MEMORIES = ImmutableMap.of(
+       MemoryModuleType.HOME,
+-      (BiPredicate)(villager, poiType) -> poiType.is(PoiTypes.HOME),
++      (villager, poiType) -> poiType.is(PoiTypes.HOME),
+       MemoryModuleType.JOB_SITE,
+-      (BiPredicate)(villager, poiType) -> villager.getVillagerData().profession().value().heldJobSite().test(poiType),
++      (villager, poiType) -> villager.getVillagerData().profession().value().heldJobSite().test(poiType),
+       MemoryModuleType.POTENTIAL_JOB_SITE,
+-      (BiPredicate)(villager, poiType) -> VillagerProfession.ALL_ACQUIRABLE_JOBS.test(poiType),
++      (villager, poiType) -> VillagerProfession.ALL_ACQUIRABLE_JOBS.test(poiType),
+       MemoryModuleType.MEETING_POINT,
+-      (BiPredicate)(villager, poiType) -> poiType.is(PoiTypes.MEETING)
++      (villager, poiType) -> poiType.is(PoiTypes.MEETING)
+    );
+ 
+    public Villager(final EntityType<? extends Villager> type, final Level level) {
+@@ -199,7 +_,7 @@
+ 
+    @Override
+    public Brain<Villager> getBrain() {
+-      return super.getBrain();
++      return (Brain<Villager>) super.getBrain();
+    }
+ 
+    @Override

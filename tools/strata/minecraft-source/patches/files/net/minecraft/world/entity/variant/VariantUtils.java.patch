@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/variant/VariantUtils.java
++++ b/net/minecraft/world/entity/variant/VariantUtils.java
+@@ -29,7 +_,7 @@
+    }
+ 
+    public static <T> Optional<Holder<T>> readVariant(final ValueInput input, final ResourceKey<? extends Registry<T>> registryId) {
+-      return input.read("variant", (Codec<T>)Identifier.CODEC).map(id -> ResourceKey.create(registryId, id)).flatMap(input.lookup()::get);
++      return input.read("variant", Identifier.CODEC).map(id -> ResourceKey.create(registryId, id)).flatMap(input.lookup()::get);
+    }
+ 
+    public static <T extends PriorityProvider<SpawnContext, ?>> Optional<Holder.Reference<T>> selectVariantToSpawn(

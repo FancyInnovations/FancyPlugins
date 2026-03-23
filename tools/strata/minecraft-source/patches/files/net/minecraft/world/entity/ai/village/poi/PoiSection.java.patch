@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/village/poi/PoiSection.java
++++ b/net/minecraft/world/entity/ai/village/poi/PoiSection.java
+@@ -132,7 +_,7 @@
+       if (!this.isValid) {
+          Short2ObjectMap<PoiRecord> oldRecords = new Short2ObjectOpenHashMap(this.records);
+          this.clear();
+-         updater.accept((BiConsumer)(blockPos, poiType) -> {
++         updater.accept((blockPos, poiType) -> {
+             short key = SectionPos.sectionRelativePos(blockPos);
+             PoiRecord newRecord = (PoiRecord)oldRecords.computeIfAbsent(key, k -> new PoiRecord(blockPos, poiType, this.setDirty));
+             this.add(newRecord);

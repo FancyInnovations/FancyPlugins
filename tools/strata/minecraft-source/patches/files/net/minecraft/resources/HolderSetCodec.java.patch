@@ -1,0 +1,31 @@
+--- a/net/minecraft/resources/HolderSetCodec.java
++++ b/net/minecraft/resources/HolderSetCodec.java
+@@ -49,7 +_,7 @@
+                .decode(ops, input)
+                .flatMap(
+                   p -> {
+-                     DataResult<HolderSet<E>> result = (DataResult<HolderSet<E>>)((Either)p.getFirst())
++                     DataResult<HolderSet<E>> result = (p.getFirst())
+                         .map(tag -> lookupTag(registry, tag), values -> DataResult.success(HolderSet.direct(values)));
+                      return result.map(holders -> Pair.of(holders, p.getSecond()));
+                   }
+@@ -61,8 +_,8 @@
+    }
+ 
+    private static <E> DataResult<HolderSet<E>> lookupTag(final HolderGetter<E> registry, final TagKey<E> key) {
+-      return (DataResult<HolderSet<E>>)registry.get(key)
+-         .map(DataResult::success)
++      return registry.get(key)
++          .<DataResult<HolderSet<E>>>map(DataResult::success)
+          .orElseGet(() -> DataResult.error(() -> "Missing tag: '" + key.location() + "' in '" + key.registry().identifier() + "'"));
+    }
+ 
+@@ -85,7 +_,7 @@
+       return this.elementCodec.listOf().decode(ops, input).flatMap(p -> {
+          List<Holder.Direct<E>> directHolders = new ArrayList();
+ 
+-         for (Holder<E> holder : (List)p.getFirst()) {
++         for (Holder<E> holder : p.getFirst()) {
+             if (!(holder instanceof Holder.Direct<E> direct)) {
+                return DataResult.error(() -> "Can't decode element " + holder + " without registry");
+             }

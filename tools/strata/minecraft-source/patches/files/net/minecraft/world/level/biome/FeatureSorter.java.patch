@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/biome/FeatureSorter.java
++++ b/net/minecraft/world/level/biome/FeatureSorter.java
+@@ -44,7 +_,7 @@
+          maxStep = Math.max(maxStep, featuresForStep.size());
+ 
+          for (int i = 0; i < featuresForStep.size(); i++) {
+-            for (Holder<PlacedFeature> featureSupplier : (HolderSet)featuresForStep.get(i)) {
++            for (Holder<PlacedFeature> featureSupplier : featuresForStep.get(i)) {
+                PlacedFeature feature = featureSupplier.value();
+                featureList.add(new FeatureData(featureIndex.computeIfAbsent(feature, f -> nextFeatureIndex.getAndIncrement()), i, feature));
+             }

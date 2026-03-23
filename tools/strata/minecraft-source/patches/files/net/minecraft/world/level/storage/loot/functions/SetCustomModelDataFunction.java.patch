@@ -1,0 +1,23 @@
+--- a/net/minecraft/world/level/storage/loot/functions/SetCustomModelDataFunction.java
++++ b/net/minecraft/world/level/storage/loot/functions/SetCustomModelDataFunction.java
+@@ -20,7 +_,7 @@
+ 
+ public class SetCustomModelDataFunction extends LootItemConditionalFunction {
+    private static final Codec<NumberProvider> COLOR_PROVIDER_CODEC = Codec.withAlternative(
+-      NumberProviders.CODEC, ExtraCodecs.RGB_COLOR_CODEC, ConstantValue::new
++           NumberProviders.CODEC, ExtraCodecs.RGB_COLOR_CODEC, f -> new ConstantValue(f)
+    );
+    public static final MapCodec<SetCustomModelDataFunction> MAP_CODEC = RecordCodecBuilder.mapCodec(
+       i -> commonFields(i)
+@@ -70,9 +_,9 @@
+    }
+ 
+    private static <T, E> List<E> apply(final Optional<ListOperation.StandAlone<T>> operation, final List<E> current, final Function<T, E> mapper) {
+-      return (List<E>)operation.map(o -> {
++      return operation.map(o -> {
+          List<E> transformedReplacement = o.value().stream().map(mapper).toList();
+-         return o.operation().apply((List<T>)current, (List<T>)transformedReplacement);
++         return o.operation().apply(current, transformedReplacement);
+       }).orElse(current);
+    }
+ 

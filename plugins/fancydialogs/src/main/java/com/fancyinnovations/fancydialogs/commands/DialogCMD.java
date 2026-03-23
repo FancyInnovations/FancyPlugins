@@ -29,11 +29,14 @@ public final class DialogCMD {
     public void list(BukkitCommandActor actor) {
         Collection<Dialog> dialogs = plugin.getDialogRegistry().getAll();
         if (dialogs.isEmpty()) {
-            translator.translate("commands.dialog.list.empty").send(actor.sender());
+            translator.translate("commands.dialog.list.empty")
+                    .withPrefix()
+                    .send(actor.sender());
             return;
         }
 
         translator.translate("commands.dialog.list.header")
+                .withPrefix()
                 .replace("count", String.valueOf(dialogs.size()))
                 .send(actor.sender());
 
@@ -60,10 +63,12 @@ public final class DialogCMD {
             if (actor.isPlayer()) {
                 dialog.open(actor.asPlayer(), dialogArgs);
                 translator.translate("commands.dialog.open.self")
+                        .withPrefix()
                         .replace("id", dialog.getId())
                         .send(actor.sender());
             } else {
                 translator.translate("commands.dialog.open.console_requires_target")
+                        .withPrefix()
                         .replace("id", dialog.getId())
                         .send(actor.sender());
             }
@@ -78,6 +83,7 @@ public final class DialogCMD {
             String playersStr = String.join(", ", players);
 
             translator.translate("commands.dialog.open.other")
+                    .withPrefix()
                     .replace("id", dialog.getId())
                     .replace("target", playersStr)
                     .send(actor.sender());

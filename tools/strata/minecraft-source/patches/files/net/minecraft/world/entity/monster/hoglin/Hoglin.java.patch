@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/monster/hoglin/Hoglin.java
++++ b/net/minecraft/world/entity/monster/hoglin/Hoglin.java
+@@ -128,7 +_,7 @@
+ 
+    @Override
+    public Brain<Hoglin> getBrain() {
+-      return super.getBrain();
++      return (Brain<Hoglin>) super.getBrain();
+    }
+ 
+    @Override

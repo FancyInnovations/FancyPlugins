@@ -1,0 +1,11 @@
+--- a/net/minecraft/TracingExecutor.java
++++ b/net/minecraft/TracingExecutor.java
+@@ -39,7 +_,7 @@
+             }
+          });
+       } else {
+-         return (Executor)(TracyClient.isAvailable() ? command -> this.service.execute(() -> {
++         return (TracyClient.isAvailable() ? command -> this.service.execute(() -> {
+             Zone ignored = TracyClient.beginZone(name, SharedConstants.IS_RUNNING_IN_IDE);
+ 
+             try {

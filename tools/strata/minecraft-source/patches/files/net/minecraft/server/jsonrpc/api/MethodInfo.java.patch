@@ -1,0 +1,44 @@
+--- a/net/minecraft/server/jsonrpc/api/MethodInfo.java
++++ b/net/minecraft/server/jsonrpc/api/MethodInfo.java
+@@ -22,17 +_,17 @@
+    }
+ 
+    private static <Params> Codec<Optional<ParamInfo<Params>>> paramsTypedCodec() {
+-      return ParamInfo.typedCodec().codec().listOf().xmap(MethodInfo::toOptional, MethodInfo::toList);
++      return ParamInfo.<Params>typedCodec().codec().listOf().xmap(MethodInfo::toOptional, MethodInfo::toList);
+    }
+ 
+    private static <Params, Result> MapCodec<MethodInfo<Params, Result>> typedCodec() {
+       return RecordCodecBuilder.mapCodec(
+-         i -> i.group(
+-               Codec.STRING.fieldOf("description").forGetter(MethodInfo::description),
+-               paramsTypedCodec().fieldOf("params").forGetter(MethodInfo::params),
+-               ResultInfo.typedCodec().optionalFieldOf("result").forGetter(MethodInfo::result)
+-            )
+-            .apply(i, MethodInfo::new)
++              i -> i.group(
++                              Codec.STRING.fieldOf("description").forGetter(MethodInfo::description),
++                              MethodInfo.<Params>paramsTypedCodec().fieldOf("params").forGetter(MethodInfo::params),
++                              ResultInfo.<Result>typedCodec().optionalFieldOf("result").forGetter(MethodInfo::result)
++                      )
++                      .apply(i, MethodInfo::new)
+       );
+    }
+ 
+@@ -41,11 +_,14 @@
+    }
+ 
+    public record Named<Params, Result>(Identifier name, MethodInfo<Params, Result> contents) {
+-      public static final Codec<MethodInfo.Named<?, ?>> CODEC = typedCodec();
++      public static final Codec<MethodInfo.Named<?, ?>> CODEC = (Codec<MethodInfo.Named<?, ?>>) (Object) typedCodec();
+ 
+       public static <Params, Result> Codec<MethodInfo.Named<Params, Result>> typedCodec() {
+          return RecordCodecBuilder.create(
+-            i -> i.group(Identifier.CODEC.fieldOf("name").forGetter(MethodInfo.Named::name), MethodInfo.typedCodec().forGetter(MethodInfo.Named::contents))
++            i -> i.group(
++                            Identifier.CODEC.fieldOf("name").forGetter(MethodInfo.Named::name),
++                            MethodInfo.<Params, Result>typedCodec().forGetter(MethodInfo.Named::contents)
++                    )
+                .apply(i, MethodInfo.Named::new)
+          );
+       }

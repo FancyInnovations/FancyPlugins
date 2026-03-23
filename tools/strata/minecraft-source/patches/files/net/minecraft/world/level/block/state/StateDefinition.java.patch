@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/level/block/state/StateDefinition.java
++++ b/net/minecraft/world/level/block/state/StateDefinition.java
+@@ -56,7 +_,7 @@
+    private static <O, S extends StateHolder<O, S>> MapCodec<S> createCodec(
+       final O owner, final Function<O, S> defaultState, final Map<String, Property<?>> propertiesByName
+    ) {
+-      Supplier<S> defaultSupplier = () -> (StateHolder)defaultState.apply(owner);
++      Supplier<S> defaultSupplier = () -> defaultState.apply(owner);
+       MapCodec<S> codec = MapCodec.unit(defaultSupplier);
+ 
+       for (Entry<String, Property<?>> entry : propertiesByName.entrySet()) {
+@@ -137,7 +_,7 @@
+    ) {
+       return Codec.mapPair(codec, property.valueCodec().fieldOf(name).orElseGet(var0 -> {}, () -> property.value((StateHolder<?, ?>)defaultSupplier.get())))
+          .xmap(
+-            pair -> (StateHolder)((StateHolder)pair.getFirst()).setValue(property, ((Property.Value)pair.getSecond()).value()),
++            pair -> (pair.getFirst()).setValue(property, (pair.getSecond()).value()),
+             state -> Pair.of(state, property.value(state))
+          );
+    }

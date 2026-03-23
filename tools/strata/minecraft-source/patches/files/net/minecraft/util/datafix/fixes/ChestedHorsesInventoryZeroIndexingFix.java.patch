@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/ChestedHorsesInventoryZeroIndexingFix.java
++++ b/net/minecraft/util/datafix/fixes/ChestedHorsesInventoryZeroIndexingFix.java
+@@ -17,7 +_,7 @@
+    }
+ 
+    protected TypeRewriteRule makeRule() {
+-      OpticFinder<Pair<String, Pair<Either<Pair<String, String>, Unit>, Pair<Either<?, Unit>, Dynamic<?>>>>> itemStackFinder = DSL.typeFinder(
++      OpticFinder<Pair<String, Pair<Either<Pair<String, String>, Unit>, Pair<Either<?, Unit>, Dynamic<?>>>>> itemStackFinder = (OpticFinder<Pair<String, Pair<Either<Pair<String, String>, Unit>, Pair<Either<?, Unit>, Dynamic<?>>>>>) DSL.typeFinder(
+          this.getInputSchema().getType(References.ITEM_STACK)
+       );
+       Type<?> entityType = this.getInputSchema().getType(References.ENTITY);

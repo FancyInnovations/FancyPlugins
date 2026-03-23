@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/behavior/GoAndGiveItemsToTarget.java
++++ b/net/minecraft/world/entity/ai/behavior/GoAndGiveItemsToTarget.java
+@@ -55,7 +_,7 @@
+ 
+    @Override
+    protected void start(final ServerLevel level, final E body, final long timestamp) {
+-      ((Optional)this.targetPositionGetter.apply(body))
++      (this.targetPositionGetter.apply(body))
+          .ifPresent(positionTracker -> BehaviorUtils.setWalkAndLookTargetMemories(body, positionTracker, this.speedModifier, 3));
+    }
+ 

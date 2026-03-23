@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/RecipesFix.java
++++ b/net/minecraft/util/datafix/fixes/RecipesFix.java
+@@ -4,7 +_,7 @@
+ import java.util.Map;
+ 
+ public class RecipesFix {
+-   public static final Map<String, String> RECIPES = ImmutableMap.builder()
++   public static final Map<String, String> RECIPES = ImmutableMap.<String, String>builder()
+       .put("minecraft:acacia_wooden_slab", "minecraft:acacia_slab")
+       .put("minecraft:birch_wooden_slab", "minecraft:birch_slab")
+       .put("minecraft:black_stained_hardened_clay", "minecraft:black_terracotta")

@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/valueproviders/ClampedInt.java
++++ b/net/minecraft/util/valueproviders/ClampedInt.java
+@@ -8,7 +_,7 @@
+ import net.minecraft.util.RandomSource;
+ 
+ public record ClampedInt(IntProvider source, int minInclusive, int maxInclusive) implements IntProvider {
+-   public static final MapCodec<ClampedInt> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<ClampedInt> MAP_CODEC = RecordCodecBuilder.<ClampedInt>mapCodec(
+          i -> i.group(
+                IntProviders.CODEC.fieldOf("source").forGetter(ClampedInt::source),
+                Codec.INT.fieldOf("min_inclusive").forGetter(ClampedInt::minInclusive),

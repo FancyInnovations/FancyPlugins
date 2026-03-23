@@ -1,0 +1,29 @@
+--- a/net/minecraft/util/datafix/fixes/WorldGenSettingsFix.java
++++ b/net/minecraft/util/datafix/fixes/WorldGenSettingsFix.java
+@@ -33,7 +_,7 @@
+    private static final String END_CITY = "minecraft:endcity";
+    private static final String WOODLAND_MANSION = "minecraft:mansion";
+    private static final String OCEAN_MONUMENT = "minecraft:monument";
+-   private static final ImmutableMap<String, WorldGenSettingsFix.StructureFeatureConfiguration> DEFAULTS = ImmutableMap.builder()
++   private static final ImmutableMap<String, WorldGenSettingsFix.StructureFeatureConfiguration> DEFAULTS = ImmutableMap.<String, WorldGenSettingsFix.StructureFeatureConfiguration>builder()
+       .put("minecraft:village", new WorldGenSettingsFix.StructureFeatureConfiguration(32, 8, 10387312))
+       .put("minecraft:desert_pyramid", new WorldGenSettingsFix.StructureFeatureConfiguration(32, 8, 14357617))
+       .put("minecraft:igloo", new WorldGenSettingsFix.StructureFeatureConfiguration(32, 8, 14357618))
+@@ -73,7 +_,7 @@
+    }
+ 
+    private static <T> Dynamic<T> vanillaBiomeSource(final Dynamic<T> input, final long seed, final boolean legacyBiomeInitLayer, final boolean largeBiomes) {
+-      Builder<Dynamic<T>, Dynamic<T>> builder = ImmutableMap.builder()
++      Builder<Dynamic<T>, Dynamic<T>> builder = ImmutableMap.<Dynamic<T>, Dynamic<T>>builder()
+          .put(input.createString("type"), input.createString("minecraft:vanilla_layered"))
+          .put(input.createString("seed"), input.createLong(seed))
+          .put(input.createString("large_biomes"), input.createBoolean(largeBiomes));
+@@ -115,7 +_,7 @@
+                            input.createString("structures"),
+                            input.createMap(structureBuilder),
+                            input.createString("layers"),
+-                           (Dynamic)flatSettings.get("layers")
++                           flatSettings.get("layers")
+                               .result()
+                               .orElseGet(
+                                  () -> input.createList(

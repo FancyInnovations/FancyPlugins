@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/goat/Goat.java
++++ b/net/minecraft/world/entity/animal/goat/Goat.java
+@@ -160,7 +_,7 @@
+ 
+    @Override
+    public Brain<Goat> getBrain() {
+-      return super.getBrain();
++      return (Brain<Goat>) super.getBrain();
+    }
+ 
+    @Override

@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/state/properties/Property.java
++++ b/net/minecraft/world/level/block/state/properties/Property.java
+@@ -16,7 +_,7 @@
+    private @Nullable Integer hashCode;
+    private final Codec<T> codec = Codec.STRING
+       .comapFlatMap(
+-         namex -> (DataResult)this.getValue(namex)
++         namex -> this.getValue(namex)
+             .map(DataResult::success)
+             .orElseGet(() -> DataResult.error(() -> "Unable to read property: " + this + " with value: " + namex)),
+          this::getName

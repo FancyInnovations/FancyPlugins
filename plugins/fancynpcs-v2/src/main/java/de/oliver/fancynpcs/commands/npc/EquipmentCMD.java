@@ -52,12 +52,13 @@ public enum EquipmentCMD {
             npc.getData().addEquipment(slot, item);
             npc.updateForAll();
             translator.translate(item.getType() != Material.AIR ? "npc_equipment_set_item" : "npc_equipment_set_empty")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("slot", getTranslatedSlot(slot))
                     .addTagResolver(Placeholder.component("item", (item.getType() != Material.AIR) ? item.displayName().hoverEvent(item.asHoverEvent()) : Component.empty()))
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 
@@ -73,9 +74,9 @@ public enum EquipmentCMD {
             for (final NpcEquipmentSlot slot : NpcEquipmentSlot.values())
                 npc.getData().getEquipment().put(slot, new ItemStack(Material.AIR));
             npc.updateForAll();
-            translator.translate("npc_equipment_clear_success").replace("npc", npc.getData().getName()).send(sender);
+            translator.translate("npc_equipment_clear_success").withPrefix().replace("npc", npc.getData().getName()).send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 
@@ -87,7 +88,7 @@ public enum EquipmentCMD {
     ) {
         // Sending error message if the list is empty or all items are Material.AIR.
         if (npc.getData().getEquipment().isEmpty() || npc.getData().getEquipment().values().stream().allMatch(item -> item == null || item.getType() == Material.AIR)) {
-            translator.translate("npc_equipment_list_failure_empty").send(sender);
+            translator.translate("npc_equipment_list_failure_empty").withPrefix().send(sender);
             return;
         }
         translator.translate("npc_equipment_list_header").send(sender);
@@ -113,7 +114,7 @@ public enum EquipmentCMD {
         final @Nullable NpcEquipmentSlot slot = NpcEquipmentSlot.parse(value);
         // Sending error message if input is not a valid NpcEquipmentSlot.
         if (slot == null)
-            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_equipment_slot").replaceStripped("input", value).send(context.sender()));
+            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_equipment_slot").withPrefix().replaceStripped("input", value).send(context.sender()));
         return slot;
     }
 
@@ -123,21 +124,21 @@ public enum EquipmentCMD {
         // Handling '@none', which returns air (and effectively disables)
         if (value.equals("@none"))
             return new ItemStack(Material.AIR);
-        // Handling '@hand', which returns item player currently have in their hand.
+            // Handling '@hand', which returns item player currently have in their hand.
         else if (value.equals("@hand") && context.sender() instanceof Player player)
             return player.getInventory().getItemInMainHand().clone();
-        // Otherwise, trying to parse input as an material.
+            // Otherwise, trying to parse input as an material.
         else {
             // Converting input to NamespacedKey. Defaults to 'minecraft:' namespace if missing from input.
             final @Nullable NamespacedKey key = NamespacedKey.fromString(value);
             // Sending error message if input is not a valid NamespacedKey.
             if (key == null)
-                throw ReplyingParseException.replying(() -> translator.translate("command_invalid_material").replaceStripped("input", value).send(context.sender()));
+                throw ReplyingParseException.replying(() -> translator.translate("command_invalid_material").withPrefix().replaceStripped("input", value).send(context.sender()));
             // Getting material from the registry.
             final @Nullable Material material = Registry.MATERIAL.get(key);
             // Sending error message if no material was found.
             if (material == null || !material.isItem())
-                throw ReplyingParseException.replying(() -> translator.translate("command_invalid_material").replaceStripped("input", value).send(context.sender()));
+                throw ReplyingParseException.replying(() -> translator.translate("command_invalid_material").withPrefix().replaceStripped("input", value).send(context.sender()));
             // Returning new ItemStack object from the specified Material.
             return new ItemStack(material);
         }

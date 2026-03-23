@@ -1,0 +1,10 @@
+--- a/net/minecraft/core/component/DataComponents.java
++++ b/net/minecraft/core/component/DataComponents.java
+@@ -430,6 +_,6 @@
+    }
+ 
+    private static <T> DataComponentType<T> register(final String id, final UnaryOperator<DataComponentType.Builder<T>> builder) {
+-      return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id, ((DataComponentType.Builder)builder.apply(DataComponentType.builder())).build());
++      return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id, (builder.apply(DataComponentType.builder())).build());
+    }
+ }

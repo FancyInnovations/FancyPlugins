@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/profiling/FilledProfileResults.java
++++ b/net/minecraft/util/profiling/FilledProfileResults.java
+@@ -47,7 +_,7 @@
+       }
+    };
+    private static final Splitter SPLITTER = Splitter.on('\u001e');
+-   private static final Comparator<Entry<String, FilledProfileResults.CounterCollector>> COUNTER_ENTRY_COMPARATOR = Entry.comparingByValue(
++   private static final Comparator<Entry<String, FilledProfileResults.CounterCollector>> COUNTER_ENTRY_COMPARATOR = Entry.<String, FilledProfileResults.CounterCollector>comparingByValue(
+          Comparator.comparingLong(c -> c.totalValue)
+       )
+       .reversed();

@@ -45,6 +45,9 @@ jobs:
       - name: Build FancyDialogs
         run: ./gradlew :plugins:fancydialogs:shadowJar
 
+      - name: Build FancyWorlds
+        run: ./gradlew :plugins:fancyworlds:shadowJar
+
       - name: Build FancyVisuals
         run: ./gradlew :plugins:fancyvisuals:shadowJar
 
@@ -83,6 +86,36 @@ jobs:
 
       - name: Build packets
         run: ./gradlew :libraries:packets:shadowJar
+
+  build-tools:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '21'
+
+      - name: Modify gradlew permissions
+        run: chmod +x ./gradlew
+
+      - name: Build strata
+        run: ./gradlew :tools:strata:shadowJar
+
+      - name: Build quick-e2e
+        run: ./gradlew :tools:quick-e2e:shadowJar
 
   unit-tests:
     runs-on: ubuntu-latest

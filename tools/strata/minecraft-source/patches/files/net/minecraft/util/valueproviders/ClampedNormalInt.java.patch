@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/valueproviders/ClampedNormalInt.java
++++ b/net/minecraft/util/valueproviders/ClampedNormalInt.java
+@@ -8,7 +_,7 @@
+ import net.minecraft.util.RandomSource;
+ 
+ public record ClampedNormalInt(float mean, float deviation, int minInclusive, int maxInclusive) implements IntProvider {
+-   public static final MapCodec<ClampedNormalInt> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<ClampedNormalInt> MAP_CODEC = RecordCodecBuilder.<ClampedNormalInt>mapCodec(
+          i -> i.group(
+                Codec.FLOAT.fieldOf("mean").forGetter(ClampedNormalInt::mean),
+                Codec.FLOAT.fieldOf("deviation").forGetter(ClampedNormalInt::deviation),

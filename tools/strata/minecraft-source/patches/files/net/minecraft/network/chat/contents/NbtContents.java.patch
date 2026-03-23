@@ -1,0 +1,11 @@
+--- a/net/minecraft/network/chat/contents/NbtContents.java
++++ b/net/minecraft/network/chat/contents/NbtContents.java
+@@ -43,7 +_,7 @@
+          }
+       }
+    );
+-   public static final MapCodec<NbtContents> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<NbtContents> MAP_CODEC = RecordCodecBuilder.<NbtContents>mapCodec(
+          i -> i.group(
+                NBT_PATH_CODEC.fieldOf("nbt").forGetter(NbtContents::nbtPath),
+                Codec.BOOL.lenientOptionalFieldOf("interpret", false).forGetter(NbtContents::interpreting),

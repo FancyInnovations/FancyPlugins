@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/nautilus/NautilusAi.java
++++ b/net/minecraft/world/entity/animal/nautilus/NautilusAi.java
+@@ -68,7 +_,7 @@
+          Activity.CORE,
+          0,
+          ImmutableList.of(
+-            new AnimalPanic(1.6F),
++            new AnimalPanic<>(1.6F),
+             new LookAtTargetSink(45, 90),
+             new MoveToTargetSink(),
+             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS),

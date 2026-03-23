@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/chunk/HashMapPalette.java
++++ b/net/minecraft/world/level/chunk/HashMapPalette.java
+@@ -27,7 +_,7 @@
+    }
+ 
+    public static <A> Palette<A> create(final int bits, final List<A> paletteEntries) {
+-      return new HashMapPalette(bits, (List<T>)paletteEntries);
++      return new HashMapPalette(bits, paletteEntries);
+    }
+ 
+    @Override

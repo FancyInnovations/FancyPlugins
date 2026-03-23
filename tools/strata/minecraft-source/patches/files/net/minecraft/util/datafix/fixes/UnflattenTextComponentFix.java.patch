@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/UnflattenTextComponentFix.java
++++ b/net/minecraft/util/datafix/fixes/UnflattenTextComponentFix.java
+@@ -22,7 +_,7 @@
+    }
+ 
+    protected TypeRewriteRule makeRule() {
+-      Type<Pair<String, String>> textComponentType = this.getInputSchema().getType(References.TEXT_COMPONENT);
++      Type<Pair<String, String>> textComponentType = (Type<Pair<String, String>>) this.getInputSchema().getType(References.TEXT_COMPONENT);
+       Type<?> newTextComponentType = this.getOutputSchema().getType(References.TEXT_COMPONENT);
+       return this.createFixer(textComponentType, newTextComponentType);
+    }

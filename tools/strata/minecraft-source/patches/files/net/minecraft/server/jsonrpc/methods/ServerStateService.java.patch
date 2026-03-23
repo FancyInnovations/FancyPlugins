@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/jsonrpc/methods/ServerStateService.java
++++ b/net/minecraft/server/jsonrpc/methods/ServerStateService.java
+@@ -37,7 +_,7 @@
+                return false;
+             }
+ 
+-            for (PlayerDto playerDto : (List)systemMessage.receivingPlayers().get()) {
++            for (PlayerDto playerDto : systemMessage.receivingPlayers().get()) {
+                ServerPlayer player;
+                if (playerDto.id().isPresent()) {
+                   player = minecraftApi.playerListService().getPlayer((UUID)playerDto.id().get());

@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/entity/monster/creaking/CreakingAi.java
++++ b/net/minecraft/world/entity/monster/creaking/CreakingAi.java
+@@ -30,7 +_,7 @@
+    static ActivityData<Creaking> initCoreActivity() {
+       return ActivityData.create(Activity.CORE, 0, ImmutableList.of(new Swim<Creaking>(0.8F) {
+          protected boolean checkExtraStartConditions(final ServerLevel level, final Creaking body) {
+-            return body.canMove() && super.checkExtraStartConditions(level, (LivingEntity)body);
++            return body.canMove() && super.checkExtraStartConditions(level, body);
+          }
+       }, new LookAtTargetSink(45, 90), new MoveToTargetSink()));
+    }
+@@ -45,7 +_,7 @@
+                (level, mob) -> mob.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER)
+             ),
+             SetEntityLookTargetSometimes.create(8.0F, UniformInt.of(30, 60)),
+-            new RunOne(
++            new RunOne<>(
+                ImmutableList.of(
+                   Pair.of(RandomStroll.stroll(0.3F), 2), Pair.of(SetWalkTargetFromLookTarget.create(0.3F, 3), 2), Pair.of(new DoNothing(30, 60), 1)
+                )

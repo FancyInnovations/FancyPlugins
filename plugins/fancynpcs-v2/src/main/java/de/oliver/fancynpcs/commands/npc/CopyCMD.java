@@ -33,7 +33,7 @@ public enum CopyCMD {
     ) {
         // Sending error message if name does not match configured pattern.
         if (!NPC_NAME_PATTERN.matcher(name).find()) {
-            translator.translate("npc_create_failure_invalid_name").replaceStripped("name", name).send(sender);
+            translator.translate("npc_create_failure_invalid_name").withPrefix().replaceStripped("name", name).send(sender);
             return;
         }
         // Creating a copy of an NPC and all it's data. The only different thing is it's UUID.
@@ -73,9 +73,9 @@ public enum CopyCMD {
             copied.create();
             FancyNpcs.getInstance().getNpcManagerImpl().registerNpc(copied);
             copied.spawnForAll();
-            translator.translate("npc_copy_success").replace("npc", npc.getData().getName()).replace("new_npc", copied.getData().getName()).send(sender);
+            translator.translate("npc_copy_success").withPrefix().replace("npc", npc.getData().getName()).replace("new_npc", copied.getData().getName()).send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 }

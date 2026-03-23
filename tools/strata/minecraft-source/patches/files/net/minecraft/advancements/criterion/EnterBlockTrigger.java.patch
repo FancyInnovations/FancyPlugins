@@ -1,0 +1,25 @@
+--- a/net/minecraft/advancements/criterion/EnterBlockTrigger.java
++++ b/net/minecraft/advancements/criterion/EnterBlockTrigger.java
+@@ -24,7 +_,7 @@
+ 
+    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<Holder<Block>> block, Optional<StatePropertiesPredicate> state)
+       implements SimpleCriterionTrigger.SimpleInstance {
+-      public static final Codec<EnterBlockTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(
++      public static final Codec<EnterBlockTrigger.TriggerInstance> CODEC = RecordCodecBuilder.<TriggerInstance>create(
+             i -> i.group(
+                   EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(EnterBlockTrigger.TriggerInstance::player),
+                   BuiltInRegistries.BLOCK.holderByNameCodec().optionalFieldOf("block").forGetter(EnterBlockTrigger.TriggerInstance::block),
+@@ -35,10 +_,10 @@
+          .validate(EnterBlockTrigger.TriggerInstance::validate);
+ 
+       private static DataResult<EnterBlockTrigger.TriggerInstance> validate(final EnterBlockTrigger.TriggerInstance trigger) {
+-         return (DataResult<EnterBlockTrigger.TriggerInstance>)trigger.block
+-            .flatMap(
++         return trigger.block
++                 .<DataResult<EnterBlockTrigger.TriggerInstance>>flatMap(
+                block -> trigger.state
+-                  .flatMap(state -> state.checkState(((Block)block.value()).getStateDefinition()))
++                  .<String>flatMap(state -> state.checkState(((Block)block.value()).getStateDefinition()))
+                   .map(property -> DataResult.error(() -> "Block" + block + " has no property " + property))
+             )
+             .orElseGet(() -> DataResult.success(trigger));

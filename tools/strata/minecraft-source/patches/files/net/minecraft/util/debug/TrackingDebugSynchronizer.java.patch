@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/debug/TrackingDebugSynchronizer.java
++++ b/net/minecraft/util/debug/TrackingDebugSynchronizer.java
+@@ -218,7 +_,7 @@
+          }
+ 
+          for (Entry<BlockPos, TrackingDebugSynchronizer.ValueSource<T>> entry : this.blockEntitySources.entrySet()) {
+-            T lastValue = ((TrackingDebugSynchronizer.ValueSource)entry.getValue()).lastSyncedValue;
++            T lastValue = (entry.getValue()).lastSyncedValue;
+             if (lastValue != null) {
+                BlockPos blockPos = (BlockPos)entry.getKey();
+                if (chunkPos.contains(blockPos)) {

@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/biome/BiomeGenerationSettings.java
++++ b/net/minecraft/world/level/biome/BiomeGenerationSettings.java
+@@ -116,7 +_,7 @@
+       public BiomeGenerationSettings build() {
+          return new BiomeGenerationSettings(
+             HolderSet.direct(this.carvers),
+-            (List<HolderSet<PlacedFeature>>)this.features.stream().map(HolderSet::direct).collect(ImmutableList.toImmutableList())
++            this.features.stream().map(HolderSet::direct).collect(ImmutableList.toImmutableList())
+          );
+       }
+    }

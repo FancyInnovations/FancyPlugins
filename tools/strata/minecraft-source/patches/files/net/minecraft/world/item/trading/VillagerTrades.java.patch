@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/item/trading/VillagerTrades.java
++++ b/net/minecraft/world/item/trading/VillagerTrades.java
+@@ -2256,7 +_,7 @@
+ 
+    public static HolderSet<VillagerType> villagerTypeHolderSet(final HolderGetter<VillagerType> villagerVariants, final ResourceKey<VillagerType> resourceKey) {
+       Optional<Holder.Reference<VillagerType>> holder = villagerVariants.get(resourceKey);
+-      return (HolderSet<VillagerType>)(holder.isPresent() ? HolderSet.direct((Holder)holder.get()) : HolderSet.empty());
++      return (holder.isPresent() ? HolderSet.direct((Holder)holder.get()) : HolderSet.empty());
+    }
+ 
+    public static HolderSet<VillagerType> villagerTypeHolderSet(

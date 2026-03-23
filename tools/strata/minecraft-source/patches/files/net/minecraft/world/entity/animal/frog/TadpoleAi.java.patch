@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/frog/TadpoleAi.java
++++ b/net/minecraft/world/entity/animal/frog/TadpoleAi.java
+@@ -37,7 +_,7 @@
+          Activity.CORE,
+          0,
+          ImmutableList.of(
+-            new AnimalPanic(2.0F), new LookAtTargetSink(45, 90), new MoveToTargetSink(), new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)
++            new AnimalPanic<>(2.0F), new LookAtTargetSink(45, 90), new MoveToTargetSink(), new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)
+          )
+       );
+    }

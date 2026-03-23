@@ -1,6 +1,7 @@
 package de.oliver.fancynpcs.skins.mojang;
 
 import com.google.gson.Gson;
+import de.oliver.fancyanalytics.logger.properties.StringProperty;
 import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.skins.SkinData;
@@ -45,6 +46,14 @@ public class MojangAPI {
             }
 
             RequestResponse response = gson.fromJson(resp.body(), RequestResponse.class);
+            if (response == null) {
+                FancyNpcsPlugin.get().getFancyLogger().debug(
+                        "Failed to parse response from Mojang API",
+                        StringProperty.of("uuid", uuid),
+                        StringProperty.of("response", resp.body())
+                );
+            }
+
             RequestResponseProperty textures = response.getProperty("textures");
 
             FancyNpcsPlugin.get().getFancyLogger().debug("Skin fetched from MojangAPI for " + uuid);

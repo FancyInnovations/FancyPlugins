@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/EntityZombifiedPiglinRenameFix.java
++++ b/net/minecraft/util/datafix/fixes/EntityZombifiedPiglinRenameFix.java
+@@ -6,7 +_,7 @@
+ import java.util.Objects;
+ 
+ public class EntityZombifiedPiglinRenameFix extends SimplestEntityRenameFix {
+-   public static final Map<String, String> RENAMED_IDS = ImmutableMap.builder()
++   public static final Map<String, String> RENAMED_IDS = ImmutableMap.<String, String>builder()
+       .put("minecraft:zombie_pigman_spawn_egg", "minecraft:zombified_piglin_spawn_egg")
+       .build();
+ 

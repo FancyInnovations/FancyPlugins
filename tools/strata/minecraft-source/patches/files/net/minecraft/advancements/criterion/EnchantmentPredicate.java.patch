@@ -1,0 +1,11 @@
+--- a/net/minecraft/advancements/criterion/EnchantmentPredicate.java
++++ b/net/minecraft/advancements/criterion/EnchantmentPredicate.java
+@@ -30,7 +_,7 @@
+ 
+    public boolean containedIn(final ItemEnchantments itemEnchantments) {
+       if (this.enchantments.isPresent()) {
+-         for (Holder<Enchantment> enchantment : (HolderSet)this.enchantments.get()) {
++         for (Holder<Enchantment> enchantment : this.enchantments.get()) {
+             if (this.matchesEnchantment(itemEnchantments, enchantment)) {
+                return true;
+             }

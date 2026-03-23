@@ -1,0 +1,28 @@
+--- a/net/minecraft/advancements/criterion/StatePropertiesPredicate.java
++++ b/net/minecraft/advancements/criterion/StatePropertiesPredicate.java
+@@ -106,7 +_,7 @@
+       public <T extends Comparable<T>> boolean match(final StateHolder<?, ?> state, final Property<T> property) {
+          T actualValue = state.getValue(property);
+          Optional<T> typedExpected = property.getValue(this.value);
+-         return typedExpected.isPresent() && actualValue.compareTo((Comparable)typedExpected.get()) == 0;
++         return typedExpected.isPresent() && actualValue.compareTo(typedExpected.get()) == 0;
+       }
+    }
+ 
+@@ -151,14 +_,14 @@
+          T value = state.getValue(property);
+          if (this.minValue.isPresent()) {
+             Optional<T> typedMinValue = property.getValue((String)this.minValue.get());
+-            if (typedMinValue.isEmpty() || value.compareTo((Comparable)typedMinValue.get()) < 0) {
++            if (typedMinValue.isEmpty() || value.compareTo(typedMinValue.get()) < 0) {
+                return false;
+             }
+          }
+ 
+          if (this.maxValue.isPresent()) {
+             Optional<T> typedMaxValue = property.getValue((String)this.maxValue.get());
+-            if (typedMaxValue.isEmpty() || value.compareTo((Comparable)typedMaxValue.get()) > 0) {
++            if (typedMaxValue.isEmpty() || value.compareTo(typedMaxValue.get()) > 0) {
+                return false;
+             }
+          }

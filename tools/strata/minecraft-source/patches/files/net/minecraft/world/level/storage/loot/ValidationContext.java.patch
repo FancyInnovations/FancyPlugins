@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/storage/loot/ValidationContext.java
++++ b/net/minecraft/world/level/storage/loot/ValidationContext.java
+@@ -53,7 +_,7 @@
+    }
+ 
+    public ValidationContext enterElement(final ProblemReporter.PathElement subContext, final ResourceKey<?> element) {
+-      Set<ResourceKey<?>> newVisitedElements = ImmutableSet.builder().addAll(this.visitedElements).add(element).build();
++      Set<ResourceKey<?>> newVisitedElements = ImmutableSet.<ResourceKey<?>>builder().addAll(this.visitedElements).add(element).build();
+       return new ValidationContext(this.reporter.forChild(subContext), this.contextKeySet, this.resolver, newVisitedElements);
+    }
+ 

@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/CreakingHeartBlock.java
++++ b/net/minecraft/world/level/block/CreakingHeartBlock.java
+@@ -60,7 +_,7 @@
+       if (level.isClientSide()) {
+          return null;
+       } else {
+-         return blockState.getValue((Property<T>)STATE) != CreakingHeartState.UPROOTED
++         return blockState.getValue(STATE) != CreakingHeartState.UPROOTED
+             ? createTickerHelper(type, BlockEntityType.CREAKING_HEART, CreakingHeartBlockEntity::serverTick)
+             : null;
+       }

@@ -1,0 +1,23 @@
+--- a/net/minecraft/world/item/component/PiercingWeapon.java
++++ b/net/minecraft/world/item/component/PiercingWeapon.java
+@@ -5,6 +_,8 @@
+ import java.util.Collection;
+ import java.util.List;
+ import java.util.Optional;
++import java.util.function.Function;
++
+ import net.minecraft.core.Holder;
+ import net.minecraft.network.RegistryFriendlyByteBuf;
+ import net.minecraft.network.codec.ByteBufCodecs;
+@@ -72,10 +_,7 @@
+       AttackRange attackRange = attacker.getAttackRangeWith(weaponItem);
+       boolean hitSomething = false;
+ 
+-      for (EntityHitResult hitResult : (Collection)ProjectileUtil.getHitEntitiesAlong(
+-            attacker, attackRange, e1 -> canHitEntity(attacker, e1), ClipContext.Block.COLLIDER
+-         )
+-         .map(a -> List.of(), e -> e)) {
++      for (EntityHitResult hitResult : ProjectileUtil.getHitEntitiesAlong(attacker, attackRange, e1 -> canHitEntity(attacker, e1), ClipContext.Block.COLLIDER).map(a -> List.<EntityHitResult>of(), Function.identity())) {
+          hitSomething |= attacker.stabAttack(hand, hitResult.getEntity(), damage, true, this.dealsKnockback, this.dismounts);
+       }
+ 

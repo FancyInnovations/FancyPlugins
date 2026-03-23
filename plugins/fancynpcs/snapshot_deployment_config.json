@@ -57,5 +57,22 @@
       "1.21.11"
     ],
     "channel": "Alpha"
+  },
+  "curseforge": {
+    "project_id": "1480045",
+    "game_versions": [
+      12736,
+      12737,
+      12738,
+      12988,
+      13473,
+      13574,
+      13683,
+      13933,
+      13966,
+      14417
+    ],
+    "release_type": "alpha",
+    "type": "plugin"
   }
 }

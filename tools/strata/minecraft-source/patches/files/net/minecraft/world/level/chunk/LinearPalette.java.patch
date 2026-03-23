@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/chunk/LinearPalette.java
++++ b/net/minecraft/world/level/chunk/LinearPalette.java
+@@ -35,7 +_,7 @@
+    }
+ 
+    public static <A> Palette<A> create(final int bits, final List<A> paletteEntries) {
+-      return new LinearPalette(bits, (List<T>)paletteEntries);
++      return new LinearPalette<>(bits, paletteEntries);
+    }
+ 
+    @Override

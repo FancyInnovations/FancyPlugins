@@ -1,0 +1,11 @@
+--- a/net/minecraft/data/worldgen/TrialChambersStructurePools.java
++++ b/net/minecraft/data/worldgen/TrialChambersStructurePools.java
+@@ -17,7 +_,7 @@
+ public class TrialChambersStructurePools {
+    public static final ResourceKey<StructureTemplatePool> START = Pools.createKey("trial_chambers/chamber/end");
+    public static final ResourceKey<StructureTemplatePool> HALLWAY_FALLBACK = Pools.createKey("trial_chambers/hallway/fallback");
+-   public static final List<PoolAliasBinding> ALIAS_BINDINGS = ImmutableList.builder()
++   public static final List<PoolAliasBinding> ALIAS_BINDINGS = ImmutableList.<PoolAliasBinding>builder()
+       .add(
+          PoolAliasBinding.randomGroup(
+             WeightedList.<List<PoolAliasBinding>>builder()

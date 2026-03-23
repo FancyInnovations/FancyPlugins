@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/sensing/PlayerSensor.java
++++ b/net/minecraft/world/entity/ai/sensing/PlayerSensor.java
+@@ -26,7 +_,7 @@
+ 
+    @Override
+    protected void doTick(final ServerLevel level, final LivingEntity body) {
+-      List<Player> players = (List<Player>)level.players()
++      List<Player> players = level.players()
+          .stream()
+          .filter(EntitySelector.NO_SPECTATORS)
+          .filter(player -> body.closerThan(player, this.getFollowDistance(body)))

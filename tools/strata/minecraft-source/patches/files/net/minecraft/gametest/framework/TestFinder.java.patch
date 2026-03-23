@@ -1,0 +1,13 @@
+--- a/net/minecraft/gametest/framework/TestFinder.java
++++ b/net/minecraft/gametest/framework/TestFinder.java
+@@ -79,8 +_,8 @@
+       private TestFinder build(final CommandSourceStack source, final TestInstanceFinder testInstanceFinder, final TestPosFinder testPosFinder) {
+          return new TestFinder(
+             source,
+-            ((Supplier)this.testFinderWrapper.apply(testInstanceFinder::findTests))::get,
+-            ((Supplier)this.structureBlockPosFinderWrapper.apply(testPosFinder::findTestPos))::get
++            (this.testFinderWrapper.apply(testInstanceFinder::findTests))::get,
++            (this.structureBlockPosFinderWrapper.apply(testPosFinder::findTestPos))::get
+          );
+       }
+ 

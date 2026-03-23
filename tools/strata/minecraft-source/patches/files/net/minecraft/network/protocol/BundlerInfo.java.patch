@@ -1,0 +1,25 @@
+--- a/net/minecraft/network/protocol/BundlerInfo.java
++++ b/net/minecraft/network/protocol/BundlerInfo.java
+@@ -30,12 +_,7 @@
+          @Override
+          public BundlerInfo.@Nullable Bundler startPacketBundling(final Packet<?> packet) {
+             return packet == delimiterPacket ? new BundlerInfo.Bundler() {
+-               private final List<Packet<? super T>> bundlePackets;
+-
+-               {
+-                  Objects.requireNonNull(<VAR_NAMELESS_ENCLOSURE>);
+-                  this.bundlePackets = new ArrayList();
+-               }
++               private final List<Packet<? super T>> bundlePackets = new ArrayList<>();
+ 
+                @Override
+                public @Nullable Packet<?> addPacket(final Packet<?> packet) {
+@@ -44,7 +_,7 @@
+                   } else if (this.bundlePackets.size() >= 4096) {
+                      throw new IllegalStateException("Too many packets in a bundle");
+                   } else {
+-                     this.bundlePackets.add(packet);
++                     this.bundlePackets.add((Packet<? super T>) packet);
+                      return null;
+                   }
+                }

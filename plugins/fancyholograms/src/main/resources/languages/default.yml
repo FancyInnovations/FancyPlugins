@@ -19,32 +19,42 @@ messages:
 
   common:
     hologram:
-      not_found: "<dark_gray>› <gray>Could not find hologram {warningColor}{name}<gray>."
+      not_found: "{errorColor}Could not find hologram {primaryColor}{name}{secondaryColor}."
+      invalid_type: "{errorColor}This command can only be executed on holograms of the following types: {primaryColor}{types}{secondaryColor}."
   commands:
     fancyholograms:
       config:
         show:
-          settings_header: "<dark_gray>› <gray>FancyHolograms settings:"
-          experimental_header: "<dark_gray>› <gray>FancyHolograms experimental features:"
-          entry: "<dark_gray>› <gray> - {warningColor}{path}<gray>: {value} (default: {default})"
+          settings_header: "FancyHolograms settings:"
+          experimental_header: "FancyHolograms experimental features:"
+          entry: "{secondaryColor} - {path}: {primaryColor}{value} {secondaryColor}(default: {default})"
 
     hologram:
+      create:
+        already_exists: "{errorColor}A hologram with the name {primaryColor}{name}{errorColor} already exists."
+        no_dot: "{errorColor}Hologram names cannot contain dots."
+        canceled: "{errorColor}Hologram creation canceled."
+        success: "Successfully created hologram {primaryColor}{name}{secondaryColor} of type {primaryColor}{type}{secondaryColor}."
       edit:
+        lines:
+          line_number_out_of_bounds: "{errorColor}Line number {primaryColor}{line}{errorColor} is out of bounds. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."
+          cannot_swap_same_line: "{errorColor}Cannot swap line {primaryColor}{line}{errorColor} with itself."
+          move_success: "Successfully moved line {primaryColor}{line}{secondaryColor} to position {primaryColor}{position}{secondaryColor}."
+          swap_success: "Successfully swapped line {primaryColor}{line1}{secondaryColor} with line {primaryColor}{line2}{secondaryColor}."
         trait:
-          not_found: "<dark_gray>› <gray>Could not find trait {warningColor}{name}<gray>."
+          not_found: "Could not find trait {primaryColor}{name}{secondaryColor}."
           attach:
-            already_attached: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> already has trait {warningColor}{name}<gray> attached."
-            success: "<dark_gray>› <gray>Successfully attached trait {warningColor}{name}<gray> to hologram {warningColor}{hologram}<gray>."
+            already_attached: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has trait {primaryColor}{name}{errorColor} attached."
+            success: "Successfully attached trait {primaryColor}{name}{secondaryColor} to hologram {primaryColor}{hologram}{secondaryColor}."
           detach:
-            not_attached: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> does not have trait {warningColor}{name}<gray> attached."
-            success: "<dark_gray>› <gray>Successfully detached trait {warningColor}{name}<gray> from hologram {warningColor}{hologram}<gray>."
+            not_attached: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} does not have trait {primaryColor}{name}{errorColor} attached."
+            success: "Successfully detached trait {primaryColor}{name}{secondaryColor} from hologram {primaryColor}{hologram}{secondaryColor}."
           list:
-            no_traits: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> does not have any traits attached."
-            header: "<dark_gray>› <gray>Hologram {warningColor}{hologram}<gray> has the following traits attached:"
-            entry: "<dark_gray>› <gray> - {warningColor}{name}<gray>"
+            no_traits: "Hologram {primaryColor}{hologram}{secondaryColor} does not have any traits attached."
+            header: "Hologram {primaryColor}{hologram}{secondaryColor} has the following traits attached:"
+            entry: "{secondaryColor} - {primaryColor}{name}"
         glowing:
-          invalid_color: "<dark_gray>› <gray>Invalid glowing color {warningColor}{color}<gray>."
-          disabled: "<dark_gray>› <gray>Disabled glowing for hologram {warningColor}{hologram}<gray>."
-          enabled: "<dark_gray>› <gray>Enabled glowing with color {warningColor}{color}<gray> for hologram {warningColor}{hologram}<gray>."
-          color_set: "<dark_gray>› <gray>Set glowing color to {warningColor}{color}<gray> for hologram {warningColor}{hologram}<gray>."
-          only_item_block: "<dark_gray>› <gray>Glowing only works for item and block holograms."
+          invalid_color: "{errorColor}Invalid glowing color {primaryColor}{color}{{errorColor}}."
+          disabled: "Disabled glowing for hologram {primaryColor}{hologram}{secondaryColor}."
+          enabled: "Enabled glowing with color {primaryColor}{color}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+          color_set: "Set glowing color to {primaryColor}{color}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

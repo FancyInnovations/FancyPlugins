@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/valueproviders/TrapezoidInt.java
++++ b/net/minecraft/util/valueproviders/TrapezoidInt.java
+@@ -8,7 +_,7 @@
+ import net.minecraft.util.RandomSource;
+ 
+ public record TrapezoidInt(int minInclusive, int maxInclusive, int plateau) implements IntProvider {
+-   public static final MapCodec<TrapezoidInt> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<TrapezoidInt> MAP_CODEC = RecordCodecBuilder.<TrapezoidInt>mapCodec(
+          i -> i.group(
+                Codec.INT.fieldOf("min").forGetter(TrapezoidInt::minInclusive),
+                Codec.INT.fieldOf("max").forGetter(TrapezoidInt::maxInclusive),

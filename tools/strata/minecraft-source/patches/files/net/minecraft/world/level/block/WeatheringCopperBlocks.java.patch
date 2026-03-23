@@ -1,0 +1,29 @@
+--- a/net/minecraft/world/level/block/WeatheringCopperBlocks.java
++++ b/net/minecraft/world/level/block/WeatheringCopperBlocks.java
+@@ -21,22 +_,22 @@
+       return new WeatheringCopperBlocks(
+          (Block)register.apply(
+             id,
+-            (Function)p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.UNAFFECTED, p),
++            p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.UNAFFECTED, p),
+             (BlockBehaviour.Properties)propertiesSupplier.apply(WeatheringCopper.WeatherState.UNAFFECTED)
+          ),
+          (Block)register.apply(
+             "exposed_" + id,
+-            (Function)p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.EXPOSED, p),
++            p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.EXPOSED, p),
+             (BlockBehaviour.Properties)propertiesSupplier.apply(WeatheringCopper.WeatherState.EXPOSED)
+          ),
+          (Block)register.apply(
+             "weathered_" + id,
+-            (Function)p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.WEATHERED, p),
++            p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.WEATHERED, p),
+             (BlockBehaviour.Properties)propertiesSupplier.apply(WeatheringCopper.WeatherState.WEATHERED)
+          ),
+          (Block)register.apply(
+             "oxidized_" + id,
+-            (Function)p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.OXIDIZED, p),
++            p -> (Block)weatheringFactory.apply(WeatheringCopper.WeatherState.OXIDIZED, p),
+             (BlockBehaviour.Properties)propertiesSupplier.apply(WeatheringCopper.WeatherState.OXIDIZED)
+          ),
+          (Block)register.apply(

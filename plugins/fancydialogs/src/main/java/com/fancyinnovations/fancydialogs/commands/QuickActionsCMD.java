@@ -29,6 +29,7 @@ public final class QuickActionsCMD {
         if (dialog == null) {
             plugin.getFancyLogger().error("Quick Actions dialog with ID '" + dialogID + "' not found.");
             translator.translate("dialog.not_found")
+                    .withPrefix()
                     .replace("id", dialogID)
                     .send(actor);
             return;

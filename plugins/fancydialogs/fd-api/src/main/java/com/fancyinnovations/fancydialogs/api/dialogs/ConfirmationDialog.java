@@ -99,7 +99,9 @@ public class ConfirmationDialog {
                 confirmText,
                 List.of(
                         new DialogButton.DialogAction("confirm", "")
-                )
+                ),
+                Map.of("", ""),
+                0
         );
         this.confirmButtonId = confirmBtn.id();
 
@@ -108,14 +110,16 @@ public class ConfirmationDialog {
                 cancelText,
                 List.of(
                         new DialogButton.DialogAction("cancel", "")
-                )
+                ),
+                Map.of("", ""),
+                0
         );
         this.cancelButtonId = cancelBtn.id();
 
         List<DialogTextField> textFields = null;
         if (expectedUserInput != null && !expectedUserInput.isEmpty()) {
             textFields = List.of(
-                    new DialogTextField("confirmation_user_input", "Type '" + expectedUserInput + "' to confirm", 0, "", expectedUserInput.length(), 1)
+                    new DialogTextField("confirmation_user_input", "Type '" + expectedUserInput + "' to confirm", 0, "", expectedUserInput.length(), 1, Map.of("type", ""), 0)
             );
         }
 
@@ -127,7 +131,9 @@ public class ConfirmationDialog {
                 false,
                 List.of(new DialogBodyData(question)),
                 inputs,
-                List.of(confirmBtn, cancelBtn)
+                List.of(confirmBtn, cancelBtn),
+                null,
+                null
         );
 
         this.dialog = FancyDialogs.get().createDialog(dialogData);

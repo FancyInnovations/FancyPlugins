@@ -1,0 +1,38 @@
+--- a/net/minecraft/world/level/TicketStorage.java
++++ b/net/minecraft/world/level/TicketStorage.java
+@@ -90,7 +_,7 @@
+          Entry<List<Ticket>> entry = (Entry<List<Ticket>>)var2.next();
+          ChunkPos chunkPos = ChunkPos.unpack(entry.getLongKey());
+ 
+-         for (Ticket ticket : (List)entry.getValue()) {
++         for (Ticket ticket : entry.getValue()) {
+             output.accept(chunkPos, ticket);
+          }
+       }
+@@ -102,7 +_,7 @@
+       while (var1.hasNext()) {
+          Entry<List<Ticket>> entry = (Entry<List<Ticket>>)var1.next();
+ 
+-         for (Ticket ticket : (List)entry.getValue()) {
++         for (Ticket ticket : entry.getValue()) {
+             this.addTicket(entry.getLongKey(), ticket);
+          }
+       }
+@@ -376,7 +_,7 @@
+       while (var4.hasNext()) {
+          Entry<List<Ticket>> entry = (Entry<List<Ticket>>)var4.next();
+ 
+-         for (Ticket ticket : (List)entry.getValue()) {
++         for (Ticket ticket : entry.getValue()) {
+             if (ticket.getType() == ticketType) {
+                affectedTickets.add(Pair.of(ticket, entry.getLongKey()));
+             }
+@@ -408,7 +_,7 @@
+       while (var3.hasNext()) {
+          Entry<List<Ticket>> entry = (Entry<List<Ticket>>)var3.next();
+ 
+-         for (Ticket ticket : (List)entry.getValue()) {
++         for (Ticket ticket : entry.getValue()) {
+             if (ticketCheck.test(ticket)) {
+                chunks.add(entry.getLongKey());
+                break;

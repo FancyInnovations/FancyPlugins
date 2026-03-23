@@ -1,0 +1,11 @@
+--- a/net/minecraft/network/chat/ComponentUtils.java
++++ b/net/minecraft/network/chat/ComponentUtils.java
+@@ -89,7 +_,7 @@
+       if (values.isEmpty()) {
+          return CommonComponents.EMPTY;
+       } else if (values.size() == 1) {
+-         return (Component)formatter.apply((Comparable)values.iterator().next());
++         return (Component)formatter.apply(values.iterator().next());
+       } else {
+          List<T> sorted = Lists.newArrayList(values);
+          sorted.sort(Comparable::compareTo);

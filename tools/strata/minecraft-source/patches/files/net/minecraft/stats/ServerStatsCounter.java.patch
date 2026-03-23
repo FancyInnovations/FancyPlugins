@@ -1,0 +1,11 @@
+--- a/net/minecraft/stats/ServerStatsCounter.java
++++ b/net/minecraft/stats/ServerStatsCounter.java
+@@ -57,7 +_,7 @@
+       Codec<T> valueCodec = type.getRegistry().byNameCodec();
+       Codec<Stat<?>> statCodec = valueCodec.flatComapMap(
+          type::get,
+-         stat -> stat.getType() == type ? DataResult.success(stat.getValue()) : DataResult.error(() -> "Expected type " + type + ", but got " + stat.getType())
++         stat -> stat.getType() == type ? DataResult.success((T)stat.getValue()) : DataResult.error(() -> "Expected type " + type + ", but got " + stat.getType())
+       );
+       return Codec.unboundedMap(statCodec, Codec.INT);
+    }

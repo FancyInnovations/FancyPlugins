@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/jsonrpc/api/ParamInfo.java
++++ b/net/minecraft/server/jsonrpc/api/ParamInfo.java
+@@ -13,7 +_,7 @@
+       return RecordCodecBuilder.mapCodec(
+          i -> i.group(
+                Codec.STRING.fieldOf("name").forGetter(ParamInfo::name),
+-               Schema.typedCodec().fieldOf("schema").forGetter(ParamInfo::schema),
++               Schema.<Param>typedCodec().fieldOf("schema").forGetter(ParamInfo::schema),
+                Codec.BOOL.fieldOf("required").forGetter(ParamInfo::required)
+             )
+             .apply(i, ParamInfo::new)

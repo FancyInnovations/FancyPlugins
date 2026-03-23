@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/OminousBannerBlockEntityRenameFix.java
++++ b/net/minecraft/util/datafix/fixes/OminousBannerBlockEntityRenameFix.java
+@@ -14,7 +_,7 @@
+    @Override
+    protected Typed<?> fix(final Typed<?> entity) {
+       OpticFinder<?> customNameF = entity.getType().findField("CustomName");
+-      OpticFinder<Pair<String, String>> textComponentF = DSL.typeFinder(this.getInputSchema().getType(References.TEXT_COMPONENT));
++      OpticFinder<Pair<String, String>> textComponentF = (OpticFinder<Pair<String, String>>) DSL.typeFinder(this.getInputSchema().getType(References.TEXT_COMPONENT));
+       return entity.updateTyped(
+          customNameF,
+          customName -> customName.update(

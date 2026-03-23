@@ -26,6 +26,7 @@ import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.factories.FancySitula;
 import org.bukkit.entity.Player;
 import org.lushplugins.chatcolorhandler.ChatColorHandler;
+import org.lushplugins.chatcolorhandler.parsers.Parser;
 import org.lushplugins.chatcolorhandler.parsers.ParserTypes;
 
 import java.util.ArrayList;
@@ -54,6 +55,29 @@ public class DialogImpl extends Dialog {
         return result;
     }
 
+    private boolean checkPerm(Player player, String perm) {
+        if (perm == null) {
+            return true;
+        }
+        if (!perm.equals("") && !player.hasPermission(perm)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkRequirements(Player player, Map<String, String> requirements) {
+        if (requirements == null) { return true; }
+        if (requirements.get("type") == null) { return true; }
+        if (requirements.get("type").equals("permission")) {
+            return checkPerm(player, requirements.get("permission"));
+        }
+        if (requirements.get("type").equals("stringMatch")) {
+            if (requirements.get("input") == null || requirements.get("output") == null) { return true; }
+            return ChatColorHandler.translate(requirements.get("input"), player, ParserTypes.placeholder()).equals(ChatColorHandler.translate(requirements.get("output"), player, ParserTypes.placeholder()));
+        }
+        return true;
+    }
+
     private FS_Dialog buildForPlayer(Player player, String[] args) {
         List<FS_DialogBody> body = new ArrayList<>();
         for (DialogBodyData bodyData : data.body()) {
@@ -73,12 +97,14 @@ public class DialogImpl extends Dialog {
         List<FS_DialogInput> inputs = new ArrayList<>();
         if (data.inputs() != null) {
             for (DialogInput input : data.inputs().all()) {
+                if (!checkRequirements(player, input.getRequirements())) { continue; }
                 FS_DialogInputControl control = null;
                 if (input instanceof DialogTextField textField) {
                     String label = replaceArgs(textField.getLabel(), args);
                     String placeholder = replaceArgs(textField.getPlaceholder(), args);
                     control = new FS_DialogTextInput(
-                            200, // default width
+                            (textField.getWidth() == null || (textField.getWidth() <= 0 || textField.getWidth() >= 1024))
+                                    ? 200 : textField.getWidth(),
                             ChatColorHandler.translate(label, player, ParserTypes.placeholder()),
                             !label.isEmpty(),
                             ChatColorHandler.translate(placeholder, player, ParserTypes.placeholder()),
@@ -100,7 +126,8 @@ public class DialogImpl extends Dialog {
                     }
                     String selectLabel = replaceArgs(select.getLabel(), args);
                     control = new FS_DialogSingleOptionInput(
-                            200, // default width
+                            (select.getWidth() == null || (select.getWidth() <= 0 || select.getWidth() >= 1024))
+                                    ? 200 : select.getWidth(),
                             entries,
                             ChatColorHandler.translate(selectLabel, player, ParserTypes.placeholder()),
                             !selectLabel.isEmpty()
@@ -122,10 +149,11 @@ public class DialogImpl extends Dialog {
         List<FS_DialogActionButton> actions = new ArrayList<>();
         for (DialogButton button : data.buttons()) {
             FS_DialogActionButtonAction buttonAction;
+            if (!checkRequirements(player, button.requirements())) { continue; }
 
             if (button.actions().size() == 1 &&
-                button.actions().get(0).name().equals("copy_to_clipboard")) {
-                String clipboardData = replaceArgs(button.actions().get(0).data(), args);
+                button.actions().getFirst().name().equals("copy_to_clipboard")) {
+                String clipboardData = replaceArgs(button.actions().getFirst().data(), args);
                 String text = ChatColorHandler.translate(
                         clipboardData,
                         player,
@@ -150,15 +178,58 @@ public class DialogImpl extends Dialog {
 
             String buttonLabel = replaceArgs(button.label(), args);
             String buttonTooltip = replaceArgs(button.tooltip(), args);
+
             FS_DialogActionButton fsDialogActionButton = new FS_DialogActionButton(
                     new FS_CommonButtonData(
                             ChatColorHandler.translate(buttonLabel, player, ParserTypes.placeholder()),
                             ChatColorHandler.translate(buttonTooltip, player, ParserTypes.placeholder()),
-                            150 // default button width
+                            (button.width() == null || (button.width() <= 0 || button.width() >= 1024))
+                                    ? 150 : button.width()
                     ),
                     buttonAction
             );
             actions.add(fsDialogActionButton);
+        }
+
+        FS_DialogActionButton exitAction = null;
+        if (data.exitAction() != null && checkRequirements(player, data.exitAction().requirements())) {
+            FS_DialogActionButtonAction buttonAction;
+            if (data.exitAction().actions().size() == 1 &&
+                    data.exitAction().actions().getFirst().name().equals("copy_to_clipboard")) {
+                String clipboardData = replaceArgs(data.exitAction().actions().getFirst().data(), args);
+                String text = ChatColorHandler.translate(
+                        clipboardData,
+                        player,
+                        ParserTypes.placeholder()
+                );
+                buttonAction = new FS_DialogCopyToClipboardAction(text);
+            } else {
+                // Build payload with dialog_id, button_id, and all args
+                Map<String, String> payload = new HashMap<>();
+                payload.put("dialog_id", id);
+                payload.put("button_id", data.exitAction().id());
+                if (args != null) {
+                    for (int i = 0; i < args.length; i++) {
+                        payload.put("arg:" + i, args[i] != null ? args[i] : "");
+                    }
+                }
+                buttonAction = new FS_DialogCustomAction(
+                        "fancydialogs_dialog_action",
+                        payload
+                );
+            }
+
+            String buttonLabel = replaceArgs(data.exitAction().label(), args);
+            String buttonTooltip = replaceArgs(data.exitAction().tooltip(), args);
+            exitAction = new FS_DialogActionButton(
+                    new FS_CommonButtonData(
+                            ChatColorHandler.translate(buttonLabel, player, ParserTypes.placeholder()),
+                            ChatColorHandler.translate(buttonTooltip, player, ParserTypes.placeholder()),
+                            (data.exitAction().width() == null || (data.exitAction().width() <= 0 || data.exitAction().width() >= 1024))
+                                    ? 150 : data.exitAction().width()
+                    ),
+                    buttonAction
+            );
         }
 
         String title = replaceArgs(data.title(), args);
@@ -199,8 +270,8 @@ public class DialogImpl extends Dialog {
                         inputs
                 ),
                 actions, // actions
-                null,
-                2
+                exitAction,
+                (data.columns() == null || data.columns() <= 0) ? 2 : data.columns()
         );
     }
 

@@ -24,6 +24,7 @@ allprojects {
         maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for cloud command framework
         maven(url = "https://repo.extendedclip.com/releases/") // for PlaceholderAPI
         maven(url = "https://maven.enginehub.org/repo/") // for WorldEdit
+        maven(url = "https://maven.citizensnpcs.co/repo") // for Citizens
     }
 }
 
@@ -31,6 +32,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancynpcs-v2:fn-v2-api"))
+    implementation(project(":plugins:fancynpcs-v2:implementation_26_1"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_11"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_9"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_6"))
@@ -48,8 +50,8 @@ dependencies {
     implementation(project(":libraries:plugin-tests"))
     implementation(project(":libraries:config"))
     compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
-    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.5")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.12")
+    implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
     implementation("org.incendo:cloud-paper:2.0.0-beta.13")
@@ -57,9 +59,12 @@ dependencies {
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
 
-    compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.6")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.14")
+    compileOnly("me.clip:placeholderapi:2.12.2")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.11")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.17")
+    compileOnly("net.citizensnpcs:citizens-main:2.0.41-SNAPSHOT") {
+        exclude(group = "*", module = "*")
+    }
 }
 
 paper {
@@ -84,6 +89,10 @@ paper {
             required = false
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }
+        register("Citizens") {
+            required = false
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
     }
 }
 
@@ -92,6 +101,7 @@ tasks {
         minecraftVersion("1.21.11")
 
         downloadPlugins {
+            hangar("kite", "1.2.4+12")
             hangar("ViaVersion", "5.7.1")
             hangar("ViaBackwards", "5.7.1")
 //            hangar("PlaceholderAPI", "2.11.6")

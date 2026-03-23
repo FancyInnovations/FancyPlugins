@@ -1,0 +1,29 @@
+--- a/net/minecraft/server/jsonrpc/methods/OperatorService.java
++++ b/net/minecraft/server/jsonrpc/methods/OperatorService.java
+@@ -31,7 +_,7 @@
+          .map(playerDto -> minecraftApi.playerListService().getUser(playerDto.id(), playerDto.name()))
+          .toList();
+ 
+-      for (Optional<NameAndId> user : (List)Util.sequence(fetch).join()) {
++      for (Optional<NameAndId> user : Util.sequence(fetch).join()) {
+          user.ifPresent(nameAndId -> minecraftApi.operatorListService().deop(nameAndId, clientInfo));
+       }
+ 
+@@ -49,7 +_,7 @@
+          )
+          .toList();
+ 
+-      for (Optional<OperatorService.Op> op : (List)Util.sequence(fetch).join()) {
++      for (Optional<OperatorService.Op> op : Util.sequence(fetch).join()) {
+          op.ifPresent(
+             operator -> minecraftApi.operatorListService().op(operator.user(), operator.permissionLevel(), operator.bypassesPlayerLimit(), clientInfo)
+          );
+@@ -68,7 +_,7 @@
+                .thenApply(user -> user.map(nameAndId -> new OperatorService.Op(nameAndId, operator.permissionLevel(), operator.bypassesPlayerLimit())))
+          )
+          .toList();
+-      Set<OperatorService.Op> finalOperators = (Set<OperatorService.Op>)((List)Util.sequence(fetch).join())
++      Set<OperatorService.Op> finalOperators = (Set<OperatorService.Op>)(Util.sequence(fetch).join())
+          .stream()
+          .flatMap(Optional::stream)
+          .collect(Collectors.toSet());

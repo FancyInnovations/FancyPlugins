@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/BlockGetter.java
++++ b/net/minecraft/world/level/BlockGetter.java
+@@ -26,7 +_,7 @@
+ 
+    default <T extends BlockEntity> Optional<T> getBlockEntity(final BlockPos pos, final BlockEntityType<T> type) {
+       BlockEntity blockEntity = this.getBlockEntity(pos);
+-      return blockEntity != null && blockEntity.getType() == type ? Optional.of(blockEntity) : Optional.empty();
++      return blockEntity != null && blockEntity.getType() == type ? Optional.of((T)blockEntity) : Optional.empty();
+    }
+ 
+    BlockState getBlockState(final BlockPos pos);

@@ -1,0 +1,11 @@
+--- a/net/minecraft/core/component/DataComponentHolder.java
++++ b/net/minecraft/core/component/DataComponentHolder.java
+@@ -12,7 +_,7 @@
+    }
+ 
+    default <T> Stream<T> getAllOfType(final Class<? extends T> valueClass) {
+-      return this.getComponents().stream().map(TypedDataComponent::value).filter(value -> valueClass.isAssignableFrom(value.getClass())).map(value -> value);
++      return this.getComponents().stream().map(TypedDataComponent::value).filter(value -> valueClass.isAssignableFrom(value.getClass())).map(value -> (T)value);
+    }
+ 
+    @Override

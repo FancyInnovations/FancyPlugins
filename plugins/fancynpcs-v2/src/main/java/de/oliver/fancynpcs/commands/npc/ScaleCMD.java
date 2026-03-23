@@ -25,11 +25,12 @@ public enum ScaleCMD {
             npc.getData().setScale(factor);
             npc.updateForAll();
             translator.translate("npc_scale_set_success")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("scale", String.valueOf(factor))
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 }

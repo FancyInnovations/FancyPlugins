@@ -1,0 +1,21 @@
+--- a/net/minecraft/world/entity/monster/warden/Warden.java
++++ b/net/minecraft/world/entity/monster/warden/Warden.java
+@@ -376,7 +_,7 @@
+ 
+    @Override
+    public Brain<Warden> getBrain() {
+-      return super.getBrain();
++      return (Brain<Warden>) super.getBrain();
+    }
+ 
+    @Override
+@@ -547,9 +_,6 @@
+          protected PathFinder createPathFinder(final int maxVisitedNodes) {
+             this.nodeEvaluator = new WalkNodeEvaluator();
+             return new PathFinder(this.nodeEvaluator, maxVisitedNodes) {
+-               {
+-                  Objects.requireNonNull(<VAR_NAMELESS_ENCLOSURE>);
+-               }
+ 
+                @Override
+                protected float distance(final Node from, final Node to) {

@@ -1,0 +1,29 @@
+--- a/net/minecraft/server/jsonrpc/IncomingRpcMethod.java
++++ b/net/minecraft/server/jsonrpc/IncomingRpcMethod.java
+@@ -143,7 +_,7 @@
+                   paramsJsonElement = jsonArray.get(0);
+                }
+ 
+-               Params params = (Params)((ParamInfo)this.info.params().get())
++               Params params = (this.info.params().get())
+                   .schema()
+                   .codec()
+                   .parse(JsonOps.INSTANCE, paramsJsonElement)
+@@ -152,7 +_,7 @@
+                if (this.info.result().isEmpty()) {
+                   throw new IllegalStateException("No result codec defined");
+                } else {
+-                  return (JsonElement)((ResultInfo)this.info.result().get())
++                  return (this.info.result().get())
+                      .schema()
+                      .codec()
+                      .encodeStart(JsonOps.INSTANCE, result)
+@@ -178,7 +_,7 @@
+                if (this.info.result().isEmpty()) {
+                   throw new IllegalStateException("No result codec defined");
+                } else {
+-                  return (JsonElement)((ResultInfo)this.info.result().get())
++                  return (JsonElement)(this.info.result().get())
+                      .schema()
+                      .codec()
+                      .encodeStart(JsonOps.INSTANCE, result)

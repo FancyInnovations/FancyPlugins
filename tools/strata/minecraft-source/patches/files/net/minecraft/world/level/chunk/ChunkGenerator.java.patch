@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/chunk/ChunkGenerator.java
++++ b/net/minecraft/world/level/chunk/ChunkGenerator.java
+@@ -343,7 +_,7 @@
+             for (int stepIndex = 0; stepIndex < generationSteps; stepIndex++) {
+                int index = 0;
+                if (structureManager.shouldGenerateStructures()) {
+-                  for (Structure structure : (List)structuresByStep.getOrDefault(stepIndex, Collections.emptyList())) {
++                  for (Structure structure : structuresByStep.getOrDefault(stepIndex, Collections.emptyList())) {
+                      random.setFeatureSeed(decorationSeed, index, stepIndex);
+                      Supplier<String> currentlyGenerating = () -> (String)structuresRegistry.getResourceKey(structure)
+                         .map(Object::toString)

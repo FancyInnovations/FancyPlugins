@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/ScoreboardDisplayNameFix.java
++++ b/net/minecraft/util/datafix/fixes/ScoreboardDisplayNameFix.java
+@@ -23,7 +_,7 @@
+    protected TypeRewriteRule makeRule() {
+       Type<?> inputType = this.getInputSchema().getType(this.type);
+       OpticFinder<?> displayNameF = inputType.findField("DisplayName");
+-      OpticFinder<Pair<String, String>> textComponentF = DSL.typeFinder(this.getInputSchema().getType(References.TEXT_COMPONENT));
++      OpticFinder<Pair<String, String>> textComponentF = DSL.typeFinder((Type<Pair<String, String>>)this.getInputSchema().getType(References.TEXT_COMPONENT));
+       return this.fixTypeEverywhereTyped(
+          this.name,
+          inputType,

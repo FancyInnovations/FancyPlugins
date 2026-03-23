@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="runStrata" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.fancyinnovations.strata.Main" />
+    <module name="minecraft-plugins.tools.strata.main" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.fancyinnovations.strata.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

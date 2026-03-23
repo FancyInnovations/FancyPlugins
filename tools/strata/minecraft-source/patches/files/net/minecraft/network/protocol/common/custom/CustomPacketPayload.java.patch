@@ -1,0 +1,20 @@
+--- a/net/minecraft/network/protocol/common/custom/CustomPacketPayload.java
++++ b/net/minecraft/network/protocol/common/custom/CustomPacketPayload.java
+@@ -24,7 +_,7 @@
+    static <B extends FriendlyByteBuf> StreamCodec<B, CustomPacketPayload> codec(
+       final CustomPacketPayload.FallbackProvider<B> fallback, final List<CustomPacketPayload.TypeAndCodec<? super B, ?>> types
+    ) {
+-      final Map<Identifier, StreamCodec<? super B, ? extends CustomPacketPayload>> idToType = (Map<Identifier, StreamCodec<? super B, ? extends CustomPacketPayload>>)types.stream()
++      final Map<Identifier, StreamCodec<? super B, ? extends CustomPacketPayload>> idToType = types.stream()
+          .collect(Collectors.toUnmodifiableMap(t -> t.type().id(), CustomPacketPayload.TypeAndCodec::codec));
+       return new StreamCodec<B, CustomPacketPayload>() {
+          private StreamCodec<? super B, ? extends CustomPacketPayload> findCodec(final Identifier typeId) {
+@@ -34,7 +_,7 @@
+ 
+          private <T extends CustomPacketPayload> void writeCap(final B output, final CustomPacketPayload.Type<T> type, final CustomPacketPayload payload) {
+             output.writeIdentifier(type.id());
+-            StreamCodec<B, T> codec = this.findCodec(type.id);
++            StreamCodec<B, T> codec = (StreamCodec<B, T>) this.findCodec(type.id);
+             codec.encode(output, (T)payload);
+          }
+ 

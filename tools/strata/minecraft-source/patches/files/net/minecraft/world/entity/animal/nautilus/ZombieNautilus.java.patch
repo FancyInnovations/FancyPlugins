@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
++++ b/net/minecraft/world/entity/animal/nautilus/ZombieNautilus.java
+@@ -68,7 +_,7 @@
+ 
+    @Override
+    public Brain<ZombieNautilus> getBrain() {
+-      return super.getBrain();
++      return (Brain<ZombieNautilus>) super.getBrain();
+    }
+ 
+    @Override

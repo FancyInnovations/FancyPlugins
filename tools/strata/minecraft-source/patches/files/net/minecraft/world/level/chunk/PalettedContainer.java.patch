@@ -1,0 +1,33 @@
+--- a/net/minecraft/world/level/chunk/PalettedContainer.java
++++ b/net/minecraft/world/level/chunk/PalettedContainer.java
+@@ -49,17 +_,19 @@
+    private static <T, C extends PalettedContainerRO<T>> Codec<C> codec(
+       final Codec<T> elementCodec, final Strategy<T> strategy, final T defaultValue, final PalettedContainerRO.Unpacker<T, C> unpacker
+    ) {
+-      return RecordCodecBuilder.create(
+-            i -> i.group(
+-                  elementCodec.mapResult(ExtraCodecs.orElsePartial(defaultValue))
+-                     .listOf()
+-                     .fieldOf("palette")
+-                     .forGetter(PalettedContainerRO.PackedData::paletteEntries),
+-                  Codec.LONG_STREAM.lenientOptionalFieldOf("data").forGetter(PalettedContainerRO.PackedData::storage)
+-               )
+-               .apply(i, PalettedContainerRO.PackedData::new)
+-         )
+-         .comapFlatMap(discData -> unpacker.read(strategy, discData), palettedContainer -> palettedContainer.pack(strategy));
++      return RecordCodecBuilder.<PalettedContainerRO.PackedData>create(
++                      i -> i.group(
++                                      elementCodec.mapResult(ExtraCodecs.orElsePartial(defaultValue))
++                                              .listOf()
++                                              .fieldOf("palette")
++                                              .forGetter(PalettedContainerRO.PackedData::paletteEntries),
++                                      Codec.LONG_STREAM.lenientOptionalFieldOf("data").forGetter(PalettedContainerRO.PackedData::storage)
++                              )
++                              .apply(i, PalettedContainerRO.PackedData::new)
++              )
++              .comapFlatMap(
++                      discData -> unpacker.read(strategy, (PalettedContainerRO.PackedData<T>)discData), palettedContainer -> palettedContainer.pack(strategy)
++              );
+    }
+ 
+    private PalettedContainer(final Strategy<T> strategy, final Configuration dataConfiguration, final BitStorage storage, final Palette<T> palette) {

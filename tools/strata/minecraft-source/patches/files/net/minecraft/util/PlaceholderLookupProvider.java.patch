@@ -1,0 +1,25 @@
+--- a/net/minecraft/util/PlaceholderLookupProvider.java
++++ b/net/minecraft/util/PlaceholderLookupProvider.java
+@@ -49,7 +_,7 @@
+                   .map(RegistryOps.RegistryInfo::fromRegistryLookup)
+                   .or(
+                      () -> Optional.of(
+-                        new RegistryOps.RegistryInfo(
++                        new RegistryOps.RegistryInfo<>(
+                            PlaceholderLookupProvider.this.lookup.castAsOwner(), PlaceholderLookupProvider.this.lookup.castAsLookup(), Lifecycle.experimental()
+                         )
+                      )
+@@ -112,11 +_,11 @@
+       }
+ 
+       public <T> HolderGetter<T> castAsLookup() {
+-         return this;
++         return (HolderGetter<T>) this;
+       }
+ 
+       public <T> HolderOwner<T> castAsOwner() {
+-         return this;
++         return (HolderOwner<T>) this;
+       }
+    }
+ }

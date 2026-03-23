@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/entity/vault/VaultConfig.java
++++ b/net/minecraft/world/level/block/entity/vault/VaultConfig.java
+@@ -23,7 +_,7 @@
+ ) {
+    static final String TAG_NAME = "config";
+    static final VaultConfig DEFAULT = new VaultConfig();
+-   static final Codec<VaultConfig> CODEC = RecordCodecBuilder.create(
++   static final Codec<VaultConfig> CODEC = RecordCodecBuilder.<VaultConfig>create(
+          i -> i.group(
+                LootTable.KEY_CODEC.lenientOptionalFieldOf("loot_table", DEFAULT.lootTable()).forGetter(VaultConfig::lootTable),
+                Codec.DOUBLE.lenientOptionalFieldOf("activation_range", DEFAULT.activationRange()).forGetter(VaultConfig::activationRange),

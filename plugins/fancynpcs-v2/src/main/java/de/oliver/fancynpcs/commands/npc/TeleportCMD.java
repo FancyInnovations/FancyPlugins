@@ -24,12 +24,12 @@ public enum TeleportCMD {
         final Location location = npc.getData().getLocation();
         // Checking if the world is still loaded.
         if (location.getWorld() == null) {
-            translator.translate("npc_teleport_failure_world_not_loaded").send(sender);
+            translator.translate("npc_teleport_failure_world_not_loaded").withPrefix().send(sender);
             return;
         }
         // Teleporting and sending message to the sender. This operation can occasionally fail.
         sender.teleportAsync(location).whenComplete((isSuccess, thr) -> {
-            translator.translate(isSuccess ? "npc_teleport_success" : "npc_teleport_failure_exception").replace("npc", npc.getData().getName()).send(sender);
+            translator.translate(isSuccess ? "npc_teleport_success" : "npc_teleport_failure_exception").replace("npc", npc.getData().getName()).withPrefix().send(sender);
             // Printing stacktrace to the console in case an exception occurred.
             if (thr != null)
                 thr.printStackTrace();

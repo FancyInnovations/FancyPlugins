@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/parsing/packrat/commands/Grammar.java
++++ b/net/minecraft/util/parsing/packrat/commands/Grammar.java
+@@ -36,7 +_,7 @@
+          return (T)result.get();
+       } else {
+          List<ErrorEntry<StringReader>> errorEntries = errorCollector.entries();
+-         List<Exception> exceptions = errorEntries.stream().mapMulti((entry, output) -> {
++         List<Exception> exceptions = errorEntries.stream().<Exception>mapMulti((entry, output) -> {
+             if (entry.reason() instanceof DelayedException<?> delayedException) {
+                output.accept(delayedException.create(reader.getString(), entry.cursor()));
+             } else if (entry.reason() instanceof Exception exceptionx) {

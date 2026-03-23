@@ -29,11 +29,12 @@ public enum VisibilityCMD {
             npc.checkAndUpdateVisibilityForAll();
 
             translator.translate("npc_visibility_set")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("visibility", visibility.toString())
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 }

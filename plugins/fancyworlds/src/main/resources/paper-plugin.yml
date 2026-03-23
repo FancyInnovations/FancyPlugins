@@ -1,0 +1,17 @@
+name: "FancyWorlds"
+main: "com.fancyinnovations.fancyworlds.main.FancyWorldsPlugin"
+bootstrapper: "com.fancyinnovations.fancyworlds.main.FancyWorldsBootstrapper"
+loader: "com.fancyinnovations.fancyworlds.main.FancyWorldsLoader"
+version: "$version"
+description: "Simple, lightweight and fast world management plugin"
+website: "https://fancyinnovations.com/docs/minecraft-plugins/fancyworlds"
+authors:
+  - "OliverSchlueter"
+api-version: "1.21"
+load: POSTWORLD
+dependencies:
+  server:
+    FancyDialogs:
+      load: BEFORE
+      required: true
+      join-classpath: true

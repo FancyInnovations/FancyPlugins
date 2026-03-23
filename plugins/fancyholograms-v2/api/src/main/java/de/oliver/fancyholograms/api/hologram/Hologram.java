@@ -201,6 +201,7 @@ public abstract class Hologram {
         final var players = getViewers()
                 .stream()
                 .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
                 .toList();
 
         refreshHologram(players);

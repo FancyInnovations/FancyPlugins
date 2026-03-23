@@ -1,0 +1,13 @@
+--- a/net/minecraft/world/level/chunk/ChunkGeneratorStructureState.java
++++ b/net/minecraft/world/level/chunk/ChunkGeneratorStructureState.java
+@@ -55,8 +_,8 @@
+    public static ChunkGeneratorStructureState createForNormal(
+       final RandomState randomState, final long levelSeed, final BiomeSource biomeSource, final HolderLookup<StructureSet> allStructures
+    ) {
+-      List<Holder<StructureSet>> structures = (List<Holder<StructureSet>>)allStructures.listElements()
+-         .filter(structureSet -> hasBiomesForStructureSet((StructureSet)structureSet.value(), biomeSource))
++      List<Holder<StructureSet>> structures = allStructures.listElements()
++         .filter(structureSet -> hasBiomesForStructureSet(structureSet.value(), biomeSource))
+          .collect(Collectors.toUnmodifiableList());
+       return new ChunkGeneratorStructureState(randomState, biomeSource, levelSeed, levelSeed, structures);
+    }

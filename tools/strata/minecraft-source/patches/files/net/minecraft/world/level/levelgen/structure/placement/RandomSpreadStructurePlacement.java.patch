@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/levelgen/structure/placement/RandomSpreadStructurePlacement.java
++++ b/net/minecraft/world/level/levelgen/structure/placement/RandomSpreadStructurePlacement.java
+@@ -12,7 +_,7 @@
+ import net.minecraft.world.level.levelgen.WorldgenRandom;
+ 
+ public class RandomSpreadStructurePlacement extends StructurePlacement {
+-   public static final MapCodec<RandomSpreadStructurePlacement> CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<RandomSpreadStructurePlacement> CODEC = RecordCodecBuilder.<RandomSpreadStructurePlacement>mapCodec(
+          i -> placementCodec(i)
+             .and(
+                i.group(

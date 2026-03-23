@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/timers/TimerQueue.java
++++ b/net/minecraft/world/level/timers/TimerQueue.java
+@@ -34,7 +_,7 @@
+    }
+ 
+    private static <T> Comparator<TimerQueue.Event<T>> createComparator() {
+-      return Comparator.comparingLong(l -> l.triggerTime).thenComparing(l -> l.sequentialId);
++      return Comparator.<TimerQueue.Event<T>>comparingLong(l -> l.triggerTime).thenComparing(l -> l.sequentialId);
+    }
+ 
+    public TimerQueue(final TimerQueue.Packed<T> packedEvents) {

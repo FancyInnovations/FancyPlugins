@@ -41,7 +41,7 @@ public enum SkinCMD {
             final @Flag("slim") boolean slim
     ) {
         if (npc.getData().getType() != EntityType.PLAYER) {
-            translator.translate("command_unsupported_npc_type").send(sender);
+            translator.translate("command_unsupported_npc_type").withPrefix().send(sender);
             return;
         }
 
@@ -53,9 +53,9 @@ public enum SkinCMD {
                 npc.removeForAll();
                 npc.create();
                 npc.spawnForAll();
-                translator.translate("npc_skin_set_mirror").replace("npc", npc.getData().getName()).send(sender);
+                translator.translate("npc_skin_set_mirror").replace("npc", npc.getData().getName()).withPrefix().send(sender);
             } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
+                translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
             }
         } else if (isNone) {
             if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, false, sender).callEvent() && new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, null, sender).callEvent()) {
@@ -64,9 +64,9 @@ public enum SkinCMD {
                 npc.removeForAll();
                 npc.create();
                 npc.spawnForAll();
-                translator.translate("npc_skin_set_none").replace("npc", npc.getData().getName()).send(sender);
+                translator.translate("npc_skin_set_none").withPrefix().replace("npc", npc.getData().getName()).send(sender);
             } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
+                translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
             }
         } else try {
             SkinData.SkinVariant variant = slim ? SkinData.SkinVariant.SLIM : SkinData.SkinVariant.AUTO;
@@ -75,11 +75,12 @@ public enum SkinCMD {
 
             if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, false, sender).callEvent() && new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.SKIN, skinData, sender).callEvent()) {
                 translator.translate("npc_skin_set")
+                        .withPrefix()
                         .replace("npc", npc.getData().getName())
                         .replace("name", skinData.getIdentifier())
                         .send(sender);
                 if (!skinData.hasTexture()) {
-                    translator.translate("npc_skin_set_later").replace("npc", npc.getData().getName()).send(sender);
+                    translator.translate("npc_skin_set_later").withPrefix().replace("npc", npc.getData().getName()).send(sender);
                 }
                 npc.getData().setMirrorSkin(false);
                 npc.getData().setSkinData(skinData);
@@ -88,14 +89,18 @@ public enum SkinCMD {
                 npc.spawnForAll();
 
             } else {
-                translator.translate("command_npc_modification_cancelled").send(sender);
+                translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
             }
         } catch (final SkinLoadException e) {
             switch (e.getReason()) {
-                case INVALID_URL -> translator.translate("npc_skin_failure_invalid_url").replace("npc", npc.getData().getName()).send(sender);
-                case INVALID_FILE -> translator.translate("npc_skin_failure_invalid_file").replace("npc", npc.getData().getName()).send(sender);
-                case INVALID_USERNAME -> translator.translate("npc_skin_failure_invalid_username").replace("npc", npc.getData().getName()).send(sender);
-                case INVALID_PLACEHOLDER -> translator.translate("npc_skin_failure_invalid_placeholder").replace("npc", npc.getData().getName()).send(sender);
+                case INVALID_URL ->
+                        translator.translate("npc_skin_failure_invalid_url").withPrefix().replace("npc", npc.getData().getName()).send(sender);
+                case INVALID_FILE ->
+                        translator.translate("npc_skin_failure_invalid_file").withPrefix().replace("npc", npc.getData().getName()).send(sender);
+                case INVALID_USERNAME ->
+                        translator.translate("npc_skin_failure_invalid_username").withPrefix().replace("npc", npc.getData().getName()).send(sender);
+                case INVALID_PLACEHOLDER ->
+                        translator.translate("npc_skin_failure_invalid_placeholder").withPrefix().replace("npc", npc.getData().getName()).send(sender);
             }
         }
     }

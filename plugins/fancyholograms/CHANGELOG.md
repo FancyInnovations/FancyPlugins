@@ -14,25 +14,19 @@ Things that will **not** be migrated automatically:
 The API has changed significantly, so you will have to update your code accordingly.
 Read more about the new API [here](#new-api).
 
-**Important**: We've decided to drop support for the following Minecraft versions: 1.19.4 - 1.20.4! FancyHolograms v3 will only support Minecraft 1.20.5 and newer.
+## New Commands & Translations
 
-[//]: # (## New Commands & Translations)
+In v3, all commands have been rewritten and simplified.
 
-[//]: # ()
-[//]: # (In v3, all commands have been rewritten and simplified.)
+If you're using FancyNpcs, you will notice that the commands are now more consistent with the FancyNpcs commands.
+It's now using the [Lamp command framework](https://github.com/Revxrsal/Lamp), which allows for better command handling and easier command creation.
 
-[//]: # (If you're using FancyNpcs, you will notice that the commands are now more consistent with the FancyNpcs commands.)
+Not only the command structure has changed, but also the responses.
+All responses are now configurable. You can find the default responses in the `plugins/FancyHolograms/languages/default.yml` file.
 
-[//]: # (It's now using the [Lamp command framework]&#40;https://github.com/Revxrsal/Lamp&#41;, which allows for better command handling and easier command creation.)
+You can create your own language files in the `plugins/FancyHolograms/languages/` folder, by copying the `default.yml` file and renaming it to your desired language code (e.g. `nl.yml`, `pl.yml`, etc.).
 
-[//]: # ()
-[//]: # (Not only the command structure has changed, but also the responses.)
-
-[//]: # (All responses are now configurable. You can find the default responses in the `plugins/FancyHolograms/languages/default.yml` file.)
-
-[//]: # (You can create your own language files in the `plugins/FancyHolograms/languages/` folder, by copying the `default.yml` file and renaming it to your desired language code &#40;e.g. `nl.yml`, `pl.yml`, etc.&#41;.)
-
-[//]: # (Remember to set the `language` option in the `config.yml` file to your language code.)
+Remember to set the `language` option in the `config.yml` file to your language code.
 
 ## New Storage System
 
@@ -109,7 +103,7 @@ The API has been completely rewritten.
 You can now create holograms using builders, which allows for better readability and easier creation of holograms.
 With traits, you can extend the functionality of holograms and add new features.
 
-You can view the Javadocs [here](https://repo.fancyinnovations.com/javadoc/snapshots/de/oliver/FancyHolograms/3.0.0-SNAPSHOT.4).
+You can view the Javadocs [here](https://fancyspaces.net/javadoc/fi/snapshots/de.oliver:FancyHolograms/3.0.0-SNAPSHOT.46/index.html).
 
 ### Getting Started
 
@@ -126,7 +120,7 @@ maven {
 
 Dependency:
 ```kotlin
-implementation("de.oliver:FancyHolograms:3.0.0-SNAPSHOT.4")
+implementation("de.oliver:FancyHolograms:3.0.0-SNAPSHOT.46")
 ```
 
 ### Builders
@@ -194,7 +188,7 @@ This will spawn the hologram for the specified players if they meet the visibili
 Read more about the trait feature below.
 
 You can also create your own traits by extending the `HologramTrait` class.
-View the [Javadocs](https://repo.fancyinnovations.com/javadoc/snapshots/de/oliver/FancyHolograms/3.0.0-SNAPSHOT.4) for more information about how the `HologramTrait` class is structured.
+View the [Javadocs](https://fancyspaces.net/javadoc/fi/snapshots/de.oliver:FancyHolograms/3.0.0-SNAPSHOT.46/index.html) for more information about how the `HologramTrait` class is structured.
 You can override all the `on` methods, as well as the `load` and `save` methods.
 
 Every trait has a `storage` JDB (JSON Database) object that can be used to store data related to the trait.

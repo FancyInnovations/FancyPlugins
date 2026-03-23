@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/ai/behavior/PoiCompetitorScan.java
++++ b/net/minecraft/world/entity/ai/behavior/PoiCompetitorScan.java
+@@ -22,7 +_,7 @@
+                   level.getPoiManager()
+                      .getType(pos.pos())
+                      .ifPresent(
+-                        poiType -> i.<List>get(nearestEntities)
++                             poiType -> i.<List<LivingEntity>>get(nearestEntities)
+                            .stream()
+                            .filter(v -> v instanceof Villager && v != body)
+                            .map(v -> (Villager)v)

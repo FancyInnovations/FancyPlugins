@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/item/trading/VillagerTrade.java
++++ b/net/minecraft/world/item/trading/VillagerTrade.java
+@@ -25,7 +_,7 @@
+ import org.jspecify.annotations.Nullable;
+ 
+ public class VillagerTrade implements Validatable {
+-   public static final Codec<VillagerTrade> CODEC = RecordCodecBuilder.create(
++   public static final Codec<VillagerTrade> CODEC = RecordCodecBuilder.<VillagerTrade>create(
+          i -> i.group(
+                TradeCost.CODEC.fieldOf("wants").forGetter(villagerTrade -> villagerTrade.wants),
+                TradeCost.CODEC.optionalFieldOf("additional_wants").forGetter(villagerTrade -> villagerTrade.additionalWants),

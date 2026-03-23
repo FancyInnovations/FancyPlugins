@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/OverreachingTickFix.java
++++ b/net/minecraft/util/datafix/fixes/OverreachingTickFix.java
+@@ -36,7 +_,7 @@
+       Dynamic<?> remainder, final int chunkX, final int chunkZ, final Optional<? extends Dynamic<?>> ticks, final String nameInUpgradeData
+    ) {
+       if (ticks.isPresent()) {
+-         List<? extends Dynamic<?>> overreachingTicks = ((Dynamic)ticks.get()).asStream().filter(tick -> {
++         List<? extends Dynamic<?>> overreachingTicks = (ticks.get()).asStream().filter(tick -> {
+             int x = tick.get("x").asInt(0);
+             int z = tick.get("z").asInt(0);
+             int distX = Math.abs(chunkX - (x >> 4));

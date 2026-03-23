@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/valueproviders/UniformInt.java
++++ b/net/minecraft/util/valueproviders/UniformInt.java
+@@ -8,7 +_,7 @@
+ import net.minecraft.util.RandomSource;
+ 
+ public record UniformInt(int minInclusive, int maxInclusive) implements IntProvider {
+-   public static final MapCodec<UniformInt> MAP_CODEC = RecordCodecBuilder.mapCodec(
++   public static final MapCodec<UniformInt> MAP_CODEC = RecordCodecBuilder.<UniformInt>mapCodec(
+          i -> i.group(
+                Codec.INT.fieldOf("min_inclusive").forGetter(UniformInt::minInclusive), Codec.INT.fieldOf("max_inclusive").forGetter(UniformInt::maxInclusive)
+             )

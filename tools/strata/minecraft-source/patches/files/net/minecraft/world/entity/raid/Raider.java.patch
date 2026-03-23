@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/raid/Raider.java
++++ b/net/minecraft/world/entity/raid/Raider.java
+@@ -361,7 +_,7 @@
+ 
+             for (ItemEntity banner : this.mob
+                .level()
+-               .getEntitiesOfClass((Class<T>)ItemEntity.class, this.mob.getBoundingBox().inflate(followRange, 8.0, followRange), Raider.ALLOWED_ITEMS)) {
++               .getEntitiesOfClass(ItemEntity.class, this.mob.getBoundingBox().inflate(followRange, 8.0, followRange), Raider.ALLOWED_ITEMS)) {
+                long unreachableUntilTime = this.unreachableBannerCache.getOrDefault(banner.getId(), Long.MIN_VALUE);
+                if (Raider.this.level().getGameTime() < unreachableUntilTime) {
+                   tempCache.put(banner.getId(), unreachableUntilTime);

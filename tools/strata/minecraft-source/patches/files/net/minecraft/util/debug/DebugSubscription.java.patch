@@ -1,0 +1,20 @@
+--- a/net/minecraft/util/debug/DebugSubscription.java
++++ b/net/minecraft/util/debug/DebugSubscription.java
+@@ -53,7 +_,7 @@
+          .dispatch(DebugSubscription.Event::subscription, DebugSubscription.Event::streamCodec);
+ 
+       private static <T> StreamCodec<? super RegistryFriendlyByteBuf, DebugSubscription.Event<T>> streamCodec(final DebugSubscription<T> subscription) {
+-         return ((StreamCodec)Objects.requireNonNull(subscription.valueStreamCodec))
++         return (Objects.requireNonNull(subscription.valueStreamCodec))
+             .map(value -> new DebugSubscription.Event<>(subscription, (T)value), DebugSubscription.Event::value);
+       }
+    }
+@@ -63,7 +_,7 @@
+          .dispatch(DebugSubscription.Update::subscription, DebugSubscription.Update::streamCodec);
+ 
+       private static <T> StreamCodec<? super RegistryFriendlyByteBuf, DebugSubscription.Update<T>> streamCodec(final DebugSubscription<T> subscription) {
+-         return ByteBufCodecs.optional((StreamCodec)Objects.requireNonNull(subscription.valueStreamCodec))
++         return ByteBufCodecs.optional(Objects.requireNonNull(subscription.valueStreamCodec))
+             .map(value -> new DebugSubscription.Update<>(subscription, value), DebugSubscription.Update::value);
+       }
+    }

@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/chunk/SingleValuePalette.java
++++ b/net/minecraft/world/level/chunk/SingleValuePalette.java
+@@ -19,7 +_,7 @@
+    }
+ 
+    public static <A> Palette<A> create(final int bits, final List<A> paletteEntries) {
+-      return new SingleValuePalette((List<T>)paletteEntries);
++      return new SingleValuePalette<>(paletteEntries);
+    }
+ 
+    @Override

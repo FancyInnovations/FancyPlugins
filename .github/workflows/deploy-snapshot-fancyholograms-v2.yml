@@ -53,6 +53,7 @@ jobs:
           fancyspaces_api_key: ${{ secrets.FANCYSPACES_API_KEY }}
           modrinth_api_key: ${{ secrets.MODRINTH_API_KEY }}
           hangar_api_key: ${{ secrets.HANGAR_API_KEY }}
+          curseforge_api_key: ${{ secrets.CURSEFORGE_API_KEY }}
           discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Publish to maven snapshots repo

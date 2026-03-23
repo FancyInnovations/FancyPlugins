@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/SculkSpreader.java
++++ b/net/minecraft/world/level/block/SculkSpreader.java
+@@ -108,7 +_,7 @@
+ 
+    public void load(final ValueInput input) {
+       this.cursors.clear();
+-      ((List)input.read("cursors", SculkSpreader.ChargeCursor.CODEC.sizeLimitedListOf(32)).orElse(List.of())).forEach(this::addCursor);
++      (input.read("cursors", SculkSpreader.ChargeCursor.CODEC.sizeLimitedListOf(32)).orElse(List.of())).forEach(this::addCursor);
+    }
+ 
+    public void save(final ValueOutput output) {

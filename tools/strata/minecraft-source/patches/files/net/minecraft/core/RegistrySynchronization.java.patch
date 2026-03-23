@@ -1,0 +1,11 @@
+--- a/net/minecraft/core/RegistrySynchronization.java
++++ b/net/minecraft/core/RegistrySynchronization.java
+@@ -19,7 +_,7 @@
+ import net.minecraft.server.packs.repository.KnownPack;
+ 
+ public class RegistrySynchronization {
+-   private static final Set<ResourceKey<? extends Registry<?>>> NETWORKABLE_REGISTRIES = (Set<ResourceKey<? extends Registry<?>>>)RegistryDataLoader.SYNCHRONIZED_REGISTRIES
++   private static final Set<ResourceKey<? extends Registry<?>>> NETWORKABLE_REGISTRIES = RegistryDataLoader.SYNCHRONIZED_REGISTRIES
+       .stream()
+       .map(RegistryDataLoader.RegistryData::key)
+       .collect(Collectors.toUnmodifiableSet());

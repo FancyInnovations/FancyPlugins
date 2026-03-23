@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/level/ChunkResult.java
++++ b/net/minecraft/server/level/ChunkResult.java
+@@ -63,7 +_,7 @@
+ 
+       @Override
+       public <E extends Throwable> T orElseThrow(final Supplier<E> exceptionSupplier) throws E {
+-         throw (Throwable)exceptionSupplier.get();
++         throw exceptionSupplier.get();
+       }
+    }
+ 

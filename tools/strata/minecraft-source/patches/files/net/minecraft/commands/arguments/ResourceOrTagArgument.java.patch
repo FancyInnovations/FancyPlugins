@@ -1,0 +1,20 @@
+--- a/net/minecraft/commands/arguments/ResourceOrTagArgument.java
++++ b/net/minecraft/commands/arguments/ResourceOrTagArgument.java
+@@ -143,7 +_,7 @@
+ 
+       @Override
+       public <E> Optional<ResourceOrTagArgument.Result<E>> cast(final ResourceKey<? extends Registry<E>> registryKey) {
+-         return this.value.key().isFor(registryKey) ? Optional.of(this) : Optional.empty();
++         return this.value.key().isFor(registryKey) ? Optional.of((ResourceOrTagArgument.Result<E>)this) : Optional.empty();
+       }
+ 
+       public boolean test(final Holder<T> holder) {
+@@ -172,7 +_,7 @@
+ 
+       @Override
+       public <E> Optional<ResourceOrTagArgument.Result<E>> cast(final ResourceKey<? extends Registry<E>> registryKey) {
+-         return this.tag.key().isFor(registryKey) ? Optional.of(this) : Optional.empty();
++         return this.tag.key().isFor(registryKey) ? Optional.of((ResourceOrTagArgument.Result<E>)this) : Optional.empty();
+       }
+ 
+       public boolean test(final Holder<T> holder) {

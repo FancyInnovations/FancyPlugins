@@ -39,13 +39,15 @@ public enum ActionCMD {
         }
 
         if (value != null && DisplayNameCMD.INSTANCE.hasBlockedCommands(value)) {
-            translator.translate("command_input_contains_blocked_command").send(sender);
+            translator.translate("command_input_contains_blocked_command")
+                    .withPrefix()
+                    .send(sender);
             return;
         }
 
         if (actionType.requiresValue() && (value == null || value.isEmpty())) {
-            translator
-                    .translate("npc_action_requires_value")
+            translator.translate("npc_action_requires_value")
+                    .withPrefix()
                     .send(sender);
             return;
         }
@@ -53,13 +55,14 @@ public enum ActionCMD {
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions().getOrDefault(trigger, new ArrayList<>());
 
         npc.getData().addAction(trigger, currentActions.size() + 1, actionType, value);
-        translator
-                .translate("npc_action_add_success")
+        translator.translate("npc_action_add_success")
+                .withPrefix()
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
 
         if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
             translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
                     .send(sender);
         }
     }
@@ -79,13 +82,15 @@ public enum ActionCMD {
         }
 
         if (value != null && DisplayNameCMD.INSTANCE.hasBlockedCommands(value)) {
-            translator.translate("command_input_contains_blocked_command").send(sender);
+            translator.translate("command_input_contains_blocked_command")
+                    .withPrefix()
+                    .send(sender);
             return;
         }
 
         if (actionType.requiresValue() && (value == null || value.isEmpty())) {
-            translator
-                    .translate("npc_action_requires_value")
+            translator.translate("npc_action_requires_value")
+                    .withPrefix()
                     .send(sender);
             return;
         }
@@ -94,14 +99,15 @@ public enum ActionCMD {
         currentActions.add(Math.clamp(index - 1, 0, currentActions.size()), new NpcAction.NpcActionData(index, actionType, value));
 
         npc.getData().setActions(trigger, reorderActions(currentActions));
-        translator
-                .translate("npc_action_add_before_success")
+        translator.translate("npc_action_add_before_success")
+                .withPrefix()
                 .replaceStripped("number", String.valueOf(index))
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
 
         if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
             translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
                     .send(sender);
         }
     }
@@ -121,13 +127,16 @@ public enum ActionCMD {
         }
 
         if (value != null && DisplayNameCMD.INSTANCE.hasBlockedCommands(value)) {
-            translator.translate("command_input_contains_blocked_command").send(sender);
+            translator.translate("command_input_contains_blocked_command")
+                    .withPrefix()
+                    .send(sender);
             return;
         }
 
         if (actionType.requiresValue() && (value == null || value.isEmpty())) {
             translator
                     .translate("npc_action_requires_value")
+                    .withPrefix()
                     .send(sender);
             return;
         }
@@ -136,14 +145,15 @@ public enum ActionCMD {
         currentActions.add(Math.clamp(index, 0, currentActions.size() + 1), new NpcAction.NpcActionData(index, actionType, value));
 
         npc.getData().setActions(trigger, reorderActions(currentActions));
-        translator
-                .translate("npc_action_add_after_success")
+        translator.translate("npc_action_add_after_success")
+                .withPrefix()
                 .replaceStripped("number", String.valueOf(index))
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
 
         if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
             translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
                     .send(sender);
         }
     }
@@ -163,21 +173,23 @@ public enum ActionCMD {
         }
 
         if (value != null && DisplayNameCMD.INSTANCE.hasBlockedCommands(value)) {
-            translator.translate("command_input_contains_blocked_command").send(sender);
+            translator.translate("command_input_contains_blocked_command")
+                    .withPrefix()
+                    .send(sender);
             return;
         }
 
         if (actionType.requiresValue() && (value == null || value.isEmpty())) {
-            translator
-                    .translate("npc_action_requires_value")
+            translator.translate("npc_action_requires_value")
+                    .withPrefix()
                     .send(sender);
             return;
         }
 
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions(trigger);
         if (number < 1 || number > currentActions.size()) {
-            translator
-                    .translate("npc_action_set_failure")
+            translator.translate("npc_action_set_failure")
+                    .withPrefix()
                     .replaceStripped("number", String.valueOf(number))
                     .send(sender);
             return;
@@ -185,14 +197,15 @@ public enum ActionCMD {
 
         currentActions.set(number - 1, new NpcAction.NpcActionData(number, actionType, value));
         npc.getData().setActions(trigger, currentActions);
-        translator
-                .translate("npc_action_set_success")
+        translator.translate("npc_action_set_success")
+                .withPrefix()
                 .replaceStripped("number", String.valueOf(number))
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
 
         if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
             translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
                     .send(sender);
         }
     }
@@ -207,8 +220,8 @@ public enum ActionCMD {
     ) {
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions(trigger);
         if (number < 1 || number > currentActions.size()) {
-            translator
-                    .translate("npc_action_remove_failure")
+            translator.translate("npc_action_remove_failure")
+                    .withPrefix()
                     .replaceStripped("number", String.valueOf(number))
                     .send(sender);
             return;
@@ -217,8 +230,8 @@ public enum ActionCMD {
         currentActions.remove(number - 1);
 
         npc.getData().setActions(trigger, reorderActions(currentActions));
-        translator
-                .translate("npc_action_remove_success")
+        translator.translate("npc_action_remove_success")
+                .withPrefix()
                 .replaceStripped("number", String.valueOf(number))
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
@@ -234,8 +247,8 @@ public enum ActionCMD {
     ) {
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions(trigger);
         if (number <= 1) {
-            translator
-                    .translate("npc_action_move_up_failure")
+            translator.translate("npc_action_move_up_failure")
+                    .withPrefix()
                     .replaceStripped("number", String.valueOf(number))
                     .send(sender);
             return;
@@ -246,8 +259,8 @@ public enum ActionCMD {
         currentActions.add(number - 2, action);
 
         npc.getData().setActions(trigger, reorderActions(currentActions));
-        translator
-                .translate("npc_action_move_up_success")
+        translator.translate("npc_action_move_up_success")
+                .withPrefix()
                 .replaceStripped("number", String.valueOf(number))
                 .send(sender);
     }
@@ -262,8 +275,8 @@ public enum ActionCMD {
     ) {
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions(trigger);
         if (number >= currentActions.size()) {
-            translator
-                    .translate("npc_action_move_down_failure")
+            translator.translate("npc_action_move_down_failure")
+                    .withPrefix()
                     .replaceStripped("number", String.valueOf(number))
                     .send(sender);
             return;
@@ -274,8 +287,8 @@ public enum ActionCMD {
         currentActions.add(number, action);
 
         npc.getData().setActions(trigger, reorderActions(currentActions));
-        translator
-                .translate("npc_action_move_down_success")
+        translator.translate("npc_action_move_down_success")
+                .withPrefix()
                 .replaceStripped("number", String.valueOf(number))
                 .send(sender);
     }
@@ -289,8 +302,8 @@ public enum ActionCMD {
             final @NotNull ActionTrigger trigger
     ) {
         npc.getData().setActions(trigger, new ArrayList<>());
-        translator
-                .translate("npc_action_clear_success")
+        translator.translate("npc_action_clear_success")
+                .withPrefix()
                 .send(sender);
     }
 
@@ -303,29 +316,29 @@ public enum ActionCMD {
     ) {
         List<NpcAction.NpcActionData> actions = npc.getData().getActions(trigger);
         if (actions.isEmpty()) {
-            translator
-                    .translate("npc_action_list_failure_empty")
+            translator.translate("npc_action_list_failure_empty")
+                    .withPrefix()
                     .send(sender);
             return;
         }
 
-        translator
-                .translate("npc_action_list_header")
+        translator.translate("npc_action_list_header")
+                .withPrefix()
                 .replaceStripped("trigger", trigger.name())
                 .send(sender);
 
         for (int i = 0; i < actions.size(); i++) {
             NpcAction.NpcActionData action = actions.get(i);
-            translator
-                    .translate("npc_action_list_entry")
+            translator.translate("npc_action_list_entry")
+                    .withPrefix()
                     .replaceStripped("number", String.valueOf(action.order()))
                     .replaceStripped("action", action.action().getName())
                     .replaceStripped("value", action.value() != null ? action.value() : "")
                     .send(sender);
         }
 
-        translator
-                .translate("npc_action_list_footer")
+        translator.translate("npc_action_list_footer")
+                .withPrefix()
                 .replaceStripped("total", String.valueOf(actions.size()))
                 .send(sender);
     }
@@ -347,8 +360,8 @@ public enum ActionCMD {
             return true;
         }
 
-        translator
-                .translate("action_missing_permissions")
+        translator.translate("action_missing_permissions")
+                .withPrefix()
                 .send(sender);
 
         return false;

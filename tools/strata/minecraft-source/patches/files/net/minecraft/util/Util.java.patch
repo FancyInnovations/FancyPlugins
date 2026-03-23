@@ -1,0 +1,44 @@
+--- a/net/minecraft/util/Util.java
++++ b/net/minecraft/util/Util.java
+@@ -612,7 +_,7 @@
+    public static <K extends Enum<K>, V> Map<K, V> makeEnumMap(final Class<K> keyType, final Function<K, V> function) {
+       EnumMap<K, V> map = new EnumMap(keyType);
+ 
+-      for (K key : (Enum[])keyType.getEnumConstants()) {
++      for (K key : keyType.getEnumConstants()) {
+          map.put(key, function.apply(key));
+       }
+ 
+@@ -667,7 +_,7 @@
+ 
+       for (int i = 0; i < futures.size(); i++) {
+          int index = i;
+-         decoratedFutures[i] = ((CompletableFuture)futures.get(i)).whenComplete((result, exception) -> {
++         decoratedFutures[i] = (futures.get(i)).whenComplete((result, exception) -> {
+             if (exception != null) {
+                failureHandler.accept(exception);
+             } else {
+@@ -1132,19 +_,19 @@
+    }
+ 
+    public static <T> List<T> copyAndAdd(final List<T> list, final T element) {
+-      return ImmutableList.builderWithExpectedSize(list.size() + 1).addAll(list).add(element).build();
++      return ImmutableList.<T>builderWithExpectedSize(list.size() + 1).addAll(list).add(element).build();
+    }
+ 
+    public static <T> List<T> copyAndAdd(final List<T> list, final T... elements) {
+-      return ImmutableList.builderWithExpectedSize(list.size() + elements.length).addAll(list).add(elements).build();
++      return ImmutableList.<T>builderWithExpectedSize(list.size() + elements.length).addAll(list).add(elements).build();
+    }
+ 
+    public static <T> List<T> copyAndAdd(final T element, final List<T> list) {
+-      return ImmutableList.builderWithExpectedSize(list.size() + 1).add(element).addAll(list).build();
++      return ImmutableList.<T>builderWithExpectedSize(list.size() + 1).add(element).addAll(list).build();
+    }
+ 
+    public static <K, V> Map<K, V> copyAndPut(final Map<K, V> map, final K key, final V value) {
+-      return ImmutableMap.builderWithExpectedSize(map.size() + 1).putAll(map).put(key, value).buildKeepingLast();
++      return ImmutableMap.<K, V>builderWithExpectedSize(map.size() + 1).putAll(map).put(key, value).buildKeepingLast();
+    }
+ 
+    public static enum OS {

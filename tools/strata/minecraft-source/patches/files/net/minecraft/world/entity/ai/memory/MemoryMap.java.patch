@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/entity/ai/memory/MemoryMap.java
++++ b/net/minecraft/world/entity/ai/memory/MemoryMap.java
+@@ -15,7 +_,7 @@
+    private static final Codec<MemoryModuleType<?>> SERIALIZABLE_MEMORY_MODULE_CODEC = BuiltInRegistries.MEMORY_MODULE_TYPE
+       .byNameCodec()
+       .validate(type -> type.canSerialize() ? DataResult.success(type) : DataResult.error(() -> "Memory module " + type + " cannot be encoded"));
+-   public static final Codec<MemoryMap> CODEC = Codec.dispatchedMap(SERIALIZABLE_MEMORY_MODULE_CODEC, type -> (Codec)type.getCodec().orElseThrow())
++   public static final Codec<MemoryMap> CODEC = Codec.<MemoryModuleType<?>, ExpirableValue<?>>dispatchedMap(SERIALIZABLE_MEMORY_MODULE_CODEC, type -> type.getCodec().orElseThrow())
+       .xmap(MemoryMap::new, m -> m.memories);
+    public static final MemoryMap EMPTY = new MemoryMap(Map.of());
+    private final Map<MemoryModuleType<?>, ExpirableValue<?>> memories;
+@@ -25,7 +_,7 @@
+    }
+ 
+    public static MemoryMap of(final Stream<MemoryMap.Value<?>> memories) {
+-      return new MemoryMap((Map<MemoryModuleType<?>, ExpirableValue<?>>)memories.collect(Collectors.toMap(MemoryMap.Value::type, MemoryMap.Value::value)));
++      return new MemoryMap(memories.collect(Collectors.toMap(MemoryMap.Value::type, MemoryMap.Value::value)));
+    }
+ 
+    public <U> @Nullable ExpirableValue<U> get(final MemoryModuleType<U> type) {

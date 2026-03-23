@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/entity/monster/Zoglin.java
++++ b/net/minecraft/world/entity/monster/Zoglin.java
+@@ -95,7 +_,7 @@
+          ImmutableList.of(
+             StartAttacking.create(Zoglin::findNearestValidAttackTarget),
+             SetEntityLookTargetSometimes.create(8.0F, UniformInt.of(30, 60)),
+-            new RunOne(
++            new RunOne<>(
+                ImmutableList.of(
+                   Pair.of(RandomStroll.stroll(0.4F), 2), Pair.of(SetWalkTargetFromLookTarget.create(0.4F, 3), 2), Pair.of(new DoNothing(30, 60), 1)
+                )
+@@ -208,7 +_,7 @@
+ 
+    @Override
+    public Brain<Zoglin> getBrain() {
+-      return super.getBrain();
++      return (Brain<Zoglin>) super.getBrain();
+    }
+ 
+    protected void updateActivity() {

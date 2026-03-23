@@ -1,0 +1,14 @@
+--- a/net/minecraft/core/MappedRegistry.java
++++ b/net/minecraft/core/MappedRegistry.java
+@@ -89,9 +_,9 @@
+       Objects.requireNonNull(key);
+       Objects.requireNonNull(value);
+       if (this.byLocation.containsKey(key.identifier())) {
+-         throw (IllegalStateException)Util.pauseInIde((T)(new IllegalStateException("Adding duplicate key '" + key + "' to registry")));
++         throw Util.pauseInIde((new IllegalStateException("Adding duplicate key '" + key + "' to registry")));
+       } else if (this.byValue.containsKey(value)) {
+-         throw (IllegalStateException)Util.pauseInIde((T)(new IllegalStateException("Adding duplicate value '" + value + "' to registry")));
++         throw Util.pauseInIde((new IllegalStateException("Adding duplicate value '" + value + "' to registry")));
+       } else {
+          Holder.Reference<T> holder;
+          if (this.unregisteredIntrusiveHolders != null) {

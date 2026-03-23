@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/item/enchantment/EnchantmentEffectComponents.java
++++ b/net/minecraft/world/item/enchantment/EnchantmentEffectComponents.java
+@@ -128,7 +_,7 @@
+ 
+    private static <T> DataComponentType<T> register(final String id, final UnaryOperator<DataComponentType.Builder<T>> builder) {
+       return Registry.register(
+-         BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id, ((DataComponentType.Builder)builder.apply(DataComponentType.builder())).build()
++         BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id, (builder.apply(DataComponentType.builder())).build()
+       );
+    }
+ }

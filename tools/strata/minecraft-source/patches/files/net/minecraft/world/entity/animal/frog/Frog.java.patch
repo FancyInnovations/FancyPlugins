@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/frog/Frog.java
++++ b/net/minecraft/world/entity/animal/frog/Frog.java
+@@ -98,7 +_,7 @@
+ 
+    @Override
+    public Brain<Frog> getBrain() {
+-      return super.getBrain();
++      return (Brain<Frog>) super.getBrain();
+    }
+ 
+    @Override

@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/SignTextStrictJsonFix.java
++++ b/net/minecraft/util/datafix/fixes/SignTextStrictJsonFix.java
+@@ -19,7 +_,7 @@
+    protected Typed<?> fix(Typed<?> entity) {
+       for (String lineField : LINE_FIELDS) {
+          OpticFinder<?> lineF = entity.getType().findField(lineField);
+-         OpticFinder<Pair<String, String>> textComponentF = DSL.typeFinder(this.getInputSchema().getType(References.TEXT_COMPONENT));
++         OpticFinder<Pair<String, String>> textComponentF = (OpticFinder<Pair<String, String>>) DSL.typeFinder(this.getInputSchema().getType(References.TEXT_COMPONENT));
+          entity = entity.updateTyped(
+             lineF, line -> line.update(textComponentF, textComponent -> textComponent.mapSecond(LegacyComponentDataFixUtils::rewriteFromLenient))
+          );

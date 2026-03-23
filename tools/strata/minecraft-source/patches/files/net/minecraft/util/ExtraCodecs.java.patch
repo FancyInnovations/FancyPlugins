@@ -1,0 +1,73 @@
+--- a/net/minecraft/util/ExtraCodecs.java
++++ b/net/minecraft/util/ExtraCodecs.java
+@@ -277,23 +_,23 @@
+       final Function<I, P> getMin,
+       final Function<I, P> getMax
+    ) {
+-      Codec<I> arrayCodec = Codec.list(pointCodec).comapFlatMap(list -> Util.fixedSize(list, 2).flatMap(l -> {
+-         P min = (P)l.get(0);
+-         P max = (P)l.get(1);
+-         return (DataResult)makeInterval.apply(min, max);
++      Codec<I> arrayCodec = Codec.list(pointCodec).comapFlatMap(list -> Util.fixedSize((List<P>)list, 2).flatMap(l -> {
++         P min = l.get(0);
++         P max = l.get(1);
++         return makeInterval.apply(min, max);
+       }), p -> ImmutableList.of(getMin.apply(p), getMax.apply(p)));
+-      Codec<I> objectCodec = RecordCodecBuilder.create(
++      Codec<I> objectCodec = RecordCodecBuilder.<Pair<P, P>>create(
+             i -> i.group(pointCodec.fieldOf(lowerBoundName).forGetter(Pair::getFirst), pointCodec.fieldOf(upperBoundName).forGetter(Pair::getSecond))
+                .apply(i, Pair::of)
+          )
+-         .comapFlatMap(p -> (DataResult)makeInterval.apply(p.getFirst(), p.getSecond()), i -> Pair.of(getMin.apply(i), getMax.apply(i)));
++         .comapFlatMap(p -> makeInterval.apply(p.getFirst(), p.getSecond()), i -> Pair.of(getMin.apply(i), getMax.apply(i)));
+       Codec<I> arrayOrObjectCodec = Codec.withAlternative(arrayCodec, objectCodec);
+       return Codec.either(pointCodec, arrayOrObjectCodec)
+-         .comapFlatMap(either -> (DataResult)either.map(min -> (DataResult)makeInterval.apply(min, min), DataResult::success), p -> {
+-            P min = (P)getMin.apply(p);
+-            P max = (P)getMax.apply(p);
+-            return Objects.equals(min, max) ? Either.left(min) : Either.right(p);
+-         });
++              .comapFlatMap(either -> either.map(min -> makeInterval.apply((P)min, (P)min), DataResult::success), p -> {
++                 P min = getMin.apply((I)p);
++                 P max = getMax.apply((I)p);
++                 return Objects.equals(min, max) ? Either.left(min) : Either.right((I)p);
++              });
+    }
+ 
+    public static <A> ResultFunction<A> orElsePartial(final A value) {
+@@ -317,7 +_,7 @@
+    public static <E> Codec<E> idResolverCodec(final ToIntFunction<E> toInt, final IntFunction<@Nullable E> fromInt, final int unknownId) {
+       return Codec.INT
+          .flatXmap(
+-            id -> (DataResult)Optional.ofNullable(fromInt.apply(id))
++            id -> Optional.ofNullable(fromInt.apply(id))
+                .map(DataResult::success)
+                .orElseGet(() -> DataResult.error(() -> "Unknown element id: " + id)),
+             e -> {
+@@ -576,7 +_,7 @@
+             T typeName = (T)input.get(typeKey);
+             return typeName == null ? DataResult.error(() -> "Missing \"" + typeKey + "\" in: " + input) : typeCodec.decode(ops, typeName).flatMap(type -> {
+                T value = (T)Objects.requireNonNullElseGet(input.get(valueKey), ops::emptyMap);
+-               return ((Codec)valueCodec.apply(type.getFirst())).decode(ops, value).map(Pair::getFirst);
++               return valueCodec.apply(type.getFirst()).decode(ops, value).map(Pair::getFirst);
+             });
+          }
+ 
+@@ -592,7 +_,7 @@
+          }
+ 
+          private <T, V2 extends V> DataResult<T> encode(final Codec<V2> codec, final V input, final DynamicOps<T> ops) {
+-            return codec.encodeStart(ops, input);
++            return codec.encodeStart(ops, (V2) input);
+          }
+       };
+    }
+@@ -620,7 +_,7 @@
+    public static <E extends Enum<E>> Codec<E> legacyEnum(final Function<String, E> valueOf) {
+       return Codec.STRING.comapFlatMap(key -> {
+          try {
+-            return DataResult.success((Enum)valueOf.apply(key));
++            return DataResult.success(valueOf.apply(key));
+          } catch (IllegalArgumentException var3) {
+             return DataResult.error(() -> "No value with id: " + key);
+          }

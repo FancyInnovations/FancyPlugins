@@ -1,0 +1,24 @@
+--- a/net/minecraft/util/datafix/fixes/AddNewChoices.java
++++ b/net/minecraft/util/datafix/fixes/AddNewChoices.java
+@@ -4,7 +_,10 @@
+ import com.mojang.datafixers.TypeRewriteRule;
+ import com.mojang.datafixers.DSL.TypeReference;
+ import com.mojang.datafixers.schemas.Schema;
++import com.mojang.datafixers.types.Type;
+ import com.mojang.datafixers.types.templates.TaggedChoice.TaggedChoiceType;
++import com.mojang.datafixers.util.Pair;
++
+ import java.util.Locale;
+ 
+ public class AddNewChoices extends DataFix {
+@@ -27,8 +_,8 @@
+       if (inputType.getKeyType() != outputType.getKeyType()) {
+          throw new IllegalStateException("Could not inject: key type is not the same");
+       } else {
+-         return this.fixTypeEverywhere(this.name, inputType, outputType, ops -> input -> {
+-            if (!outputType.hasType(input.getFirst())) {
++         return this.fixTypeEverywhere(this.name, inputType, (Type<Pair<K, ?>>)outputType, ops -> input -> {
++            if (!((TaggedChoiceType<K>)outputType).hasType(input.getFirst())) {
+                throw new IllegalArgumentException(String.format(Locale.ROOT, "%s: Unknown type %s in '%s'", this.name, input.getFirst(), this.type.typeName()));
+             } else {
+                return input;

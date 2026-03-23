@@ -1,0 +1,29 @@
+--- a/net/minecraft/util/datafix/fixes/EntityTheRenameningFix.java
++++ b/net/minecraft/util/datafix/fixes/EntityTheRenameningFix.java
+@@ -5,7 +_,7 @@
+ import java.util.Map;
+ 
+ public class EntityTheRenameningFix extends SimplestEntityRenameFix {
+-   public static final Map<String, String> RENAMED_IDS = ImmutableMap.builder()
++   public static final Map<String, String> RENAMED_IDS = ImmutableMap.<String, String>builder()
+       .put("minecraft:commandblock_minecart", "minecraft:command_block_minecart")
+       .put("minecraft:ender_crystal", "minecraft:end_crystal")
+       .put("minecraft:snowman", "minecraft:snow_golem")
+@@ -19,7 +_,7 @@
+       .put("minecraft:eye_of_ender_signal", "minecraft:eye_of_ender")
+       .put("minecraft:fireworks_rocket", "minecraft:firework_rocket")
+       .build();
+-   public static final Map<String, String> RENAMED_BLOCKS = ImmutableMap.builder()
++   public static final Map<String, String> RENAMED_BLOCKS = ImmutableMap.<String, String>builder()
+       .put("minecraft:portal", "minecraft:nether_portal")
+       .put("minecraft:oak_bark", "minecraft:oak_wood")
+       .put("minecraft:spruce_bark", "minecraft:spruce_wood")
+@@ -35,7 +_,7 @@
+       .put("minecraft:stripped_dark_oak_bark", "minecraft:stripped_dark_oak_wood")
+       .put("minecraft:mob_spawner", "minecraft:spawner")
+       .build();
+-   public static final Map<String, String> RENAMED_ITEMS = ImmutableMap.builder()
++   public static final Map<String, String> RENAMED_ITEMS = ImmutableMap.<String, String>builder()
+       .putAll(RENAMED_BLOCKS)
+       .put("minecraft:clownfish", "minecraft:tropical_fish")
+       .put("minecraft:chorus_fruit_popped", "minecraft:popped_chorus_fruit")

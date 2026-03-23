@@ -1,0 +1,13 @@
+--- a/net/minecraft/world/entity/animal/happyghast/HappyGhastAi.java
++++ b/net/minecraft/world/entity/animal/happyghast/HappyGhastAi.java
+@@ -36,8 +_,8 @@
+          Activity.CORE,
+          0,
+          ImmutableList.of(
+-            new Swim(0.8F),
+-            new AnimalPanic(2.0F, 0),
++            new Swim<>(0.8F),
++            new AnimalPanic<>(2.0F, 0),
+             new LookAtTargetSink(45, 90),
+             new MoveToTargetSink(),
+             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)

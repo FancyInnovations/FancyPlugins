@@ -1,0 +1,50 @@
+--- a/net/minecraft/util/datafix/fixes/StatsCounterFix.java
++++ b/net/minecraft/util/datafix/fixes/StatsCounterFix.java
+@@ -65,14 +_,14 @@
+       "teamkill.white",
+       "teamkill.yellow"
+    );
+-   private static final Set<String> SKIP = ImmutableSet.builder()
++   private static final Set<String> SKIP = ImmutableSet.<String>builder()
+       .add("stat.craftItem.minecraft.spawn_egg")
+       .add("stat.useItem.minecraft.spawn_egg")
+       .add("stat.breakItem.minecraft.spawn_egg")
+       .add("stat.pickup.minecraft.spawn_egg")
+       .add("stat.drop.minecraft.spawn_egg")
+       .build();
+-   private static final Map<String, String> CUSTOM_MAP = ImmutableMap.builder()
++   private static final Map<String, String> CUSTOM_MAP = ImmutableMap.<String, String>builder()
+       .put("stat.leaveGame", "minecraft:leave_game")
+       .put("stat.playOneMinute", "minecraft:play_one_minute")
+       .put("stat.timeSinceDeath", "minecraft:time_since_death")
+@@ -126,18 +_,18 @@
+       .build();
+    private static final String BLOCK_KEY = "stat.mineBlock";
+    private static final String NEW_BLOCK_KEY = "minecraft:mined";
+-   private static final Map<String, String> ITEM_KEYS = ImmutableMap.builder()
++   private static final Map<String, String> ITEM_KEYS = ImmutableMap.<String, String>builder()
+       .put("stat.craftItem", "minecraft:crafted")
+       .put("stat.useItem", "minecraft:used")
+       .put("stat.breakItem", "minecraft:broken")
+       .put("stat.pickup", "minecraft:picked_up")
+       .put("stat.drop", "minecraft:dropped")
+       .build();
+-   private static final Map<String, String> ENTITY_KEYS = ImmutableMap.builder()
++   private static final Map<String, String> ENTITY_KEYS = ImmutableMap.<String, String>builder()
+       .put("stat.entityKilledBy", "minecraft:killed_by")
+       .put("stat.killEntity", "minecraft:killed")
+       .build();
+-   private static final Map<String, String> ENTITIES = ImmutableMap.builder()
++   private static final Map<String, String> ENTITIES = ImmutableMap.<String, String>builder()
+       .put("Bat", "minecraft:bat")
+       .put("Blaze", "minecraft:blaze")
+       .put("CaveSpider", "minecraft:cave_spider")
+@@ -239,7 +_,7 @@
+          Map<Dynamic<?>, Dynamic<?>> stats = Maps.newHashMap();
+          Optional<? extends Map<? extends Dynamic<?>, ? extends Dynamic<?>>> map = tag.getMapValues().result();
+          if (map.isPresent()) {
+-            for (Entry<? extends Dynamic<?>, ? extends Dynamic<?>> entry : ((Map)map.get()).entrySet()) {
++            for (Entry<? extends Dynamic<?>, ? extends Dynamic<?>> entry : (map.get()).entrySet()) {
+                if (((Dynamic)entry.getValue()).asNumber().result().isPresent()) {
+                   String key = ((Dynamic)entry.getKey()).asString("");
+                   StatsCounterFix.StatType statType = unpackLegacyKey(key);

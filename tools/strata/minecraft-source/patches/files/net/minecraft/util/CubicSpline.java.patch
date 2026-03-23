@@ -1,0 +1,26 @@
+--- a/net/minecraft/util/CubicSpline.java
++++ b/net/minecraft/util/CubicSpline.java
+@@ -32,18 +_,18 @@
+                Codec.lazyInitialized(result).fieldOf("value").forGetter(Point::value),
+                Codec.FLOAT.fieldOf("derivative").forGetter(Point::derivative)
+             )
+-            .apply(i, (x$0, x$1, x$2) -> new Point(x$0, x$1, x$2))
++            .apply(i, (x$0, x$1, x$2) -> new Point<>(x$0, x$1, x$2))
+       );
+       Codec<CubicSpline.Multipoint<C, I>> multipointCodec = RecordCodecBuilder.create(
+          i -> i.group(
+                coordinateCodec.fieldOf("coordinate").forGetter(CubicSpline.Multipoint::coordinate),
+                ExtraCodecs.nonEmptyList(pointCodec.listOf())
+                   .fieldOf("points")
+-                  .forGetter(
+-                     m -> IntStream.range(0, m.locations.length)
+-                        .mapToObj(p -> new Point(m.locations()[p], (CubicSpline<C, I>)m.values().get(p), m.derivatives()[p]))
++                       .forGetter(
++                m -> IntStream.range(0, m.locations.length)
++                        .mapToObj(p -> new Point<>(m.locations()[p], m.values().get(p), m.derivatives()[p]))
+                         .toList()
+-                  )
++                       )
+             )
+             .apply(i, (coordinate, points) -> {
+                float[] locations = new float[points.size()];

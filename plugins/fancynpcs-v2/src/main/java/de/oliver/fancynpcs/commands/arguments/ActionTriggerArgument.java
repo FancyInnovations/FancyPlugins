@@ -26,7 +26,7 @@ public class ActionTriggerArgument {
         final String value = input.readString();
         final @Nullable ActionTrigger trigger = ActionTrigger.getByName(value);
         if (trigger == null)
-            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_action_trigger").replaceStripped("input", value).send(context.sender()));
+            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_action_trigger").withPrefix().replaceStripped("input", value).send(context.sender()));
         return trigger;
     }
 

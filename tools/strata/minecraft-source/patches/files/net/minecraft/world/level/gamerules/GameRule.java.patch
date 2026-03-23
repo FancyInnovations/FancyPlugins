@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/gamerules/GameRule.java
++++ b/net/minecraft/world/level/gamerules/GameRule.java
+@@ -78,7 +_,7 @@
+    }
+ 
+    public Class<T> valueClass() {
+-      return this.defaultValue.getClass();
++      return (Class<T>) this.defaultValue.getClass();
+    }
+ 
+    public void callVisitor(final GameRuleTypeVisitor visitor) {

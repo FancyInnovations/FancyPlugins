@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/monster/breeze/Breeze.java
++++ b/net/minecraft/world/entity/monster/breeze/Breeze.java
+@@ -80,7 +_,7 @@
+ 
+    @Override
+    public Brain<Breeze> getBrain() {
+-      return super.getBrain();
++      return (Brain<Breeze>) super.getBrain();
+    }
+ 
+    @Override

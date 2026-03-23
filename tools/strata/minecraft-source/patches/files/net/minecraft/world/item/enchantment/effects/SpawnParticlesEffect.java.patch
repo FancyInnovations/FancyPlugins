@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/item/enchantment/effects/SpawnParticlesEffect.java
++++ b/net/minecraft/world/item/enchantment/effects/SpawnParticlesEffect.java
+@@ -78,7 +_,7 @@
+    }
+ 
+    public record PositionSource(SpawnParticlesEffect.PositionSourceType type, float offset, float scale) {
+-      public static final MapCodec<SpawnParticlesEffect.PositionSource> CODEC = RecordCodecBuilder.mapCodec(
++      public static final MapCodec<SpawnParticlesEffect.PositionSource> CODEC = RecordCodecBuilder.<SpawnParticlesEffect.PositionSource>mapCodec(
+             i -> i.group(
+                   SpawnParticlesEffect.PositionSourceType.CODEC.fieldOf("type").forGetter(SpawnParticlesEffect.PositionSource::type),
+                   Codec.FLOAT.optionalFieldOf("offset", 0.0F).forGetter(SpawnParticlesEffect.PositionSource::offset),

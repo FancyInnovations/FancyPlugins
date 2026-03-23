@@ -1,0 +1,20 @@
+--- a/net/minecraft/server/packs/VanillaPackResources.java
++++ b/net/minecraft/server/packs/VanillaPackResources.java
+@@ -63,7 +_,7 @@
+       FileUtil.decomposePath(resource.getPath()).ifSuccess(decomposedPath -> {
+          String namespace = resource.getNamespace();
+ 
+-         for (Path typePath : (List)this.pathsForType.get(type)) {
++         for (Path typePath : this.pathsForType.get(type)) {
+             Path namespacedPath = typePath.resolve(namespace);
+             output.accept(FileUtil.resolvePath(namespacedPath, decomposedPath));
+          }
+@@ -105,7 +_,7 @@
+       return (IoSupplier<InputStream>)FileUtil.decomposePath(location.getPath()).mapOrElse(decomposedPath -> {
+          String namespace = location.getNamespace();
+ 
+-         for (Path typePath : (List)this.pathsForType.get(type)) {
++         for (Path typePath : this.pathsForType.get(type)) {
+             Path resource = FileUtil.resolvePath(typePath.resolve(namespace), decomposedPath);
+             if (Files.exists(resource, new LinkOption[0]) && PathPackResources.validatePath(resource)) {
+                return IoSupplier.create(resource);

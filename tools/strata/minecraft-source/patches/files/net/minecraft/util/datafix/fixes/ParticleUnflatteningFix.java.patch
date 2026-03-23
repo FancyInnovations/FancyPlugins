@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/ParticleUnflatteningFix.java
++++ b/net/minecraft/util/datafix/fixes/ParticleUnflatteningFix.java
+@@ -190,7 +_,7 @@
+          float destZ = (float)reader.readDouble();
+          reader.expect(' ');
+          int arrivalInTicks = reader.readInt();
+-         Dynamic<T> blockPos = result.createIntList(IntStream.of(new int[]{Mth.floor(destX), Mth.floor(destY), Mth.floor(destZ)}));
++         Dynamic<T> blockPos = (Dynamic<T>)result.createIntList(IntStream.of(Mth.floor(destX), Mth.floor(destY), Mth.floor(destZ)));
+          Dynamic<T> positionSource = result.createMap(
+             Map.of(result.createString("type"), result.createString("minecraft:block"), result.createString("pos"), blockPos)
+          );

@@ -29,9 +29,8 @@ import org.jetbrains.annotations.Nullable;
 public enum InteractionCooldownCMD {
     INSTANCE; // SINGLETON
 
-    private final Translator translator = FancyNpcs.getInstance().getTranslator();
-
     private static final Pattern SPLIT_PATTERN = Pattern.compile("(?<=\\d)(?=\\D)");
+    private final Translator translator = FancyNpcs.getInstance().getTranslator();
 
     @Command("npc interaction_cooldown <npc> <cooldown>")
     @Permission("fancynpcs.command.npc.interaction_cooldown")
@@ -44,11 +43,12 @@ public enum InteractionCooldownCMD {
         if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.INTERACTION_COOLDOWN, cooldown, sender).callEvent()) {
             npc.getData().setInteractionCooldown((float) cooldown.as(Unit.MILLISECONDS) / 1000F);
             translator.translate(cooldown.as(Unit.MILLISECONDS) != 0 ? "npc_interaction_cooldown_set" : "npc_interaction_cooldown_disabled")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("time", cooldown.toString())
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 
@@ -66,7 +66,7 @@ public enum InteractionCooldownCMD {
         final @Nullable Unit unit = (split.length == 2) ? Unit.fromShortCode(split[1].toLowerCase()) : null;
         // Sending error message to the sender if input cannot be converted to a valid interval.
         if (num == null || unit == null)
-            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_interval").replaceStripped("input", value).send(context.sender()));
+            throw ReplyingParseException.replying(() -> translator.translate("command_invalid_interval").withPrefix().replaceStripped("input", value).send(context.sender()));
         return Interval.of(Math.max(0, num), unit);
     }
 
@@ -80,14 +80,14 @@ public enum InteractionCooldownCMD {
         return (num == null || num <= 0)
                 ? List.of("30s", "5min", "8h", "disabled")
                 : new ArrayList<>() {{
-                    add("disabled");
-                    addAll(Stream.of(
-                            Pair.of(Interval.of(num, Unit.MILLISECONDS), Unit.MILLISECONDS),
-                            Pair.of(Interval.of(num, Unit.SECONDS), Unit.SECONDS),
-                            Pair.of(Interval.of(num, Unit.MINUTES), Unit.MINUTES),
-                            Pair.of(Interval.of(num, Unit.HOURS), Unit.HOURS)
-                    ).map(pair -> num + pair.second().getShortCode()).toList());
-                }};
+            add("disabled");
+            addAll(Stream.of(
+                    Pair.of(Interval.of(num, Unit.MILLISECONDS), Unit.MILLISECONDS),
+                    Pair.of(Interval.of(num, Unit.SECONDS), Unit.SECONDS),
+                    Pair.of(Interval.of(num, Unit.MINUTES), Unit.MINUTES),
+                    Pair.of(Interval.of(num, Unit.HOURS), Unit.HOURS)
+            ).map(pair -> num + pair.second().getShortCode()).toList());
+        }};
     }
 
     /* UTILITY METHODS */

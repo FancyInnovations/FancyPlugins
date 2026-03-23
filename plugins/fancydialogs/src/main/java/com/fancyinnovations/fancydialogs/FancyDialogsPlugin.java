@@ -109,7 +109,16 @@ public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
             IFancySitula.LOGGER.setCurrentLevel(LogLevel.DEBUG);
         }
 
-        translator = new Translator(new TextConfig("#32e347", "#35ad1d", "#81E366", "#E3CA66", "#E36666", ""));
+        translator = new Translator(
+                new TextConfig(
+                        "#ffcc24", // color to highlight important information
+                        "gray", // text color for regular messages
+                        "#81E366",
+                        "#E3CA66",
+                        "#E36666",
+                        "<color:#ba8813>[</color><gradient:#ffae00:#fffb00:#ffae00>FancyDialogs</gradient><color:#ba8813>]</color> <gray>"
+                )
+        );
         translator.loadLanguages(getDataFolder().getAbsolutePath());
         final Language selectedLanguage = translator.getLanguages().stream()
                 .filter(language -> language.getLanguageName().equals(fdConfig.getLanguage()))

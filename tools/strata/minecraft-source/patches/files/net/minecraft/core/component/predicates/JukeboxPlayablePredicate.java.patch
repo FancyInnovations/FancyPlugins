@@ -1,0 +1,11 @@
+--- a/net/minecraft/core/component/predicates/JukeboxPlayablePredicate.java
++++ b/net/minecraft/core/component/predicates/JukeboxPlayablePredicate.java
+@@ -31,7 +_,7 @@
+       } else {
+          boolean songIsPresent = false;
+ 
+-         for (Holder<JukeboxSong> maybeSong : (HolderSet)this.song.get()) {
++         for (Holder<JukeboxSong> maybeSong : this.song.get()) {
+             Optional<ResourceKey<JukeboxSong>> songId = maybeSong.unwrapKey();
+             if (!songId.isEmpty() && songId.equals(value.song().unwrapKey())) {
+                songIsPresent = true;

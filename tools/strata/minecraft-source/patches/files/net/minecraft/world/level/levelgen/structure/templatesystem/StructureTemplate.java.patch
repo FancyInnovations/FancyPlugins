@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate.java
++++ b/net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate.java
+@@ -158,7 +_,7 @@
+       final List<StructureTemplate.StructureBlockInfo> blockEntitiesList,
+       final List<StructureTemplate.StructureBlockInfo> otherBlocksList
+    ) {
+-      Comparator<StructureTemplate.StructureBlockInfo> comparator = Comparator.comparingInt(o -> o.pos.getY())
++      Comparator<StructureTemplate.StructureBlockInfo> comparator = Comparator.<StructureTemplate.StructureBlockInfo>comparingInt(o -> o.pos.getY())
+          .thenComparingInt(o -> o.pos.getX())
+          .thenComparingInt(o -> o.pos.getZ());
+       fullBlockList.sort(comparator);

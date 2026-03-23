@@ -37,9 +37,9 @@ public enum RemoveCMD {
                 }
             }
             FancyNpcs.getInstance().getNpcManagerImpl().removeNpc(npc);
-            translator.translate("npc_remove_success").replace("npc", npc.getData().getName()).send(sender);
+            translator.translate("npc_remove_success").withPrefix().replace("npc", npc.getData().getName()).send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 

@@ -1,0 +1,20 @@
+--- a/net/minecraft/util/datafix/schemas/V705.java
++++ b/net/minecraft/util/datafix/schemas/V705.java
+@@ -13,7 +_,7 @@
+ import net.minecraft.util.datafix.fixes.References;
+ 
+ public class V705 extends NamespacedSchema {
+-   private static final Map<String, String> ITEM_TO_ENTITY = ImmutableMap.builder()
++   private static final Map<String, String> ITEM_TO_ENTITY = ImmutableMap.<String, String>builder()
+       .put("minecraft:armor_stand", "minecraft:armor_stand")
+       .put("minecraft:painting", "minecraft:painting")
+       .put("minecraft:armadillo_spawn_egg", "minecraft:armadillo")
+@@ -124,7 +_,7 @@
+       .build();
+    protected static final HookFunction ADD_NAMES = new HookFunction() {
+       public <T> T apply(final DynamicOps<T> ops, final T value) {
+-         return V99.addNames(new Dynamic(ops, value), V704.ITEM_TO_BLOCKENTITY, V705.ITEM_TO_ENTITY);
++         return V99.addNames(new Dynamic<>(ops, value), V704.ITEM_TO_BLOCKENTITY, V705.ITEM_TO_ENTITY);
+       }
+    };
+ 

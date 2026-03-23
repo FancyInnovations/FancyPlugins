@@ -1,0 +1,18 @@
+--- a/net/minecraft/util/datafix/fixes/EntityRidingToPassengersFix.java
++++ b/net/minecraft/util/datafix/fixes/EntityRidingToPassengersFix.java
+@@ -78,13 +_,13 @@
+                         ),
+                         Either.right(DSL.unit())
+                      );
+-                     passenger = Optional.of(Pair.of(References.ENTITY_TREE.typeName(), Pair.of(passengersValue, ((Pair)updating.getSecond()).getSecond())));
++                     passenger = Optional.of(Pair.of(References.ENTITY_TREE.typeName(), Pair.of(passengersValue, (updating.getSecond()).getSecond())));
+                      Optional<OldEntityTree> riding = ((Either)((Pair)updating.getSecond()).getFirst()).left();
+                      if (riding.isEmpty()) {
+                         return (Pair)passenger.orElseThrow(() -> new IllegalStateException("Should always have an entity tree here"));
+                      }
+ 
+-                     updating = (Pair<String, Pair<Either<OldEntityTree, Unit>, Entity>>)new Typed(oldEntityTreeType, ops, riding.get())
++                     updating = new Typed<>(oldEntityTreeType, ops, riding.get())
+                         .getOptional(entityTreeFinder)
+                         .orElseThrow(() -> new IllegalStateException("Should always have an entity here"));
+                   }

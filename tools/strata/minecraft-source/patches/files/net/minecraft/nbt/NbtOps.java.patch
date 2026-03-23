@@ -1,0 +1,38 @@
+--- a/net/minecraft/nbt/NbtOps.java
++++ b/net/minecraft/nbt/NbtOps.java
+@@ -255,7 +_,7 @@
+    }
+ 
+    public DataResult<Consumer<BiConsumer<Tag, Tag>>> getMapEntries(final Tag input) {
+-      return input instanceof CompoundTag tag ? DataResult.success((Consumer)c -> {
++      return input instanceof CompoundTag tag ? DataResult.success(c -> {
+          for (Entry<String, Tag> entry : tag.entrySet()) {
+             c.accept(this.createString((String)entry.getKey()), (Tag)entry.getValue());
+          }
+@@ -313,7 +_,7 @@
+    }
+ 
+    public DataResult<ByteBuffer> getByteBuffer(final Tag input) {
+-      return input instanceof ByteArrayTag array ? DataResult.success(ByteBuffer.wrap(array.getAsByteArray())) : super.getByteBuffer(input);
++      return input instanceof ByteArrayTag array ? DataResult.success(ByteBuffer.wrap(array.getAsByteArray())) : DynamicOps.super.getByteBuffer(input);
+    }
+ 
+    public Tag createByteList(final ByteBuffer input) {
+@@ -324,7 +_,7 @@
+    }
+ 
+    public DataResult<IntStream> getIntStream(final Tag input) {
+-      return input instanceof IntArrayTag array ? DataResult.success(Arrays.stream(array.getAsIntArray())) : super.getIntStream(input);
++      return input instanceof IntArrayTag array ? DataResult.success(Arrays.stream(array.getAsIntArray())) : DynamicOps.super.getIntStream(input);
+    }
+ 
+    public Tag createIntList(final IntStream input) {
+@@ -332,7 +_,7 @@
+    }
+ 
+    public DataResult<LongStream> getLongStream(final Tag input) {
+-      return input instanceof LongArrayTag array ? DataResult.success(Arrays.stream(array.getAsLongArray())) : super.getLongStream(input);
++      return input instanceof LongArrayTag array ? DataResult.success(Arrays.stream(array.getAsLongArray())) : DynamicOps.super.getLongStream(input);
+    }
+ 
+    public Tag createLongList(final LongStream input) {

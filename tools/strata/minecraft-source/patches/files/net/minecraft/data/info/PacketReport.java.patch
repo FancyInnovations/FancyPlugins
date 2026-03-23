@@ -1,0 +1,11 @@
+--- a/net/minecraft/data/info/PacketReport.java
++++ b/net/minecraft/data/info/PacketReport.java
+@@ -32,7 +_,7 @@
+ 
+    private JsonElement serializePackets() {
+       JsonObject protocols = new JsonObject();
+-      ((Map)Stream.of(
++      (Stream.of(
+                HandshakeProtocols.SERVERBOUND_TEMPLATE,
+                StatusProtocols.CLIENTBOUND_TEMPLATE,
+                StatusProtocols.SERVERBOUND_TEMPLATE,

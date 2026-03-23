@@ -37,11 +37,12 @@ public enum VisibilityDistanceCMD {
             npc.getData().setVisibilityDistance(finalDistance);
             npc.updateForAll();
             translator.translate(finalDistance == -1 ? "npc_visibility_distance_set_default" : finalDistance == 0 ? "npc_visibility_distance_set_not_visible" : finalDistance == Integer.MAX_VALUE ? "npc_visibility_distance_set_always_visible" : "npc_visibility_distance_set_value")
+                    .withPrefix()
                     .replace("npc", npc.getData().getName())
                     .replace("distance", (finalDistance > -1) ? String.valueOf(finalDistance) : String.valueOf(FancyNpcs.getInstance().getFancyNpcConfig().getVisibilityDistance()))
                     .send(sender);
         } else {
-            translator.translate("command_npc_modification_cancelled").send(sender);
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }
     }
 

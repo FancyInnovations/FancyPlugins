@@ -1,0 +1,20 @@
+--- a/net/minecraft/util/datafix/fixes/StructuresBecomeConfiguredFix.java
++++ b/net/minecraft/util/datafix/fixes/StructuresBecomeConfiguredFix.java
+@@ -24,7 +_,7 @@
+ 
+ public class StructuresBecomeConfiguredFix extends DataFix {
+    private static final Logger LOGGER = LogUtils.getLogger();
+-   private static final Map<String, StructuresBecomeConfiguredFix.Conversion> CONVERSION_MAP = ImmutableMap.builder()
++   private static final Map<String, StructuresBecomeConfiguredFix.Conversion> CONVERSION_MAP = ImmutableMap.<String, StructuresBecomeConfiguredFix.Conversion>builder()
+       .put(
+          "mineshaft",
+          StructuresBecomeConfiguredFix.Conversion.biomeMapped(
+@@ -218,7 +_,7 @@
+          Builder<String, String> builder = ImmutableMap.builder();
+ 
+          for (Entry<List<String>, String> entry : packed.entrySet()) {
+-            ((List)entry.getKey()).forEach(k -> builder.put(k, (String)entry.getValue()));
++            (entry.getKey()).forEach(k -> builder.put(k, (String)entry.getValue()));
+          }
+ 
+          return builder.build();

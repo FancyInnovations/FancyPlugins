@@ -1,0 +1,20 @@
+--- a/net/minecraft/server/dedicated/DedicatedServerProperties.java
++++ b/net/minecraft/server/dedicated/DedicatedServerProperties.java
+@@ -261,7 +_,7 @@
+             .orElseThrow(() -> new IllegalStateException("Invalid datapack contents: can't find default preset"));
+          Holder<WorldPreset> worldPreset = (Holder<WorldPreset>)Optional.ofNullable(Identifier.tryParse(this.levelType))
+             .map(id -> ResourceKey.create(Registries.WORLD_PRESET, id))
+-            .or(() -> Optional.ofNullable((ResourceKey)LEGACY_PRESET_NAMES.get(this.levelType)))
++            .or(() -> Optional.ofNullable(LEGACY_PRESET_NAMES.get(this.levelType)))
+             .flatMap(worldPresets::get)
+             .orElseGet(() -> {
+                DedicatedServerProperties.LOGGER.warn("Failed to parse level-type {}, defaulting to {}", this.levelType, defaultHolder.key().identifier());
+@@ -271,7 +_,7 @@
+          if (worldPreset.is(WorldPresets.FLAT)) {
+             RegistryOps<JsonElement> ops = registries.createSerializationContext(JsonOps.INSTANCE);
+             Optional<FlatLevelGeneratorSettings> parsedSettings = FlatLevelGeneratorSettings.CODEC
+-               .parse(new Dynamic(ops, this.generatorSettings()))
++               .parse(new Dynamic<>(ops, this.generatorSettings()))
+                .resultOrPartial(DedicatedServerProperties.LOGGER::error);
+             if (parsedSettings.isPresent()) {
+                return worldDimensions.replaceOverworldGenerator(registries, new FlatLevelSource((FlatLevelGeneratorSettings)parsedSettings.get()));

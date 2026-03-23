@@ -37,6 +37,7 @@ public class DialogCommandType extends BukkitExceptionHandler implements Paramet
     public void onInvalidDialog(InvalidDialogException e, BukkitCommandActor actor) {
         FancyDialogsPlugin.get().getTranslator()
                 .translate("dialog.not_found")
+                .withPrefix()
                 .replace("id", e.input())
                 .send(actor.sender());
     }

@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/jsonrpc/api/ResultInfo.java
++++ b/net/minecraft/server/jsonrpc/api/ResultInfo.java
+@@ -6,7 +_,7 @@
+ public record ResultInfo<Result>(String name, Schema<Result> schema) {
+    public static <Result> Codec<ResultInfo<Result>> typedCodec() {
+       return RecordCodecBuilder.create(
+-         i -> i.group(Codec.STRING.fieldOf("name").forGetter(ResultInfo::name), Schema.typedCodec().fieldOf("schema").forGetter(ResultInfo::schema))
++              i -> i.group(Codec.STRING.fieldOf("name").forGetter(ResultInfo::name), Schema.<Result>typedCodec().fieldOf("schema").forGetter(ResultInfo::schema))
+             .apply(i, ResultInfo::new)
+       );
+    }

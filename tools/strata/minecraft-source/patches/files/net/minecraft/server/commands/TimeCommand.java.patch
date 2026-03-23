@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/commands/TimeCommand.java
++++ b/net/minecraft/server/commands/TimeCommand.java
+@@ -45,7 +_,7 @@
+    private static final int MAX_CLOCK_RATE = 1000;
+ 
+    public static void register(final CommandDispatcher<CommandSourceStack> dispatcher, final CommandBuildContext context) {
+-      var baseCommand = (LiteralArgumentBuilder<CommandSourceStack> & ArgumentBuilder)Commands.literal("time")
++      var baseCommand = Commands.literal("time")
+          .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS));
+       dispatcher.register(addClockNodes(context, baseCommand, c -> getDefaultClock((CommandSourceStack)c.getSource())));
+       dispatcher.register(

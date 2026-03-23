@@ -1,0 +1,23 @@
+--- a/net/minecraft/server/commands/ExecuteCommand.java
++++ b/net/minecraft/server/commands/ExecuteCommand.java
+@@ -1053,9 +_,9 @@
+       return context -> {
+          CommandSourceStack source = (CommandSourceStack)context.getSource();
+          Entity entity = source.getEntity();
+-         return (Collection)(entity == null
++         return (entity == null
+             ? List.of()
+-            : (Collection)((Optional)unpacker.apply(entity)).filter(e -> !e.isRemoved()).map(e -> List.of(source.withEntity(e))).orElse(List.of()));
++            : (unpacker.apply(entity)).filter(e -> !e.isRemoved()).map(e -> List.of(source.withEntity(e))).orElse(List.of()));
+       };
+    }
+ 
+@@ -1063,7 +_,7 @@
+       return context -> {
+          CommandSourceStack source = (CommandSourceStack)context.getSource();
+          Entity entity = source.getEntity();
+-         return entity == null ? List.of() : ((Stream)unpacker.apply(entity)).filter(e -> !e.isRemoved()).map(source::withEntity).toList();
++         return entity == null ? List.of() : (unpacker.apply(entity)).filter(e -> !e.isRemoved()).map(source::withEntity).toList();
+       };
+    }
+ 

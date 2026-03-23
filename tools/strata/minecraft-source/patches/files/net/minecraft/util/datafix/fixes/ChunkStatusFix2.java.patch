@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/datafix/fixes/ChunkStatusFix2.java
++++ b/net/minecraft/util/datafix/fixes/ChunkStatusFix2.java
+@@ -12,7 +_,7 @@
+ import java.util.Objects;
+ 
+ public class ChunkStatusFix2 extends DataFix {
+-   private static final Map<String, String> RENAMES_AND_DOWNGRADES = ImmutableMap.builder()
++   private static final Map<String, String> RENAMES_AND_DOWNGRADES = ImmutableMap.<String, String>builder()
+       .put("structure_references", "empty")
+       .put("biomes", "empty")
+       .put("base", "surface")

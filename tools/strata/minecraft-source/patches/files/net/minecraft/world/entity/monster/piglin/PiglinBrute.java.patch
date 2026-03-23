@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/monster/piglin/PiglinBrute.java
++++ b/net/minecraft/world/entity/monster/piglin/PiglinBrute.java
+@@ -75,7 +_,7 @@
+ 
+    @Override
+    public Brain<PiglinBrute> getBrain() {
+-      return super.getBrain();
++      return (Brain<PiglinBrute>) super.getBrain();
+    }
+ 
+    @Override

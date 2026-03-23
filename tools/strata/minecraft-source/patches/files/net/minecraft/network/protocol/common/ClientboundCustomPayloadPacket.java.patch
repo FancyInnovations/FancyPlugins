@@ -1,0 +1,34 @@
+--- a/net/minecraft/network/protocol/common/ClientboundCustomPayloadPacket.java
++++ b/net/minecraft/network/protocol/common/ClientboundCustomPayloadPacket.java
+@@ -15,23 +_,21 @@
+ public record ClientboundCustomPayloadPacket(CustomPacketPayload payload) implements Packet<ClientCommonPacketListener> {
+    private static final int MAX_PAYLOAD_SIZE = 1048576;
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundCustomPayloadPacket> GAMEPLAY_STREAM_CODEC = CustomPacketPayload.<RegistryFriendlyByteBuf>codec(
+-         id -> DiscardedPayload.codec(id, 1048576),
+-         Util.make(
+-            Lists.newArrayList(new CustomPacketPayload.TypeAndCodec[]{new CustomPacketPayload.TypeAndCodec<>(BrandPayload.TYPE, BrandPayload.STREAM_CODEC)}),
+-            types -> {}
+-         )
+-      )
+-      .map(ClientboundCustomPayloadPacket::new, ClientboundCustomPayloadPacket::payload);
++                   id -> DiscardedPayload.codec(id, 1048576),
++                   Util.make(Lists.newArrayList(new CustomPacketPayload.TypeAndCodec<>(BrandPayload.TYPE, BrandPayload.STREAM_CODEC)), types -> {})
++           )
++           .map(ClientboundCustomPayloadPacket::new, ClientboundCustomPayloadPacket::payload);
+    public static final StreamCodec<FriendlyByteBuf, ClientboundCustomPayloadPacket> CONFIG_STREAM_CODEC = CustomPacketPayload.<FriendlyByteBuf>codec(
+-         id -> DiscardedPayload.codec(id, 1048576), List.of(new CustomPacketPayload.TypeAndCodec<>(BrandPayload.TYPE, BrandPayload.STREAM_CODEC))
+-      )
+-      .map(ClientboundCustomPayloadPacket::new, ClientboundCustomPayloadPacket::payload);
++                   id -> DiscardedPayload.codec(id, 1048576), List.of(new CustomPacketPayload.TypeAndCodec<>(BrandPayload.TYPE, BrandPayload.STREAM_CODEC))
++           )
++           .map(ClientboundCustomPayloadPacket::new, ClientboundCustomPayloadPacket::payload);
+ 
+    @Override
+    public PacketType<ClientboundCustomPayloadPacket> type() {
+       return CommonPacketTypes.CLIENTBOUND_CUSTOM_PAYLOAD;
+    }
+ 
++   @Override
+    public void handle(final ClientCommonPacketListener listener) {
+       listener.handleCustomPayload(this);
+    }

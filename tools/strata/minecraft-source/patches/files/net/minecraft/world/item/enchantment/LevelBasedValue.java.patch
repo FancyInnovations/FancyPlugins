@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/item/enchantment/LevelBasedValue.java
++++ b/net/minecraft/world/item/enchantment/LevelBasedValue.java
+@@ -48,7 +_,7 @@
+    MapCodec<? extends LevelBasedValue> codec();
+ 
+    public record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
+-      public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
++      public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.<Clamped>mapCodec(
+             i -> i.group(
+                   LevelBasedValue.CODEC.fieldOf("value").forGetter(LevelBasedValue.Clamped::value),
+                   Codec.FLOAT.fieldOf("min").forGetter(LevelBasedValue.Clamped::min),

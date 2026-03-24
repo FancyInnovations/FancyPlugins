@@ -25,8 +25,8 @@ import de.oliver.fancysitula.api.dialogs.types.FS_NoticeDialog;
 import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import de.oliver.fancysitula.factories.FancySitula;
 import org.bukkit.entity.Player;
+import org.lushplugins.chatcolorhandler.common.parser.Parsers;
 import org.lushplugins.chatcolorhandler.paper.PaperColor;
-import org.lushplugins.chatcolorhandler.paper.parser.ParserTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class DialogImpl extends Dialog {
         }
         if (requirements.get("type").equals("stringMatch")) {
             if (requirements.get("input") == null || requirements.get("output") == null) { return true; }
-            return PaperColor.handler().translateRaw(requirements.get("input"), player, ParserTypes.placeholder()).equals(PaperColor.handler().translateRaw(requirements.get("output"), player, ParserTypes.placeholder()));
+            return PaperColor.handler().translateRaw(requirements.get("input"), player, Parsers::placeholder).equals(PaperColor.handler().translateRaw(requirements.get("output"), player, Parsers::placeholder));
         }
         return true;
     }
@@ -87,7 +87,7 @@ public class DialogImpl extends Dialog {
 
             String bodyText = replaceArgs(bodyData.text(), args);
             FS_DialogTextBody fsDialogTextBody = new FS_DialogTextBody(
-                    PaperColor.handler().translateRaw(bodyText, player, ParserTypes.placeholder()),
+                    PaperColor.handler().translateRaw(bodyText, player, Parsers::placeholder),
                     textWidth
             );
             body.add(fsDialogTextBody);
@@ -104,9 +104,9 @@ public class DialogImpl extends Dialog {
                     control = new FS_DialogTextInput(
                             (textField.getWidth() == null || (textField.getWidth() <= 0 || textField.getWidth() >= 1024))
                                     ? 200 : textField.getWidth(),
-                            PaperColor.handler().translateRaw(label, player, ParserTypes.placeholder()),
+                            PaperColor.handler().translateRaw(label, player, Parsers::placeholder),
                             !label.isEmpty(),
-                            PaperColor.handler().translateRaw(placeholder, player, ParserTypes.placeholder()),
+                            PaperColor.handler().translateRaw(placeholder, player, Parsers::placeholder),
                             textField.getMaxLength(),
                             textField.getMaxLines() > 0 ?
                                     new FS_DialogTextInput.MultilineOptions(textField.getMaxLines(), null) :
@@ -117,8 +117,8 @@ public class DialogImpl extends Dialog {
                     for (DialogSelect.Entry entry : select.getOptions()) {
                         entries.add(
                                 new FS_DialogSingleOptionInput.Entry(
-                                        PaperColor.handler().translateRaw(replaceArgs(entry.value(), args), player, ParserTypes.placeholder()),
-                                        PaperColor.handler().translateRaw(replaceArgs(entry.display(), args), player, ParserTypes.placeholder()),
+                                        PaperColor.handler().translateRaw(replaceArgs(entry.value(), args), player, Parsers::placeholder),
+                                        PaperColor.handler().translateRaw(replaceArgs(entry.display(), args), player, Parsers::placeholder),
                                         entry.initial()
                                 )
                         );
@@ -128,7 +128,7 @@ public class DialogImpl extends Dialog {
                             (select.getWidth() == null || (select.getWidth() <= 0 || select.getWidth() >= 1024))
                                     ? 200 : select.getWidth(),
                             entries,
-                            PaperColor.handler().translateRaw(selectLabel, player, ParserTypes.placeholder()),
+                            PaperColor.handler().translateRaw(selectLabel, player, Parsers::placeholder),
                             !selectLabel.isEmpty()
                     );
                 } else if (input instanceof DialogCheckbox checkbox) {
@@ -156,7 +156,7 @@ public class DialogImpl extends Dialog {
                 String text = PaperColor.handler().translateRaw(
                         clipboardData,
                         player,
-                        ParserTypes.placeholder()
+                        Parsers::placeholder
                 );
                 buttonAction = new FS_DialogCopyToClipboardAction(text);
             } else {
@@ -180,8 +180,8 @@ public class DialogImpl extends Dialog {
 
             FS_DialogActionButton fsDialogActionButton = new FS_DialogActionButton(
                     new FS_CommonButtonData(
-                            PaperColor.handler().translateRaw(buttonLabel, player, ParserTypes.placeholder()),
-                            PaperColor.handler().translateRaw(buttonTooltip, player, ParserTypes.placeholder()),
+                            PaperColor.handler().translateRaw(buttonLabel, player, Parsers::placeholder),
+                            PaperColor.handler().translateRaw(buttonTooltip, player, Parsers::placeholder),
                             (button.width() == null || (button.width() <= 0 || button.width() >= 1024))
                                     ? 150 : button.width()
                     ),
@@ -199,7 +199,7 @@ public class DialogImpl extends Dialog {
                 String text = PaperColor.handler().translateRaw(
                         clipboardData,
                         player,
-                        ParserTypes.placeholder()
+                        Parsers::placeholder
                 );
                 buttonAction = new FS_DialogCopyToClipboardAction(text);
             } else {
@@ -222,8 +222,8 @@ public class DialogImpl extends Dialog {
             String buttonTooltip = replaceArgs(data.exitAction().tooltip(), args);
             exitAction = new FS_DialogActionButton(
                     new FS_CommonButtonData(
-                            PaperColor.handler().translateRaw(buttonLabel, player, ParserTypes.placeholder()),
-                            PaperColor.handler().translateRaw(buttonTooltip, player, ParserTypes.placeholder()),
+                            PaperColor.handler().translateRaw(buttonLabel, player, Parsers::placeholder),
+                            PaperColor.handler().translateRaw(buttonTooltip, player, Parsers::placeholder),
                             (data.exitAction().width() == null || (data.exitAction().width() <= 0 || data.exitAction().width() >= 1024))
                                     ? 150 : data.exitAction().width()
                     ),
@@ -232,7 +232,7 @@ public class DialogImpl extends Dialog {
         }
 
         String title = replaceArgs(data.title(), args);
-        String translatedTitle = PaperColor.handler().translateRaw(title, player, ParserTypes.placeholder());
+        String translatedTitle = PaperColor.handler().translateRaw(title, player, Parsers::placeholder);
 
         if (actions.isEmpty()) {
             return new FS_NoticeDialog(

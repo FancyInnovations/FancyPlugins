@@ -151,8 +151,6 @@ public final class HologramImpl extends Hologram {
         HologramRotation rot = new HologramRotation(location.getYaw() + 180, location.getPitch(), 0);
         fsDisplay.setLeftRotation(rot.getQuaternion());
 
-        System.out.println(fsDisplay.getLeftRotation().toString());
-
         if (fsDisplay instanceof FS_TextDisplay textDisplay && data instanceof com.fancyinnovations.fancyholograms.api.data.TextHologramData textData) {
             // line width
             textDisplay.setLineWidth(Hologram.LINE_WIDTH);

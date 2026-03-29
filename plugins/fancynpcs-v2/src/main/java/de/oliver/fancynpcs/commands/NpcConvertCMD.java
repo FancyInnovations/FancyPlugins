@@ -22,6 +22,7 @@ import net.citizensnpcs.trait.SkinTrait;
 import net.citizensnpcs.trait.text.Text;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.incendo.cloud.annotations.Command;
@@ -55,15 +56,18 @@ public final class NpcConvertCMD {
         NPCRegistry npcRegistry = CitizensAPI.getNPCRegistry();
         int convertedCount = 0;
         for (NPC npc : npcRegistry) {
+            // UUID and name
             Owner ownerTrait = npc.getTraitNullable(Owner.class);
             UUID ownerUUID = ownerTrait != null ? ownerTrait.getOwnerId() : null;
-
             String name = npc.getName().replaceAll(" ", "_");
-            NpcData data = new NpcData(
-                    name,
-                    ownerUUID,
-                    npc.getStoredLocation()
-            );
+
+            // Location
+            Location loc = npc.getStoredLocation();
+            if (loc == null) {
+                loc = npc.getEntity().getLocation();
+            }
+
+            NpcData data = new NpcData(name, ownerUUID, loc);
 
             // type
             MobType mobTypeTrait = npc.getTraitNullable(MobType.class);

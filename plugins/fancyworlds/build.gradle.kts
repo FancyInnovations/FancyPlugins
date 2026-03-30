@@ -54,13 +54,15 @@ tasks {
         minecraftVersion("1.21.11")
 
         downloadPlugins {
-            modrinth("fancydialogs", "1.1.2")
+            modrinth("FancyDialogs", "1.1.2")
+            modrinth("FancyNpcs", "2.9.2")
+            modrinth("FancyHolograms", "2.9.1")
+            modrinth("FancyDialogs", "1.1.2")
+            modrinth("FancyEconomy", "1.0.3+6")
 
-            modrinth("fancynpcs", "2.9.2")
-            modrinth("fancyholograms", "2.9.1")
-//            hangar("ViaVersion", "5.3.2")
-//            hangar("ViaBackwards", "5.3.2")
 //            hangar("PlaceholderAPI", "2.11.6")
+//            hangar("ViaVersion", "5.8.1")
+//            hangar("ViaBackwards", "5.8.1")
         }
     }
 

@@ -101,11 +101,16 @@ tasks {
         minecraftVersion("1.21.11")
 
         downloadPlugins {
-            hangar("kite", "1.2.4+12")
-            hangar("ViaVersion", "5.7.1")
-            hangar("ViaBackwards", "5.7.1")
+            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/3qG7szVk/files/FancyWorlds-0.0.2.jar")
+            modrinth("FancyHolograms", "2.9.1")
+            modrinth("FancyDialogs", "1.1.2")
+            modrinth("FancyEconomy", "1.0.3+6")
+
+//            modrinth("kite", "1.4.0")
 //            hangar("PlaceholderAPI", "2.11.6")
-//            modrinth("multiverse-core", "5.0.2")
+//            hangar("ViaVersion", "5.8.1")
+//            hangar("ViaBackwards", "5.8.1")
+//            url("https://ci.citizensnpcs.co/job/citizens2/4138/artifact/dist/target/Citizens-2.0.41-b4138.jar")
         }
     }
 

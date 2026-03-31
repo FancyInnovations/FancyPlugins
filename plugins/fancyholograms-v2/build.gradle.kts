@@ -55,13 +55,13 @@ dependencies {
 }
 
 paper {
-    name = "FancyHolograms"
+    name = "PrettyHolograms"
     main = "de.oliver.fancyholograms.FancyHolograms"
     bootstrapper = "de.oliver.fancyholograms.loaders.FancyHologramsBootstrapper"
     loader = "de.oliver.fancyholograms.loaders.FancyHologramsLoader"
     foliaSupported = true
     version = getFHVersion()
-    description = "Simple, lightweight and fast hologram plugin using display entities"
+    description = "Does anyone even read this?"
     apiVersion = "1.19"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
     serverDependencies {

@@ -1,3 +1,3 @@
-- Fixed npcs randomly disappearing
-- Fixed FancyNpcs forcefully generating new worlds
-- Fixed attributes not being cleared when changing npc type
+- Fixed equipment
+- Fixed turn_to_player
+- Fixed npc interactions

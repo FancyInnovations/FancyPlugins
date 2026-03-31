@@ -68,13 +68,13 @@ dependencies {
 }
 
 paper {
-    name = "FancyNpcs"
+    name = "PrettyNpcs"
     main = "de.oliver.fancynpcs.FancyNpcs"
     bootstrapper = "de.oliver.fancynpcs.loaders.FancyNpcsBootstrapper"
     loader = "de.oliver.fancynpcs.loaders.FancyNpcsLoader"
     foliaSupported = true
     version = getFNVersion()
-    description = "Simple, lightweight and fast NPC plugin using packets"
+    description = "Does anyone even read this?"
     apiVersion = "1.19"
     serverDependencies {
         register("PlaceholderAPI") {

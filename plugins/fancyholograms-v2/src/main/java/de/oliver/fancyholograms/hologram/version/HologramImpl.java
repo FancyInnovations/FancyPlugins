@@ -6,12 +6,20 @@ import de.oliver.fancyholograms.api.events.HologramShowEvent;
 import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancysitula.api.entities.*;
 import de.oliver.fancysitula.factories.FancySitula;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class HologramImpl extends Hologram {
+
+    public Map<UUID, Boolean> viewerPrivacy = new ConcurrentHashMap<>();
 
     private FS_Display fsDisplay;
 
@@ -191,6 +199,15 @@ public final class HologramImpl extends Hologram {
         }
 
         FS_RealPlayer fsPlayer = new FS_RealPlayer(player);
+        boolean privacy = viewerPrivacy.getOrDefault(player.getUniqueId(), false);
+
+        if (privacy && fsDisplay instanceof FS_TextDisplay textDisplay) {
+            textDisplay.setBackground(Color.BLACK.asARGB());
+            textDisplay.setBillboard(FS_Display.Billboard.CENTER);
+            textDisplay.setScale(new Vector3f(2, 2, 2));
+        } else {
+            update();
+        }
 
         FancySitula.PACKET_FACTORY.createTeleportEntityPacket(
                         fsDisplay.getId(),
@@ -204,7 +221,7 @@ public final class HologramImpl extends Hologram {
 
 
         if (fsDisplay instanceof FS_TextDisplay textDisplay) {
-            textDisplay.setText(getShownText(player));
+            textDisplay.setText(getShownText(player, privacy));
         }
 
         FancySitula.ENTITY_FACTORY.setEntityDataFor(fsPlayer, fsDisplay);

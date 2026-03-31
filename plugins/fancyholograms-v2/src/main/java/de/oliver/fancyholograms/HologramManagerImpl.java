@@ -243,7 +243,7 @@ public final class HologramManagerImpl implements HologramManager {
 
             for (final var hologram : this.getHolograms()) {
                 if (hologram.getData() instanceof TextHologramData textData) {
-                    final var interval = textData.getTextUpdateInterval();
+                    final var interval = 200;
                     if (interval < 1) {
                         continue; // doesn't update
                     }

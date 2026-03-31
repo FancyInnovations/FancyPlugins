@@ -3,6 +3,7 @@ package de.oliver.fancyholograms.api.hologram;
 import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.data.property.Visibility;
+import de.oliver.fancylib.RandomUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -350,18 +351,36 @@ public abstract class Hologram {
      * @param player the player to get the placeholders for, or null if no placeholders should be replaced
      * @return the text shown in the hologram
      */
-    public final Component getShownText(@Nullable final Player player) {
+    public final Component getShownText(@Nullable final Player player, boolean privacy) {
         if (!(getData() instanceof TextHologramData textData)) {
             return null;
         }
 
         var text = String.join("\n", textData.getText());
+        String actualText = "";
 
-        if (Bukkit.isStopping()) {
-            return MiniMessage.miniMessage().deserialize(text);
+        if (privacy) {
+            actualText = "<dark_red><b>[!] PRIVACY MODE: ON [!]</b></dark_red>\n";
+            actualText += "<dark_gray><st>------------------------------</st></dark_gray>\n";
+
+            for (String c : text.split("")) {
+                if (RandomUtils.random(70)) {
+                    actualText += "<obf>" + c + "</obf>";
+                } else {
+                    actualText += c;
+                }
+            }
+
+            actualText += "\n<dark_gray><st>------------------------------</st></dark_gray>";
+        } else {
+            actualText = text;
         }
 
-        return PaperColor.handler().translate(text, player);
+        if (Bukkit.isStopping()) {
+            return MiniMessage.miniMessage().deserialize(actualText);
+        }
+
+        return PaperColor.handler().translate(actualText, player);
     }
 
     @Override

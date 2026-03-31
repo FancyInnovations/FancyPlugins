@@ -164,6 +164,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
         registerMetrics();
 
         getHologramsManager().initializeTasks();
+        hologramThread.scheduleAtFixedRate(new TextTracker(), 0, 100, TimeUnit.MILLISECONDS);
 
         if (getHologramConfiguration().isAutosaveEnabled()) {
             getHologramThread().scheduleAtFixedRate(() -> {
@@ -174,6 +175,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
         }
 
         FHConversionRegistry.registerBuiltInConverters();
+
 
         fancyLogger.info("Successfully enabled FancyHolograms version %s".formatted(getDescription().getVersion()));
     }

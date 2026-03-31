@@ -1,69 +1,22 @@
-# 
+Hey, a new version of PrettyNpcs and PrettyHolograms has been published!
 
-<div align="center">
+This update includes several critical bug fixes and improvements.
+Since more and more software companies change their versioning system to a date-based format, we have decided to follow suit.
+The version now reflects the weekday (Monday, Tuesday, ..., Sunday) of the release, making it easier to track updates and ensure you have the latest version.
 
-![](docs/src/static/logos-and-banners/fancyinnovations-banner.png)
+## Changes
 
-[![Modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_vector.svg)](https://modrinth.com/user/Oliver)
-[![Hangar](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/hangar_vector.svg)](https://hangar.papermc.io/Oliver)
-[![Unsupported spigot](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/unsupported/spigot_vector.svg)]()
+For security reasons, we cannot disclose the specific details of the fixes in this channel.
+A detailed changelog is hidden somewhere on this discord server to prevent it getting into the wrong hands and to protect our intellectual property.
 
-[![Website](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/documentation/website_vector.svg)](https://fancyinnovations.com)
-[![Documentation](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/documentation/ghpages_vector.svg)](https://fancyinnovations.com/docs/minecraft-plugins)
-[![discord-plural](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/social/discord-plural_46h.png)](https://discord.gg/ZUgYCEJUEx)
+We highly recommend all users to update to this latest version **asap** to benefit from the improvements and ensure a smoother experience with our plugins.
 
+## Download
 
-[![CodeFactor](https://www.codefactor.io/repository/github/fancyinnovations/fancyplugins/badge)](https://www.codefactor.io/repository/github/fancyinnovations/fancyplugins)
-[![Lines of Code](https://tokei.rs/b1/github/fancyinnovations/fancyplugins?category=code)](https://github.com/fancyinnovations/fancyplugins)
+- **PrettyNpcs vWednesday**:
+- **PrettyHolograms vWednesday**:
+- **PrettyPotato & FancyPickle vWednesday**: WIP (will be done tomorrow, I promise)
 
-</div>
+Have a nice day!
 
-## FancyPlugins
-
-This is a [monorepo](docs/src/development-guidelines/monorepo.md) for all plugins, libraries, and tools of FancyInnovations.
-
-**Plugins:**
-- FancyNpcs: create and manage fancy looking npcs
-- FancyHolograms: create fancy looking holograms
-- FancyDialogs: create and manage fancy looking dialogs which were added in 1.21.6 (work in progress)
-- FancyVisuals: plugin to customize all visual components of the game (work in progress)
-
-**Libraries:**
-- Common: common classes and utilities
-- JDB: json database library
-- Plugin Tests: testing library for plugins
-- Packets: packet handling library (also called FancySitula)
-
-**Tools:**
-- Quick E2E: generate a quick end-to-end environment for testing
-
-## Usage
-
-The monorepo uses Gradle as a build system. See [monorepo.md](docs/src/development-guidelines/monorepo.md) for more information.
-
-To see specific usage for each package, see the README.md in the respective package directory.
-
-## Contributing
-
-You can contribute to this repository by reporting bugs, suggesting features, or contributing code. 
-Please read the [contributing guidelines](docs/src/development-guidelines/contributing.md) for more information.
-
----
-
-[All contributors of this repository:](https://github.com/FancyInnovations/FancyPlugins/graphs/contributors)
-
-<a href = "https://github.com/FancyInnovations/FancyPlugins/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo=FancyInnovations/FancyPlugins" alt="All contributors of this repository"/>
-</a>
-
-**[All contributors of the old FancyNpcs repository:](https://github.com/FancyMcPlugins/FancyNpcs/graphs/contributors)**
-
-<a href = "https://github.com/FancyMcPlugins/FancyNpcs/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo=FancyMcPlugins/FancyNpcs" alt="All contributors of the old FancyNpcs repository"/>
-</a>
-
-**[All contributors of the old FancyHolograms repository:](https://github.com/FancyMcPlugins/FancyHolograms/graphs/contributors)**
-
-<a href = "https://github.com/FancyMcPlugins/FancyHolograms/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo=FancyMcPlugins/FancyHolograms" alt="All contributors of the old FancyHolograms repository"/>
-</a>
+_Oliver_

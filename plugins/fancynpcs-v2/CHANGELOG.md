@@ -1,3 +1,6 @@
 - Fixed equipment
+- More performance
 - Fixed turn_to_player
+- Bug fixes
 - Fixed npc interactions
+- Fixed fixes of fixes

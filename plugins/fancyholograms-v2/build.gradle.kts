@@ -55,7 +55,7 @@ dependencies {
 }
 
 paper {
-    name = "FancyNpcs"
+    name = "FancyHolograms"
     main = "de.oliver.fancyholograms.FancyHolograms"
     bootstrapper = "de.oliver.fancyholograms.loaders.FancyHologramsBootstrapper"
     loader = "de.oliver.fancyholograms.loaders.FancyHologramsLoader"

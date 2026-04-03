@@ -338,9 +338,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldLoadedListener(), this);
-
-            getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
-        }
+        getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
 
         if (PluginUtils.isFancyNpcsEnabled()) {
             getServer().getPluginManager().registerEvents(new NpcListener(this), this);

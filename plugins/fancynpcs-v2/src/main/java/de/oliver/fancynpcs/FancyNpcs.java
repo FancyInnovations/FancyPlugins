@@ -165,7 +165,6 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             case "1.21.6", "1.21.7", "1.21.8" -> Npc_1_21_6::new;
             case "1.21.5" -> Npc_1_21_5::new;
             case "1.21.4" -> Npc_1_21_4::new;
-            case "1.21.2", "1.21.3" -> Npc_1_21_3::new;
             default -> null;
         };
 
@@ -274,9 +273,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         pluginManager.registerEvents(new PlayerTeleportListener(), instance);
         pluginManager.registerEvents(new PlayerChangedWorldListener(), instance);
         pluginManager.registerEvents(skinManager, instance);
-        if (Set.of("1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11", "26.1.1").contains(Bukkit.getMinecraftVersion())) {
-            getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
-        }
+        pluginManager.registerEvents(new PlayerLoadedListener(), this);
 
         pluginManager.registerEvents(new PlayerUseUnknownEntityListener(), instance);
 

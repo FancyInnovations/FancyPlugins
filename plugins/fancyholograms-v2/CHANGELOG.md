@@ -1,5 +1,5 @@
 - Added support for Minecraft 26.1.1
-- Removed support for 1.21 and 1.21.1 (1.21.2 and 1.21.3 support will be removed in late April)
+- Removed support for 1.21 - 1.21.3
 - Fixed some npc visibility issues when using Folia
 
 **Reminder to everyone who uses the FancyHolograms Java API:**

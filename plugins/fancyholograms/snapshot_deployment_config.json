@@ -8,8 +8,6 @@
     "platform": "paper",
     "channel": "alpha",
     "supported_versions": [
-      "1.21.2",
-      "1.21.3",
       "1.21.4",
       "1.21.5",
       "1.21.6",
@@ -24,8 +22,6 @@
   "modrinth": {
     "project_id": "5QNgOj66",
     "supported_versions": [
-      "1.21.2",
-      "1.21.3",
       "1.21.4",
       "1.21.5",
       "1.21.6",
@@ -47,8 +43,6 @@
     "author": "oliver",
     "project_id": "fancyholograms",
     "supported_versions": [
-      "1.21.2",
-      "1.21.3",
       "1.21.4",
       "1.21.5",
       "1.21.6",
@@ -64,8 +58,6 @@
   "curseforge": {
     "project_id": "1480051",
     "game_versions": [
-      12736,
-      12737,
       12738,
       12988,
       13473,

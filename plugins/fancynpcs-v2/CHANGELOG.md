@@ -1,5 +1,5 @@
 - Added support for Minecraft 26.1.1
-- Removed support for 1.21 and 1.21.1 (1.21.2 and 1.21.3 support will be removed in late April)
+- Removed support for 1.21 - 1.21.3
 - Added Citizens -> FancyNpcs converter ([see tutorial](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/tutorials/citizens-converter))
 - Added `need_item` action ([see tutorial](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/tutorials/action-system#need_item))
 - Internally refactored the action system to support [Kite](https://echonine.dev/kite/getting-started/) scripts ([see tutorial](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/tutorials/action-scripting))

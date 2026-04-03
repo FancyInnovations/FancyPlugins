@@ -8,7 +8,7 @@ group = "de.oliver"
 description = "Tool to setup a complete environment for testing"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 dependencies {

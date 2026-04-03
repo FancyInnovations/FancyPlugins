@@ -1,4 +1,4 @@
-- Added support for Minecraft 26.1
+- Added support for Minecraft 26.1.1
 - Removed support for 1.21 and 1.21.1 (1.21.2 and 1.21.3 support will be removed in late April)
 - Fixed some npc visibility issues when using Folia
 

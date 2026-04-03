@@ -1,12 +1,10 @@
 plugins {
     id("java-library")
-//    id("io.papermc.paperweight.userdev")
+    id("io.papermc.paperweight.userdev")
 }
 
 dependencies {
-//    paperweight.paperDevBundle("26.1-R0.1-SNAPSHOT")
-    compileOnly(fileTree("../../../libraries/paper-server") { include("**/*.jar") })
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("26.1.1-SNAPSHOT")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly(project(":libraries:common"))

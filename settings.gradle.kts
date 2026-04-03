@@ -1,6 +1,8 @@
 pluginManagement {
     repositories {
         mavenLocal()
+        maven(url = "https://artifactory.papermc.io/artifactory/snapshots")
+//        maven(url = "https://artifactory.papermc.io/artifactory/releases")
         maven(url = "https://maven.fancyspaces.net/fancyinnovations/snapshots")
         maven(url = "https://maven.fancyspaces.net/fancyinnovations/releases")
         maven(url = "https://repo.fancyinnovations.com/releases")

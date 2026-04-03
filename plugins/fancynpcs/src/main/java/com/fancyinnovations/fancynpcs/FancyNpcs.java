@@ -268,9 +268,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         pluginManager.registerEvents(new PlayerTeleportListener(), instance);
         pluginManager.registerEvents(new PlayerChangedWorldListener(), instance);
         pluginManager.registerEvents(skinManager, instance);
-        if (Set.of("1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11").contains(Bukkit.getMinecraftVersion())) {
-            getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
-        }
+        pluginManager.registerEvents(new PlayerLoadedListener(), this);
 
         pluginManager.registerEvents(new PlayerUseUnknownEntityListener(), instance);
 

@@ -8,7 +8,8 @@
     "platform": "paper",
     "channel": "alpha",
     "supported_versions": [
-      "1.21.11"
+      "1.21.11",
+      "26.1.1"
     ]
   }
 }

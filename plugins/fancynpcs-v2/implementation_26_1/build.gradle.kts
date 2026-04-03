@@ -3,10 +3,8 @@ plugins {
     id("io.papermc.paperweight.userdev")
 }
 
-paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
-
 dependencies {
-    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("26.1.1.build.+")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly(project(":libraries:common"))
@@ -21,6 +19,6 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 21
+        options.release = 25
     }
 }

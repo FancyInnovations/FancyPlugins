@@ -10,3 +10,7 @@ logger/out
 sdks/java-sdk/out
 
 servers
+
+libraries/paper-server
+
+.DS_STORE

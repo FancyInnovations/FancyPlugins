@@ -9,19 +9,12 @@ plugins {
 
 runPaper.folia.registerTask()
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven(url = "https://repo.papermc.io/repository/maven-public/")
-    maven(url = "https://repo.fancyinnovations.com/releases")
-}
-
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":libraries:packets"))
     implementation(project(":libraries:packets:packets-api"))
-    implementation(project(":libraries:packets:implementations:1_21_3"))
+    implementation(project(":libraries:packets:implementations:26_1"))
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 }
 
@@ -47,7 +40,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 21
+        options.release = 25
     }
 
     javadoc {
@@ -60,5 +53,5 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }

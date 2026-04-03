@@ -338,10 +338,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldLoadedListener(), this);
-
-        if (Set.of("1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11", "26.1").contains(Bukkit.getMinecraftVersion())) {
-            getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
-        }
+        getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
 
         if (PluginUtils.isFancyNpcsEnabled()) {
             getServer().getPluginManager().registerEvents(new NpcListener(this), this);

@@ -3,7 +3,6 @@ package de.oliver.fancynpcs;
 import de.oliver.fancynpcs.api.AttributeManager;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v1_21_11.attributes.Attributes_1_21_11;
-import de.oliver.fancynpcs.v1_21_3.attributes.Attributes_1_21_3;
 import de.oliver.fancynpcs.v1_21_4.attributes.Attributes_1_21_4;
 import de.oliver.fancynpcs.v1_21_5.attributes.Attributes_1_21_5;
 import de.oliver.fancynpcs.v1_21_6.attributes.Attributes_1_21_6;

@@ -46,7 +46,6 @@ import de.oliver.fancynpcs.tracker.TurnToPlayerTracker;
 import de.oliver.fancynpcs.tracker.VisibilityTracker;
 import de.oliver.fancynpcs.utils.OldSkinCacheMigrator;
 import de.oliver.fancynpcs.v1_21_11.Npc_1_21_11;
-import de.oliver.fancynpcs.v1_21_3.Npc_1_21_3;
 import de.oliver.fancynpcs.v1_21_4.Npc_1_21_4;
 import de.oliver.fancynpcs.v1_21_5.Npc_1_21_5;
 import de.oliver.fancynpcs.v1_21_6.Npc_1_21_6;

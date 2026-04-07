@@ -15,6 +15,7 @@ allprojects {
 
         maven(url = "https://maven.fancyspaces.net/fancyinnovations/releases")
         maven(url = "https://maven.fancyspaces.net/fancyinnovations/snapshots")
+        maven(url = "https://maven.fancyspaces.net/origami/releases")
         maven(url = "https://repo.fancyinnovations.com/releases")
         maven(url = "https://repo.fancyinnovations.com/snapshots")
 

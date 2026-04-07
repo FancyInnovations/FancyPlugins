@@ -5,7 +5,7 @@ import de.oliver.fancynpcs.api.NpcAttribute;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attributes_26_1 {
+public class Attributes_26_2 {
 
     public static List<NpcAttribute> getAllAttributes() {
         List<NpcAttribute> attributes = new ArrayList<>();

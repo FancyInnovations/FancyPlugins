@@ -55,9 +55,9 @@ dependencies {
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.12.2")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.11")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.17")
-    compileOnly("net.citizensnpcs:citizens-main:2.0.41-SNAPSHOT") {
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.12")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.4.0")
+    compileOnly("net.citizensnpcs:citizens-main:2.0.42-SNAPSHOT") {
         exclude(group = "*", module = "*")
     }
 }
@@ -94,6 +94,9 @@ paper {
 tasks {
     runServer {
         minecraftVersion("26.1.1")
+//        minecraftVersion("26.2-snapshot-1")
+//        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2-snapshot-1.build.1-alpha.jar"))
+
 
         downloadPlugins {
 //            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/3qG7szVk/files/FancyWorlds-0.0.2.jar")

@@ -3,7 +3,7 @@ package de.oliver.fancynpcs.v26_2.attributes;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v26_2.ReflectionHelper;
-import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.cubemob.Slime;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;

@@ -31,22 +31,22 @@ public class HappyGhastAttributes {
         HappyGhast ghast = ReflectionHelper.getEntity(npc);
 
         ItemStack harnessItem = switch (value.toLowerCase()) {
-            case "white" -> Items.WHITE_HARNESS.getDefaultInstance();
-            case "orange" -> Items.ORANGE_HARNESS.getDefaultInstance();
-            case "magenta" -> Items.MAGENTA_HARNESS.getDefaultInstance();
-            case "light_blue" -> Items.LIGHT_BLUE_HARNESS.getDefaultInstance();
-            case "yellow" -> Items.YELLOW_HARNESS.getDefaultInstance();
-            case "lime" -> Items.LIME_HARNESS.getDefaultInstance();
-            case "pink" -> Items.PINK_HARNESS.getDefaultInstance();
-            case "gray" -> Items.GRAY_HARNESS.getDefaultInstance();
-            case "light_gray" -> Items.LIGHT_GRAY_HARNESS.getDefaultInstance();
-            case "cyan" -> Items.CYAN_HARNESS.getDefaultInstance();
-            case "purple" -> Items.PURPLE_HARNESS.getDefaultInstance();
-            case "blue" -> Items.BLUE_HARNESS.getDefaultInstance();
-            case "brown" -> Items.BROWN_HARNESS.getDefaultInstance();
-            case "green" -> Items.GREEN_HARNESS.getDefaultInstance();
-            case "red" -> Items.RED_HARNESS.getDefaultInstance();
-            case "black" -> Items.BLACK_HARNESS.getDefaultInstance();
+            case "white" -> Items.HARNESS.white().getDefaultInstance();
+            case "orange" -> Items.HARNESS.orange().getDefaultInstance();
+            case "magenta" -> Items.HARNESS.magenta().getDefaultInstance();
+            case "light_blue" -> Items.HARNESS.lightBlue().getDefaultInstance();
+            case "yellow" -> Items.HARNESS.yellow().getDefaultInstance();
+            case "lime" -> Items.HARNESS.lime().getDefaultInstance();
+            case "pink" -> Items.HARNESS.pink().getDefaultInstance();
+            case "gray" -> Items.HARNESS.gray().getDefaultInstance();
+            case "light_gray" -> Items.HARNESS.lightGray().getDefaultInstance();
+            case "cyan" -> Items.HARNESS.cyan().getDefaultInstance();
+            case "purple" -> Items.HARNESS.purple().getDefaultInstance();
+            case "blue" -> Items.HARNESS.blue().getDefaultInstance();
+            case "brown" -> Items.HARNESS.brown().getDefaultInstance();
+            case "green" -> Items.HARNESS.green().getDefaultInstance();
+            case "red" -> Items.HARNESS.red().getDefaultInstance();
+            case "black" -> Items.HARNESS.black().getDefaultInstance();
             default -> Items.AIR.getDefaultInstance();
         };
 

@@ -151,7 +151,7 @@ messages:
 
   # Commands (npc help)
   npc_help_page_header: "<dark_gray><st>-------------</st>  {primaryColor}FancyNpcs{secondaryColor} Commands ({primaryColor}{page}{secondaryColor}/{primaryColor}{max_page}{secondaryColor})  <dark_gray><st>--------------</st><newline>"
-  npc_help_page_footer: "<newline><dark_gray><st>-----------</st>  {secondaryColor}Click {primaryColor}<click:OPEN_URL:https://fancyinnovations.com/docs/fn-commands.html>here</click>{secondaryColor} to open documentation  <dark_gray><st>-----------</st>"
+  npc_help_page_footer: "<newline><dark_gray><st>-----------</st>  {secondaryColor}Click {primaryColor}<click:OPEN_URL:https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/commands/npc>here</click>{secondaryColor} to open documentation  <dark_gray><st>-----------</st>"
   npc_help_contents:
     - "<hover:show_text:'{secondaryColor}Adds new action to the list.'>{primaryColor}/npc action {secondaryColor}(npc) (trigger) {primaryColor}add {secondaryColor}(index) [value]"
     - "<hover:show_text:'{secondaryColor}Adds new action to the list after specified position.'>{primaryColor}/npc action {secondaryColor}(npc) (trigger) {primaryColor}add_after {secondaryColor}(index) [value]"

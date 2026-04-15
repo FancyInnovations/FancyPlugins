@@ -1,6 +1,6 @@
-package de.oliver.fancyeconomy.currencies;
+package com.fancyinnovations.fancyeconomy.currencies;
 
-import de.oliver.fancyeconomy.FancyEconomy;
+import com.fancyinnovations.fancyeconomy.FancyEconomy;
 import de.oliver.fancylib.MessageHelper;
 import de.oliver.fancylib.gui.inventoryClick.InventoryItemClick;
 import de.oliver.fancylib.itemClick.ItemClick;

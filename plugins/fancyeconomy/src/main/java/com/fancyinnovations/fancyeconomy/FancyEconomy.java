@@ -1,11 +1,11 @@
-package de.oliver.fancyeconomy;
+package com.fancyinnovations.fancyeconomy;
 
-import de.oliver.fancyeconomy.commands.*;
-import de.oliver.fancyeconomy.currencies.*;
-import de.oliver.fancyeconomy.integrations.FancyEconomyPlaceholderExpansion;
-import de.oliver.fancyeconomy.integrations.FancyEconomyVault;
-import de.oliver.fancyeconomy.listeners.PlayerJoinListener;
-import de.oliver.fancyeconomy.utils.DistributedWorkload;
+import com.fancyinnovations.fancyeconomy.commands.*;
+import com.fancyinnovations.fancyeconomy.currencies.*;
+import com.fancyinnovations.fancyeconomy.integrations.FancyEconomyPlaceholderExpansion;
+import com.fancyinnovations.fancyeconomy.integrations.FancyEconomyVault;
+import com.fancyinnovations.fancyeconomy.listeners.PlayerJoinListener;
+import com.fancyinnovations.fancyeconomy.utils.DistributedWorkload;
 import de.oliver.fancylib.*;
 import de.oliver.fancylib.databases.Database;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
@@ -19,7 +19,6 @@ import de.oliver.fancylib.translations.message.SimpleMessage;
 import de.oliver.fancylib.versionFetcher.MasterVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
 import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandAPIPaperConfig;
 import dev.jorel.commandapi.arguments.*;
@@ -30,16 +29,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
-
 
 public class FancyEconomy extends JavaPlugin {
 
     private static FancyEconomy instance;
     private final FancyScheduler scheduler;
     private final VersionFetcher versionFetcher;
-    private Translator translator;
     private final FancyEconomyConfig config;
+    private Translator translator;
     private FancyEconomyVault vaultEconomy;
     private Database database;
     private DistributedWorkload<CurrencyPlayer> saveWorkload;
@@ -328,7 +325,7 @@ public class FancyEconomy extends JavaPlugin {
                     uuid VARCHAR(255),
                     currency VARCHAR(255),
                     balance DOUBLE,
-                                
+                
                     PRIMARY KEY(uuid, currency),
                     FOREIGN KEY (uuid) REFERENCES players(uuid)
                 )""");

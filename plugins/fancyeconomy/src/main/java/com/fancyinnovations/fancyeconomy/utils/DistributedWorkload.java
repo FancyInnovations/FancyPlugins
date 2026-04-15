@@ -1,4 +1,4 @@
-package de.oliver.fancyeconomy.utils;
+package com.fancyinnovations.fancyeconomy.utils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -30,11 +30,11 @@ public class DistributedWorkload<T> implements Runnable {
         }
     }
 
-    public void addValue(Supplier<T> valueSupplier){
+    public void addValue(Supplier<T> valueSupplier) {
         List<Supplier<T>> smallestList = suppliedValueMatrix.get(0);
 
         for (int i = 1; i < distributionSize; i++) {
-            if(smallestList.size() == 0){
+            if (smallestList.size() == 0) {
                 break;
             }
 
@@ -46,14 +46,14 @@ public class DistributedWorkload<T> implements Runnable {
         smallestList.add(valueSupplier);
     }
 
-    private void proceedPosition(){
+    private void proceedPosition() {
         currentPosition++;
-        if(currentPosition == distributionSize){
+        if (currentPosition == distributionSize) {
             currentPosition = 0;
         }
     }
 
-    private boolean executeThenCheck(Supplier<T> valueSupplier){
+    private boolean executeThenCheck(Supplier<T> valueSupplier) {
         T value = valueSupplier.get();
         action.accept(value);
         return escapeCondition.test(value);
@@ -61,14 +61,14 @@ public class DistributedWorkload<T> implements Runnable {
 
     @Override
     public void run() {
-        if(runAsync){
+        if (runAsync) {
             new Thread(this::runWorkload).start();
         } else {
             runWorkload();
         }
     }
 
-    public void runAll(){
+    public void runAll() {
         new Thread(() -> {
             long time = System.currentTimeMillis();
 
@@ -85,7 +85,7 @@ public class DistributedWorkload<T> implements Runnable {
         }).start();
     }
 
-    private void runWorkload(){
+    private void runWorkload() {
         long startTime = System.currentTimeMillis();
 
         List<Supplier<T>> suppliers = suppliedValueMatrix.get(currentPosition);
@@ -96,13 +96,13 @@ public class DistributedWorkload<T> implements Runnable {
         proceedPosition();
 
         long time = System.currentTimeMillis() - startTime;
-        if(amount > 0) {
+        if (amount > 0) {
 //            Bukkit.getLogger().info("DistributedWorkload '" + workloadName + "' round " + (currentPosition) + "/" + distributionSize + " with " + amount + " suppliers took " + time + "ms");
         }
     }
 
 
-    public List<T> getAllSuppliers(){
+    public List<T> getAllSuppliers() {
         List<T> allSuppliers = new ArrayList<>();
         for (LinkedList<Supplier<T>> ll : suppliedValueMatrix) {
             ll.stream().map(Supplier::get).forEach(allSuppliers::add);

@@ -42,9 +42,9 @@ dependencies {
 
 paper {
     name = "FancyEconomy"
-    main = "de.oliver.fancyeconomy.FancyEconomy"
-    bootstrapper = "de.oliver.fancyeconomy.FancyEconomyBootstrapper"
-    loader = "de.oliver.fancyeconomy.FancyEconomyLoader"
+    main = "com.fancyinnovations.fancyeconomy.FancyEconomy"
+    bootstrapper = "com.fancyinnovations.fancyeconomy.FancyEconomyBootstrapper"
+    loader = "com.fancyinnovations.fancyeconomy.FancyEconomyLoader"
     foliaSupported = true
     version = getFEVersion()
     description = "Simple and lightweight economy plugin with support for multiple currencies"

@@ -1,10 +1,10 @@
-package de.oliver.fancyeconomy.integrations;
+package com.fancyinnovations.fancyeconomy.integrations;
 
-import de.oliver.fancyeconomy.FancyEconomy;
-import de.oliver.fancyeconomy.currencies.Currency;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayer;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayerManager;
-import de.oliver.fancyeconomy.currencies.CurrencyRegistry;
+import com.fancyinnovations.fancyeconomy.FancyEconomy;
+import com.fancyinnovations.fancyeconomy.currencies.Currency;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +36,7 @@ public class FancyEconomyPlaceholderExpansion extends PlaceholderExpansion {
             return defaultCurrency.format(currencyPlayer.getBalance(defaultCurrency));
         }
         // %FancyEconomy_balance_raw%
-        else if (params.equalsIgnoreCase("balance_raw")){
+        else if (params.equalsIgnoreCase("balance_raw")) {
             return Currency.DECIMAL_FORMAT_RAW.format(currencyPlayer.getBalance(defaultCurrency));
         }
 
@@ -44,7 +44,7 @@ public class FancyEconomyPlaceholderExpansion extends PlaceholderExpansion {
         for (Currency currency : CurrencyRegistry.CURRENCIES) {
             if (params.equalsIgnoreCase("balance_" + currency.name())) {
                 return currency.format(currencyPlayer.getBalance(currency));
-            } else if (params.equalsIgnoreCase("balance_raw_" + currency.name())){
+            } else if (params.equalsIgnoreCase("balance_raw_" + currency.name())) {
                 return Currency.DECIMAL_FORMAT_RAW.format(currencyPlayer.getBalance(currency));
             }
         }

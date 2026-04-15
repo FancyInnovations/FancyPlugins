@@ -1,4 +1,4 @@
-package de.oliver.fancyeconomy;
+package com.fancyinnovations.fancyeconomy;
 
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;

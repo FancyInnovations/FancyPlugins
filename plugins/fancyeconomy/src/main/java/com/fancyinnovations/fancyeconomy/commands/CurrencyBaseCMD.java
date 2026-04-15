@@ -1,10 +1,10 @@
-package de.oliver.fancyeconomy.commands;
+package com.fancyinnovations.fancyeconomy.commands;
 
-import de.oliver.fancyeconomy.FancyEconomy;
-import de.oliver.fancyeconomy.currencies.BalanceTop;
-import de.oliver.fancyeconomy.currencies.Currency;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayer;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayerManager;
+import com.fancyinnovations.fancyeconomy.FancyEconomy;
+import com.fancyinnovations.fancyeconomy.currencies.BalanceTop;
+import com.fancyinnovations.fancyeconomy.currencies.Currency;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import de.oliver.fancylib.MessageHelper;
 import de.oliver.fancylib.UUIDFetcher;
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public class CurrencyBaseCMD {
                 .replace("currency", currency.name())
                 .send(player);
 
-        if(player.hasPermission("fancyeconomy." + currency.name() + ".admin")){
+        if (player.hasPermission("fancyeconomy." + currency.name() + ".admin")) {
             FancyEconomy.getInstance().getTranslator()
                     .translate("help-set")
                     .replace("currency", currency.name())
@@ -290,7 +290,7 @@ public class CurrencyBaseCMD {
             String targetName,
             double amount
     ) {
-        if(!player.hasPermission("fancyeconomy." + currency.name() + ".admin")){
+        if (!player.hasPermission("fancyeconomy." + currency.name() + ".admin")) {
             FancyEconomy.getInstance().getTranslator()
                     .translate("no-permissions")
                     .send(player);
@@ -327,7 +327,7 @@ public class CurrencyBaseCMD {
             String targetName,
             double amount
     ) {
-        if(!player.hasPermission("fancyeconomy." + currency.name() + ".admin")){
+        if (!player.hasPermission("fancyeconomy." + currency.name() + ".admin")) {
             FancyEconomy.getInstance().getTranslator()
                     .translate("no-permissions")
                     .send(player);
@@ -364,7 +364,7 @@ public class CurrencyBaseCMD {
             String targetName,
             double amount
     ) {
-        if(!player.hasPermission("fancyeconomy." + currency.name() + ".admin")){
+        if (!player.hasPermission("fancyeconomy." + currency.name() + ".admin")) {
             FancyEconomy.getInstance().getTranslator()
                     .translate("no-permissions")
                     .send(player);

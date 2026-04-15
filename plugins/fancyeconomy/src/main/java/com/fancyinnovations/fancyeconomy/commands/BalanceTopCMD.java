@@ -1,7 +1,7 @@
-package de.oliver.fancyeconomy.commands;
+package com.fancyinnovations.fancyeconomy.commands;
 
-import de.oliver.fancyeconomy.FancyEconomy;
-import de.oliver.fancyeconomy.currencies.*;
+import com.fancyinnovations.fancyeconomy.FancyEconomy;
+import com.fancyinnovations.fancyeconomy.currencies.*;
 import de.oliver.fancylib.MessageHelper;
 import dev.jorel.commandapi.annotations.Alias;
 import dev.jorel.commandapi.annotations.Command;

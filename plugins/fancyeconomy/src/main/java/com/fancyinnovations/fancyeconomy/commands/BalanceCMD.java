@@ -1,10 +1,10 @@
-package de.oliver.fancyeconomy.commands;
+package com.fancyinnovations.fancyeconomy.commands;
 
-import de.oliver.fancyeconomy.FancyEconomy;
-import de.oliver.fancyeconomy.currencies.Currency;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayer;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayerManager;
-import de.oliver.fancyeconomy.currencies.CurrencyRegistry;
+import com.fancyinnovations.fancyeconomy.FancyEconomy;
+import com.fancyinnovations.fancyeconomy.currencies.Currency;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
 import de.oliver.fancylib.MessageHelper;
 import de.oliver.fancylib.UUIDFetcher;
 import dev.jorel.commandapi.annotations.Alias;

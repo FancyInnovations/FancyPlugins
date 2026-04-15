@@ -1,4 +1,4 @@
-package de.oliver.fancyeconomy.currencies;
+package com.fancyinnovations.fancyeconomy.currencies;
 
 import java.util.ArrayList;
 import java.util.List;

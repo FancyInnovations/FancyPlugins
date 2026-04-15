@@ -1,8 +1,8 @@
-package de.oliver.fancyeconomy.listeners;
+package com.fancyinnovations.fancyeconomy.listeners;
 
-import de.oliver.fancyeconomy.FancyEconomy;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayer;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayerManager;
+import com.fancyinnovations.fancyeconomy.FancyEconomy;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import de.oliver.fancylib.MessageHelper;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.entity.Player;

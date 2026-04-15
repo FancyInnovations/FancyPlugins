@@ -1,9 +1,9 @@
-package de.oliver.fancyeconomy.integrations;
+package com.fancyinnovations.fancyeconomy.integrations;
 
-import de.oliver.fancyeconomy.FancyEconomy;
-import de.oliver.fancyeconomy.currencies.Currency;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayer;
-import de.oliver.fancyeconomy.currencies.CurrencyPlayerManager;
+import com.fancyinnovations.fancyeconomy.FancyEconomy;
+import com.fancyinnovations.fancyeconomy.currencies.Currency;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
+import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;

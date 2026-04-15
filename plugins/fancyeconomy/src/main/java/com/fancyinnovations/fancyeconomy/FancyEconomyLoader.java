@@ -1,4 +1,4 @@
-package de.oliver.fancyeconomy;
+package com.fancyinnovations.fancyeconomy;
 
 import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
 import io.papermc.paper.plugin.loader.PluginLoader;

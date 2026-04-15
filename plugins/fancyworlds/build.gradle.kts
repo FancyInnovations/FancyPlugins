@@ -51,7 +51,7 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("26.1.1")
+        minecraftVersion("26.1.2")
 
         downloadPlugins {
             modrinth("FancyDialogs", "1.1.2.53")

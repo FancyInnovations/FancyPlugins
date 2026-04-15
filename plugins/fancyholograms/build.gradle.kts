@@ -93,7 +93,7 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.1.1")
+        minecraftVersion("26.1.2")
 
         downloadPlugins {
             url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/3qG7szVk/files/FancyWorlds-0.0.2.jar")

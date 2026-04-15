@@ -160,7 +160,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
 
         npcAdapter = switch (mcVersion) {
             case "26.2-snapshot-1" -> Npc_26_2::new;
-            case "26.1.1" -> Npc_26_1_1::new;
+            case "26.1.2" -> Npc_26_1_1::new;
             case "1.21.11" -> Npc_1_21_11::new;
             case "1.21.9", "1.21.10" -> Npc_1_21_9::new;
             case "1.21.6", "1.21.7", "1.21.8" -> Npc_1_21_6::new;

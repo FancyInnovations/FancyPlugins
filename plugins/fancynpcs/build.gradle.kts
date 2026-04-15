@@ -78,8 +78,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.1.1")
-        serverJar(file("../../libraries/paper-server/paper-bundler-26.1.1-R0.1-SNAPSHOT.jar"))
+        minecraftVersion("26.1.2")
+        serverJar(file("../../libraries/paper-server/paper-bundler-26.1.2-R0.1-SNAPSHOT.jar"))
 
         downloadPlugins {
 //            hangar("ViaVersion", "5.4.0")

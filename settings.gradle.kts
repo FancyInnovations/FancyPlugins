@@ -44,6 +44,8 @@ include(":plugins:fancydialogs:fd-api")
 include(":plugins:fancyworlds")
 include(":plugins:fancyworlds:fw-api")
 
+include(":plugins:fancyeconomy")
+
 include(":libraries:common")
 include(":libraries:jdb")
 include(":libraries:config")

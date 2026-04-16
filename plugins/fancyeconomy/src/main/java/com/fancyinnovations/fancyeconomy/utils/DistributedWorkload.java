@@ -31,10 +31,10 @@ public class DistributedWorkload<T> implements Runnable {
     }
 
     public void addValue(Supplier<T> valueSupplier) {
-        List<Supplier<T>> smallestList = suppliedValueMatrix.get(0);
+        List<Supplier<T>> smallestList = suppliedValueMatrix.getFirst();
 
         for (int i = 1; i < distributionSize; i++) {
-            if (smallestList.size() == 0) {
+            if (smallestList.isEmpty()) {
                 break;
             }
 
@@ -96,9 +96,9 @@ public class DistributedWorkload<T> implements Runnable {
         proceedPosition();
 
         long time = System.currentTimeMillis() - startTime;
-        if (amount > 0) {
+//        if (amount > 0) {
 //            Bukkit.getLogger().info("DistributedWorkload '" + workloadName + "' round " + (currentPosition) + "/" + distributionSize + " with " + amount + " suppliers took " + time + "ms");
-        }
+//        }
     }
 
 

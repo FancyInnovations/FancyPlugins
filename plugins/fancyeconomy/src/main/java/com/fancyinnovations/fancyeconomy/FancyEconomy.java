@@ -97,9 +97,9 @@ public class FancyEconomy extends JavaPlugin {
             }
         });
 
-        if (!ServerSoftware.isPaper()) {
+        if (!ServerSoftware.isPaper() && !ServerSoftware.isFolia()) {
             getLogger().warning("--------------------------------------------------");
-            getLogger().warning("Plugin support Paper and its forks like Purpur or Folia.");
+            getLogger().warning("Plugin support Paper and Folia.");
             getLogger().warning("Because you are using Bukkit or Spigot,");
             getLogger().warning("the plugin might not work correctly.");
             getLogger().warning("--------------------------------------------------");

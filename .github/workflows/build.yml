@@ -48,6 +48,9 @@ jobs:
       - name: Build FancyWorlds
         run: ./gradlew :plugins:fancyworlds:shadowJar
 
+      - name: Build FancyEconomy
+        run: ./gradlew :plugins:fancyeconomy:shadowJar
+
       - name: Build FancyVisuals
         run: ./gradlew :plugins:fancyvisuals:shadowJar
 

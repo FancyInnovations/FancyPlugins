@@ -1,6 +1,5 @@
-package de.oliver.fancysitula.versions.v1_21_9.packets;
+package de.oliver.fancysitula.versions.v26_2.packets;
 
-import de.oliver.fancysitula.versions.v26_1.packets.ClientboundTeleportEntityPacketImpl;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import org.junit.jupiter.api.Test;
 

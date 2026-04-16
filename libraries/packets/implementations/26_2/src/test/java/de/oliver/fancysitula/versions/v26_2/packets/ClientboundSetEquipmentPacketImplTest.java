@@ -1,7 +1,6 @@
-package de.oliver.fancysitula.versions.v1_21_9.packets;
+package de.oliver.fancysitula.versions.v26_2.packets;
 
 import de.oliver.fancysitula.api.utils.FS_EquipmentSlot;
-import de.oliver.fancysitula.versions.v26_1.packets.ClientboundSetEquipmentPacketImpl;
 import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

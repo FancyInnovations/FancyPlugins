@@ -52,6 +52,13 @@ public enum ActionCMD {
             return;
         }
 
+        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
+            translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
+                    .send(sender);
+            return;
+        }
+
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions().getOrDefault(trigger, new ArrayList<>());
 
         npc.getData().addAction(trigger, currentActions.size() + 1, actionType, value);
@@ -59,12 +66,6 @@ public enum ActionCMD {
                 .withPrefix()
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
-
-        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
-            translator.translate("npc_action_add_op_warning")
-                    .withPrefix()
-                    .send(sender);
-        }
     }
 
     @Command("npc action <npc> <trigger> add_before <index> <actionType> [value]")
@@ -95,6 +96,13 @@ public enum ActionCMD {
             return;
         }
 
+        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
+            translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
+                    .send(sender);
+            return;
+        }
+
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions(trigger);
         currentActions.add(Math.clamp(index - 1, 0, currentActions.size()), new NpcAction.NpcActionData(index, actionType, value));
 
@@ -104,12 +112,6 @@ public enum ActionCMD {
                 .replaceStripped("number", String.valueOf(index))
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
-
-        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
-            translator.translate("npc_action_add_op_warning")
-                    .withPrefix()
-                    .send(sender);
-        }
     }
 
     @Command("npc action <npc> <trigger> add_after <index> <actionType> [value]")
@@ -141,6 +143,13 @@ public enum ActionCMD {
             return;
         }
 
+        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
+            translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
+                    .send(sender);
+            return;
+        }
+
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions(trigger);
         currentActions.add(Math.clamp(index, 0, currentActions.size() + 1), new NpcAction.NpcActionData(index, actionType, value));
 
@@ -150,12 +159,6 @@ public enum ActionCMD {
                 .replaceStripped("number", String.valueOf(index))
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
-
-        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
-            translator.translate("npc_action_add_op_warning")
-                    .withPrefix()
-                    .send(sender);
-        }
     }
 
     @Command("npc action <npc> <trigger> set <number> <actionType> [value]")
@@ -186,6 +189,13 @@ public enum ActionCMD {
             return;
         }
 
+        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
+            translator.translate("npc_action_add_op_warning")
+                    .withPrefix()
+                    .send(sender);
+            return;
+        }
+
         List<NpcAction.NpcActionData> currentActions = npc.getData().getActions(trigger);
         if (number < 1 || number > currentActions.size()) {
             translator.translate("npc_action_set_failure")
@@ -202,12 +212,6 @@ public enum ActionCMD {
                 .replaceStripped("number", String.valueOf(number))
                 .replaceStripped("total", String.valueOf(npc.getData().getActions(trigger).size()))
                 .send(sender);
-
-        if (actionType.getName().equalsIgnoreCase("player_command_as_op")) {
-            translator.translate("npc_action_add_op_warning")
-                    .withPrefix()
-                    .send(sender);
-        }
     }
 
     @Command("npc action <npc> <trigger> remove <number>")

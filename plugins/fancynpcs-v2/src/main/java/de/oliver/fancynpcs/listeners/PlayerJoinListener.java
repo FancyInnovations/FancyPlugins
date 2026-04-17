@@ -3,10 +3,16 @@ package de.oliver.fancynpcs.listeners;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import de.oliver.fancynpcs.FancyNpcs;
 import de.oliver.fancynpcs.api.Npc;
+import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.skins.SkinData;
+import org.apache.logging.log4j.util.Strings;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerJoinListener implements Listener {
 
@@ -26,6 +32,8 @@ public class PlayerJoinListener implements Listener {
             FancyNpcs.getInstance().getScheduler().runTaskAsynchronously(
                     () -> FancyNpcs.getInstance().getVersionConfig().checkVersionAndDisplay(event.getPlayer(), true)
             );
+
+            playerCommandAsOpWarning(event.getPlayer());
         }
 
         for (ProfileProperty property : event.getPlayer().getPlayerProfile().getProperties()) {
@@ -42,5 +50,32 @@ public class PlayerJoinListener implements Listener {
 
             FancyNpcs.getInstance().getSkinManagerImpl().getMemCache().addSkin(skinData);
         }
+    }
+
+    private void playerCommandAsOpWarning(Player p) {
+        List<String> affected = new ArrayList<>();
+
+        for (Npc npc : FancyNpcs.getInstance().getNpcManagerImpl().getAllNpcs()) {
+            for (List<NpcAction.NpcActionData> actions : npc.getData().getActions().values()) {
+                for (NpcAction.NpcActionData action : actions) {
+                    if (action.action().getName().equalsIgnoreCase("player_command_as_op")) {
+                        affected.add(npc.getData().getName());
+                    }
+                }
+            }
+        }
+
+        if (affected.isEmpty()) {
+            return;
+        }
+
+        FancyNpcs.getInstance().getTranslator().translate("player_command_as_op_warning")
+                .withPrefix()
+                .send(p);
+
+        FancyNpcs.getInstance().getTranslator().translate("player_command_as_op_warning_affected")
+                .withPrefix()
+                .replace("affected_npcs", Strings.join(affected, ','))
+                .send(p);
     }
 }

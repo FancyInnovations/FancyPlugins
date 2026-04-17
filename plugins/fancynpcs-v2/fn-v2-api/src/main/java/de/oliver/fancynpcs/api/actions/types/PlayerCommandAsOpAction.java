@@ -14,6 +14,7 @@ import org.lushplugins.chatcolorhandler.paper.PaperColor;
 /**
  * PlayerCommandAsOpAction is a npc action that allows a player to execute a command as an operator when triggered by an NPC interaction.
  */
+@Deprecated
 public class PlayerCommandAsOpAction extends NpcAction {
 
     public PlayerCommandAsOpAction() {

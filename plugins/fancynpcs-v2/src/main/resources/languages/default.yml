@@ -65,6 +65,10 @@ messages:
   player_npcs_create_failure_limit_reached: "{errorColor}You have reached maximum number of NPCs."
   player_npcs_create_failure_not_owned_plot: "{errorColor}You can only create NPCs on your plot."
 
+  # Common (Player command as op warning)
+  player_command_as_op_warning: "{warningColor}<b>ATTENTION:</b>{secondaryColor} Hi admin, there are npcs on this server that use the “player_command_as_op” action, which temporarily grants operator status to a player during command execution. This poses a security risk and should not be used. Please change these actions to “player_command” (ASAP) and ensure that the player has necessary permissions to execute the command without operator status. The ”player_command_as_op” action will be removed in a future update."
+  player_command_as_op_warning_affected: "{secondaryColor}The following npcs are affected by this: {warningColor}{affected_npcs}"
+
   # Commands (Common Replies)
   command_missing_permissions: "{errorColor}Insufficient permissions. You cannot use this command."
   command_wrong_usage: "{errorColor}This sub-command does not exist. Use {primaryColor}/npc help{errorColor} to view available commands."
@@ -195,7 +199,7 @@ messages:
   npc_action_add_success: "Action has been added. There are {primaryColor}{total}{secondaryColor} actions in total."
   npc_action_add_before_success: "Action has been added before action {primaryColor}{number}{secondaryColor}. There are {primaryColor}{total}{secondaryColor} actions in total."
   npc_action_add_after_success: "Action has been added after action {primaryColor}{number}{secondaryColor}. There are {primaryColor}{total}{secondaryColor} actions in total."
-  npc_action_add_op_warning: "{warningColor}ATTENTION: {secondaryColor}The “player_command_as_op” action temporarily grants operator status to a player during command execution. This poses a security risk and should only be used with trusted players and when necessary."
+  npc_action_add_op_warning: "{warningColor}<b>ATTENTION:</b> {secondaryColor}The “player_command_as_op” action is deprecated, because it temporarily grants operator status to a player during command execution. This poses a security risk and should not be used. Please use the “player_command” action and ensure that the player has necessary permissions to execute the command without operator status. If you have existing NPCs using the “player_command_as_op” action, change them to “player_command” as soon as possible to avoid potential security vulnerabilities. The ”player_command_as_op” action will be removed in a future update."
   npc_action_set_success: "Action trigger {primaryColor}{number}{secondaryColor} has been updated. There are {primaryColor}{total}{secondaryColor} actions in total."
   npc_action_set_failure: "{errorColor}Action trigger {primaryColor}{number}{errorColor} does not exist."
   npc_action_move_up_success: "Action trigger {primaryColor}{number}{secondaryColor} has been moved up."

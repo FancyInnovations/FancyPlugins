@@ -35,6 +35,7 @@ public class ActionTypeArgument {
                 .getAllActions()
                 .stream()
                 .map(NpcAction::getName)
+                .filter(name -> !name.equalsIgnoreCase("player_command_as_op"))
                 .toList();
     }
 

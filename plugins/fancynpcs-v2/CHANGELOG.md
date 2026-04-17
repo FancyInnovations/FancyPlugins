@@ -5,6 +5,7 @@
 - Internally refactored the action system to support [Kite](https://echonine.dev/kite/getting-started/) scripts ([see tutorial](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/tutorials/action-scripting))
 - Made registry based attributes support identifiers from namespaces other than 'minecraft' ([#203](https://github.com/FancyInnovations/FancyPlugins/pull/203))
 - Fixed some npc visibility issues when using Folia
+- Deprecated the `player_command_as_op` action, please replace it with the `player_command` action and give the player the required permissions to execute the command instead
 
 **Reminder to everyone who uses the FancyNpcs Java API:**
 
@@ -15,4 +16,4 @@ New repo url: `https://repo.fancyinnovations.com/releases`
 
 Both URLs point to the same underlying repo, so nothing should break. You just need to replace the url.
 
-The old repo url will stop working in about **60 days**.
+The old repo url will stop working in about **30 days**.

@@ -11,4 +11,4 @@ New repo url: `https://repo.fancyinnovations.com/releases`
 
 Both URLs point to the same underlying repo, so nothing should break. You just need to replace the url.
 
-The old repo url will stop working in about **60 days**.
+The old repo url will stop working in about **30 days**.

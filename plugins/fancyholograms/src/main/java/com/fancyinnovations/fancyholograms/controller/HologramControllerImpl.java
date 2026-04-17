@@ -6,6 +6,7 @@ import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.util.FoliaSchedulerHelper;
 import com.google.common.cache.CacheBuilder;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
@@ -25,59 +26,50 @@ import java.util.concurrent.TimeUnit;
 
 public class HologramControllerImpl implements HologramController {
 
-    @Override
-    public void showHologramTo(@NotNull final Hologram hologram, @NotNull final Player... players) {
-        for (Player player : players) {
-            boolean isVisible = hologram.isViewer(player);
-            boolean shouldSee = shouldSeeHologram(hologram, player);
+    private void showHologramTo(@NotNull final Hologram hologram, @NotNull final Player player) {
+        boolean isVisible = hologram.isViewer(player);
+        boolean shouldSee = shouldSeeHologram(hologram, player);
 
-            if (isVisible || !shouldSee) {
-                continue;
-            }
+        if (isVisible || !shouldSee) {
+            return;
+        }
 
-            hologram.spawnTo(player);
+        hologram.spawnTo(player);
 
-            if (ServerSoftware.isFolia() && FancyHologramsPlugin.get().getFHConfiguration().isFoliaVisibilityFixEnabled()) {
-                FancyHologramsPlugin.get().getHologramThread().schedule(() -> {
-                    hologram.despawnFrom(player);
-                    hologram.spawnTo(player);
-                }, 100, TimeUnit.MILLISECONDS);
-            }
+        if (ServerSoftware.isFolia() && FancyHologramsPlugin.get().getFHConfiguration().isFoliaVisibilityFixEnabled()) {
+            FancyHologramsPlugin.get().getHologramThread().schedule(() -> {
+                hologram.despawnFrom(player);
+                hologram.spawnTo(player);
+            }, 100, TimeUnit.MILLISECONDS);
         }
     }
 
-    @Override
-    public void hideHologramFrom(@NotNull final Hologram hologram, @NotNull final Player... players) {
-        for (Player player : players) {
-            boolean isVisible = hologram.isViewer(player);
-            boolean shouldSee = shouldSeeHologram(hologram, player);
+    private void hideHologramFrom(@NotNull final Hologram hologram, @NotNull final Player player) {
+        boolean isVisible = hologram.isViewer(player);
+        boolean shouldSee = shouldSeeHologram(hologram, player);
 
-            if (!isVisible || shouldSee) {
-                continue;
-            }
-
-            hologram.despawnFrom(player);
+        if (!isVisible || shouldSee) {
+            return;
         }
+
+        hologram.despawnFrom(player);
     }
 
-    @Override
-    @ApiStatus.Internal
-    public void updateHologramData(@NotNull final Hologram hologram, @NotNull final Player... players) {
-        for (Player player : players) {
+    public void updateHologramData(@NotNull final Hologram hologram, @NotNull final Player player) {
+        FoliaSchedulerHelper.playerScheduler(player, () -> {
             boolean isVisible = hologram.isViewer(player);
             boolean shouldSee = shouldSeeHologram(hologram, player);
 
             if (!isVisible || !shouldSee) {
-                continue;
+                return;
             }
 
             hologram.updateFor(player);
             hologram.getData().getTraitTrait().onUpdate(player);
-        }
+        });
     }
 
-    @Override
-    public boolean shouldSeeHologram(@NotNull final Hologram hologram, @NotNull final Player player) {
+    private boolean shouldSeeHologram(@NotNull final Hologram hologram, @NotNull final Player player) {
         if (!meetsVisibilityConditions(hologram, player)) {
             return false;
         }
@@ -86,9 +78,11 @@ public class HologramControllerImpl implements HologramController {
     }
 
     @Override
-    public void refreshHologram(@NotNull final Hologram hologram, @NotNull final Player... players) {
-        hideHologramFrom(hologram, players);
-        showHologramTo(hologram, players);
+    public void refreshHologram(@NotNull final Hologram hologram, @NotNull final Player player) {
+        FoliaSchedulerHelper.playerScheduler(player, () -> {
+            hideHologramFrom(hologram, player);
+            showHologramTo(hologram, player);
+        });
     }
 
     private boolean meetsVisibilityConditions(@NotNull final Hologram hologram, @NotNull final Player player) {
@@ -114,7 +108,7 @@ public class HologramControllerImpl implements HologramController {
     public void initRefreshTask() {
         FancyHologramsPlugin.get().getHologramThread().scheduleWithFixedDelay(() -> {
             for (Hologram hologram : FancyHologramsPlugin.get().getRegistry().getAll()) {
-                refreshHologram(hologram, Bukkit.getOnlinePlayers().toArray(new Player[0]));
+                refreshHologram(hologram, Bukkit.getOnlinePlayers());
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -124,24 +118,27 @@ public class HologramControllerImpl implements HologramController {
                 .expireAfterAccess(Duration.ofMinutes(5))
                 .<String, Long>build();
 
+        // regular update scheduler
         FancyHologramsPlugin.get().getHologramThread().scheduleWithFixedDelay(() -> {
             final var time = System.currentTimeMillis();
 
             for (final var hologram : FancyHologramsPlugin.get().getRegistry().getAll()) {
                 HologramData data = hologram.getData();
-                if (data.hasChanges()) {
-                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        if (!shouldSeeHologram(hologram, onlinePlayer)) {
-                            continue;
-                        }
 
-                        hologram.updateFor(onlinePlayer);
-                    }
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    if (data.hasChanges()) {
+                        FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
+                            if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                                return;
+                            }
 
-                    data.setHasChanges(false);
+                            hologram.updateFor(onlinePlayer);
+                            data.setHasChanges(false);
 
-                    if (data instanceof TextHologramData) {
-                        updateTimes.put(hologram.getData().getName(), time);
+                            if (data instanceof TextHologramData) {
+                                updateTimes.put(hologram.getData().getName(), time);
+                            }
+                        });
                     }
                 }
             }
@@ -149,6 +146,7 @@ public class HologramControllerImpl implements HologramController {
 
         final int hologramUpdateIntervalMs = FancyHologramsPlugin.get().getFHConfiguration().getHologramUpdateInterval();
 
+        // scheduler for updateTextInterval
         FancyHologramsPlugin.get().getHologramThread().scheduleWithFixedDelay(() -> {
             final var time = System.currentTimeMillis();
 
@@ -166,11 +164,13 @@ public class HologramControllerImpl implements HologramController {
 
                     if (lastUpdate == null || time > (lastUpdate + interval)) {
                         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            if (!shouldSeeHologram(hologram, onlinePlayer)) {
-                                continue;
-                            }
+                            FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
+                                if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                                    return;
+                                }
 
-                            hologram.updateFor(onlinePlayer);
+                                hologram.updateFor(onlinePlayer);
+                            });
                         }
 
                         updateTimes.put(textData.getName(), time);

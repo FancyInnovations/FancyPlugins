@@ -56,6 +56,7 @@ public final class HologramImpl extends Hologram {
 
         // this implies that the world is loaded
         if (!data.getWorldName().equals(player.getLocation().getWorld().getName())) {
+            this.viewers.remove(player.getUniqueId());
             return;
         }
 
@@ -81,6 +82,7 @@ public final class HologramImpl extends Hologram {
         }
 
         if (!data.getWorldName().equals(player.getLocation().getWorld().getName())) {
+            this.viewers.remove(player.getUniqueId());
             return;
         }
 
@@ -102,6 +104,7 @@ public final class HologramImpl extends Hologram {
         }
 
         if (!data.getWorldName().equals(player.getLocation().getWorld().getName())) {
+            this.viewers.remove(player.getUniqueId());
             return;
         }
 

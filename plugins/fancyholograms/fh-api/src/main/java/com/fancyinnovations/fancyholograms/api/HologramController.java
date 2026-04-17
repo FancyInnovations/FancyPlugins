@@ -13,38 +13,19 @@ import java.util.Collection;
 public interface HologramController {
 
     /**
-     * Shows the hologram to the given players if they should see it, and it is not yet shown to them.
+     * Spawns the hologram to the given players if they should see it, and it is not yet shown to them.
+     * Hide the hologram from the players that should not see it.
      */
-    @ApiStatus.Internal
-    void showHologramTo(@NotNull final Hologram hologram, @NotNull final Player... players);
-
-    /**
-     * Hides the hologram from the given players if they should not see it, and it is shown to them.
-     */
-    @ApiStatus.Internal
-    void hideHologramFrom(@NotNull final Hologram hologram, @NotNull final Player... players);
-
-    /**
-     * Returns whether the given player should see the hologram.
-     */
-    @ApiStatus.Internal
-    boolean shouldSeeHologram(@NotNull final Hologram hologram, @NotNull final Player player);
-
-    /**
-     * Updates hologram data such as text, background, etc. for the given players.
-     * Be aware that some data changes require the hologram to be fully respawned.
-     */
-    @ApiStatus.Internal
-    void updateHologramData(@NotNull final Hologram hologram, @NotNull final Player... players);
+    void refreshHologram(@NotNull final Hologram hologram, @NotNull final Player players);
 
     /**
      * Spawns the hologram to the given players if they should see it, and it is not yet shown to them.
      * Hide the hologram from the players that should not see it.
      */
-    void refreshHologram(@NotNull final Hologram hologram, @NotNull final Player... players);
-
     default void refreshHologram(@NotNull final Hologram hologram, @NotNull final Collection<? extends Player> players) {
-        refreshHologram(hologram, players.toArray(new Player[0]));
+        for (Player player : players) {
+            refreshHologram(hologram, player);
+        }
     }
 
 }

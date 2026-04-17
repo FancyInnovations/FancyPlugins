@@ -140,7 +140,7 @@ public final class HologramCMD extends Command {
 
                 if (updated) {
                     if (sender instanceof Player p) {
-                        plugin.getController().updateHologramData(hologram, p);
+                        plugin.getControllerImpl().updateHologramData(hologram, p);
                     }
                 }
 

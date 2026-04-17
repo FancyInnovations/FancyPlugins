@@ -27,6 +27,7 @@ public final class FHConfiguration implements HologramConfiguration {
     public static final String DISABLE_HOLOGRAMS_FOR_OLD_CLIENTS = "experimental_features.disable_holograms_for_old_clients";
     public static final String USE_LAMP_COMMANDS = "experimental_features.use_lamp_commands";
     public static final String ENABLE_FOLIA_VISIBILITY_FIX = "experimental_features.enable_folia_visibility_fix";
+    public static final String ENABLE_ROTATION_IMPROVEMENT = "experimental_features.enable_rotation_improvement";
 
     private static final String CONFIG_FILE_PATH = "plugins/FancyHolograms/config.yml";
     private Config config;
@@ -164,6 +165,15 @@ public final class FHConfiguration implements HologramConfiguration {
                 Boolean.class
         ));
 
+        config.addField(new ConfigField<>(
+                ENABLE_ROTATION_IMPROVEMENT,
+                "When enabled, hologram rotation will be done on display entities instead of the normal entity location",
+                false,
+                false,
+                false,
+                Boolean.class
+        ));
+
         config.reload();
     }
 
@@ -238,6 +248,11 @@ public final class FHConfiguration implements HologramConfiguration {
     @Override
     public boolean isFoliaVisibilityFixEnabled() {
         return config.get(ENABLE_FOLIA_VISIBILITY_FIX);
+    }
+
+    @Override
+    public boolean isHologramRotationImprovementEnabled() {
+        return config.get(ENABLE_ROTATION_IMPROVEMENT);
     }
 
     public int getHologramUpdateInterval() {

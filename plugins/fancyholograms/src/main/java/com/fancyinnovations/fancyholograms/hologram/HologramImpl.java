@@ -148,11 +148,16 @@ public final class HologramImpl extends Hologram {
 
         // location data
         final Location location = data.getLocation();
-        fsDisplay.setLocation(location.clone().setRotation(0, 0));
+        if (FancyHologramsPlugin.get().getFHConfiguration().isHologramRotationImprovementEnabled()) {
+            fsDisplay.setLocation(location.clone().setRotation(0, 0));
 
-        // set yaw and pitch
-        HologramRotation rot = new HologramRotation(location.getYaw() + 180, location.getPitch(), 0);
-        fsDisplay.setLeftRotation(rot.getQuaternion());
+            // set yaw and pitch
+            HologramRotation rot = new HologramRotation(location.getYaw() + 180, location.getPitch(), 0);
+            fsDisplay.setLeftRotation(rot.getQuaternion());
+        } else {
+            fsDisplay.setLocation(location);
+        }
+
 
         if (fsDisplay instanceof FS_TextDisplay textDisplay && data instanceof com.fancyinnovations.fancyholograms.api.data.TextHologramData textData) {
             // line width
@@ -206,6 +211,10 @@ public final class HologramImpl extends Hologram {
             // entity transformation
             fsDisplay.setTranslation(displayData.getTranslation());
             fsDisplay.setScale(displayData.getScale());
+            if (!FancyHologramsPlugin.get().getFHConfiguration().isHologramRotationImprovementEnabled()) {
+                fsDisplay.setLeftRotation(new Quaternionf());
+                fsDisplay.setRightRotation(new Quaternionf());
+            }
 
             // entity shadow
             fsDisplay.setShadowRadius(displayData.getShadowRadius());

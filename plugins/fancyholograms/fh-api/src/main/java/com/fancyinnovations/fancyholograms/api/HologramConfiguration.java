@@ -92,4 +92,9 @@ public interface HologramConfiguration {
      * @return {@code true} if the Folia visibility fix is enabled, {@code false} otherwise.
      */
     boolean isFoliaVisibilityFixEnabled();
+
+    /**
+     * @return Whether the hologram rotation improvement is enabled.
+     */
+    boolean isHologramRotationImprovementEnabled();
 }

@@ -78,13 +78,13 @@ paper {
 tasks {
     runServer {
         minecraftVersion("26.1.2")
-        serverJar(file("../../libraries/paper-server/paper-bundler-26.1.2-R0.1-SNAPSHOT.jar"))
+//        serverJar(file("../../libraries/paper-server/paper-bundler-26.1.2-R0.1-SNAPSHOT.jar"))
 
         downloadPlugins {
-            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/3qG7szVk/files/FancyWorlds-0.0.2.jar")
-            modrinth("FancyNpcs", "2.9.2")
-            modrinth("FancyHolograms", "2.9.1")
-            modrinth("FancyEconomy", "1.0.3+6")
+//            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/A364LHvu/files/FancyWorlds-0.0.4.jar")
+//            modrinth("FancyNpcs", "2.9.2")
+//            modrinth("FancyHolograms", "2.9.1")
+//            modrinth("FancyEconomy", "1.0.3+6")
 
 //            hangar("PlaceholderAPI", "2.11.6")
 //            hangar("ViaVersion", "5.8.1")

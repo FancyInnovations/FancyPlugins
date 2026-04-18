@@ -82,7 +82,7 @@ tasks {
         minecraftVersion("26.1.2")
 
         downloadPlugins {
-//            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/3qG7szVk/files/FancyWorlds-0.0.2.jar")
+//            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/A364LHvu/files/FancyWorlds-0.0.4.jar")
 //            modrinth("FancyNpcs", "2.9.2")
 //            modrinth("FancyDialogs", "1.1.2")
 //            modrinth("FancyEconomy", "1.0.3+6")

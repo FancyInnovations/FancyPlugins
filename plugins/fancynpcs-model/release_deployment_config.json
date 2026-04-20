@@ -1,0 +1,14 @@
+{
+  "project_name": "FancyNpcsModel",
+  "plugin_jar_path": "/plugins/fancynpcs-model/build/libs/FancyNpcsModel-%VERSION%.jar",
+  "changelog_path": "/plugins/fancynpcs-model/CHANGELOG.md",
+  "version_path": "/plugins/fancynpcs-model/VERSION",
+  "fancyspaces": {
+    "space_id": "TODO",
+    "platform": "paper",
+    "channel": "release",
+    "supported_versions": [
+      "26.1.2"
+    ]
+  }
+}

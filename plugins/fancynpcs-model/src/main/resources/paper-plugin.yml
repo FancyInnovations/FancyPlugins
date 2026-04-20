@@ -1,0 +1,21 @@
+name: "FancyNpcsModel"
+main: "com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelPlugin"
+bootstrapper: "com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelBootstrapper"
+loader: "com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelLoader"
+version: "$version"
+description: "Addon for FancyNpcs that adds support for custom models"
+website: "https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs"
+authors:
+  - "OliverSchlueter"
+api-version: "26.1.2"
+load: POSTWORLD
+dependencies:
+  server:
+    FancyNpcs:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    BetterModel:
+      load: BEFORE
+      required: true
+      join-classpath: true

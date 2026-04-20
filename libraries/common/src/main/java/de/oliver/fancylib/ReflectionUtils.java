@@ -1,6 +1,8 @@
 package de.oliver.fancylib;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 public class ReflectionUtils {
 
@@ -49,6 +51,16 @@ public class ReflectionUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Method getMethod(Object instance, String methodName) {
+        try {
+            return instance.getClass().getDeclaredMethod(methodName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

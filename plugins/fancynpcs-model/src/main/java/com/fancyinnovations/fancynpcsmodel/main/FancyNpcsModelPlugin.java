@@ -1,6 +1,7 @@
 package com.fancyinnovations.fancynpcsmodel.main;
 
 import com.fancyinnovations.fancynpcsmodel.config.FancyWorldsConfigImpl;
+import com.fancyinnovations.fancynpcsmodel.fancynpcshook.ModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.metrics.FNMMetrics;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
@@ -14,6 +15,7 @@ import de.oliver.fancylib.translations.TextConfig;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.versionFetcher.FancySpacesVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
+import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -137,6 +139,8 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         registerCommands();
 
         registerListeners();
+
+        FancyNpcsPlugin.get().getAttributeManager().registerAttribute(ModelAttribute.getModelAttribute());
 
         metrics.register();
         metrics.checkIfPluginVersionUpdated();

@@ -1,86 +1,16 @@
 language_name: default
 messages:
-  common:
-    world_not_found: "{errorColor}Could not find world {primaryColor}{worldName}{errorColor}."
-    gamerule_not_found: "{errorColor}Gamerule {primaryColor}{gameruleName}{errorColor} does not exist."
-    world_not_loaded: "{errorColor}World {primaryColor}{worldName}{errorColor} is not loaded. Load it using {primaryColor}/world load {worldName}{errorColor}."
   commands:
-    fancyworlds:
+    fancynpcsmodel:
       version:
-        current_version: "You are running FancyWorlds {primaryColor}v{version}{secondaryColor}."
-        version_outdated: "You are running an outdated version of FancyWorlds. Please update to the latest version {primaryColor}v{latestVersion}{secondaryColor}({downloadURL})."
+        current_version: "You are running FancyNpcsModel {primaryColor}v{version}{secondaryColor}."
+        version_outdated: "You are running an outdated version of FancyNpcsModel. Please update to the latest version {primaryColor}v{latestVersion}{secondaryColor}({downloadURL})."
       config:
         reload:
           confirmation: "{warningColor}Are you sure you want to reload the configuration? This will apply any changes made to the config file."
           success: "Configuration reloaded successfully."
           cancelled: "Configuration reload cancelled."
         show:
-          settings_header: "FancyWorlds settings:"
-          experimental_header: "FancyWorlds experimental features:"
+          settings_header: "FancyNpcsModel settings:"
+          experimental_header: "FancyNpcsModel experimental features:"
           entry: "{secondaryColor} - {path}: {primaryColor}{value} {secondaryColor}(default: {default})"
-    world:
-      help:
-        header: "FancyWorlds Commands (Page {currentPage}/{totalPages}):"
-        entry: "{secondaryColor} - {primaryColor}<hover:show_text:'{description}'>/{usage}</hover>"
-      list:
-        no_worlds: "No worlds are currently linked to FancyWorlds. You can link a world using {primaryColor}/world link <worldName>{secondaryColor}."
-        header: "Linked worlds ({worldCount}):"
-        entry_loaded: "{secondaryColor} - {primaryColor}{worldName} {secondaryColor} <hover:show_text:'Click to view world information'><click:run_command:'/world info {worldName}'>[ɪɴғᴏ]</click></hover> <hover:show_text:'Click to teleport'><click:run_command:'/world teleport {worldName}'>[ᴛᴇʟᴇᴘᴏʀᴛ]</click></hover>"
-        entry_unloaded: "{secondaryColor} - {primaryColor}{worldName} {secondaryColor}(unloaded)"
-      link:
-        success: "Successfully linked world {primaryColor}{worldName}{secondaryColor} to FancyWorlds."
-        already_linked: "{errorColor}World {primaryColor}{worldName}{secondaryColor} is already linked to FancyWorlds."
-      unlink:
-        success: "Successfully unlinked world {primaryColor}{worldName}{secondaryColor} from FancyWorlds."
-      create:
-        success: "Successfully created world {primaryColor}{worldName}{secondaryColor} <click:run_command:'/world teleport {worldName}'><i>(click to teleport)</i></click>."
-        generating: "Generating world {primaryColor}{worldName}{secondaryColor} ..."
-        already_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists."
-        disk_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists on disk. Load it using {primaryColor}/world load {worldName}{errorColor} or choose a different name."
-        failed: "{errorColor}Failed to create world {primaryColor}{worldName}{errorColor}."
-      teleport:
-        success: "Teleported {primaryColor}{playerName}{secondaryColor} to world {primaryColor}{worldName}{secondaryColor}."
-        failed: "{errorColor}Failed to teleport {primaryColor}{playerName}{errorColor} to world {primaryColor}{worldName}{errorColor}."
-        already_in_world: "{errorColor}You are already in world {primaryColor}{worldName}{errorColor}."
-      load:
-        success: "Successfully loaded world {primaryColor}{worldName}{secondaryColor}. <click:run_command:'/world teleport {worldName}'><i>(click to teleport)</i></click>."
-        loading: "Loading world {primaryColor}{worldName}{secondaryColor} ..."
-        already_loaded: "{errorColor}World {primaryColor}{worldName}{errorColor} is already loaded."
-        not_found: "{errorColor}Could not find world {primaryColor}{worldName}{errorColor} on disk."
-        failed: "{errorColor}Failed to load world {primaryColor}{worldName}{errorColor}."
-      unload:
-        confirmation_force: "{warningColor}Are you sure you want to forcefully unload world {primaryColor}{worldName}{warningColor}? This will kick all players out of the world."
-        cancelled: "Unloading of world {primaryColor}{worldName}{secondaryColor} cancelled."
-        success: "Successfully unloaded world {primaryColor}{worldName}{secondaryColor}."
-        not_loaded: "{errorColor}World {primaryColor}{worldName}{errorColor} is not loaded."
-        players_in_world: "{errorColor}Cannot unload world {primaryColor}{worldName}{errorColor} because there are players currently in it."
-        teleporting_players: "Teleporting {playerCount} player(s) from world {primaryColor}{worldName}{errorColor} to {primaryColor}{fallbackWorld}{secondaryColor} ..."
-        failed: "{errorColor}Failed to unload world {primaryColor}{worldName}{errorColor}."
-      delete:
-        world_is_loaded: "{errorColor}Cannot delete world {primaryColor}{worldName}{errorColor} because it is currently loaded. Unload it first using {primaryColor}/world unload {worldName}{errorColor}."
-        confirmation: "{warningColor}Are you sure you want to permanently delete world {primaryColor}{worldName}{warningColor}? This action cannot be undone."
-        cancelled: "Deletion of world {primaryColor}{worldName}{secondaryColor} cancelled."
-        failed: "{errorColor}Failed to delete world {primaryColor}{worldName}{errorColor}."
-        success: "Successfully deleted world {primaryColor}{worldName}{secondaryColor}."
-      gamerules:
-        list:
-          header: "Gamerules for world {primaryColor}{worldName}{secondaryColor}:"
-          entry: "{secondaryColor} - {primaryColor}{gamerule}: {value} {secondaryColor}(default: {defaultValue})"
-        set:
-          success: "Successfully set gamerule {primaryColor}{gameruleName}{secondaryColor} to {primaryColor}{value}{secondaryColor} in world {primaryColor}{worldName}{secondaryColor}."
-          invalid_gamerule: "{errorColor}Gamerule {primaryColor}{gameruleName}{errorColor} does not exist in world {primaryColor}{worldName}{errorColor}."
-          invalid_value: "{errorColor}Invalid value {primaryColor}{value}{errorColor} for gamerrule {primaryColor}{gamerule}{errorColor}. Expected type: {expectedType}."
-          failed: "{errorColor}Failed to set gamerule {primaryColor}{gameruleName}{errorColor} in world {primaryColor}{worldName}{errorColor}."
-      time:
-        current: "Current time in world {primaryColor}{worldName}{secondaryColor} is {primaryColor}{time}{secondaryColor}."
-        set:
-          success: "Successfully set time to {primaryColor}{time}{secondaryColor} in world {primaryColor}{worldName}{secondaryColor}."
-          invalid_time: "{errorColor}Invalid time {primaryColor}{time}{errorColor}. Expected format: number or <day|noon|night|midnight>."
-      seed:
-        result: "Seed for world {primaryColor}{worldName}{secondaryColor} is {primaryColor}{seed}{secondaryColor}. <click:copy_to_clipboard:'{seed}'><i>(click to copy)</i></click>"
-      set_spawn:
-        success: "Successfully set spawn point for world {primaryColor}{worldName}{secondaryColor} to {location}."
-      difficulty:
-        current: "Current difficulty in world {primaryColor}{worldName}{secondaryColor} is {primaryColor}{difficulty}{secondaryColor}."
-        set:
-          success: "Successfully set difficulty to {primaryColor}{difficulty}{secondaryColor} in world {primaryColor}{worldName}{secondaryColor}."

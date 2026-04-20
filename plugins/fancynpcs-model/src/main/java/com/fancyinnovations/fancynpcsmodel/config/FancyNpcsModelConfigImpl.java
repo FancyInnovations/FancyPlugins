@@ -4,7 +4,7 @@ import com.fancyinnovations.config.Config;
 import com.fancyinnovations.config.ConfigField;
 import com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelPlugin;
 
-public class FancyWorldsConfigImpl {
+public class FancyNpcsModelConfigImpl {
 
     public static final String LOG_LEVEL_PATH = "settings.logging.level";
     public static final String MUTE_VERSION_NOTIFICATION_PATH = "settings.logging.version_notification";

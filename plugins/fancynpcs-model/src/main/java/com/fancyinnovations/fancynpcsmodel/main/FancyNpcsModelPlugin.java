@@ -1,6 +1,8 @@
 package com.fancyinnovations.fancynpcsmodel.main;
 
-import com.fancyinnovations.fancynpcsmodel.config.FancyWorldsConfigImpl;
+import com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel.FNMConfigCMD;
+import com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel.FNMVersionCMD;
+import com.fancyinnovations.fancynpcsmodel.config.FancyNpcsModelConfigImpl;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.ModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcInteractListener;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcRemoveListener;
@@ -39,7 +41,7 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
     private static FancyNpcsModelPlugin INSTANCE;
     private final ExtendedFancyLogger fancyLogger;
 
-    private FancyWorldsConfigImpl fancyNpcsModelConfig;
+    private FancyNpcsModelConfigImpl fancyNpcsModelConfig;
     private VersionFetcher versionFetcher;
     private VersionConfig versionConfig;
     private Translator translator;
@@ -77,7 +79,7 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         fancyLogger.info("Loading FancyNpcsModel version %s...".formatted(getDescription().getVersion()));
 
         // Config
-        fancyNpcsModelConfig = new FancyWorldsConfigImpl();
+        fancyNpcsModelConfig = new FancyNpcsModelConfigImpl();
         fancyNpcsModelConfig.init();
         fancyNpcsModelConfig.reload();
 
@@ -181,8 +183,8 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         Lamp<BukkitCommandActor> lamp = lampBuilder.build();
 
         // fancynpcsmodel commands
-//        lamp.register(FWVersionCMD.INSTANCE);
-//        lamp.register(FWConfigCMD.INSTANCE);
+        lamp.register(FNMConfigCMD.INSTANCE);
+        lamp.register(FNMVersionCMD.INSTANCE);
     }
 
     private void registerListeners() {
@@ -231,6 +233,10 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
 
     public ExtendedFancyLogger getFancyLogger() {
         return fancyLogger;
+    }
+
+    public FancyNpcsModelConfigImpl getFancyNpcsModelConfig() {
+        return fancyNpcsModelConfig;
     }
 
     public VersionFetcher getVersionFetcher() {

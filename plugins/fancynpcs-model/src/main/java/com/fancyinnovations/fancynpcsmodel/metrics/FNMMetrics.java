@@ -23,7 +23,7 @@ public class FNMMetrics {
     }
 
     public void register() {
-        fancyAnalytics = new FancyAnalyticsAPI("TODO", "TODO");
+        fancyAnalytics = new FancyAnalyticsAPI("ddb636b6-25b5-4d44-abfc-3bb0dabd2b97", "-J4fYDk1Y2RhZDI3ZWRmZDRkYmT0usLA");
         fancyAnalytics.getConfig().setDisableLogging(true);
 
         fancyAnalytics.registerMinecraftPluginMetrics(FancyNpcsModelPlugin.get());

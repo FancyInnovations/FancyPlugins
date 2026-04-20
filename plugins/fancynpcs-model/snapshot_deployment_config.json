@@ -10,5 +10,25 @@
     "supported_versions": [
       "26.1.2"
     ]
+  },
+  "modrinth": {
+    "project_id": "E2QZdSBL",
+    "supported_versions": [
+      "26.1.2"
+    ],
+    "channel": "alpha",
+    "loaders": [
+      "paper",
+      "folia"
+    ],
+    "featured": false
+  },
+  "hangar": {
+    "author": "oliver",
+    "project_id": "FancyNpcsModel",
+    "supported_versions": [
+      "26.1.2"
+    ],
+    "channel": "Alpha"
   }
 }

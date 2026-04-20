@@ -40,7 +40,7 @@ tasks {
 
         downloadPlugins {
             modrinth("FancyNpcs", "2.10.0")
-            modrinth("BetterModel", "3.0.1")
+            modrinth("BetterModel", "ftwmlNNd") // 3.0.1
 //            modrinth("FancyDialogs", "1.1.2.53")
 //            modrinth("FancyHolograms", "2.9.1")
 //            modrinth("FancyDialogs", "1.1.2")

@@ -2,6 +2,8 @@ package com.fancyinnovations.fancynpcsmodel.main;
 
 import com.fancyinnovations.fancynpcsmodel.config.FancyWorldsConfigImpl;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.ModelAttribute;
+import com.fancyinnovations.fancynpcsmodel.listeners.NpcInteractListener;
+import com.fancyinnovations.fancynpcsmodel.listeners.NpcRemoveListener;
 import com.fancyinnovations.fancynpcsmodel.metrics.FNMMetrics;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
@@ -16,6 +18,7 @@ import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.versionFetcher.FancySpacesVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
+import de.oliver.fancynpcs.api.Npc;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -152,6 +155,12 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
     public void onDisable() {
         fancyLogger.info("Disabling FancyNpcsModel version %s...".formatted(getDescription().getVersion()));
 
+        for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
+            if (ModelAttribute.hasAttribute(npc)) {
+                ModelAttribute.closeAllTrackers(npc);
+            }
+        }
+
         fancyLogger.info("Successfully disabled FancyNpcsModel version %s".formatted(getDescription().getVersion()));
     }
 
@@ -177,8 +186,8 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
     }
 
     private void registerListeners() {
-//        Bukkit.getPluginManager().registerEvents(new WorldLoadListener(), this);
-//        Bukkit.getPluginManager().registerEvents(new WorldUnloadListener(), this);
+        Bukkit.getPluginManager().registerEvents(new NpcInteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new NpcRemoveListener(), this);
     }
 
     public void registerTranslator() {

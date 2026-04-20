@@ -8,8 +8,10 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import kr.toxicity.model.api.BetterModel;
 import kr.toxicity.model.api.bukkit.platform.BukkitAdapter;
-import kr.toxicity.model.api.bukkit.platform.BukkitPlayer;
-import kr.toxicity.model.api.data.renderer.ModelRenderer;
+import kr.toxicity.model.api.event.hitbox.HitBoxEvent;
+import kr.toxicity.model.api.event.hitbox.HitBoxInteractEvent;
+import kr.toxicity.model.api.nms.HitBox;
+import kr.toxicity.model.api.nms.HitBoxListener;
 import kr.toxicity.model.api.tracker.EntityHideOption;
 import kr.toxicity.model.api.tracker.EntityTracker;
 import kr.toxicity.model.api.tracker.EntityTrackerRegistry;
@@ -19,11 +21,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class ModelAttribute {
 
@@ -46,11 +48,7 @@ public class ModelAttribute {
         bukkitEntity.customName(Component.empty());
 
         // Close all existing trackers
-        BetterModel.registry(BukkitAdapter.adapt(bukkitEntity)).ifPresent(reg -> {
-            for (EntityTracker tracker : reg.trackers()) {
-                tracker.close();
-            }
-        });
+        closeAllTrackers(bukkitEntity);
 
         // Gets or creates entity tracker
         EntityTracker tracker = BetterModel.model(modelName)
@@ -64,6 +62,10 @@ public class ModelAttribute {
             );
             return;
         }
+
+        tracker.listenHitBox(HitBoxInteractEvent.class, event -> {
+            System.out.println("HitBox Interaction");
+        });
 
         EntityTrackerRegistry registry = tracker.registry();
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -91,16 +93,33 @@ public class ModelAttribute {
         }
     }
 
+    public static void closeAllTrackers(Npc npc) {
+        Entity bukkitEntity = getBukkitEntity(npc);
+        if (bukkitEntity == null) {
+            return;
+        }
+
+        closeAllTrackers(bukkitEntity);
+    }
+
+    private static void closeAllTrackers(Entity bukkitEntity) {
+        BetterModel.registry(BukkitAdapter.adapt(bukkitEntity)).ifPresent(reg -> {
+            for (EntityTracker tracker : reg.trackers()) {
+                tracker.close();
+            }
+        });
+    }
+
     /**
-     * @return The model name of the given NPC, or null if it doesn't have one
+     * @return whether the given NPC has the model attribute
      */
-    public static String getModelFromNpc(Npc npc) {
+    public static boolean hasAttribute(Npc npc) {
         for (Map.Entry<NpcAttribute, String> entry : npc.getData().getAttributes().entrySet()) {
             if (entry.getKey().getName().equalsIgnoreCase(ATTRIBUTE_NAME)) {
-                return entry.getValue();
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
 }

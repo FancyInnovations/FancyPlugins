@@ -8,20 +8,14 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import kr.toxicity.model.api.BetterModel;
 import kr.toxicity.model.api.bukkit.platform.BukkitAdapter;
-import kr.toxicity.model.api.event.hitbox.HitBoxEvent;
 import kr.toxicity.model.api.event.hitbox.HitBoxInteractEvent;
-import kr.toxicity.model.api.nms.HitBox;
-import kr.toxicity.model.api.nms.HitBoxListener;
-import kr.toxicity.model.api.tracker.EntityHideOption;
 import kr.toxicity.model.api.tracker.EntityTracker;
 import kr.toxicity.model.api.tracker.EntityTrackerRegistry;
-import kr.toxicity.model.api.tracker.TrackerModifier;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -34,7 +28,7 @@ public class ModelAttribute {
     public static NpcAttribute getModelAttribute() {
         return new NpcAttribute(
                 ATTRIBUTE_NAME,
-                List.of(),
+                List.of(), // TODO suggest a list of all loaded models -> requires this to be a Supplier
                 List.of(EntityType.PLAYER),
                 ModelAttribute::setModel
         );
@@ -65,6 +59,7 @@ public class ModelAttribute {
 
         tracker.listenHitBox(HitBoxInteractEvent.class, event -> {
             System.out.println("HitBox Interaction");
+            // TODO: run npc actions
         });
 
         EntityTrackerRegistry registry = tracker.registry();
@@ -74,6 +69,7 @@ public class ModelAttribute {
     }
 
     private static Entity getBukkitEntity(Npc npc) {
+        // get the nms entity object from the Npc implementation classes
         Object nmsEntity = ReflectionUtils.getValue(npc, "npc");
         if (nmsEntity == null) {
             // TODO: create fake nms / bukkit entity object once FancyNpcs itself doesn't store the entity object anymore (when migrated to FancySitula)
@@ -81,6 +77,7 @@ public class ModelAttribute {
             return null;
         }
 
+        // call the Entity#getBukkitEntity method to get the bukkit entity object
         try {
             return (Entity) ReflectionUtils.getMethod(nmsEntity, "getBukkitEntity").invoke(nmsEntity);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -93,6 +90,10 @@ public class ModelAttribute {
         }
     }
 
+    /**
+     * Closes all model trackers for the given NPC's entity.
+     * This is necessary to prevent old trackers still existing in the world.
+     */
     public static void closeAllTrackers(Npc npc) {
         Entity bukkitEntity = getBukkitEntity(npc);
         if (bukkitEntity == null) {

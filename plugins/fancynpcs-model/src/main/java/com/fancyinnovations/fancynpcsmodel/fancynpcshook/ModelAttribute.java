@@ -44,6 +44,11 @@ public class ModelAttribute {
         // Close all existing trackers
         closeAllTrackers(bukkitEntity);
 
+        // remove model if model name is "none"
+        if (modelName.equalsIgnoreCase("none")) {
+            return;
+        }
+
         // Gets or creates entity tracker
         EntityTracker tracker = BetterModel.model(modelName)
                 .map(r -> r.getOrCreate(BukkitAdapter.adapt(bukkitEntity)))

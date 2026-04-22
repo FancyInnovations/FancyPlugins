@@ -9,7 +9,6 @@ import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
 import kr.toxicity.model.api.BetterModel;
 import kr.toxicity.model.api.bukkit.platform.BukkitAdapter;
-import kr.toxicity.model.api.bukkit.platform.BukkitPlayer;
 import kr.toxicity.model.api.event.hitbox.HitBoxDamagedEvent;
 import kr.toxicity.model.api.event.hitbox.HitBoxInteractAtEvent;
 import kr.toxicity.model.api.platform.PlatformEntity;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 public class ModelAttribute {
 
-    private static final String ATTRIBUTE_NAME = "custom_model";
+    public static final String ATTRIBUTE_NAME = "custom_model";
 
     public static NpcAttribute getModelAttribute() {
         return new NpcAttribute(
@@ -50,8 +49,8 @@ public class ModelAttribute {
         // Close all existing trackers
         closeAllTrackers(bukkitEntity);
 
-        // remove model if model name is "none"
-        if (modelName.equalsIgnoreCase("none")) {
+        // remove model if model name is "@none"
+        if (modelName.equalsIgnoreCase("@none")) {
             return;
         }
 

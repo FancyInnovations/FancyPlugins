@@ -3,10 +3,9 @@ package com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel;
 import com.fancyinnovations.config.ConfigField;
 import com.fancyinnovations.fancynpcsmodel.utils.FancyContext;
 import de.oliver.fancyanalytics.logger.LogLevel;
-import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.Description;
-import revxrsal.commands.bukkit.actor.BukkitCommandActor;
-import revxrsal.commands.bukkit.annotation.CommandPermission;
+import org.bukkit.command.CommandSender;
+import org.incendo.cloud.annotations.Command;
+import org.incendo.cloud.annotations.Permission;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -15,11 +14,13 @@ public class FNMConfigCMD extends FancyContext {
 
     public static final FNMConfigCMD INSTANCE = new FNMConfigCMD();
 
+    private FNMConfigCMD() {
+    }
+
     @Command("fancynpcsmodel config reload")
-    @Description("Reloads the config of FancyNpcsModel.")
-    @CommandPermission("fancynpcsmodel.commands.fancynpcsmodel.config.reload")
+    @Permission("fancynpcsmodel.commands.fancynpcsmodel.config.reload")
     public void configReload(
-            final BukkitCommandActor actor
+            CommandSender sender
     ) {
         config.reload();
         logger.setCurrentLevel(LogLevel.valueOf(config.getLogLevel()));
@@ -27,14 +28,13 @@ public class FNMConfigCMD extends FancyContext {
 
         translator.translate("commands.fancynpcsmodel.config.reload.success")
                 .withPrefix()
-                .send(actor.sender());
+                .send(sender);
     }
 
     @Command("fancynpcsmodel config show")
-    @Description("Shows the current configuration")
-    @CommandPermission("fancynpcsmodel.commands.fancynpcsmodel.config.show")
+    @Permission("fancynpcsmodel.commands.fancynpcsmodel.config.show")
     public void show(
-            final BukkitCommandActor actor
+            CommandSender sender
     ) {
         Collection<ConfigField<?>> fields = config.getConfig().getFields().values()
                 .stream()
@@ -43,7 +43,7 @@ public class FNMConfigCMD extends FancyContext {
 
         translator.translate("commands.fancynpcsmodel.config.show.settings_header")
                 .withPrefix()
-                .send(actor.sender());
+                .send(sender);
 
         for (ConfigField<?> field : fields) {
             if (!field.path().startsWith("settings.")) {
@@ -54,14 +54,14 @@ public class FNMConfigCMD extends FancyContext {
                     .replace("path", field.path().substring("settings.".length()))
                     .replace("value", config.getConfig().get(field.path()).toString())
                     .replace("default", String.valueOf(field.defaultValue()))
-                    .send(actor.sender());
+                    .send(sender);
         }
 
-        actor.sender().sendMessage(" ");
+        sender.sendMessage(" ");
 
         translator.translate("commands.fancynpcsmodel.config.show.experimental_header")
                 .withPrefix()
-                .send(actor.sender());
+                .send(sender);
 
         for (ConfigField<?> field : fields) {
             if (!field.path().startsWith("experimental_features.")) {
@@ -72,7 +72,7 @@ public class FNMConfigCMD extends FancyContext {
                     .replace("path", field.path().substring("experimental_features.".length()))
                     .replace("value", config.getConfig().get(field.path()).toString())
                     .replace("default", String.valueOf(field.defaultValue()))
-                    .send(actor.sender());
+                    .send(sender);
         }
 
     }

@@ -2,6 +2,8 @@ package com.fancyinnovations.fancynpcsmodel.main;
 
 import com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel.FNMConfigCMD;
 import com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel.FNMVersionCMD;
+import com.fancyinnovations.fancynpcsmodel.commands.npc.CustomModelCMD;
+import com.fancyinnovations.fancynpcsmodel.commands.npc.PlayAnimationCMD;
 import com.fancyinnovations.fancynpcsmodel.config.FancyNpcsModelConfigImpl;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.ModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationLoopAction;
@@ -26,9 +28,6 @@ import de.oliver.fancynpcs.api.Npc;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import revxrsal.commands.Lamp;
-import revxrsal.commands.bukkit.BukkitLamp;
-import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -169,24 +168,13 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        Lamp.Builder<BukkitCommandActor> lampBuilder = BukkitLamp
-                .builder(this);
-
-        // parameter types
-//        lampBuilder.parameterTypes(builder -> {
-//            builder.addParameterType(FWorld.class, FWorldCommandType.INSTANCE);
-//            builder.addParameterType(GameRule.class, GameruleCommandType.INSTANCE);
-//        });
-
-        // exception handlers
-//        lampBuilder.exceptionHandler(FWorldCommandType.INSTANCE);
-//        lampBuilder.exceptionHandler(GameruleCommandType.INSTANCE);
-
-        Lamp<BukkitCommandActor> lamp = lampBuilder.build();
-
         // fancynpcsmodel commands
-        lamp.register(FNMConfigCMD.INSTANCE);
-        lamp.register(FNMVersionCMD.INSTANCE);
+        FancyNpcsPlugin.get().registerCommand(FNMConfigCMD.INSTANCE);
+        FancyNpcsPlugin.get().registerCommand(FNMVersionCMD.INSTANCE);
+
+        // npc commands
+        FancyNpcsPlugin.get().registerCommand(CustomModelCMD.INSTANCE);
+        FancyNpcsPlugin.get().registerCommand(PlayAnimationCMD.INSTANCE);
     }
 
     private void registerListeners() {

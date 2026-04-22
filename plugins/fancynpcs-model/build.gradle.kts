@@ -27,9 +27,10 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
 
-    compileOnly("org.lushplugins.chatcolorhandler:paper:8.1.0")
-    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.16")
-    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.16")
+    compileOnly("org.incendo:cloud-core:2.0.0")
+    compileOnly("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
+    compileOnly("org.incendo:cloud-annotations:2.0.0")
+    annotationProcessor("org.incendo:cloud-annotations:2.0.0")
 
     implementation("org.jetbrains:annotations:26.1.0")
 }
@@ -39,7 +40,7 @@ tasks {
         minecraftVersion("26.1.2")
 
         downloadPlugins {
-            modrinth("FancyNpcs", "2.10.0.356")
+            //modrinth("FancyNpcs", "2.10.0.356")
             modrinth("BetterModel", "6Xn5O444") // 3.0.2-SNAPSHOT-491
 //            modrinth("FancyDialogs", "1.1.2.53")
 //            modrinth("FancyHolograms", "2.9.1")
@@ -53,6 +54,7 @@ tasks {
     }
 
     shadowJar {
+        relocate("org.incendo", "de.oliver")
         archiveClassifier.set("")
         archiveBaseName.set("FancyNpcsModel")
     }

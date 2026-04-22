@@ -1,5 +1,7 @@
 language_name: default
 messages:
+  common:
+    model_not_found: "{errorColor}Could not find model with name {primaryColor}{model}{secondaryColor}."
   commands:
     fancynpcsmodel:
       version:
@@ -14,3 +16,11 @@ messages:
           settings_header: "FancyNpcsModel settings:"
           experimental_header: "FancyNpcsModel experimental features:"
           entry: "{secondaryColor} - {path}: {primaryColor}{value} {secondaryColor}(default: {default})"
+    npc:
+      custom_model:
+        applied: "Custom model {primaryColor}{model}{secondaryColor} applied to NPC {primaryColor}{npc}{secondaryColor}."
+        removed: "Custom model removed from NPC {primaryColor}{npc}{secondaryColor}."
+      play_animation:
+        no_model_assigned: "{errorColor}NPC {primaryColor}{npc}{secondaryColor} does not have a custom model assigned."
+        failed: "{errorColor}Failed to play animation {primaryColor}{animation}{errorColor} on NPC {primaryColor}{npc}{secondaryColor}."
+        playing: "Playing animation {primaryColor}{animation}{secondaryColor} on NPC {primaryColor}{npc}{secondaryColor}."

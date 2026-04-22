@@ -2,6 +2,7 @@ package de.oliver.fancynpcs.api;
 
 import org.bukkit.entity.EntityType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -60,8 +61,14 @@ public class NpcAttribute {
         return name;
     }
 
+    /**
+     * @return A list of possible values for this attribute. This list is a combination of the static possible values and the values provided by the supplier.
+     */
     public List<String> getPossibleValues() {
-        return possibleValues;
+        List<String> values = new ArrayList<>();
+        values.addAll(possibleValuesSupplier.get());
+        values.addAll(possibleValues);
+        return values;
     }
 
     public List<EntityType> getTypes() {

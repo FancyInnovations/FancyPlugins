@@ -18,8 +18,7 @@
     ],
     "channel": "release",
     "loaders": [
-      "paper",
-      "folia"
+      "paper"
     ],
     "featured": true
   },

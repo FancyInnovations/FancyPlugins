@@ -28,7 +28,7 @@ public class ModelAttribute {
     public static NpcAttribute getModelAttribute() {
         return new NpcAttribute(
                 ATTRIBUTE_NAME,
-                List.of(), // TODO suggest a list of all loaded models -> requires this to be a Supplier
+                () -> BetterModel.modelKeys().stream().toList(),
                 List.of(EntityType.PLAYER),
                 ModelAttribute::setModel
         );

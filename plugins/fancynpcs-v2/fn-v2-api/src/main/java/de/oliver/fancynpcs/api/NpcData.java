@@ -387,6 +387,11 @@ public class NpcData {
         isDirty = true;
     }
 
+    public void removeAttribute(NpcAttribute attribute) {
+        attributes.remove(attribute);
+        isDirty = true;
+    }
+
     public void clearAttributes() {
         attributes.clear();
         isDirty = true;

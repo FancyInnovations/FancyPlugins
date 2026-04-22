@@ -4,6 +4,8 @@ import com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel.FNMConfigCMD;
 import com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel.FNMVersionCMD;
 import com.fancyinnovations.fancynpcsmodel.config.FancyNpcsModelConfigImpl;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.ModelAttribute;
+import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationLoopAction;
+import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationOnceAction;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcInteractListener;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcRemoveListener;
 import com.fancyinnovations.fancynpcsmodel.metrics.FNMMetrics;
@@ -102,8 +104,6 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         // Metrics
         metrics = new FNMMetrics();
 
-        // Services
-
         fancyLogger.info("Successfully loaded FancyNpcsModel version %s".formatted(getDescription().getVersion()));
     }
 
@@ -146,6 +146,8 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         registerListeners();
 
         FancyNpcsPlugin.get().getAttributeManager().registerAttribute(ModelAttribute.getModelAttribute());
+        FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationOnceAction());
+        FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationLoopAction());
 
         metrics.register();
         metrics.checkIfPluginVersionUpdated();

@@ -22,8 +22,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ModelAttribute {
 
@@ -144,5 +146,20 @@ public class ModelAttribute {
         }
 
         return false;
+    }
+
+    public static EntityTracker getEntityTracker(Npc npc) {
+        Entity bukkitEntity = getBukkitEntity(npc);
+        if (bukkitEntity == null) {
+            return null;
+        }
+
+        Optional<EntityTrackerRegistry> trackersOpt = BetterModel.registry(BukkitAdapter.adapt(bukkitEntity));
+        if (trackersOpt.isEmpty()) return null;
+
+        Collection<EntityTracker> trackers = trackersOpt.get().trackers();
+        if (trackers.isEmpty()) return null;
+
+        return trackers.iterator().next();
     }
 }

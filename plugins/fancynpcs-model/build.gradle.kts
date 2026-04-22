@@ -39,8 +39,8 @@ tasks {
         minecraftVersion("26.1.2")
 
         downloadPlugins {
-            modrinth("FancyNpcs", "2.10.0")
-            modrinth("BetterModel", "ftwmlNNd") // 3.0.1
+            modrinth("FancyNpcs", "2.10.0.356")
+            modrinth("BetterModel", "6Xn5O444") // 3.0.2-SNAPSHOT-491
 //            modrinth("FancyDialogs", "1.1.2.53")
 //            modrinth("FancyHolograms", "2.9.1")
 //            modrinth("FancyDialogs", "1.1.2")

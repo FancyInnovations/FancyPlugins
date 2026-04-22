@@ -6,9 +6,13 @@ import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.ReflectionUtils;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
+import de.oliver.fancynpcs.api.actions.ActionTrigger;
 import kr.toxicity.model.api.BetterModel;
 import kr.toxicity.model.api.bukkit.platform.BukkitAdapter;
-import kr.toxicity.model.api.event.hitbox.HitBoxInteractEvent;
+import kr.toxicity.model.api.bukkit.platform.BukkitPlayer;
+import kr.toxicity.model.api.event.hitbox.HitBoxDamagedEvent;
+import kr.toxicity.model.api.event.hitbox.HitBoxInteractAtEvent;
+import kr.toxicity.model.api.platform.PlatformEntity;
 import kr.toxicity.model.api.tracker.EntityTracker;
 import kr.toxicity.model.api.tracker.EntityTrackerRegistry;
 import net.kyori.adventure.text.Component;
@@ -62,9 +66,22 @@ public class ModelAttribute {
             return;
         }
 
-        tracker.listenHitBox(HitBoxInteractEvent.class, event -> {
-            System.out.println("HitBox Interaction");
-            // TODO: run npc actions
+        // Right click on hitbox
+        tracker.listenHitBox(HitBoxInteractAtEvent.class, event -> {
+            Player player = Bukkit.getPlayer(event.getWho().uuid());
+            if (player == null) return;
+
+            npc.interact(player, ActionTrigger.RIGHT_CLICK);
+        });
+
+        // Left click on hitbox
+        tracker.listenHitBox(HitBoxDamagedEvent.class, event -> {
+            PlatformEntity causingEntity = event.getSource().getCausingEntity();
+            if (causingEntity == null) return;
+            Player player = Bukkit.getPlayer(causingEntity.uuid());
+            if (player == null) return;
+
+            npc.interact(player, ActionTrigger.LEFT_CLICK);
         });
 
         EntityTrackerRegistry registry = tracker.registry();

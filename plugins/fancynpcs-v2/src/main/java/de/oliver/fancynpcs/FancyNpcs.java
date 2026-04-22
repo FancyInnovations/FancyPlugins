@@ -581,6 +581,13 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         return translator;
     }
 
+    @Override
+    public void registerCommand(Object command) {
+        if (commandManager != null) {
+            commandManager.getAnnotationParser().parse(command);
+        }
+    }
+
     public TextConfig getTextConfig() {
         return textConfig;
     }

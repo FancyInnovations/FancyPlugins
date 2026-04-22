@@ -56,4 +56,11 @@ public interface FancyNpcsPlugin {
     SkinManager getSkinManager();
 
     Translator getTranslator();
+
+    /**
+     * Registers a command to FancyNpcs' command manager / annotation parser.
+     * Warning: Do not use this method, it is for internal use only.
+     */
+    @ApiStatus.Internal
+    void registerCommand(Object command);
 }

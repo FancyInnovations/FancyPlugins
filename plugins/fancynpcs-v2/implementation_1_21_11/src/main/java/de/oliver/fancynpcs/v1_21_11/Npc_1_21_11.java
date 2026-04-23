@@ -347,13 +347,24 @@ public class Npc_1_21_11 extends Npc {
         }
 
         if (npc instanceof LivingEntity) {
-            Holder.Reference<Attribute> scaleAttribute = BuiltInRegistries.ATTRIBUTE.get(Identifier.parse("minecraft:scale")).get();
-            AttributeInstance attributeInstance = new AttributeInstance(scaleAttribute, (a) -> {
-            });
-            attributeInstance.setBaseValue(data.getScale());
+            NpcAttribute customModelAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "custom_model");
+            boolean hasCustomModel = data.getAttributes().containsKey(customModelAttr);
 
-            ClientboundUpdateAttributesPacket updateAttributesPacket = new ClientboundUpdateAttributesPacket(npc.getId(), List.of(attributeInstance));
-            packets.add(updateAttributesPacket);
+            List<AttributeInstance> changedAttributes = new ArrayList<>();
+
+            // npcs with custom models (by FancyNpcsModel) should not set the scale attribute on base entity
+            if (!hasCustomModel) {
+                Holder.Reference<Attribute> scaleAttribute = BuiltInRegistries.ATTRIBUTE.get(Identifier.parse("minecraft:scale")).get();
+                AttributeInstance attributeInstance = new AttributeInstance(scaleAttribute, (_) -> {
+                });
+                attributeInstance.setBaseValue(data.getScale());
+                changedAttributes.add(attributeInstance);
+            }
+
+            if (!changedAttributes.isEmpty()) {
+                ClientboundUpdateAttributesPacket updateAttributesPacket = new ClientboundUpdateAttributesPacket(npc.getId(), changedAttributes);
+                packets.add(updateAttributesPacket);
+            }
         }
 
         ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);

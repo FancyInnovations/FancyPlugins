@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ModelAttribute {
+public class CustomModelAttribute {
 
     public static final String ATTRIBUTE_NAME = "custom_model";
 
@@ -35,7 +35,7 @@ public class ModelAttribute {
                 ATTRIBUTE_NAME,
                 () -> BetterModel.modelKeys().stream().toList(),
                 List.of(EntityType.PLAYER),
-                ModelAttribute::setModel
+                CustomModelAttribute::setModel
         );
     }
 
@@ -65,6 +65,11 @@ public class ModelAttribute {
                     StringProperty.of("npc_name", npc.getData().getName())
             );
             return;
+        }
+
+        // Scale
+        if (npc.getData().getScale() != 1) {
+            tracker.scaler(tracker.scaler().multiply(npc.getData().getScale()));
         }
 
         // Right click on hitbox

@@ -25,7 +25,7 @@ public class PlayAnimationOnceAction extends NpcAction {
             return;
         }
 
-        if (!ModelAttribute.hasAttribute(context.getNpc())) {
+        if (!CustomModelAttribute.hasAttribute(context.getNpc())) {
             FancyNpcsModelPlugin.get().getFancyLogger().error(
                     "Trying to execute the play_animation_once action on a npc without the custom_model attribute.",
                     StringProperty.of("npc", context.getNpc().getData().getName())
@@ -33,7 +33,7 @@ public class PlayAnimationOnceAction extends NpcAction {
             return;
         }
 
-        EntityTracker tracker = ModelAttribute.getEntityTracker(context.getNpc());
+        EntityTracker tracker = CustomModelAttribute.getEntityTracker(context.getNpc());
 
         if (!tracker.animate(animation, AnimationModifier.DEFAULT_WITH_PLAY_ONCE)) {
             FancyNpcsModelPlugin.get().getFancyLogger().warn(

@@ -5,7 +5,7 @@ import com.fancyinnovations.fancynpcsmodel.commands.fancynpcsmodel.FNMVersionCMD
 import com.fancyinnovations.fancynpcsmodel.commands.npc.CustomModelCMD;
 import com.fancyinnovations.fancynpcsmodel.commands.npc.PlayAnimationCMD;
 import com.fancyinnovations.fancynpcsmodel.config.FancyNpcsModelConfigImpl;
-import com.fancyinnovations.fancynpcsmodel.fancynpcshook.ModelAttribute;
+import com.fancyinnovations.fancynpcsmodel.fancynpcshook.CustomModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationLoopAction;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationOnceAction;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcInteractListener;
@@ -144,7 +144,7 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
 
         registerListeners();
 
-        FancyNpcsPlugin.get().getAttributeManager().registerAttribute(ModelAttribute.getModelAttribute());
+        FancyNpcsPlugin.get().getAttributeManager().registerAttribute(CustomModelAttribute.getModelAttribute());
         FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationOnceAction());
         FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationLoopAction());
 
@@ -159,8 +159,8 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         fancyLogger.info("Disabling FancyNpcsModel version %s...".formatted(getDescription().getVersion()));
 
         for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
-            if (ModelAttribute.hasAttribute(npc)) {
-                ModelAttribute.closeAllTrackers(npc);
+            if (CustomModelAttribute.hasAttribute(npc)) {
+                CustomModelAttribute.closeAllTrackers(npc);
             }
         }
 

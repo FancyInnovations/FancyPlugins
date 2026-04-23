@@ -1,6 +1,6 @@
 package com.fancyinnovations.fancynpcsmodel.commands.npc;
 
-import com.fancyinnovations.fancynpcsmodel.fancynpcshook.ModelAttribute;
+import com.fancyinnovations.fancynpcsmodel.fancynpcshook.CustomModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.utils.FancyContext;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
@@ -33,11 +33,11 @@ public class CustomModelCMD extends FancyContext {
             final @NotNull Npc npc,
             final @NotNull @Argument(suggestions = "CustomModelCMD/model") String model
     ) {
-        NpcAttribute customModelAttribute = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, ModelAttribute.ATTRIBUTE_NAME);
+        NpcAttribute customModelAttribute = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, CustomModelAttribute.ATTRIBUTE_NAME);
 
         if (model.equalsIgnoreCase("@none")) {
             npc.getData().removeAttribute(customModelAttribute);
-            ModelAttribute.closeAllTrackers(npc);
+            CustomModelAttribute.closeAllTrackers(npc);
             npc.updateForAll();
 
             translator.translate("commands.npc.custom_model.removed")

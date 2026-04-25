@@ -2,9 +2,9 @@ package com.fancyinnovations.fancyworlds.commands.world;
 
 import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
 import com.fancyinnovations.fancyworlds.utils.FancyContext;
-import com.fancyinnovations.fancyworlds.utils.WorldFileUtils;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import com.fancyinnovations.fancyworlds.worlds.FWorldSettingsImpl;
+import com.fancyinnovations.fancyworlds.utils.WorldFileUtils;
 import org.bukkit.World;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
@@ -59,20 +59,20 @@ public class WorldCreateCMD extends FancyContext {
                 .replace("worldName", name)
                 .send(actor.sender());
 
-        World world = fworld.toWorldCreator().createWorld();
-        if (world == null) {
+        service.registerWorld(fworld);
+        plugin.getWorldPlatformView().createWorld(fworld).thenAccept(world -> {
+            fworld.setBukkitWorld(world);
+            translator.translate("commands.world.create.success")
+                    .withPrefix()
+                    .replace("worldName", name)
+                    .send(actor.sender());
+        }).exceptionally(throwable -> {
+            service.unregisterWorld(fworld);
             translator.translate("commands.world.create.failed")
                     .withPrefix()
                     .replace("worldName", name)
                     .send(actor.sender());
-            return;
-        }
-
-        fworld.setBukkitWorld(world);
-        service.registerWorld(fworld);
-        translator.translate("commands.world.create.success")
-                .withPrefix()
-                .replace("worldName", name)
-                .send(actor.sender());
+            return null;
+        });
     }
 }

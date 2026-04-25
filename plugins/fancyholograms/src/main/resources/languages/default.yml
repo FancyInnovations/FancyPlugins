@@ -18,6 +18,7 @@ messages:
   color_white: "White"
 
   common:
+    invalid_duration: "{errorColor}Invalid duration {primaryColor}{duration}{errorColor}. Please use a valid format (e.g. 1s, 500ms, 15m30s)."
     hologram:
       not_found: "{errorColor}Could not find hologram {primaryColor}{name}{secondaryColor}."
       invalid_type: "{errorColor}This command can only be executed on holograms of the following types: {primaryColor}{types}{secondaryColor}."
@@ -60,3 +61,8 @@ messages:
           disabled: "Disabled glowing for hologram {primaryColor}{hologram}{secondaryColor}."
           enabled: "Enabled glowing with color {primaryColor}{color}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
           color_set: "Set glowing color to {primaryColor}{color}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        update_text_interval:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this interval ({interval}) set."
+          updated: "Updated the text update interval to {primaryColor}{interval}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+          short_interval_warning: "{warningColor}Warning: Setting a very short text update interval (less than 1s) may cause high CPU usage and cause client lag due to frequent hologram updates."
+          disabled: "Disabled the text update interval for hologram {primaryColor}{hologram}{secondaryColor}."

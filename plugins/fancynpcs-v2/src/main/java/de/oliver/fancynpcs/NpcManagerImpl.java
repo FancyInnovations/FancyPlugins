@@ -150,13 +150,6 @@ public class NpcManagerImpl implements NpcManager {
 
             NpcData data = npc.getData();
 
-            npcConfig.set("npcs." + data.getId() + ".message", null); //TODO: remove in when new interaction system is added
-            npcConfig.set("npcs." + data.getId() + ".playerCommand", null); //TODO: remove in when new interaction system is added
-            npcConfig.set("npcs." + data.getId() + ".serverCommand", null); //TODO: remove in when new interaction system is added
-            npcConfig.set("npcs." + data.getId() + ".mirrorSkin", null); //TODO: remove in next version
-            npcConfig.set("npcs." + data.getId() + ".skin.value", null); //TODO: remove in next version
-            npcConfig.set("npcs." + data.getId() + ".skin.signature", null); //TODO: remove in next version
-
             npcConfig.set("npcs." + data.getId() + ".name", data.getName());
             npcConfig.set("npcs." + data.getId() + ".creator", data.getCreator().toString());
             npcConfig.set("npcs." + data.getId() + ".displayName", data.getDisplayName());
@@ -310,8 +303,7 @@ public class NpcManagerImpl implements NpcManager {
                 }
             }
 
-            boolean oldMirrorSkin = npcConfig.getBoolean("npcs." + id + ".mirrorSkin"); //TODO: remove in next version
-            boolean mirrorSkin = oldMirrorSkin || npcConfig.getBoolean("npcs." + id + ".skin.mirrorSkin");
+            boolean mirrorSkin = npcConfig.getBoolean("npcs." + id + ".skin.mirrorSkin");
 
             boolean showInTab = npcConfig.getBoolean("npcs." + id + ".showInTab");
             boolean spawnEntity = npcConfig.getBoolean("npcs." + id + ".spawnEntity");
@@ -322,36 +314,6 @@ public class NpcManagerImpl implements NpcManager {
             int turnToPlayerDistance = npcConfig.getInt("npcs." + id + ".turnToPlayerDistance", -1);
 
             Map<ActionTrigger, List<NpcAction.NpcActionData>> actions = new ConcurrentHashMap<>();
-
-            //TODO: remove these fields next version
-            boolean sendMessagesRandomly = npcConfig.getBoolean("npcs." + id + ".sendMessagesRandomly", false);
-            List<String> playerCommands = npcConfig.getStringList("npcs." + id + ".playerCommands");
-            List<String> messages = npcConfig.getStringList("npcs." + id + ".messages");
-            List<String> serverCommands = npcConfig.getStringList("npcs." + id + ".serverCommands");
-
-            List<NpcAction.NpcActionData> migrateActionList = new ArrayList<>();
-            int actionOrder = 0;
-
-            for (String playerCommand : playerCommands) {
-                migrateActionList.add(new NpcAction.NpcActionData(++actionOrder, FancyNpcs.getInstance().getActionManager().getActionByName("player_command"), playerCommand));
-            }
-
-            for (String serverCommand : serverCommands) {
-                migrateActionList.add(new NpcAction.NpcActionData(++actionOrder, FancyNpcs.getInstance().getActionManager().getActionByName("console_command"), serverCommand));
-            }
-
-            if (sendMessagesRandomly && !messages.isEmpty()) {
-                migrateActionList.add(new NpcAction.NpcActionData(++actionOrder, FancyNpcs.getInstance().getActionManager().getActionByName("execute_random_action"), ""));
-            }
-
-            for (String message : messages) {
-                migrateActionList.add(new NpcAction.NpcActionData(++actionOrder, FancyNpcs.getInstance().getActionManager().getActionByName("message"), message));
-            }
-
-            if (!migrateActionList.isEmpty()) {
-                takeBackup(npcConfig);
-                actions.put(ActionTrigger.ANY_CLICK, migrateActionList);
-            }
 
             ConfigurationSection actiontriggerSection = npcConfig.getConfigurationSection("npcs." + id + ".actions");
             if (actiontriggerSection != null) {
@@ -385,8 +347,6 @@ public class NpcManagerImpl implements NpcManager {
                     }
                 });
             }
-
-            //TODO: add migration for sendMessagesRandomly
 
             float interactionCooldown = (float) npcConfig.getDouble("npcs." + id + ".interactionCooldown", 0);
             float scale = (float) npcConfig.getDouble("npcs." + id + ".scale", 1);

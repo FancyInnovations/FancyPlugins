@@ -1,11 +1,14 @@
 package com.fancyinnovations.fancynpcsmodel.metrics;
 
+import com.fancyinnovations.fancynpcsmodel.fancynpcshook.CustomModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelPlugin;
 import de.oliver.fancyanalytics.api.FancyAnalyticsAPI;
 import de.oliver.fancyanalytics.api.metrics.MetricSupplier;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.sdk.events.Event;
 import de.oliver.fancylib.VersionConfig;
+import de.oliver.fancynpcs.api.FancyNpcsPlugin;
+import de.oliver.fancynpcs.api.Npc;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -53,6 +56,18 @@ public class FNMMetrics {
             }
 
             return "very_large";
+        }));
+
+        fancyAnalytics.registerNumberMetric(new MetricSupplier<>("amount_npcs_with_custom_model", () -> {
+            double counter = 0;
+
+            for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
+                if (CustomModelAttribute.hasAttribute(npc)) {
+                    counter++;
+                }
+            }
+
+            return counter;
         }));
 
         fancyAnalytics.initialize();

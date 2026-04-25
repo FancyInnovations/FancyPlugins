@@ -1,8 +1,8 @@
 {
   "project_name": "FancyEconomy",
-  "plugin_jar_path": "/build/libs/FancyEconomy-%VERSION%.jar",
-  "changelog_path": "CHANGELOG-SNAPSHOT.md",
-  "version_path": "VERSION",
+  "plugin_jar_path": "/plugins/fancyeconomy/build/libs/FancyEconomy-%VERSION%.jar",
+  "changelog_path": "/plugins/fancyeconomy/CHANGELOG-SNAPSHOT.md",
+  "version_path": "/plugins/fancyeconomy/VERSION",
   "fancyspaces": {
     "space_id": "MX6Cna3z",
     "platform": "paper",

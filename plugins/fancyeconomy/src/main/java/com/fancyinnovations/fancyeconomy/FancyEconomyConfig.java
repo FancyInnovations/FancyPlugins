@@ -5,6 +5,7 @@ import com.fancyinnovations.fancyeconomy.currencies.Currency;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
 import de.oliver.fancylib.databases.Database;
 import de.oliver.fancylib.databases.MySqlDatabase;
+import de.oliver.fancylib.databases.PostgreSqlDatabase;
 import de.oliver.fancylib.databases.SqliteDatabase;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,12 +17,17 @@ import java.util.List;
 public class FancyEconomyConfig {
 
     private DatabaseType dbType;
-    private String dbHost;
-    private String dbPort;
-    private String dbDatabase;
-    private String dbUsername;
-    private String dbPassword;
-    private String dbFile;
+    private String mysqlHost;
+    private String mysqlPort;
+    private String mysqlDatabase;
+    private String mysqlUsername;
+    private String mysqlPassword;
+    private String postgresqlHost;
+    private String postgresqlPort;
+    private String postgresqlDatabase;
+    private String postgresqlUsername;
+    private String postgresqlPassword;
+    private String sqliteFile;
 
     private boolean useShortFormat;
     private double minWithdrawAmount;
@@ -41,13 +47,20 @@ public class FancyEconomyConfig {
             FancyEconomy.getInstance().getLogger().warning("Invalid database type provided in config");
         }
 
-        dbHost = (String) ConfigHelper.getOrDefault(config, "database.mysql.host", "localhost");
-        dbPort = (String) ConfigHelper.getOrDefault(config, "database.mysql.port", "3306");
-        dbDatabase = (String) ConfigHelper.getOrDefault(config, "database.mysql.database", "fancyeconomy");
-        dbUsername = (String) ConfigHelper.getOrDefault(config, "database.mysql.username", "root");
-        dbPassword = (String) ConfigHelper.getOrDefault(config, "database.mysql.password", "");
-        dbFile = (String) ConfigHelper.getOrDefault(config, "database.sqlite.file_path", "database.db");
-        dbFile = "plugins/FancyEconomy/" + dbFile;
+        mysqlHost = (String) ConfigHelper.getOrDefault(config, "database.mysql.host", "localhost");
+        mysqlPort = (String) ConfigHelper.getOrDefault(config, "database.mysql.port", "3306");
+        mysqlDatabase = (String) ConfigHelper.getOrDefault(config, "database.mysql.database", "fancyeconomy");
+        mysqlUsername = (String) ConfigHelper.getOrDefault(config, "database.mysql.username", "root");
+        mysqlPassword = (String) ConfigHelper.getOrDefault(config, "database.mysql.password", "");
+
+        postgresqlHost = (String) ConfigHelper.getOrDefault(config, "database.postgresql.host", "localhost");
+        postgresqlPort = (String) ConfigHelper.getOrDefault(config, "database.postgresql.port", "5432");
+        postgresqlDatabase = (String) ConfigHelper.getOrDefault(config, "database.postgresql.database", "fancyeconomy");
+        postgresqlUsername = (String) ConfigHelper.getOrDefault(config, "database.postgresql.username", "root");
+        postgresqlPassword = (String) ConfigHelper.getOrDefault(config, "database.postgresql.password", "");
+
+        sqliteFile = (String) ConfigHelper.getOrDefault(config, "database.sqlite.file_path", "database.db");
+        sqliteFile = "plugins/FancyEconomy/" + sqliteFile;
 
 
         /*
@@ -119,8 +132,10 @@ public class FancyEconomyConfig {
         Database db = null;
 
         switch (dbType) {
-            case MYSQL -> db = new MySqlDatabase(dbHost, dbPort, dbDatabase, dbUsername, dbPassword);
-            case SQLITE -> db = new SqliteDatabase(dbFile);
+            case MYSQL -> db = new MySqlDatabase(mysqlHost, mysqlPort, mysqlDatabase, mysqlUsername, mysqlPassword);
+            case POSTGRESQL ->
+                    db = new PostgreSqlDatabase(postgresqlHost, postgresqlPort, postgresqlDatabase, postgresqlUsername, postgresqlPassword);
+            case SQLITE -> db = new SqliteDatabase(sqliteFile);
         }
 
         return db;
@@ -128,6 +143,7 @@ public class FancyEconomyConfig {
 
     enum DatabaseType {
         MYSQL("mysql"),
+        POSTGRESQL("postgresql"),
         SQLITE("sqlite");
 
         private final String identifier;

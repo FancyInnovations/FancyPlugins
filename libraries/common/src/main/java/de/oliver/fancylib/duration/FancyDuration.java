@@ -67,7 +67,7 @@ public record FancyDuration(
     }
 
     public boolean isNever() {
-        return millis < -1;
+        return millis <= 0;
     }
 
     public long seconds() {

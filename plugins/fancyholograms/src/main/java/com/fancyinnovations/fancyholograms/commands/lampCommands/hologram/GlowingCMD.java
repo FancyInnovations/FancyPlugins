@@ -68,7 +68,7 @@ public final class GlowingCMD {
             translator.translate("commands.hologram.edit.glowing.enabled")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("color", ((SimpleMessage) translator.translate(newColor.getTranslationKey())).getMessage())
+                    .replace("color", ((SimpleMessage) translator.translate("common.colors." + newColor.getTranslationKey().replace("color_", ""))).getMessage())
                     .send(actor.sender());
         }
     }

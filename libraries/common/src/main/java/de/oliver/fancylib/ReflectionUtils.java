@@ -2,65 +2,78 @@ package de.oliver.fancylib;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.function.Supplier;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ReflectionUtils {
 
+    private static final Map<String, Field> fieldCache = new ConcurrentHashMap<>();
+    private static final Map<String, Method> methodCache = new ConcurrentHashMap<>();
+
     public static Object getValue(Object instance, String name) {
-        Object result = null;
-
         try {
-            Field field = instance.getClass().getDeclaredField(name);
-
-            field.setAccessible(true);
-            result = field.get(instance);
-            field.setAccessible(false);
-
+            Field field = getField(instance.getClass(), name);
+            return field != null ? field.get(instance) : null;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return result;
+        return null;
     }
 
     public static Object getStaticValue(Class clazz, String name) {
-        Object result = null;
-
         try {
-            Field field = clazz.getDeclaredField(name);
-
-            field.setAccessible(true);
-            result = field.get(clazz);
-            field.setAccessible(false);
-
+            Field field = getField(clazz, name);
+            return field != null ? field.get(null) : null;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return result;
+        return null;
     }
 
     public static void setValue(Object instance, String name, Object value) {
         try {
-            Field field = instance.getClass().getDeclaredField(name);
-
-            field.setAccessible(true);
-            field.set(instance, value);
-            field.setAccessible(false);
-
+            Field field = getField(instance.getClass(), name);
+            if (field != null) {
+                field.set(instance, value);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static Method getMethod(Object instance, String methodName) {
+        return getMethod(instance.getClass(), methodName);
+    }
+
+    private static Field getField(Class clazz, String name) {
+        String key = clazz.getName() + "#" + name;
+        Field cached = fieldCache.get(key);
+        if (cached != null) return cached;
+
         try {
-            return instance.getClass().getDeclaredMethod(methodName);
+            Field field = clazz.getDeclaredField(name);
+            field.setAccessible(true);
+            fieldCache.put(key, field);
+            return field;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
+    private static Method getMethod(Class clazz, String name) {
+        String key = clazz.getName() + "#" + name;
+        Method cached = methodCache.get(key);
+        if (cached != null) return cached;
+
+        try {
+            Method method = clazz.getDeclaredMethod(name);
+            method.setAccessible(true);
+            methodCache.put(key, method);
+            return method;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -20,7 +20,10 @@
     "loaders": [
       "paper"
     ],
-    "featured": false
+    "featured": false,
+    "dependencies": [
+      "Sx6YwpnK"
+    ]
   },
   "hangar": {
     "author": "oliver",

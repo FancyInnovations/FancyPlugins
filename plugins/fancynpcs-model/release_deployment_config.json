@@ -21,7 +21,11 @@
       "paper",
       "folia"
     ],
-    "featured": true
+    "featured": true,
+    "dependencies": [
+      "EeyAn23L",
+      "4h8rX3rt"
+    ]
   },
   "hangar": {
     "author": "oliver",

@@ -40,36 +40,38 @@ public class WorldGamerulesCMD extends FancyContext {
             return;
         }
 
-        translator.translate("commands.world.gamerules.list.header")
-                .withPrefix()
-                .replace("worldName", world.getName())
-                .send(actor.sender());
-
         FWorld finalWorld = world;
-        Registry.GAME_RULE.stream().forEach(gameRule -> {
-            if (!finalWorld.getBukkitWorld().isGameRule(gameRule.key().value())) {
-                return;
-            }
-
-            Object value = finalWorld.getBukkitWorld().getGameRuleValue(gameRule);
-            if (value == null) {
-                value = "null";
-            }
-
-            Object defaultValue = finalWorld.getBukkitWorld().getGameRuleDefault(gameRule);
-            if (defaultValue == null) {
-                defaultValue = "null";
-            }
-
-            if (changedOnly && value.equals(defaultValue)) {
-                return;
-            }
-
-            translator.translate("commands.world.gamerules.list.entry")
-                    .replace("gamerule", gameRule.getKey().getKey())
-                    .replace("value", value.toString())
-                    .replace("defaultValue", defaultValue.toString())
+        plugin.runGlobalTask(() -> {
+            translator.translate("commands.world.gamerules.list.header")
+                    .withPrefix()
+                    .replace("worldName", finalWorld.getName())
                     .send(actor.sender());
+
+            Registry.GAME_RULE.stream().forEach(gameRule -> {
+                if (!finalWorld.getBukkitWorld().isGameRule(gameRule.key().value())) {
+                    return;
+                }
+
+                Object value = finalWorld.getBukkitWorld().getGameRuleValue(gameRule);
+                if (value == null) {
+                    value = "null";
+                }
+
+                Object defaultValue = finalWorld.getBukkitWorld().getGameRuleDefault(gameRule);
+                if (defaultValue == null) {
+                    defaultValue = "null";
+                }
+
+                if (changedOnly && value.equals(defaultValue)) {
+                    return;
+                }
+
+                translator.translate("commands.world.gamerules.list.entry")
+                        .replace("gamerule", gameRule.getKey().getKey())
+                        .replace("value", value.toString())
+                        .replace("defaultValue", defaultValue.toString())
+                        .send(actor.sender());
+            });
         });
     }
 
@@ -110,24 +112,27 @@ public class WorldGamerulesCMD extends FancyContext {
             return;
         }
 
+        final FWorld finalWorldForSet = world;
         if (value.equalsIgnoreCase("@default")) {
-            Object defaultValue = world.getBukkitWorld().getGameRuleDefault(gamerule);
-            if (defaultValue == null) {
-                translator.translate("commands.world.gamerules.set.failed")
+            plugin.runGlobalTask(() -> {
+                Object defaultValue = finalWorldForSet.getBukkitWorld().getGameRuleDefault(gamerule);
+                if (defaultValue == null) {
+                    translator.translate("commands.world.gamerules.set.failed")
+                            .withPrefix()
+                            .replace("gameruleName", gamerule.getKey().getKey())
+                            .replace("worldName", finalWorldForSet.getName())
+                            .send(actor.sender());
+                    return;
+                }
+
+                finalWorldForSet.getBukkitWorld().setGameRule(gamerule, defaultValue);
+                translator.translate("commands.world.gamerules.set.success")
                         .withPrefix()
                         .replace("gameruleName", gamerule.getKey().getKey())
-                        .replace("worldName", world.getName())
+                        .replace("value", defaultValue.toString())
+                        .replace("worldName", finalWorldForSet.getName())
                         .send(actor.sender());
-                return;
-            }
-
-            world.getBukkitWorld().setGameRule(gamerule, defaultValue);
-            translator.translate("commands.world.gamerules.set.success")
-                    .withPrefix()
-                    .replace("gameruleName", gamerule.getKey().getKey())
-                    .replace("value", defaultValue.toString())
-                    .replace("worldName", world.getName())
-                    .send(actor.sender());
+            });
             return;
         }
 
@@ -147,7 +152,15 @@ public class WorldGamerulesCMD extends FancyContext {
                             .send(actor.sender());
                     return;
                 }
-                world.getBukkitWorld().setGameRule(gamerule, booleanValue);
+                plugin.runGlobalTask(() -> {
+                    finalWorldForSet.getBukkitWorld().setGameRule(gamerule, booleanValue);
+                    translator.translate("commands.world.gamerules.set.success")
+                            .withPrefix()
+                            .replace("gameruleName", gamerule.getKey().getKey())
+                            .replace("value", value)
+                            .replace("worldName", finalWorldForSet.getName())
+                            .send(actor.sender());
+                });
             }
             case "Integer" -> {
                 int intValue;
@@ -162,23 +175,24 @@ public class WorldGamerulesCMD extends FancyContext {
                             .send(actor.sender());
                     return;
                 }
-                world.getBukkitWorld().setGameRule(gamerule, intValue);
+                plugin.runGlobalTask(() -> {
+                    finalWorldForSet.getBukkitWorld().setGameRule(gamerule, intValue);
+                    translator.translate("commands.world.gamerules.set.success")
+                            .withPrefix()
+                            .replace("gameruleName", gamerule.getKey().getKey())
+                            .replace("value", value)
+                            .replace("worldName", finalWorldForSet.getName())
+                            .send(actor.sender());
+                });
             }
             default -> {
                 translator.translate("commands.world.gamerules.set.failed")
                         .withPrefix()
                         .replace("gameruleName", gamerule.getKey().getKey())
-                        .replace("worldName", world.getName())
+                        .replace("worldName", finalWorldForSet.getName())
                         .send(actor.sender());
                 throw new UnsupportedOperationException("Unsupported gamerule type: " + gamerule.getType().getSimpleName());
             }
         }
-
-        translator.translate("commands.world.gamerules.set.success")
-                .withPrefix()
-                .replace("gameruleName", gamerule.getKey().getKey())
-                .replace("value", value)
-                .replace("worldName", world.getName())
-                .send(actor.sender());
     }
 }

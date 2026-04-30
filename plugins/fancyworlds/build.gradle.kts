@@ -2,6 +2,7 @@ plugins {
     id("java-library")
     id("maven-publish")
 
+    id("io.papermc.paperweight.userdev")
     id("xyz.jpenilla.run-paper")
     id("com.gradleup.shadow")
 }
@@ -30,7 +31,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    paperweight.foliaDevBundle("1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":plugins:fancyworlds:fw-api"))
 

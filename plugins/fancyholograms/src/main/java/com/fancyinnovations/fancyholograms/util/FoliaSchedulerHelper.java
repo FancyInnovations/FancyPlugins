@@ -12,7 +12,7 @@ public class FoliaSchedulerHelper {
      */
     public static void playerScheduler(Player player, Runnable runnable) {
         if (ServerSoftware.isFolia()) {
-            player.getScheduler().run(FancyHologramsPlugin.get(), (_) -> runnable.run(), null);
+            player.getScheduler().run(FancyHologramsPlugin.get(), (t) -> runnable.run(), null);
             return;
         }
 

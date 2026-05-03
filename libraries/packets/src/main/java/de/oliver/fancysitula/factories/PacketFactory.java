@@ -25,12 +25,6 @@ public class PacketFactory {
             List<FS_ClientboundPlayerInfoUpdatePacket.Entry> entries
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundPlayerInfoUpdatePacketImpl(actions, entries);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundPlayerInfoUpdatePacketImpl(actions, entries);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundPlayerInfoUpdatePacketImpl(actions, entries);
             }
@@ -73,12 +67,6 @@ public class PacketFactory {
             int velocityZ,
             int data) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundAddEntityPacketImpl(entityId, entityUUID, entityType, x, y, z, yaw, pitch, headYaw, velocityX, velocityY, velocityZ, data);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundAddEntityPacketImpl(entityId, entityUUID, entityType, x, y, z, yaw, pitch, headYaw, velocityX, velocityY, velocityZ, data);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundAddEntityPacketImpl(entityId, entityUUID, entityType, x, y, z, yaw, pitch, headYaw, velocityX, velocityY, velocityZ, data);
             }
@@ -108,12 +96,6 @@ public class PacketFactory {
             List<UUID> uuids
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundPlayerInfoRemovePacketImpl(uuids);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundPlayerInfoRemovePacketImpl(uuids);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundPlayerInfoRemovePacketImpl(uuids);
             }
@@ -143,12 +125,6 @@ public class PacketFactory {
             List<Integer> entityIds
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundRemoveEntitiesPacketImpl(entityIds);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundRemoveEntitiesPacketImpl(entityIds);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundRemoveEntitiesPacketImpl(entityIds);
             }
@@ -190,12 +166,6 @@ public class PacketFactory {
             boolean onGround
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundTeleportEntityPacketImpl(entityId, x, y, z, yaw, pitch, onGround);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundTeleportEntityPacketImpl(entityId, x, y, z, yaw, pitch, onGround);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundTeleportEntityPacketImpl(entityId, x, y, z, yaw, pitch, onGround);
             }
@@ -227,12 +197,6 @@ public class PacketFactory {
             float headYaw
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundRotateHeadPacketImpl(entityId, headYaw);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundRotateHeadPacketImpl(entityId, headYaw);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundRotateHeadPacketImpl(entityId, headYaw);
             }
@@ -264,12 +228,6 @@ public class PacketFactory {
             List<FS_ClientboundSetEntityDataPacket.EntityData> entityData
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundSetEntityDataPacketImpl(entityId, entityData);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundSetEntityDataPacketImpl(entityId, entityData);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundSetEntityDataPacketImpl(entityId, entityData);
             }
@@ -301,12 +259,6 @@ public class PacketFactory {
             Map<FS_EquipmentSlot, ItemStack> equipment
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundSetEquipmentPacketImpl(entityId, equipment);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundSetEquipmentPacketImpl(entityId, equipment);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundSetEquipmentPacketImpl(entityId, equipment);
             }
@@ -338,12 +290,6 @@ public class PacketFactory {
             List<Integer> passengers
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundSetPassengersPacketImpl(entityId, passengers);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundSetPassengersPacketImpl(entityId, passengers);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundSetPassengersPacketImpl(entityId, passengers);
             }
@@ -378,12 +324,6 @@ public class PacketFactory {
             FS_ClientboundCreateOrUpdateTeamPacket.CreateTeam createTeam
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, createTeam);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, createTeam);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, createTeam);
             }
@@ -417,12 +357,6 @@ public class PacketFactory {
             FS_ClientboundCreateOrUpdateTeamPacket.RemoveTeam removeTeam
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeTeam);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeTeam);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeTeam);
             }
@@ -456,12 +390,6 @@ public class PacketFactory {
             FS_ClientboundCreateOrUpdateTeamPacket.UpdateTeam updateTeam
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, updateTeam);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, updateTeam);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, updateTeam);
             }
@@ -495,12 +423,6 @@ public class PacketFactory {
             FS_ClientboundCreateOrUpdateTeamPacket.AddEntity addEntity
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, addEntity);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, addEntity);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, addEntity);
             }
@@ -534,12 +456,6 @@ public class PacketFactory {
             FS_ClientboundCreateOrUpdateTeamPacket.RemoveEntity removeEntity
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeEntity);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeEntity);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundCreateOrUpdateTeamPacketImpl(teamName, removeEntity);
             }
@@ -570,12 +486,6 @@ public class PacketFactory {
             FS_Dialog dialog
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundShowDialogPacketImpl(dialog);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundShowDialogPacketImpl(dialog);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundShowDialogPacketImpl(dialog);
             }
@@ -597,12 +507,6 @@ public class PacketFactory {
      */
     public FS_ClientboundClearDialogPacket createClearDialogPacket() {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundClearDialogPacketImpl();
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundClearDialogPacketImpl();
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundClearDialogPacketImpl();
             }
@@ -628,12 +532,6 @@ public class PacketFactory {
             List<FS_ClientboundUpdateAttributesPacket.AttributeSnapshot> attributes
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundUpdateAttributesPacketImpl(entityId, attributes);
             }
@@ -665,12 +563,6 @@ public class PacketFactory {
             int animationId
     ) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundAnimatePacketImpl(entityId, animationId);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundAnimatePacketImpl(entityId, animationId);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundAnimatePacketImpl(entityId, animationId);
             }
@@ -701,12 +593,6 @@ public class PacketFactory {
      */
     public FS_ClientboundBundlePacket createBundlePacket(List<FS_ClientboundPacket> packets) {
         switch (ServerVersion.getCurrentVersion()) {
-            case v26_2 -> {
-                return new de.oliver.fancysitula.versions.v26_2.packets.ClientboundBundlePacketImpl(packets);
-            }
-            case v26_1_2 -> {
-                return new de.oliver.fancysitula.versions.v26_1.packets.ClientboundBundlePacketImpl(packets);
-            }
             case v1_21_11 -> {
                 return new de.oliver.fancysitula.versions.v1_21_11.packets.ClientboundBundlePacketImpl(packets);
             }

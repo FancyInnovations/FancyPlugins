@@ -355,7 +355,7 @@ public class Npc_1_21_11 extends Npc {
             // npcs with custom models (by FancyNpcsModel) should not set the scale attribute on base entity
             if (!hasCustomModel) {
                 Holder.Reference<Attribute> scaleAttribute = BuiltInRegistries.ATTRIBUTE.get(Identifier.parse("minecraft:scale")).get();
-                AttributeInstance attributeInstance = new AttributeInstance(scaleAttribute, (_) -> {
+                AttributeInstance attributeInstance = new AttributeInstance(scaleAttribute, (a) -> {
                 });
                 attributeInstance.setBaseValue(data.getScale());
                 changedAttributes.add(attributeInstance);

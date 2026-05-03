@@ -61,7 +61,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-        options.release = 25
+        options.release = 21
         // For cloud-annotations, see https://cloud.incendo.org/annotations/#command-components
         options.compilerArgs.add("-parameters")
     }
@@ -94,7 +94,7 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 val gitCommitHash: Provider<String> = providers.exec {

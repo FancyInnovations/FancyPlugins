@@ -103,12 +103,12 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 25
+        options.release = 21
     }
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
     withSourcesJar()
     withJavadocJar()
 }

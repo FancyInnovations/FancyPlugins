@@ -28,21 +28,11 @@ public class PlayerUseUnknownEntityListener implements Listener {
 
         ActionTrigger actionTrigger = event.isAttack() ? ActionTrigger.LEFT_CLICK : ActionTrigger.RIGHT_CLICK;
 
-        // PlayerUseUnknownEntityEvent can be called multiple times for interactions that are NOT attacks, making sure to run logic only ONCE.
-        // This check is only needed for versions equal or older than 1.21.11
-        if (ServerVersion.getCurrentVersion().getProtocolVersion() < ServerVersion.v26_1_2.getProtocolVersion()) {
-            if (event.isAttack() || event.getClickedRelativePosition() == null || npc.getData().getType() == EntityType.ARMOR_STAND) {
-                if (!new NpcPreInteractEvent(npc, player, actionTrigger).callEvent()) {
-                    return;
-                }
-                npc.interact(player, actionTrigger);
-            }
-        } else {
-            if (!new NpcPreInteractEvent(npc, player, actionTrigger).callEvent()) {
-                return;
-            }
-            npc.interact(player, actionTrigger);
+
+        if (!new NpcPreInteractEvent(npc, player, actionTrigger).callEvent()) {
+            return;
         }
+        npc.interact(player, actionTrigger);
     }
 
 }

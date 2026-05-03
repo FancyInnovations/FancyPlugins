@@ -14,8 +14,6 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     implementation(project(":libraries:packets:packets-api"))
-    implementation(project(":libraries:packets:implementations:26_2"))
-    implementation(project(":libraries:packets:implementations:26_1_1"))
     implementation(project(":libraries:packets:implementations:1_21_11"))
     implementation(project(":libraries:packets:implementations:1_21_9"))
     implementation(project(":libraries:packets:implementations:1_21_6"))
@@ -108,7 +106,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 25
+        options.release = 21
     }
 
     javadoc {
@@ -121,5 +119,5 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }

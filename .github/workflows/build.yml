@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '25'
+          java-version: '21'
 
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew
@@ -76,7 +76,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '25'
+          java-version: '21'
 
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew
@@ -112,7 +112,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '25'
+          java-version: '21'
 
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew
@@ -139,7 +139,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '25'
+          java-version: '21'
 
       - name: Modify gradlew permissions
         run: chmod +x ./gradlew

@@ -17,7 +17,7 @@ dependencies {
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
 
     // database drivers
-    compileOnly("org.xerial:sqlite-jdbc:3.51.2.0")
+    compileOnly("org.xerial:sqlite-jdbc:3.53.0.0")
     compileOnly("com.mysql:mysql-connector-j:9.6.0")
 
     // testing

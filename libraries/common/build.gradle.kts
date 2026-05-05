@@ -13,7 +13,7 @@ java {
 }
 
 dependencies {
-    compileOnly("dev.folia:folia-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("dev.folia:folia-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
 
     // database drivers

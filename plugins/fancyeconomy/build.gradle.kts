@@ -34,7 +34,7 @@ dependencies {
 
     compileOnly("me.clip:placeholderapi:2.11.5")
 
-    val commandapiVersion = "11.1.0"
+    val commandapiVersion = "11.2.0"
     implementation("dev.jorel:commandapi-paper-shade:$commandapiVersion")
     compileOnly("dev.jorel:commandapi-paper-annotations:$commandapiVersion")
     annotationProcessor("dev.jorel:commandapi-paper-annotations:$commandapiVersion")

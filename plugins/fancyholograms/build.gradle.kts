@@ -40,7 +40,7 @@ dependencies {
     implementation(project(":libraries:packets:packets-api"))
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
-    implementation("de.oliver.FancyAnalytics:logger:0.0.8")
+    implementation("de.oliver.FancyAnalytics:logger:0.0.9")
 
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.16")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.16")

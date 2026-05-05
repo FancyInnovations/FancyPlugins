@@ -8,7 +8,7 @@ java {
 
 dependencies {
     compileOnly("dev.folia:folia-api:1.21.11-R0.1-SNAPSHOT")
-    compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
+    compileOnly("de.oliver.FancyAnalytics:logger:0.0.9")
     compileOnly(project(":libraries:common"))
 }
 

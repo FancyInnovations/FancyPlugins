@@ -28,7 +28,7 @@ dependencies {
     implementation(project(":libraries:config"))
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
-    implementation("de.oliver.FancyAnalytics:logger:0.0.10")
+    implementation("de.oliver.FancyAnalytics:logger:0.0.9")
 
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
 

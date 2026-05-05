@@ -24,7 +24,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.60-stable")
 
     implementation(project(":plugins:fancynpcs-v2:fn-v2-api"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_2"))

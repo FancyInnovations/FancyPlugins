@@ -17,7 +17,7 @@ dependencies {
     implementation("org.jetbrains:annotations:26.1.0")
 
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
-    implementation("de.oliver.FancyAnalytics:logger:0.0.8")
+    implementation("de.oliver.FancyAnalytics:logger:0.0.9")
 }
 
 tasks {

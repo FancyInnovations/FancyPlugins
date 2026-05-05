@@ -10,7 +10,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
 
     compileOnly(project(":libraries:common"))
-    compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
+    compileOnly("de.oliver.FancyAnalytics:logger:0.0.9")
 
     implementation("org.lushplugins.chatcolorhandler:paper:8.1.0")
 }

@@ -9,7 +9,7 @@ description = "Library for plugin configuration"
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
-    compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
+    compileOnly("de.oliver.FancyAnalytics:logger:0.0.9")
     compileOnly("org.jetbrains:annotations:26.1.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.3")

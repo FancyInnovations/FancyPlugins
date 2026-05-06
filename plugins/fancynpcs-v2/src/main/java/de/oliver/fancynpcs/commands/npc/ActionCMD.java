@@ -327,7 +327,6 @@ public enum ActionCMD {
         }
 
         translator.translate("npc_action_list_header")
-                .withPrefix()
                 .replaceStripped("trigger", trigger.name())
                 .send(sender);
 
@@ -341,7 +340,6 @@ public enum ActionCMD {
         }
 
         translator.translate("npc_action_list_footer")
-                .withPrefix()
                 .replaceStripped("total", String.valueOf(actions.size()))
                 .send(sender);
     }

@@ -73,4 +73,13 @@ public interface HologramConfiguration {
      * @return The hologram visibility update interval in milliseconds.
      */
     int getUpdateVisibilityInterval();
+
+    /**
+     * Returns the interval at which text holograms refresh dynamic text updates.
+     *
+     * @return The hologram text refresh interval in milliseconds.
+     */
+    default int getHologramUpdateInterval() {
+        return 200;
+    }
 }

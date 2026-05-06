@@ -29,10 +29,12 @@ public class PlayerUseUnknownEntityListener implements Listener {
         ActionTrigger actionTrigger = event.isAttack() ? ActionTrigger.LEFT_CLICK : ActionTrigger.RIGHT_CLICK;
 
 
-        if (!new NpcPreInteractEvent(npc, player, actionTrigger).callEvent()) {
-            return;
+        if (event.isAttack() || event.getClickedRelativePosition() == null || npc.getData().getType() == EntityType.ARMOR_STAND) {
+            if (!new NpcPreInteractEvent(npc, player, actionTrigger).callEvent()) {
+                return;
+            }
+            npc.interact(player, actionTrigger);
         }
-        npc.interact(player, actionTrigger);
     }
 
 }

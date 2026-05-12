@@ -42,7 +42,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
-    compileOnly("org.lushplugins.chatcolorhandler:paper:8.1.0")
+    compileOnly("org.lushplugins:ChatColorHandler:6.0.4")
     compileOnly("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
 }
 
@@ -82,9 +82,9 @@ tasks {
         minecraftVersion("26.1.2")
 
         downloadPlugins {
-//            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/A364LHvu/files/FancyWorlds-0.0.4.jar")
+            modrinth("FancyWorlds", "0.0.4")
 //            modrinth("FancyNpcs", "2.9.2")
-//            modrinth("FancyDialogs", "1.1.2")
+            modrinth("FancyDialogs", "1.2.0")
 //            modrinth("FancyEconomy", "1.0.3+6")
 
 //            hangar("PlaceholderAPI", "2.11.6")

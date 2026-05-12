@@ -13,7 +13,7 @@ dependencies {
     compileOnly(project(":libraries:jdb"))
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
 
-    implementation("org.lushplugins.chatcolorhandler:paper:8.1.0")
+    implementation("org.lushplugins:ChatColorHandler:6.0.4")
 }
 
 tasks {
@@ -109,7 +109,7 @@ tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
 
-        options.release.set(21)
+        options.release.set(17)
     }
 }
 

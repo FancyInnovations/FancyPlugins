@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lushplugins.chatcolorhandler.paper.PaperColor;
+import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
 
 import java.util.*;
 
@@ -361,7 +361,7 @@ public abstract class Hologram {
             return MiniMessage.miniMessage().deserialize(text);
         }
 
-        return PaperColor.handler().translate(text, player);
+        return ModernChatColorHandler.translate(text, player);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.fancyinnovations.fancynpcs.api.skins;
 
-import org.lushplugins.chatcolorhandler.paper.PaperColor;
+import org.lushplugins.chatcolorhandler.ChatColorHandler;
 
 import java.util.Objects;
 
@@ -108,7 +108,7 @@ public class SkinData {
 
     public String getParsedIdentifier() {
         if (identifier.startsWith("%") && identifier.endsWith("%") || identifier.startsWith("{") && identifier.endsWith("}")) {
-            return PaperColor.handler().translateRaw(identifier);
+            return ChatColorHandler.translate(identifier);
         } else {
             return identifier;
         }

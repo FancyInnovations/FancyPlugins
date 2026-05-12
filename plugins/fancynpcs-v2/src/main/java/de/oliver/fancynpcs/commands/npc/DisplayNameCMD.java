@@ -16,7 +16,7 @@ import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.context.CommandInput;
 import org.jetbrains.annotations.NotNull;
-import org.lushplugins.chatcolorhandler.paper.PaperColor;
+import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -70,7 +70,7 @@ public enum DisplayNameCMD {
      */
     public boolean hasBlockedCommands(final @NotNull String message) {
         // Converting message to a Component.
-        final Component component = PaperColor.handler().translate(message);
+        final Component component = ModernChatColorHandler.translate(message);
         // Getting the list of all blocked commands.
         final List<String> blockedCommands = FancyNpcs.getInstance().getFancyNpcConfig().getBlockedCommands();
         // Iterating over all elements of the component.

@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class WorldDeleteCMD extends FancyContext {
 
@@ -37,30 +39,29 @@ public class WorldDeleteCMD extends FancyContext {
         SimpleMessage question = (SimpleMessage) translator.translate("commands.world.delete.confirmation")
                 .replace("worldName", world.getName());
 
-        new ConfirmationDialog(question.getMessage())
-                .withTitle("Confirm deletion")
-                .withOnConfirm(() -> Bukkit.getScheduler().runTask(plugin, () -> deleteImpl(actor, world)))
-                .withOnCancel(
-                        () -> translator.translate("commands.world.delete.cancelled")
-                                .withPrefix()
-                                .replace("worldName", world.getName())
-                                .send(actor.sender())
-                )
-                .ask(actor.asPlayer());
+        if (actor.isPlayer()) {
+            new ConfirmationDialog(question.getMessage())
+                    .withTitle("Confirm deletion")
+                    .withOnConfirm(() -> deleteImpl(actor, world))
+                    .withOnCancel(
+                            () -> translator.translate("commands.world.delete.cancelled")
+                                    .withPrefix()
+                                    .replace("worldName", world.getName())
+                                    .send(actor.sender())
+                    )
+                    .ask(actor.asPlayer());
+        } else {
+            deleteImpl(actor, world);
+        }
     }
 
     private void deleteImpl(
             final BukkitCommandActor actor,
             final FWorld world
     ) {
-        plugin.getWorldService().unregisterWorld(world);
-
         File worldDir = Bukkit.getWorldContainer().toPath().resolve(world.getName()).toFile();
         try {
-            Files.walk(worldDir.toPath())
-                    .map(Path::toFile)
-                    .sorted((o1, o2) -> -o1.compareTo(o2)) // Delete children before parents
-                    .forEach(File::delete);
+            deleteWorldDirectory(worldDir.toPath());
         } catch (IOException e) {
             translator.translate("commands.world.delete.failed")
                     .withPrefix()
@@ -69,9 +70,23 @@ public class WorldDeleteCMD extends FancyContext {
             return;
         }
 
+        plugin.getWorldService().unregisterWorld(world);
+
         translator.translate("commands.world.delete.success")
                 .withPrefix()
                 .replace("worldName", world.getName())
                 .send(actor.sender());
+    }
+
+    private void deleteWorldDirectory(Path worldPath) throws IOException {
+        if (!Files.exists(worldPath)) {
+            return;
+        }
+
+        try (Stream<Path> walk = Files.walk(worldPath)) {
+            for (Path path : walk.sorted(Comparator.reverseOrder()).toList()) {
+                Files.delete(path);
+            }
+        }
     }
 }

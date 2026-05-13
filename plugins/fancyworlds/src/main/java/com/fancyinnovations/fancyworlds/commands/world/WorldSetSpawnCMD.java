@@ -37,12 +37,24 @@ public class WorldSetSpawnCMD extends FancyContext {
             location = actor.requirePlayer().getLocation();
         }
 
-        world.getBukkitWorld().setSpawnLocation(location);
+        if (!world.isWorldLoaded()) {
+            translator.translate("common.world_not_loaded")
+                    .withPrefix()
+                    .replace("worldName", world.getName())
+                    .send(actor.sender());
+            return;
+        }
 
-        translator.translate("commands.world.set_spawn.success")
-                .withPrefix()
-                .replace("worldName", world.getName())
-                .replace("location", String.format("X: %d, Y: %d, Z: %d", location.getBlockX(), location.getBlockY(), location.getBlockZ()))
-                .send(actor.sender());
+        final FWorld finalWorld = world;
+        final Location finalLocation = location;
+        plugin.runGlobalTask(() -> {
+            finalWorld.getBukkitWorld().setSpawnLocation(finalLocation);
+
+            translator.translate("commands.world.set_spawn.success")
+                    .withPrefix()
+                    .replace("worldName", finalWorld.getName())
+                    .replace("location", String.format("X: %d, Y: %d, Z: %d", finalLocation.getBlockX(), finalLocation.getBlockY(), finalLocation.getBlockZ()))
+                    .send(actor.sender());
+        });
     }
 }

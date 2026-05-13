@@ -39,23 +39,15 @@ public class WorldTimeCMD extends FancyContext {
             return;
         }
 
+        final long targetTime;
         switch (time.toLowerCase()) {
-            case "day":
-                world.getBukkitWorld().setTime(1000);
-                break;
-            case "noon":
-                world.getBukkitWorld().setTime(6000);
-                break;
-            case "night":
-                world.getBukkitWorld().setTime(13000);
-                break;
-            case "midnight":
-                world.getBukkitWorld().setTime(18000);
-                break;
-            default:
+            case "day" -> targetTime = 1000;
+            case "noon" -> targetTime = 6000;
+            case "night" -> targetTime = 13000;
+            case "midnight" -> targetTime = 18000;
+            default -> {
                 try {
-                    long timeValue = Long.parseLong(time);
-                    world.getBukkitWorld().setTime(timeValue);
+                    targetTime = Long.parseLong(time);
                 } catch (NumberFormatException e) {
                     translator.translate("commands.world.time.set.invalid_time")
                             .withPrefix()
@@ -63,13 +55,19 @@ public class WorldTimeCMD extends FancyContext {
                             .send(actor.sender());
                     return;
                 }
+            }
         }
 
-        translator.translate("commands.world.time.set.success")
-                .withPrefix()
-                .replace("worldName", world.getName())
-                .replace("time", time)
-                .send(actor.sender());
+        final FWorld finalWorld = world;
+        plugin.runGlobalTask(() -> {
+            finalWorld.getBukkitWorld().setTime(targetTime);
+
+            translator.translate("commands.world.time.set.success")
+                    .withPrefix()
+                    .replace("worldName", finalWorld.getName())
+                    .replace("time", time)
+                    .send(actor.sender());
+        });
     }
 
     @Command({"world time current", "time current"})
@@ -98,12 +96,15 @@ public class WorldTimeCMD extends FancyContext {
             return;
         }
 
-        long currentTime = world.getBukkitWorld().getTime();
-        translator.translate("commands.world.time.current")
-                .withPrefix()
-                .replace("worldName", world.getName())
-                .replace("time", String.valueOf(currentTime))
-                .send(actor.sender());
+        final FWorld finalWorld = world;
+        plugin.runGlobalTask(() -> {
+            long currentTime = finalWorld.getBukkitWorld().getTime();
+            translator.translate("commands.world.time.current")
+                    .withPrefix()
+                    .replace("worldName", finalWorld.getName())
+                    .replace("time", String.valueOf(currentTime))
+                    .send(actor.sender());
+        });
     }
 
     @Command("day")

@@ -6,7 +6,6 @@ import com.fancyinnovations.fancyworlds.api.worlds.WorldStorage;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldServiceImpl implements WorldService {
@@ -45,7 +44,7 @@ public class WorldServiceImpl implements WorldService {
 
     @Override
     public FWorld getWorldByID(String id) {
-        return this.cacheByID.get(UUID.fromString(id));
+        return this.cacheByID.get(id);
     }
 
     @Override

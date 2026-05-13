@@ -33,13 +33,24 @@ public class WorldDifficultyCMD extends FancyContext {
             }
         }
 
-        world.getBukkitWorld().setDifficulty(difficulty);
+        if (!world.isWorldLoaded()) {
+            translator.translate("common.world_not_loaded")
+                    .withPrefix()
+                    .replace("worldName", world.getName())
+                    .send(actor.sender());
+            return;
+        }
 
-        translator.translate("commands.world.difficulty.set.success")
-                .withPrefix()
-                .replace("worldName", world.getName())
-                .replace("difficulty", difficulty.name())
-                .send(actor.sender());
+        final FWorld finalWorld = world;
+        plugin.runGlobalTask(() -> {
+            finalWorld.getBukkitWorld().setDifficulty(difficulty);
+
+            translator.translate("commands.world.difficulty.set.success")
+                    .withPrefix()
+                    .replace("worldName", finalWorld.getName())
+                    .replace("difficulty", difficulty.name())
+                    .send(actor.sender());
+        });
     }
 
     @Command({"world difficulty current", "difficulty current"})
@@ -60,12 +71,23 @@ public class WorldDifficultyCMD extends FancyContext {
             }
         }
 
-        Difficulty difficulty = world.getBukkitWorld().getDifficulty();
+        if (!world.isWorldLoaded()) {
+            translator.translate("common.world_not_loaded")
+                    .withPrefix()
+                    .replace("worldName", world.getName())
+                    .send(actor.sender());
+            return;
+        }
 
-        translator.translate("commands.world.difficulty.current")
-                .withPrefix()
-                .replace("worldName", world.getName())
-                .replace("difficulty", difficulty.name())
-                .send(actor.sender());
+        final FWorld finalWorld = world;
+        plugin.runGlobalTask(() -> {
+            Difficulty difficulty = finalWorld.getBukkitWorld().getDifficulty();
+
+            translator.translate("commands.world.difficulty.current")
+                    .withPrefix()
+                    .replace("worldName", finalWorld.getName())
+                    .replace("difficulty", difficulty.name())
+                    .send(actor.sender());
+        });
     }
 }

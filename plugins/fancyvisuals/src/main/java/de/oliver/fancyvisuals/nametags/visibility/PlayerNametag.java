@@ -7,12 +7,12 @@ import de.oliver.fancysitula.factories.FancySitula;
 import de.oliver.fancyvisuals.FancyVisuals;
 import de.oliver.fancyvisuals.api.nametags.Nametag;
 import de.oliver.fancyvisuals.playerConfig.PlayerConfig;
+import de.oliver.fancyvisuals.utils.TextRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.joml.Vector3f;
-import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class PlayerNametag {
 
-    private final Nametag nametag;
+    private Nametag nametag;
     private final Player player;
     private final Set<UUID> viewers;
     private FS_TextDisplay fsTextDisplay;
@@ -44,6 +44,8 @@ public class PlayerNametag {
                 showTo(viewer);
             } else if (!should && is) {
                 hideFrom(viewer);
+            } else if (should) {
+                updateFor(viewer);
             }
         }
 
@@ -59,6 +61,9 @@ public class PlayerNametag {
         }
 
         if (player.getUniqueId().equals(viewer.getUniqueId())) {
+            if (!FancyVisuals.get().getNametagConfig().showOwnNametag()) {
+                return false;
+            }
             PlayerConfig playerConfig = FancyVisuals.get().getPlayerConfigStore().getPlayerConfig(player.getUniqueId());
             if (!playerConfig.showOwnNametag()) {
                 return false;
@@ -70,7 +75,8 @@ public class PlayerNametag {
             return false;
         }
 
-        boolean inDistance = isInDistance(viewer.getLocation(), player.getLocation(), 24);
+        int maxDistance = FancyVisuals.get().getNametagConfig().getMaxDistance();
+        boolean inDistance = isInDistance(viewer.getLocation(), player.getLocation(), maxDistance);
         if (!inDistance) {
             return false;
         }
@@ -94,13 +100,22 @@ public class PlayerNametag {
         FancySitula.ENTITY_FACTORY.despawnEntityFor(fsViewer, fsTextDisplay);
     }
 
+    public void hideFromAll() {
+        Set<UUID> snapshot = new HashSet<>(viewers);
+        for (UUID viewerId : snapshot) {
+            Player viewer = Bukkit.getPlayer(viewerId);
+            if (viewer != null) {
+                hideFrom(viewer);
+            }
+        }
+    }
+
     public void updateFor(Player viewer) {
         fsTextDisplay.setTranslation(new Vector3f(0, 0.2f, 0));
 
         fsTextDisplay.setBillboard(FS_Display.Billboard.CENTER);
 
-        Color bgColor = Color.fromARGB((int) Long.parseLong(nametag.backgroundColor().substring(1), 16));
-        fsTextDisplay.setBackground(bgColor.asARGB());
+        fsTextDisplay.setBackground(parseBackground(nametag.backgroundColor()));
 
         fsTextDisplay.setStyleFlags((byte) 0);
 
@@ -115,13 +130,7 @@ public class PlayerNametag {
             }
         }
 
-        StringBuilder text = new StringBuilder();
-        for (String line : nametag.textLines()) {
-            text.append(line).append('\n');
-        }
-        text.deleteCharAt(text.length() - 1);
-
-        fsTextDisplay.setText(ModernChatColorHandler.translate(text.toString(), player));
+        fsTextDisplay.setText(TextRenderer.renderLines(nametag.textLines(), player));
 
         FS_RealPlayer fsViewer = new FS_RealPlayer(viewer);
         FancySitula.ENTITY_FACTORY.setEntityDataFor(fsViewer, fsTextDisplay);
@@ -151,6 +160,10 @@ public class PlayerNametag {
         return nametag;
     }
 
+    public void setNametag(Nametag nametag) {
+        this.nametag = nametag;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -161,5 +174,23 @@ public class PlayerNametag {
 
     private boolean isInDistance(Location loc1, Location loc2, double distance) {
         return loc1.distanceSquared(loc2) <= distance * distance;
+    }
+
+    private int parseBackground(String hex) {
+        if (hex == null || hex.isEmpty()) {
+            return Color.fromARGB(0).asARGB();
+        }
+
+        String normalized = hex.startsWith("#") ? hex.substring(1) : hex;
+        if (normalized.length() == 6) {
+            normalized = "FF" + normalized;
+        }
+
+        try {
+            long value = Long.parseLong(normalized, 16);
+            return Color.fromARGB((int) value).asARGB();
+        } catch (NumberFormatException e) {
+            return Color.fromARGB(0).asARGB();
+        }
     }
 }

@@ -12,8 +12,8 @@ dependencies {
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
     compileOnly("org.jetbrains:annotations:26.1.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:6.1.0")
     testImplementation("org.junit.platform:junit-platform-console-standalone:6.0.3")
 }
 

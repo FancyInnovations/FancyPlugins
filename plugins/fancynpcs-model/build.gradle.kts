@@ -18,7 +18,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
-    compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.0.1")
+    compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.0.2")
 
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
@@ -41,7 +41,7 @@ tasks {
 
         downloadPlugins {
             modrinth("FancyNpcs", "2.10.0.359")
-            modrinth("BetterModel", "4h8rX3rt") // 3.0.2-SNAPSHOT-492
+            modrinth("BetterModel", "MLQxOqSw") // 3.0.2
 //            modrinth("FancyDialogs", "1.1.2.53")
 //            modrinth("FancyHolograms", "2.9.1")
 //            modrinth("FancyDialogs", "1.1.2")

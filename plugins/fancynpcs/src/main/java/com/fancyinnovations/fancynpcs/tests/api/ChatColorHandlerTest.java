@@ -4,8 +4,8 @@ import de.oliver.plugintests.annotations.FPTest;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.lushplugins.chatcolorhandler.ChatColorHandler;
-import org.lushplugins.chatcolorhandler.parsers.ParserTypes;
+import org.lushplugins.chatcolorhandler.common.parser.Parsers;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 public class ChatColorHandlerTest {
 
@@ -16,7 +16,7 @@ public class ChatColorHandlerTest {
         }
 
         String input = "Player name: %fn-test%";
-        String got = ChatColorHandler.translate(input, player, ParserTypes.placeholder());
+        String got = PaperColor.handler().translateRaw(input, player, Parsers::placeholder);
         String expected = "Player name: ";
 
         if (got.equalsIgnoreCase("Player name: %fn-test%")) {

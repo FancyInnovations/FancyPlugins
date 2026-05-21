@@ -36,9 +36,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
 
 import org.joml.Vector3f;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -247,7 +247,7 @@ public class NpcImpl extends Npc {
             profile.setName(localName);
         }
 
-        Component displayNameComponent = ModernChatColorHandler.translate(data.getDisplayName(), viewer);
+        Component displayNameComponent = PaperColor.handler().translate(data.getDisplayName(), viewer);
 
         FS_ClientboundPlayerInfoUpdatePacket.Entry entry = new FS_ClientboundPlayerInfoUpdatePacket.Entry(
                 fsEntity.getUuid(),
@@ -453,7 +453,7 @@ public class NpcImpl extends Npc {
 
             if (useNativeCustomName) {
                 // Single line, default scale - use native custom name
-                Component nameComponent = ModernChatColorHandler.translate(displayName);
+                Component nameComponent = PaperColor.handler().translate(displayName);
                 fsEntity.setCustomName(Optional.of(nameComponent));
                 fsEntity.setCustomNameVisible(true);
             } else {
@@ -647,7 +647,7 @@ public class NpcImpl extends Npc {
         FS_Color glowColor = convertToFSColor(data.getGlowingColor());
         Component displayNameComponent = data.getDisplayName().equalsIgnoreCase("<empty>")
                 ? Component.empty()
-                : ModernChatColorHandler.translate(data.getDisplayName(), viewer);
+                : PaperColor.handler().translate(data.getDisplayName(), viewer);
 
         // For non-player entities: empty prefix (custom name via entity data)
         // For Mannequin: empty prefix (uses Text Display for display names)
@@ -940,7 +940,7 @@ public class NpcImpl extends Npc {
                 .replace("<newline>", "\n");
 
         // Convert to Adventure Component with centered text alignment
-        Component textComponent = ModernChatColorHandler.translate(processedName, viewer);
+        Component textComponent = PaperColor.handler().translate(processedName, viewer);
 
         // Configure the Text Display to look like vanilla nametags
         displayNameTextDisplay.setText(textComponent);

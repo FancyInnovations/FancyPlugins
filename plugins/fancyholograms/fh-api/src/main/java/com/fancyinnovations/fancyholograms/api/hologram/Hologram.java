@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -197,7 +197,7 @@ public abstract class Hologram {
             return MiniMessage.miniMessage().deserialize(rawText);
         }
 
-        final Component translated = ModernChatColorHandler.translate(rawText, player);
+        final Component translated = PaperColor.handler().translate(rawText, player);
         cachedTextPerPlayer.put(cacheKey, translated);
         return translated;
     }

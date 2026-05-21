@@ -6,8 +6,8 @@ import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.executor.ActionExecutionContext;
 import org.jetbrains.annotations.NotNull;
-import org.lushplugins.chatcolorhandler.ChatColorHandler;
-import org.lushplugins.chatcolorhandler.parsers.ParserTypes;
+import org.lushplugins.chatcolorhandler.common.parser.Parsers;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 /**
  * Represents a player command action that can be executed when triggered by an NPC interaction.
@@ -31,7 +31,7 @@ public class PlayerCommandAction extends NpcAction {
             return;
         }
 
-        String command = ChatColorHandler.translate(value, context.getPlayer(), ParserTypes.placeholder());
+        String command = PaperColor.handler().translateRaw(value, context.getPlayer(), Parsers::placeholder);
 
         if (command.toLowerCase().startsWith("server")) {
             String[] args = value.split(" ");

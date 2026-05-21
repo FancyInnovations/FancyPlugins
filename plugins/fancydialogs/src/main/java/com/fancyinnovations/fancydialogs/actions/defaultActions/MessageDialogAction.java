@@ -4,7 +4,7 @@ import com.fancyinnovations.fancydialogs.api.Dialog;
 import com.fancyinnovations.fancydialogs.api.DialogAction;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
-import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 public class MessageDialogAction implements DialogAction {
 
@@ -24,7 +24,7 @@ public class MessageDialogAction implements DialogAction {
             raw = data.replace("{player}", player.getName());
         }
 
-        Component msg = ModernChatColorHandler.translate(raw);
+        Component msg = PaperColor.handler().translate(raw);
         player.sendMessage(msg);
     }
 

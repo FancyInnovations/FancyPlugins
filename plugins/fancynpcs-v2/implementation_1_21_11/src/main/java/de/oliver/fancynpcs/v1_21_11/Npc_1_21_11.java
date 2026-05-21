@@ -46,7 +46,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.entity.Player;
-import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -251,7 +251,7 @@ public class Npc_1_21_11 extends Npc {
             team.setCollisionRule(Team.CollisionRule.NEVER);
         }
 
-        net.kyori.adventure.text.Component displayName = ModernChatColorHandler.translate(data.getDisplayName(), serverPlayer.getBukkitEntity());
+        net.kyori.adventure.text.Component displayName = PaperColor.handler().translate(data.getDisplayName(), serverPlayer.getBukkitEntity());
         Component vanillaComponent = PaperAdventure.asVanilla(displayName);
 
         // Validate MiniMessage syntax

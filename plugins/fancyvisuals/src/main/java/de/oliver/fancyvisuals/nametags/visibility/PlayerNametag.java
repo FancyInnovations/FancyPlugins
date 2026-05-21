@@ -12,7 +12,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.joml.Vector3f;
-import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 import java.util.HashSet;
 import java.util.List;
@@ -121,7 +121,7 @@ public class PlayerNametag {
         }
         text.deleteCharAt(text.length() - 1);
 
-        fsTextDisplay.setText(ModernChatColorHandler.translate(text.toString(), player));
+        fsTextDisplay.setText(PaperColor.handler().translate(text.toString(), player));
 
         FS_RealPlayer fsViewer = new FS_RealPlayer(viewer);
         FancySitula.ENTITY_FACTORY.setEntityDataFor(fsViewer, fsTextDisplay);

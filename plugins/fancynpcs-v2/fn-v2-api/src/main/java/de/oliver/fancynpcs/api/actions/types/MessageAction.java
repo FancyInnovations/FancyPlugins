@@ -2,8 +2,8 @@ package de.oliver.fancynpcs.api.actions.types;
 
 import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.executor.ActionExecutionContext;
-import org.lushplugins.chatcolorhandler.ModernChatColorHandler;
 import org.jetbrains.annotations.NotNull;
+import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 /**
  * The MessageAction class represents an action that sends a message to the player when executed by an NPC.
@@ -29,6 +29,6 @@ public class MessageAction extends NpcAction {
             return;
         }
 
-        context.getPlayer().sendMessage(ModernChatColorHandler.translate(value, context.getPlayer()));
+        context.getPlayer().sendMessage(PaperColor.handler().translate(value, context.getPlayer()));
     }
 }

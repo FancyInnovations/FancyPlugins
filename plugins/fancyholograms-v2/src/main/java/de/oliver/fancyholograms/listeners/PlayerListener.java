@@ -14,12 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class PlayerListener implements Listener {
 
     private final @NotNull FancyHolograms plugin;
 
-    private final Map<UUID, List<UUID>> loadingResourcePacks;
+    private final Map<UUID, Integer> loadingResourcePacks; // UUID -> number of resource-packs currently loading for the player
 
     public PlayerListener(@NotNull final FancyHolograms plugin) {
         this.plugin = plugin;
@@ -80,25 +81,25 @@ public final class PlayerListener implements Listener {
         // This should fix NPE due to vanillaPlayer.connection being null when sending resource-packs in the configuration stage.
         if (!event.getPlayer().isOnline())
             return;
-        final UUID playerUniqueId = event.getPlayer().getUniqueId();
-        final UUID packUniqueId = getResourcePackID(event);
-        // Adding accepted resource-pack to the list of currently loading resource-packs for that player.
-        if (event.getStatus() == Status.ACCEPTED)
-            loadingResourcePacks.computeIfAbsent(playerUniqueId, (___) -> new ArrayList<>()).add(packUniqueId);
-            // Once successfully loaded (or failed to download), removing resource-pack from the map.
-        else if (event.getStatus() == Status.SUCCESSFULLY_LOADED || event.getStatus() == Status.FAILED_DOWNLOAD) {
-            loadingResourcePacks.computeIfAbsent(playerUniqueId, (___) -> new ArrayList<>()).removeIf(uuid -> uuid.equals(packUniqueId));
-            // Refreshing holograms once (possibly) all resource-packs are loaded.
-            if (loadingResourcePacks.get(playerUniqueId) != null && loadingResourcePacks.get(playerUniqueId).isEmpty()) {
-                // Removing player from the map, as they're no longer needed here.
-                loadingResourcePacks.remove(playerUniqueId);
-                // Refreshing holograms as to make sure custom textures are loaded.
-                FancyHolograms.get().getHologramThread().submit(() -> {
-                    for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
-                        hologram.refreshHologram(event.getPlayer());
-                    }
-                });
+
+        UUID uuid = event.getPlayer().getUniqueId();
+
+        if (event.getStatus() == Status.ACCEPTED) {
+            loadingResourcePacks.put(uuid, loadingResourcePacks.getOrDefault(uuid, 0) + 1);
+        } else {
+            if (loadingResourcePacks.containsKey(uuid)) {
+                loadingResourcePacks.put(uuid, loadingResourcePacks.get(uuid) - 1);
             }
+        }
+
+        if (loadingResourcePacks.getOrDefault(uuid, 0) <= 0) {
+            loadingResourcePacks.remove(uuid);
+
+            FancyHolograms.get().getHologramThread().submit(() -> {
+                for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
+                    hologram.refreshHologram(event.getPlayer());
+                }
+            });
         }
     }
 

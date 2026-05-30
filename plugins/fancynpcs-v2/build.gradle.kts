@@ -55,7 +55,7 @@ dependencies {
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.12.2")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.12")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.13")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.4.0")
     compileOnly("net.citizensnpcs:citizens-main:2.0.42-SNAPSHOT") {
         exclude(group = "*", module = "*")

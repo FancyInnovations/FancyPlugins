@@ -27,14 +27,8 @@ import java.util.function.Consumer;
 
 public class UUIDFetcher {
 
-    /**
-     * Date when name changes were introduced
-     *
-     * @see UUIDFetcher#getUUIDAt(String, long)
-     */
-    public static final long FEBRUARY_2015 = 1422748800000L;
     private static final ExtendedFancyLogger LOGGER = new ExtendedFancyLogger("UUIDFetcher");
-    private static final String UUID_URL = "https://api.minecraftservices.com/users/profiles/minecraft/%s?at=%d";
+    private static final String UUID_URL = "https://api.minecraftservices.com/minecraft/profile/lookup/name/%s";
     private static final String NAME_URL = "https://api.minecraftservices.com/user/profile/%s";
     private static Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
     private static Map<String, UUID> uuidCache = new HashMap<String, UUID>();
@@ -54,41 +48,19 @@ public class UUIDFetcher {
         pool.execute(() -> action.accept(getUUID(name)));
     }
 
+
     /**
      * Fetches the uuid synchronously and returns it
      *
      * @param name The name
-     * @return The uuid
      */
     public static UUID getUUID(String name) {
-        return getUUIDAt(name, System.currentTimeMillis());
-    }
-
-    /**
-     * Fetches the uuid synchronously for a specified name and time and passes the result to the consumer
-     *
-     * @param name      The name
-     * @param timestamp Time when the player had this name in milliseconds
-     * @param action    Do what you want to do with the uuid her
-     */
-    public static void getUUIDAt(String name, long timestamp, Consumer<UUID> action) {
-        pool.execute(() -> action.accept(getUUIDAt(name, timestamp)));
-    }
-
-    /**
-     * Fetches the uuid synchronously for a specified name and time
-     *
-     * @param name      The name
-     * @param timestamp Time when the player had this name in milliseconds
-     * @see UUIDFetcher#FEBRUARY_2015
-     */
-    public static UUID getUUIDAt(String name, long timestamp) {
         name = name.toLowerCase();
         if (uuidCache.containsKey(name)) {
             return uuidCache.get(name);
         }
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(String.format(UUID_URL, name, timestamp / 1000)).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(String.format(UUID_URL, name)).openConnection();
             connection.setReadTimeout(5000);
             UUIDFetcher data = gson.fromJson(new BufferedReader(new InputStreamReader(connection.getInputStream())), UUIDFetcher.class);
 

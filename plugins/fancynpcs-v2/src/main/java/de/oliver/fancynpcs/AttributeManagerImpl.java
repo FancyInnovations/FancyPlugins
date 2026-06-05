@@ -3,7 +3,6 @@ package de.oliver.fancynpcs;
 import de.oliver.fancynpcs.api.AttributeManager;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v1_21_11.attributes.Attributes_1_21_11;
-import de.oliver.fancynpcs.v1_21_4.attributes.Attributes_1_21_4;
 import de.oliver.fancynpcs.v1_21_5.attributes.Attributes_1_21_5;
 import de.oliver.fancynpcs.v1_21_6.attributes.Attributes_1_21_6;
 import de.oliver.fancynpcs.v1_21_9.attributes.Attributes_1_21_9;
@@ -33,7 +32,6 @@ public class AttributeManagerImpl implements AttributeManager {
             case "1.21.9", "1.21.10" -> attributes = Attributes_1_21_9.getAllAttributes();
             case "1.21.6", "1.21.7", "1.21.8" -> attributes = Attributes_1_21_6.getAllAttributes();
             case "1.21.5" -> attributes = Attributes_1_21_5.getAllAttributes();
-            case "1.21.4" -> attributes = Attributes_1_21_4.getAllAttributes();
         }
     }
 

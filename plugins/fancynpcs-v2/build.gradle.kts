@@ -33,7 +33,6 @@ dependencies {
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_9"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_6"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_5"))
-    implementation(project(":plugins:fancynpcs-v2:implementation_1_21_4"))
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }

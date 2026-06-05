@@ -9,6 +9,7 @@ authors:
   - "OliverSchlueter"
 api-version: "26.1.2"
 load: POSTWORLD
+folia-supported: true
 dependencies:
   server:
     FancyNpcs:

@@ -246,7 +246,7 @@ public class Npc_26_2 extends Npc {
         PlayerTeam team = new PlayerTeam(new Scoreboard(), "npc-" + localName);
         team.getPlayers().clear();
         team.getPlayers().add(npc instanceof ServerPlayer npcPlayer ? npcPlayer.getGameProfile().name() : npc.getStringUUID());
-        team.setColor(PaperAdventure.asVanilla(data.getGlowingColor()));
+        team.setColor(Optional.of(PaperAdventure.asVanilla(data.getGlowingColor())));
         if (!data.isCollidable()) {
             team.setCollisionRule(Team.CollisionRule.NEVER);
         }
@@ -460,7 +460,7 @@ public class Npc_26_2 extends Npc {
         }
 
         if (sittingVehicle == null) {
-            sittingVehicle = new Display.TextDisplay(EntityType.TEXT_DISPLAY, ((CraftWorld) data.getLocation().getWorld()).getHandle());
+            sittingVehicle = new Display.TextDisplay(EntityTypes.TEXT_DISPLAY, ((CraftWorld) data.getLocation().getWorld()).getHandle());
         }
 
         sittingVehicle.setPos(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());

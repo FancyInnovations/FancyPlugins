@@ -12,6 +12,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.Team;
+import net.minecraft.world.scores.TeamColor;
+
+import java.util.Optional;
 
 public class ClientboundCreateOrUpdateTeamPacketImpl extends FS_ClientboundCreateOrUpdateTeamPacket {
 
@@ -59,7 +62,7 @@ public class ClientboundCreateOrUpdateTeamPacketImpl extends FS_ClientboundCreat
         playerTeam.setSeeFriendlyInvisibles(createTeam.isCanSeeFriendlyInvisibles());
         playerTeam.setNameTagVisibility(convertVisibility(createTeam.getNameTagVisibility()));
         playerTeam.setCollisionRule(convertCollisionRule(createTeam.getCollisionRule()));
-        playerTeam.setColor(ChatFormatting.getById(createTeam.getColor().getId()));
+        playerTeam.setColor(Optional.of(TeamColor.byName(createTeam.getColor().getName())));
         playerTeam.setPlayerPrefix(PaperAdventure.asVanilla(createTeam.getPrefix()));
         playerTeam.setPlayerSuffix(PaperAdventure.asVanilla(createTeam.getSuffix()));
         for (String entity : createTeam.getEntities()) {
@@ -89,7 +92,7 @@ public class ClientboundCreateOrUpdateTeamPacketImpl extends FS_ClientboundCreat
         playerTeam.setSeeFriendlyInvisibles(updateTeam.isCanSeeFriendlyInvisibles());
         playerTeam.setNameTagVisibility(convertVisibility(updateTeam.getNameTagVisibility()));
         playerTeam.setCollisionRule(convertCollisionRule(updateTeam.getCollisionRule()));
-        playerTeam.setColor(ChatFormatting.getById(updateTeam.getColor().getId()));
+        playerTeam.setColor(Optional.of(TeamColor.byName(updateTeam.getColor().getName())));
         playerTeam.setPlayerPrefix(PaperAdventure.asVanilla(updateTeam.getPrefix()));
         playerTeam.setPlayerSuffix(PaperAdventure.asVanilla(updateTeam.getSuffix()));
 

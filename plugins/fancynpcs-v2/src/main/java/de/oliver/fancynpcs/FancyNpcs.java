@@ -50,8 +50,6 @@ import de.oliver.fancynpcs.v1_21_4.Npc_1_21_4;
 import de.oliver.fancynpcs.v1_21_5.Npc_1_21_5;
 import de.oliver.fancynpcs.v1_21_6.Npc_1_21_6;
 import de.oliver.fancynpcs.v1_21_9.Npc_1_21_9;
-import de.oliver.fancynpcs.v26_1_1.Npc_26_1_1;
-import de.oliver.fancynpcs.v26_2.Npc_26_2;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -159,8 +157,6 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         String mcVersion = Bukkit.getMinecraftVersion();
 
         npcAdapter = switch (mcVersion) {
-            case "26.2-snapshot-1" -> Npc_26_2::new;
-            case "26.1.2" -> Npc_26_1_1::new;
             case "1.21.11" -> Npc_1_21_11::new;
             case "1.21.9", "1.21.10" -> Npc_1_21_9::new;
             case "1.21.6", "1.21.7", "1.21.8" -> Npc_1_21_6::new;

@@ -14,7 +14,7 @@ dependencies {
 
     implementation(project(":libraries:packets"))
     implementation(project(":libraries:packets:packets-api"))
-    implementation(project(":libraries:packets:implementations:26_1_1"))
+    implementation(project(":libraries:packets:implementations:1_21_11"))
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
 }
 
@@ -40,7 +40,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 25
+        options.release = 21
     }
 
     javadoc {
@@ -53,5 +53,5 @@ tasks {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }

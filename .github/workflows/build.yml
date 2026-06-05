@@ -36,9 +36,6 @@ jobs:
       - name: Build FancyNpcs
         run: ./gradlew :plugins:fancynpcs:shadowJar
 
-      - name: Build FancyNpcsModel
-        run: ./gradlew :plugins:fancynpcs-model:shadowJar
-
       - name: Build FancyHolograms v2
         run: ./gradlew :plugins:fancyholograms-v2:shadowJar
 

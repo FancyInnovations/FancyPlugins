@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
@@ -125,7 +126,7 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
                     """);
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(INSTANCE, () -> {
+        Bukkit.getServer().getGlobalRegionScheduler().runDelayed(this, (_) -> {
             if (!Bukkit.getPluginManager().isPluginEnabled("FancyNpcs")) {
                 fancyLogger.error("""
                         
@@ -136,7 +137,6 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
                         --------------------------------------------------
                         """);
                 Bukkit.getPluginManager().disablePlugin(this);
-                return;
             }
         }, 20L * 20); // 20s
 

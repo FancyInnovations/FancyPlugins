@@ -348,7 +348,7 @@ public class Npc_1_21_9 extends Npc {
 
         if (npc instanceof LivingEntity) {
             NpcAttribute customModelAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "custom_model");
-            boolean hasCustomModel = data.getAttributes().containsKey(customModelAttr);
+            boolean hasCustomModel = customModelAttr != null && data.getAttributes().containsKey(customModelAttr);
 
             List<AttributeInstance> changedAttributes = new ArrayList<>();
 

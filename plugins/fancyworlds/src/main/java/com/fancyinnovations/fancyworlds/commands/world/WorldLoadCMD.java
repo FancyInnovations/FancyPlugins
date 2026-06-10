@@ -62,20 +62,30 @@ public class WorldLoadCMD extends FancyContext {
                 .replace("worldName", name)
                 .send(actor.sender());
 
-        World world = fworld.toWorldCreator().createWorld();
-        if (world == null) {
+        final boolean registeredDuringLoad = service.getWorldByName(name) == null;
+        if (registeredDuringLoad) {
+            service.registerWorld(fworld);
+        }
+
+        final FWorldImpl worldToLoad = fworld;
+        plugin.getWorldPlatformView().createWorld(worldToLoad).thenAccept(world -> {
+            worldToLoad.setBukkitWorld(world);
+            if (!registeredDuringLoad) {
+                service.registerWorld(worldToLoad);
+            }
+            translator.translate("commands.world.load.success")
+                    .withPrefix()
+                    .replace("worldName", name)
+                    .send(actor.sender());
+        }).exceptionally(throwable -> {
+            if (registeredDuringLoad) {
+                service.unregisterWorld(worldToLoad);
+            }
             translator.translate("commands.world.load.failed")
                     .withPrefix()
                     .replace("worldName", name)
                     .send(actor.sender());
-            return;
-        }
-
-        fworld.setBukkitWorld(world);
-        service.registerWorld(fworld);
-        translator.translate("commands.world.load.success")
-                .withPrefix()
-                .replace("worldName", name)
-                .send(actor.sender());
+            return null;
+        });
     }
 }

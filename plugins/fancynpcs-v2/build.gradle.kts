@@ -48,7 +48,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.8")
     implementation("org.incendo:cloud-core:2.0.0")
-    implementation("org.incendo:cloud-paper:2.0.0-beta.15")
+    implementation("org.incendo:cloud-paper:2.0.0-fix+1-SNAPSHOT")
     implementation("org.incendo:cloud-annotations:2.0.0")
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
@@ -92,9 +92,9 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.1.2")
-//        minecraftVersion("26.2-pre-4")
-//        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2-pre-4.build.1-alpha.jar"))
+//        minecraftVersion("26.1.2")
+        minecraftVersion("26.2-rc-2")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2-rc-2.build.1-alpha.jar"))
 
 
         downloadPlugins {

@@ -28,7 +28,7 @@ dependencies {
 
     implementation(project(":plugins:fancynpcs-v2:fn-v2-api"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_2"))
-    implementation(project(":plugins:fancynpcs-v2:implementation_26_1_1"))
+    implementation(project(":plugins:fancynpcs-v2:implementation_26_1_2"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_11"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_9"))
     implementation(project(":plugins:fancynpcs-v2:implementation_1_21_6"))

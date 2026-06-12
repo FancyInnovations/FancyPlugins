@@ -15,7 +15,7 @@ dependencies {
 
     implementation(project(":libraries:packets:packets-api"))
     implementation(project(":libraries:packets:implementations:26_2"))
-    implementation(project(":libraries:packets:implementations:26_1_1"))
+    implementation(project(":libraries:packets:implementations:26_1_2"))
     implementation(project(":libraries:packets:implementations:1_21_11"))
     implementation(project(":libraries:packets:implementations:1_21_9"))
     implementation(project(":libraries:packets:implementations:1_21_6"))

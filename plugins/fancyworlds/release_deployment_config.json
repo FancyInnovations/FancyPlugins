@@ -8,13 +8,15 @@
     "platform": "paper",
     "channel": "release",
     "supported_versions": [
-      "26.1.2"
+      "26.1.2",
+      "26.2"
     ]
   },
   "modrinth": {
     "project_id": "pQjoA91u",
     "supported_versions": [
-      "26.1.2"
+      "26.1.2",
+      "26.2"
     ],
     "channel": "release",
     "loaders": [
@@ -29,7 +31,8 @@
     "author": "oliver",
     "project_id": "FancyWorlds",
     "supported_versions": [
-      "26.1.2"
+      "26.1.2",
+      "26.2"
     ],
     "channel": "Release"
   }

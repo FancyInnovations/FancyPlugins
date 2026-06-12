@@ -1,1 +1,1 @@
-* Fixed holograms disappearing / not showing
+* Added support for 26.2

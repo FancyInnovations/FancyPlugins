@@ -1,2 +1,2 @@
-* Fixed skin system throwing errors
-* Fixed npcs disappearing / not showing
+* Added support for 26.2
+* Fixed `/npc displayname` command throwing errors

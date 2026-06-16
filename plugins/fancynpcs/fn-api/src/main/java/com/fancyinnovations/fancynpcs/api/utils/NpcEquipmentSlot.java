@@ -31,10 +31,6 @@ public enum NpcEquipmentSlot {
         return null;
     }
 
-    public String toNmsName() {
-        return name().toLowerCase();
-    }
-
     public static Set<NpcEquipmentSlot> getValidSlots(EntityType entityType) {
         if (entityType == null) {
             return EMPTY_SLOTS;
@@ -52,7 +48,7 @@ public enum NpcEquipmentSlot {
 
             case HORSE, ZOMBIE_HORSE, SKELETON_HORSE, LLAMA, TRADER_LLAMA, WOLF -> BODY_ONLY;
 
-            case SNOWMAN -> EnumSet.of(HEAD);
+            case SNOW_GOLEM -> EnumSet.of(HEAD);
 
             default -> {
                 if (entityType.name().equals("MANNEQUIN")) {
@@ -65,6 +61,10 @@ public enum NpcEquipmentSlot {
 
     public static boolean isValidSlot(EntityType entityType, NpcEquipmentSlot slot) {
         return getValidSlots(entityType).contains(slot);
+    }
+
+    public String toNmsName() {
+        return name().toLowerCase();
     }
 
 }

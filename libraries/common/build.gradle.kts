@@ -9,7 +9,7 @@ version = findProperty("fancylibVersion") as String
 description = "Library for all Fancy plugins"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 dependencies {
@@ -107,7 +107,7 @@ tasks {
 
         // Set the release flag. This configures what version bytecode the compiler will emit, as well as what JDK APIs are usable.
         // See https://openjdk.java.net/jeps/247 for more information.
-        options.release.set(17)
+        options.release.set(25)
     }
 
     java {

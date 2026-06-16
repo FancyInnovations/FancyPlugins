@@ -1,5 +1,7 @@
 package de.oliver.fancynpcs.commands;
 
+import de.oliver.fancyanalytics.logger.properties.StringProperty;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.translations.message.Message;
 import de.oliver.fancynpcs.FancyNpcs;
@@ -19,10 +21,7 @@ import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.bukkit.parser.WorldParser;
 import org.incendo.cloud.bukkit.parser.location.LocationParser;
 import org.incendo.cloud.component.CommandComponent;
-import org.incendo.cloud.exception.ArgumentParseException;
-import org.incendo.cloud.exception.InvalidCommandSenderException;
-import org.incendo.cloud.exception.InvalidSyntaxException;
-import org.incendo.cloud.exception.NoPermissionException;
+import org.incendo.cloud.exception.*;
 import org.incendo.cloud.exception.handling.ExceptionHandlerRegistration;
 import org.incendo.cloud.exception.parsing.NumberParseException;
 import org.incendo.cloud.exception.parsing.ParserException;
@@ -170,6 +169,19 @@ public final class CloudCommandManager {
             }
             message.send(exceptionContext.context().sender());
         });
+
+        commandManager.exceptionController().registerHandler(CommandExecutionException.class, context -> {
+            plugin.getFancyLogger().error(
+                    "An unexpected error occurred while executing a command!",
+                    ThrowableProperty.of(context.exception()),
+                    StringProperty.of("rawInput", context.context().rawInput().input())
+            );
+
+            plugin.getTranslator().translate("command_unexpected_exception")
+                    .withPrefix()
+                    .send(context.context().sender());
+        });
+
         // Returning this instance of CloudCommandManager to keep "builder-like" flow.
         return this;
     }

@@ -95,9 +95,10 @@ messages:
   command_unsupported_npc_type: "{errorColor}This NPC type does not support this feature."
   command_input_contains_blocked_command: "{errorColor}This command is not allowed for use in interactions."
   command_npc_modification_cancelled: "{errorColor}NPC modification has been cancelled by the API."
+  command_unexpected_exception: "{errorColor}An unexpected error occurred! Check the console for more details."
 
   # Generic Syntax Message (syntax is provided by Cloud and may not be human-friendly)
-  command_invalid_syntax_generic: "Syntax: {primaryColor}/{syntax}"
+  command_invalid_syntax_generic: "{errorColor}Syntax: {primaryColor}/{syntax}"
 
   # Command Syntaxes
   command_syntax:

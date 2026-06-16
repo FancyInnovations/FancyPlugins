@@ -11,7 +11,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 
     implementation(project(":libraries:packets:packets-api"))
     implementation(project(":libraries:packets:implementations:26_2"))

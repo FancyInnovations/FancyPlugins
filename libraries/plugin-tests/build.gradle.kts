@@ -13,7 +13,7 @@ java {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     compileOnly("com.google.code.gson:gson:2.13.2")
     implementation("org.jetbrains:annotations:26.1.0")
 

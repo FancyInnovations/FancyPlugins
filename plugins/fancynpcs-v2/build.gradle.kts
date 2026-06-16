@@ -24,7 +24,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
     implementation(project(":plugins:fancynpcs-v2:fn-v2-api"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_2"))
@@ -93,7 +93,7 @@ paper {
 tasks {
     runServer {
         minecraftVersion("26.2")
-        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
+        //serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
 
 
         downloadPlugins {

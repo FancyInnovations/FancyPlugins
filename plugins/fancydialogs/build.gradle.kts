@@ -77,8 +77,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.1.2")
-//        serverJar(file("../../libraries/paper-server/paper-bundler-26.1.2-R0.1-SNAPSHOT.jar"))
+        minecraftVersion("26.2")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
 
         downloadPlugins {
 //            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/A364LHvu/files/FancyWorlds-0.0.4.jar")

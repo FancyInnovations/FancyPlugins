@@ -93,13 +93,14 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.1.2")
+        minecraftVersion("26.2")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
 
         downloadPlugins {
             //url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/A364LHvu/files/FancyWorlds-0.0.4.jar")
-            modrinth("FancyNpcs", "2.10.0")
-            modrinth("FancyDialogs", "1.2.0")
-            modrinth("FancyEconomy", "1.0.3+7")
+//            modrinth("FancyNpcs", "2.10.0")
+//            modrinth("FancyDialogs", "1.2.0")
+//            modrinth("FancyEconomy", "1.0.3+7")
 
 //            hangar("PlaceholderAPI", "2.11.6")
 //            hangar("ViaVersion", "5.8.1")

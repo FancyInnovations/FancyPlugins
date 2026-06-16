@@ -90,6 +90,11 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
     private String mineskinApiKey;
 
     /**
+     * Timeout for the MineSkin API in milliseconds
+     */
+    private int mineskinTimeout;
+
+    /**
      * The commands that are blocked for NPCs in the message.
      */
     private List<String> blockedCommands;
@@ -141,6 +146,9 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
 
         mineskinApiKey = (String) ConfigHelper.getOrDefault(config, "mineskin_api_key", "");
         config.setInlineComments("mineskin_api_key", List.of("The API key for the MineSkin API. This will be used to load skins faster. You can get an API key at https://mineskin.org/account."));
+
+        mineskinTimeout = (int) ConfigHelper.getOrDefault(config, "mineskin_timeout", 3000);
+        config.setInlineComments("mineskin_timeout", List.of("Timeout for the MineSkin API in milliseconds."));
 
         removeNpcsFromPlayerlistDelay = (int) ConfigHelper.getOrDefault(config, "remove_npcs_from_playerlist_delay", 2000);
         config.setInlineComments("remove_npcs_from_playerlist_delay", List.of("The delay in milliseconds to remove NPCs from the player list. Increase this value if you have problems with skins not loading correctly when joining or switching worlds. You can set it to -1, if you don't have any npcs using the show_in_tab feature."));
@@ -240,7 +248,9 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
         return removeNpcsFromPlayerlistDelay;
     }
 
-    public boolean isSwingArmOnUpdate() { return swingArmOnUpdate; }
+    public boolean isSwingArmOnUpdate() {
+        return swingArmOnUpdate;
+    }
 
     public String getMineSkinApiKey() {
         if (mineskinApiKey.isEmpty()) {
@@ -248,6 +258,11 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
         }
 
         return mineskinApiKey;
+    }
+
+    @Override
+    public int getMineSkinTimeout() {
+        return mineskinTimeout;
     }
 
     public List<String> getBlockedCommands() {

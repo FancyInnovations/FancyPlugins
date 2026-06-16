@@ -20,10 +20,10 @@ public interface FancyNpcsConfig {
     int getNpcUpdateVisibilityInterval();
 
     int getTurnToPlayerDistance();
-    
+
     /**
      * Sets the distance at which NPCs turn to the player.
-     * 
+     *
      * @param distance The new distance value
      * @return true if the distance was updated successfully, false otherwise
      */
@@ -38,6 +38,8 @@ public interface FancyNpcsConfig {
     boolean isSwingArmOnUpdate();
 
     String getMineSkinApiKey();
+
+    int getMineSkinTimeout();
 
     List<String> getBlockedCommands();
 

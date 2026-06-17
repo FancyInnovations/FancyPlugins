@@ -1,1 +1,0 @@
-* Added support for 26.2

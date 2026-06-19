@@ -66,3 +66,6 @@ messages:
           updated: "Updated the text update interval to {primaryColor}{interval}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
           short_interval_warning: "{warningColor}Warning: Setting a very short text update interval (less than 1s) may cause high CPU usage and cause client lag due to frequent hologram updates."
           disabled: "Disabled the text update interval for hologram {primaryColor}{hologram}{secondaryColor}."
+        background:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this background ({color}) set."
+          updated: "Updated the background to {primaryColor}{color}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

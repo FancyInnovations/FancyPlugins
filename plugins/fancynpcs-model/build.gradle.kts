@@ -28,7 +28,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
 
     compileOnly("org.incendo:cloud-core:2.0.0")
-    implementation("org.incendo:cloud-paper:2.0.0-beta.16")
+    compileOnly("org.incendo:cloud-paper:2.0.0-beta.16")
     compileOnly("org.incendo:cloud-annotations:2.0.0")
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
 

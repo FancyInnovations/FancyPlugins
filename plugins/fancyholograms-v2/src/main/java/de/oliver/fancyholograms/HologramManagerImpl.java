@@ -227,6 +227,10 @@ public final class HologramManagerImpl implements HologramManager {
             for (final var hologram : this.getHolograms()) {
                 HologramData data = hologram.getData();
                 if (data.hasChanges()) {
+                    if (data instanceof TextHologramData) {
+                        hologram.clearTextCache();
+                    }
+
                     hologram.forceUpdate();
                     hologram.refreshForViewersInWorld();
                     data.setHasChanges(false);
@@ -259,7 +263,7 @@ public final class HologramManagerImpl implements HologramManager {
                     }
                 }
             }
-        }, 50, 50, TimeUnit.MILLISECONDS);
+        }, 50, this.plugin.getHologramConfiguration().getHologramUpdateInterval(), TimeUnit.MILLISECONDS);
     }
 
     /**

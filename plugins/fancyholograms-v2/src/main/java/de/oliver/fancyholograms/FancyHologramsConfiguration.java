@@ -26,19 +26,21 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
     private static final String CONFIG_VISIBILITY_DISTANCE = "visibility_distance";
     private static final String CONFIG_REGISTER_COMMANDS = "register_commands";
     private static final String CONFIG_UPDATE_VISIBILITY_INTERVAL = "update_visibility_interval";
+    private static final String CONFIG_HOLOGRAM_UPDATE_INTERVAL = "performance.hologram_update_interval_ms";
     private static final String CONFIG_REPORT_ERRORS_TO_SENTRY = "report_errors_to_sentry";
     private static final String CONFIG_VERSION = "config_version";
-    private static final Map<String, List<String>> CONFIG_COMMENTS = Map.of(
-            CONFIG_VERSION, List.of("Config version, do not modify."),
-            CONFIG_AUTOSAVE_ENABLED, List.of("Whether autosave is enabled."),
-            CONFIG_AUTOSAVE_INTERVAL, List.of("The interval at which autosave is performed in minutes."),
-            CONFIG_SAVE_ON_CHANGED, List.of("Whether the plugin should save holograms when they are changed."),
-            CONFIG_LOG_LEVEL, List.of("The log level for the plugin (DEBUG, INFO, WARN, ERROR)."),
-            CONFIG_LOG_ON_WORLD_LOAD, List.of("Whether hologram loading should be logged on world loading. Disable this if you load worlds dynamically to prevent console spam."),
-            CONFIG_VERSION_NOTIFICATIONS, List.of("Whether the plugin should send notifications for new updates."),
-            CONFIG_VISIBILITY_DISTANCE, List.of("The default visibility distance for holograms."),
-            CONFIG_REGISTER_COMMANDS, List.of("Whether the plugin should register its commands."),
-            CONFIG_UPDATE_VISIBILITY_INTERVAL, List.of("The interval at which hologram visibility is updated in ticks.")
+    private static final Map<String, List<String>> CONFIG_COMMENTS = Map.ofEntries(
+            Map.entry(CONFIG_VERSION, List.of("Config version, do not modify.")),
+            Map.entry(CONFIG_AUTOSAVE_ENABLED, List.of("Whether autosave is enabled.")),
+            Map.entry(CONFIG_AUTOSAVE_INTERVAL, List.of("The interval at which autosave is performed in minutes.")),
+            Map.entry(CONFIG_SAVE_ON_CHANGED, List.of("Whether the plugin should save holograms when they are changed.")),
+            Map.entry(CONFIG_LOG_LEVEL, List.of("The log level for the plugin (DEBUG, INFO, WARN, ERROR).")),
+            Map.entry(CONFIG_LOG_ON_WORLD_LOAD, List.of("Whether hologram loading should be logged on world loading. Disable this if you load worlds dynamically to prevent console spam.")),
+            Map.entry(CONFIG_VERSION_NOTIFICATIONS, List.of("Whether the plugin should send notifications for new updates.")),
+            Map.entry(CONFIG_VISIBILITY_DISTANCE, List.of("The default visibility distance for holograms.")),
+            Map.entry(CONFIG_REGISTER_COMMANDS, List.of("Whether the plugin should register its commands.")),
+            Map.entry(CONFIG_UPDATE_VISIBILITY_INTERVAL, List.of("The interval at which hologram visibility is updated in ticks.")),
+            Map.entry(CONFIG_HOLOGRAM_UPDATE_INTERVAL, List.of("The interval at which text holograms refresh placeholder updates in milliseconds. Lower values are more responsive but use more CPU."))
     );
     /**
      * Indicates whether autosave is enabled.
@@ -78,6 +80,10 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
      * The interval at which hologram visibility is updated.
      */
     private int updateVisibilityInterval;
+    /**
+     * The interval at which text holograms refresh dynamic text updates.
+     */
+    private int hologramUpdateInterval;
 
     private void updateChecker(@NotNull FancyHolograms plugin, @NotNull FileConfiguration config) {
         final int latestVersion = 1;
@@ -145,6 +151,7 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
         defaultVisibilityDistance = (int) ConfigHelper.getOrDefault(config, CONFIG_VISIBILITY_DISTANCE, 20);
         registerCommands = (boolean) ConfigHelper.getOrDefault(config, CONFIG_REGISTER_COMMANDS, true);
         updateVisibilityInterval = (int) ConfigHelper.getOrDefault(config, CONFIG_UPDATE_VISIBILITY_INTERVAL, 20);
+        hologramUpdateInterval = Math.max(10, (int) ConfigHelper.getOrDefault(config, CONFIG_HOLOGRAM_UPDATE_INTERVAL, 200));
 
         config.set(CONFIG_REPORT_ERRORS_TO_SENTRY, null);
     }
@@ -208,5 +215,10 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
     @Override
     public int getUpdateVisibilityInterval() {
         return updateVisibilityInterval;
+    }
+
+    @Override
+    public int getHologramUpdateInterval() {
+        return hologramUpdateInterval;
     }
 }

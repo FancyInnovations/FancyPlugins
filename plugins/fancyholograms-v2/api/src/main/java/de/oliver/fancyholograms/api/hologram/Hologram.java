@@ -1,5 +1,7 @@
 package de.oliver.fancyholograms.api.hologram;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.data.property.Visibility;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract base class for creating, updating, and managing holograms.
@@ -40,6 +43,12 @@ public abstract class Hologram {
      * Set of UUIDs of players to whom the hologram is currently shown.
      */
     protected final @NotNull Set<UUID> viewers = new HashSet<>();
+    private static final UUID NULL_PLAYER_KEY = new UUID(0L, 0L);
+    private final Cache<UUID, Component> cachedTextPerPlayer = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.SECONDS)
+            .maximumSize(512)
+            .build();
+    private String lastRawText = "";
 
     protected Hologram(@NotNull final HologramData data) {
         this.data = data;
@@ -184,6 +193,7 @@ public abstract class Hologram {
      * Use {@link #forceUpdate()} if this hologram is not registered to the HologramManager.
      */
     public final void queueUpdate() {
+        clearTextCache();
         data.setHasChanges(true);
     }
 
@@ -355,13 +365,32 @@ public abstract class Hologram {
             return null;
         }
 
-        var text = String.join("\n", textData.getText());
+        final String rawText = String.join("\n", textData.getText());
 
-        if (Bukkit.isStopping()) {
-            return MiniMessage.miniMessage().deserialize(text);
+        if (!rawText.equals(lastRawText)) {
+            cachedTextPerPlayer.invalidateAll();
+            lastRawText = rawText;
         }
 
-        return PaperColor.handler().translate(text, player);
+        if (Bukkit.isStopping()) {
+            return MiniMessage.miniMessage().deserialize(rawText);
+        }
+
+        final UUID cacheKey = player != null ? player.getUniqueId() : NULL_PLAYER_KEY;
+        final Component cached = cachedTextPerPlayer.getIfPresent(cacheKey);
+        if (cached != null) {
+            return cached;
+        }
+
+        final Component translated = PaperColor.handler().translate(rawText, player);
+        cachedTextPerPlayer.put(cacheKey, translated);
+        return translated;
+    }
+
+    @ApiStatus.Internal
+    public void clearTextCache() {
+        cachedTextPerPlayer.invalidateAll();
+        lastRawText = "";
     }
 
     @Override

@@ -69,3 +69,6 @@ messages:
         background:
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this background ({color}) set."
           updated: "Updated the background to {primaryColor}{color}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        billboard:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this billboard ({billboard}) set."
+          updated: "Updated the billboard to {primaryColor}{billboard}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

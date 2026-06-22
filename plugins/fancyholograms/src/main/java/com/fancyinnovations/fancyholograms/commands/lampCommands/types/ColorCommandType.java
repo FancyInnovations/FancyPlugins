@@ -17,9 +17,9 @@ public class ColorCommandType extends BukkitExceptionHandler implements Paramete
 
     public static final ColorCommandType INSTANCE = new ColorCommandType();
 
-    public static final String TRANSPARENT_SUGGESTION = "@transparent";
+    public static final String TRANSPARENT_SUGGESTION = "transparent";
     public static final Color TRANSPARENT_COLOR = Color.fromARGB(0);
-    public static final String DEFAULT_SUGGESTION = "@default";
+    public static final String DEFAULT_SUGGESTION = "default";
 
     private ColorCommandType() {
     }

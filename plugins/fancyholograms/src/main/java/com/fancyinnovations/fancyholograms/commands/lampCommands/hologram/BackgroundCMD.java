@@ -48,7 +48,7 @@ public final class BackgroundCMD {
             return;
         }
 
-        if (copied.getBackground().equals(data.getBackground())) {
+        if (copied.getBackground() != null && copied.getBackground().equals(data.getBackground())) {
             translator.translate("commands.hologram.edit.background.already_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())

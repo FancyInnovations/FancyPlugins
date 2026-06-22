@@ -72,3 +72,7 @@ messages:
         billboard:
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this billboard ({billboard}) set."
           updated: "Updated the billboard to {primaryColor}{billboard}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        block:
+          not_a_block: "{errorColor}Material {primaryColor}{material}{errorColor} is not a valid block."
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this block ({material}) set."
+          updated: "Updated the block to {primaryColor}{material}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

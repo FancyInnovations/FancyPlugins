@@ -128,7 +128,7 @@ public final class GlowingCMD {
             translator.translate("commands.hologram.edit.glowing.color_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("color", ((SimpleMessage) translator.translate(color.getTranslationKey())).getMessage())
+                    .replace("color", ((SimpleMessage) translator.translate("common.colors." + color.getTranslationKey().replace("color_", ""))).getMessage())
                     .send(actor.sender());
         }
     }

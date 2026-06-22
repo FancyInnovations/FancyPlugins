@@ -46,7 +46,7 @@ dependencies {
     compileOnly("org.lushplugins.chatcolorhandler:paper:8.1.1")
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
-    implementation("de.oliver.FancyAnalytics:logger:0.0.8")
+    implementation("de.oliver.FancyAnalytics:logger:0.0.10")
     implementation("org.incendo:cloud-core:2.0.0")
     implementation("org.incendo:cloud-paper:2.0.0-beta.16")
     implementation("org.incendo:cloud-annotations:2.0.0")

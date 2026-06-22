@@ -76,3 +76,6 @@ messages:
           not_a_block: "{errorColor}Material {primaryColor}{material}{errorColor} is not a valid block."
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this block ({material}) set."
           updated: "Updated the block to {primaryColor}{material}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        brightness:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this brightness ({brightness}) set."
+          updated: "Updated the brightness to {primaryColor}{brightness}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

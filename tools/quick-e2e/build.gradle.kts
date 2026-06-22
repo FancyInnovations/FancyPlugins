@@ -13,7 +13,7 @@ java {
 
 dependencies {
     compileOnly("com.google.code.gson:gson:2.13.2")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:5.4.0")
     implementation("org.jetbrains:annotations:26.1.0")
 
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")

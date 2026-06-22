@@ -79,3 +79,5 @@ messages:
         brightness:
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this brightness ({brightness}) set."
           updated: "Updated the brightness to {primaryColor}{brightness}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        position:
+          updated: "Updated the position to {primaryColor}({x}, {y}, {z}){secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

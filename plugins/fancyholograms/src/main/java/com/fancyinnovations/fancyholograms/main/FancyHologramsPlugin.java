@@ -342,6 +342,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         lamp.register(BillboardCMD.INSTANCE);
         lamp.register(BlockCMD.INSTANCE);
         lamp.register(BrightnessCMD.INSTANCE);
+        lamp.register(CenterCMD.INSTANCE);
     }
 
     private void registerListeners() {

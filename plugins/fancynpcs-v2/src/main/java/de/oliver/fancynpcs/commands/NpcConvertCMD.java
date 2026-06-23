@@ -92,8 +92,11 @@ public final class NpcConvertCMD {
             // glowing
             ScoreboardTrait scoreboardTrait = npc.getTraitNullable(ScoreboardTrait.class);
             if (scoreboardTrait != null && scoreboardTrait.getColor() != null) {
-                data.setGlowing(true);
-                data.setGlowingColor(NamedTextColor.NAMES.value(scoreboardTrait.getColor().name().toLowerCase()));
+                NamedTextColor color = NamedTextColor.NAMES.value(scoreboardTrait.getColor().name().toLowerCase());
+                if (color != null) {
+                    data.setGlowing(true);
+                    data.setGlowingColor(color);
+                }
             }
 
             // equipment

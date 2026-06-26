@@ -18,7 +18,7 @@ dependencies {
 
     // database drivers
     compileOnly("org.xerial:sqlite-jdbc:3.53.2.0")
-    compileOnly("com.mysql:mysql-connector-j:9.6.0")
+    compileOnly("com.mysql:mysql-connector-j:9.7.0")
 
     // testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0")

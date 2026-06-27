@@ -28,6 +28,7 @@ public class FancyEconomyConfig {
     private String postgresqlUsername;
     private String postgresqlPassword;
     private String sqliteFile;
+    private String language;
 
     private boolean useShortFormat;
     private double minWithdrawAmount;
@@ -61,6 +62,12 @@ public class FancyEconomyConfig {
 
         sqliteFile = (String) ConfigHelper.getOrDefault(config, "database.sqlite.file_path", "database.db");
         sqliteFile = "plugins/FancyEconomy/" + sqliteFile;
+
+        /*
+            Translations
+         */
+        language = (String) ConfigHelper.getOrDefault(config, "language", "default");
+
 
 
         /*
@@ -102,6 +109,10 @@ public class FancyEconomyConfig {
         }
 
         FancyEconomy.getInstance().saveConfig();
+    }
+
+    public String getLanguage() {
+        return language;
     }
 
     public boolean useShortFormat() {

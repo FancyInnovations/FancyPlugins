@@ -15,7 +15,6 @@ import de.oliver.fancylib.serverSoftware.schedulers.FoliaScheduler;
 import de.oliver.fancylib.translations.Language;
 import de.oliver.fancylib.translations.TextConfig;
 import de.oliver.fancylib.translations.Translator;
-import de.oliver.fancylib.translations.message.SimpleMessage;
 import de.oliver.fancylib.versionFetcher.MasterVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
 import dev.jorel.commandapi.CommandAPI;
@@ -110,44 +109,13 @@ public class FancyEconomy extends JavaPlugin {
         TextConfig textConfig = new TextConfig("#E3CA66", "#35ad1d", "#81E366", "#E3CA66", "#E36666", "");
         translator = new Translator(textConfig);
 
-        Language lang = new Language("default", "default");
-        lang.addMessage("player-not-found", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}Could not find target player: '{player}'"));
-        lang.addMessage("no-permissions", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}You don't have permissions to execute this command"));
-        lang.addMessage("no-inventory-space", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}You don't have enough space in your inventory"));
-
-        lang.addMessage("help-balance", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} balance <gray>- Shows your balance"));
-        lang.addMessage("help-balance-others", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} balance <player> <gray>- Shows a player's balance"));
-        lang.addMessage("help-pay", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} pay <player> <amount> <gray>- Pays money to a certain player"));
-        lang.addMessage("help-withdraw", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} withdraw <amount> <gray>- Withdraw a certain amount of money"));
-        lang.addMessage("help-top", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} top <page> <gray>- Shows the richest players"));
-        lang.addMessage("help-set", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} set <player> <amount> <gray>- Sets the balance of a certain player"));
-        lang.addMessage("help-add", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} add <player> <amount> <gray>- Adds money to a certain player"));
-        lang.addMessage("help-remove", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}/{currency} remove <player> <amount> <gray>- Removes money to a certain player"));
-
-        lang.addMessage("your-balance", new SimpleMessage(textConfig, "<dark_gray>› <gray>Your balance: {primaryColor}{balance}"));
-        lang.addMessage("balance-others", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}{player}'s <gray>balance: {primaryColor}{balance}"));
-
-        lang.addMessage("cannot-pay-yourself", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}You cannot pay yourself"));
-        lang.addMessage("not-enough-money", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}Insufficient balance"));
-        lang.addMessage("paid-sender", new SimpleMessage(textConfig, "<dark_gray>› <gray>Successfully paid {primaryColor}{amount} <gray>to {primaryColor}{receiver}"));
-        lang.addMessage("paid-receiver", new SimpleMessage(textConfig, "<dark_gray>› <gray>Received {primaryColor}{amount} <gray>from {primaryColor}{sender}"));
-
-        lang.addMessage("not-withdrawable", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}This currency is not withdrawable"));
-        lang.addMessage("min-withdrawable", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}The minimum withdraw amount is: {primaryColor}{amount}"));
-        lang.addMessage("max-withdrawable", new SimpleMessage(textConfig, "<dark_gray>› {errorColor}The maximum withdraw amount is: {primaryColor}{amount}"));
-        lang.addMessage("withdraw-success", new SimpleMessage(textConfig, "<dark_gray>› <gray>Successfully withdraw {primaryColor}{amount}"));
-        lang.addMessage("deposit-note", new SimpleMessage(textConfig, "<dark_gray>› {primaryColor}+ {amount}"));
-
-        lang.addMessage("set-success", new SimpleMessage(textConfig, "<dark_gray>› <gray>Successfully set {primaryColor}{player}'s <gray>balance to {primaryColor}{amount}"));
-        lang.addMessage("add-success", new SimpleMessage(textConfig, "<dark_gray>› <gray>Successfully added {primaryColor}{amount} <gray>to {primaryColor}{player}"));
-        lang.addMessage("remove-success", new SimpleMessage(textConfig, "<dark_gray>› <gray>Successfully removed {primaryColor}{amount} <gray>from {primaryColor}{player}"));
-
-        lang.addMessage("balancetop-your-place", new SimpleMessage(textConfig, "<dark_gray>› <gray>Your place: {primaryColor}#{place}"));
-        lang.addMessage("balance-top-empty-page", new SimpleMessage(textConfig, "<dark_gray>› <gray>No data for this page"));
-
-        lang.addMessage("reloaded-config", new SimpleMessage(textConfig, "<dark_gray>› <gray>Successfully reloaded the config"));
-        lang.addMessage("currency-list", new SimpleMessage(textConfig, "{primaryColor}<b>List of all currencies:</b>"));
-        translator.setSelectedLanguage(lang);
+        translator.loadLanguages(getDataFolder().getAbsolutePath());
+        Language selectedLanguage = translator.getLanguages().stream()
+                .filter(language -> language.getLanguageCode().equalsIgnoreCase(config.getLanguage())
+                        || language.getLanguageName().equalsIgnoreCase(config.getLanguage()))
+                .findFirst()
+                .orElse(translator.getFallbackLanguage());
+        translator.setSelectedLanguage(selectedLanguage);
 
         database = config.getDatabase();
         if (database == null) {

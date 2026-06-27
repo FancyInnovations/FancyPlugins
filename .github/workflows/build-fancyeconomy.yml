@@ -1,0 +1,88 @@
+name: Build FancyEconomy
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: "Create a GitHub Release with the FancyEconomy jar"
+        required: true
+        type: boolean
+        default: true
+      tag_name:
+        description: "Release tag name. Leave empty to use fancyeconomy-<run_number>"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+env:
+  RELEASE_CHANNEL: github-actions
+  RELEASE_PLATFORM: github-actions
+
+jobs:
+  build:
+    name: Build FancyEconomy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build FancyEconomy shadow jar
+        run: ./gradlew --no-daemon :plugins:fancyeconomy:shadowJar
+
+      - name: Collect FancyEconomy jar
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          jar="$(find plugins/fancyeconomy/build/libs -maxdepth 1 -type f -name "FancyEconomy*.jar" ! -name "*-sources.jar" ! -name "*-javadoc.jar" ! -name "*-plain.jar" | sort | head -n 1)"
+          test -n "$jar"
+          cp -v "$jar" artifacts/FancyEconomy.jar
+          zip -j artifacts/FancyEconomy.zip artifacts/FancyEconomy.jar
+          ls -lah artifacts
+
+      - name: Upload FancyEconomy artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FancyEconomy
+          path: |
+            artifacts/FancyEconomy.jar
+            artifacts/FancyEconomy.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.create_release }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TAG_NAME: ${{ inputs.tag_name }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "$INPUT_TAG_NAME" ]; then
+            tag="$INPUT_TAG_NAME"
+          else
+            tag="fancyeconomy-${GITHUB_RUN_NUMBER}"
+          fi
+
+          gh release create "$tag" \
+            artifacts/FancyEconomy.jar \
+            artifacts/FancyEconomy.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "FancyEconomy $tag" \
+            --notes "Automated FancyEconomy build from ${GITHUB_SHA}."

@@ -122,30 +122,37 @@ public class CurrencyBaseCMD {
             targetName = targetPlayer.getName();
         }
 
-        UUID uuid = targetPlayer != null ? targetPlayer.getUniqueId() : UUIDFetcher.getUUID(targetName);
-
-        if (uuid == null) {
-            FancyEconomy.getInstance().getTranslator()
-                    .translate("player-not-found")
-                    .replace("player", targetName)
-                    .send(player);
-            return;
-        }
-
-        if (player.getUniqueId().equals(uuid)) {
-            FancyEconomy.getInstance().getTranslator()
-                    .translate("cannot-pay-yourself")
-                    .send(player);
-            return;
-        }
-
-        CurrencyPlayer from = CurrencyPlayerManager.getPlayer(player.getUniqueId());
-        CurrencyPlayer to = CurrencyPlayerManager.getPlayer(uuid);
-        from.setUsername(player.getName());
-
+        CurrencyPlayer to;
         if (targetPlayer != null) {
+            if (player.getUniqueId().equals(targetPlayer.getUniqueId())) {
+                FancyEconomy.getInstance().getTranslator()
+                        .translate("cannot-pay-yourself")
+                        .send(player);
+                return;
+            }
+
+            to = CurrencyPlayerManager.getPlayer(targetPlayer.getUniqueId(), targetPlayer.getName());
             to.setUsername(targetPlayer.getName());
+        } else {
+            to = CurrencyPlayerManager.getCachedPlayer(targetName);
+            if (to == null) {
+                FancyEconomy.getInstance().getTranslator()
+                        .translate("player-not-found")
+                        .replace("player", targetName)
+                        .send(player);
+                return;
+            }
+
+            if (player.getUniqueId().equals(to.getUuid())) {
+                FancyEconomy.getInstance().getTranslator()
+                        .translate("cannot-pay-yourself")
+                        .send(player);
+                return;
+            }
         }
+
+        CurrencyPlayer from = CurrencyPlayerManager.getPlayer(player.getUniqueId(), player.getName());
+        from.setUsername(player.getName());
 
         boolean allowNegativeBalance = FancyEconomy.getInstance().getFancyEconomyConfig().allowNegativeBalance();
         if (!allowNegativeBalance && from.getBalance(currency) < amount) {

@@ -1,0 +1,38 @@
+language_name: default
+messages:
+  player-not-found: "<dark_gray>› {errorColor}Could not find target player: '{player}'"
+  no-permissions: "<dark_gray>› {errorColor}You don't have permissions to execute this command"
+  no-inventory-space: "<dark_gray>› {errorColor}You don't have enough space in your inventory"
+
+  help-balance: "<dark_gray>› {primaryColor}/{currency} balance <gray>- Shows your balance"
+  help-balance-others: "<dark_gray>› {primaryColor}/{currency} balance <player> <gray>- Shows a player's balance"
+  help-pay: "<dark_gray>› {primaryColor}/{currency} pay <player> <amount> <gray>- Pays money to a certain player"
+  help-withdraw: "<dark_gray>› {primaryColor}/{currency} withdraw <amount> <gray>- Withdraw a certain amount of money"
+  help-top: "<dark_gray>› {primaryColor}/{currency} top <page> <gray>- Shows the richest players"
+  help-set: "<dark_gray>› {primaryColor}/{currency} set <player> <amount> <gray>- Sets the balance of a certain player"
+  help-add: "<dark_gray>› {primaryColor}/{currency} add <player> <amount> <gray>- Adds money to a certain player"
+  help-remove: "<dark_gray>› {primaryColor}/{currency} remove <player> <amount> <gray>- Removes money to a certain player"
+
+  your-balance: "<dark_gray>› <gray>Your balance: {primaryColor}{balance}"
+  balance-others: "<dark_gray>› {primaryColor}{player}'s <gray>balance: {primaryColor}{balance}"
+
+  cannot-pay-yourself: "<dark_gray>› {errorColor}You cannot pay yourself"
+  not-enough-money: "<dark_gray>› {errorColor}Insufficient balance"
+  paid-sender: "<dark_gray>› <gray>Successfully paid {primaryColor}{amount} <gray>to {primaryColor}{receiver}"
+  paid-receiver: "<dark_gray>› <gray>Received {primaryColor}{amount} <gray>from {primaryColor}{sender}"
+
+  not-withdrawable: "<dark_gray>› {errorColor}This currency is not withdrawable"
+  min-withdrawable: "<dark_gray>› {errorColor}The minimum withdraw amount is: {primaryColor}{amount}"
+  max-withdrawable: "<dark_gray>› {errorColor}The maximum withdraw amount is: {primaryColor}{amount}"
+  withdraw-success: "<dark_gray>› <gray>Successfully withdraw {primaryColor}{amount}"
+  deposit-note: "<dark_gray>› {primaryColor}+ {amount}"
+
+  set-success: "<dark_gray>› <gray>Successfully set {primaryColor}{player}'s <gray>balance to {primaryColor}{amount}"
+  add-success: "<dark_gray>› <gray>Successfully added {primaryColor}{amount} <gray>to {primaryColor}{player}"
+  remove-success: "<dark_gray>› <gray>Successfully removed {primaryColor}{amount} <gray>from {primaryColor}{player}"
+
+  balancetop-your-place: "<dark_gray>› <gray>Your place: {primaryColor}#{place}"
+  balance-top-empty-page: "<dark_gray>› <gray>No data for this page"
+
+  reloaded-config: "<dark_gray>› <gray>Successfully reloaded the config"
+  currency-list: "{primaryColor}<b>List of all currencies:</b>"

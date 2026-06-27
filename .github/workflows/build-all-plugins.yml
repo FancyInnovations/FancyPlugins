@@ -1,0 +1,124 @@
+name: Build all plugins
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: "Create a GitHub Release with the built jars"
+        required: true
+        type: boolean
+        default: true
+      tag_name:
+        description: "Release tag name. Leave empty to use build-<run_number>"
+        required: false
+        default: ""
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/**"
+      - "libraries/**"
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle/**"
+      - "gradlew"
+      - ".github/workflows/build-all-plugins.yml"
+
+permissions:
+  contents: write
+
+env:
+  RELEASE_CHANNEL: github-actions
+  RELEASE_PLATFORM: github-actions
+
+jobs:
+  build:
+    name: Build plugin jars
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build plugin shadow jars
+        run: |
+          ./gradlew --no-daemon \
+            :plugins:fancynpcs-v2:shadowJar \
+            :plugins:fancynpcs-model:shadowJar \
+            :plugins:fancyholograms-v2:shadowJar \
+            :plugins:fancyholograms:shadowJar \
+            :plugins:fancyvisuals:shadowJar \
+            :plugins:fancydialogs:shadowJar \
+            :plugins:fancyworlds:shadowJar \
+            :plugins:fancyeconomy:shadowJar
+
+      - name: Collect plugin jars
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/plugins
+
+          while IFS= read -r jar; do
+            module="$(echo "$jar" | cut -d/ -f2)"
+            file="$(basename "$jar")"
+            cp -v "$jar" "artifacts/plugins/${module}-${file}"
+          done < <(
+            find plugins -path "*/build/libs/*.jar" -type f \
+              ! -name "*-sources.jar" \
+              ! -name "*-javadoc.jar" \
+              ! -name "*-plain.jar" \
+              | sort
+          )
+
+          test -n "$(find artifacts/plugins -name "*.jar" -print -quit)"
+          cd artifacts/plugins
+          zip -r ../FancyPlugins-all-plugins.zip .
+          cd ../..
+
+          echo "Built jars:"
+          ls -lah artifacts/plugins
+          ls -lah artifacts/FancyPlugins-all-plugins.zip
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FancyPlugins-all-plugins
+          path: |
+            artifacts/plugins/*.jar
+            artifacts/FancyPlugins-all-plugins.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.create_release }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TAG_NAME: ${{ inputs.tag_name }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "$INPUT_TAG_NAME" ]; then
+            tag="$INPUT_TAG_NAME"
+          else
+            tag="build-${GITHUB_RUN_NUMBER}"
+          fi
+
+          gh release create "$tag" \
+            artifacts/plugins/*.jar \
+            artifacts/FancyPlugins-all-plugins.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "FancyPlugins $tag" \
+            --notes "Automated plugin build from ${GITHUB_SHA}."

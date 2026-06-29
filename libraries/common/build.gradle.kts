@@ -23,7 +23,7 @@ dependencies {
     // testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:6.1.0")
-    testImplementation("org.junit.platform:junit-platform-console-standalone:6.1.0")
+    testImplementation("org.junit.platform:junit-platform-console-standalone:6.1.1")
     testImplementation("com.google.code.gson:gson:2.13.2")
 }
 

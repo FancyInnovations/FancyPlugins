@@ -14,13 +14,13 @@ java {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
-    compileOnly("com.google.code.gson:gson:2.13.2")
+    compileOnly("com.google.code.gson:gson:2.14.0")
     implementation("org.jetbrains:annotations:26.1.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:6.1.0")
     testImplementation("org.junit.platform:junit-platform-console-standalone:6.1.0")
-    testImplementation("com.google.code.gson:gson:2.13.2")
+    testImplementation("com.google.code.gson:gson:2.14.0")
 }
 
 tasks {

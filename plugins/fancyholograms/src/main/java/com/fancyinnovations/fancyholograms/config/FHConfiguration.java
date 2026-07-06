@@ -16,6 +16,7 @@ public final class FHConfiguration implements HologramConfiguration {
     public static final String SAVE_ON_CHANGED_PATH = "settings.saving.save_on_changed";
     public static final String VISIBILITY_DISTANCE_PATH = "settings.visibility_distance";
     public static final String SPAWN_DELAY_ON_JOIN_PATH = "settings.spawn_delay_on_join_ms";
+    public static final String REFRESH_HOLOGRAMS_ON_LOCALE_CHANGE_PATH = "settings.refresh_holograms_on_locale_change";
 
     public static final String REGISTER_COMMANDS_PATH = "settings.register_commands";
 
@@ -96,6 +97,15 @@ public final class FHConfiguration implements HologramConfiguration {
                 300,
                 false,
                 Integer.class
+        ));
+
+        config.addField(new ConfigField<>(
+            REFRESH_HOLOGRAMS_ON_LOCALE_CHANGE_PATH,
+            "When enabled, holograms will be refreshed for a player when they change their locale.",
+            false,
+            false,
+            false,
+            Boolean.class
         ));
 
         config.addField(new ConfigField<>(
@@ -213,6 +223,11 @@ public final class FHConfiguration implements HologramConfiguration {
     @Override
     public int getSpawnDelayOnJoin() {
         return config.get(SPAWN_DELAY_ON_JOIN_PATH);
+    }
+
+    @Override
+    public boolean isRefreshHologramsOnLocaleChangeEnabled() {
+        return config.get(REFRESH_HOLOGRAMS_ON_LOCALE_CHANGE_PATH);
     }
 
     @Override

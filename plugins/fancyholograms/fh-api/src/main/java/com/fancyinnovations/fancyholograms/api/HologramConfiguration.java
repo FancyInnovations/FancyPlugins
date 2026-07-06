@@ -45,6 +45,13 @@ public interface HologramConfiguration {
     int getSpawnDelayOnJoin();
 
     /**
+     * Returns whether holograms should be refreshed on player locale change.
+     *
+     * @return Whether holograms should be refreshed on player locale change.
+     */
+    boolean isRefreshHologramsOnLocaleChangeEnabled();
+
+    /**
      * Returns whether the plugin should register its commands.
      *
      * @return {@code true} if the plugin should register its commands, {@code false} otherwise.

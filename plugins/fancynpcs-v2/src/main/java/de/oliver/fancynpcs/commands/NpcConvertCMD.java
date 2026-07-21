@@ -1,6 +1,7 @@
 package de.oliver.fancynpcs.commands;
 
 import de.oliver.fancyanalytics.sdk.events.Event;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.ReflectionUtils;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancynpcs.FancyNpcs;
@@ -56,111 +57,125 @@ public final class NpcConvertCMD {
         NPCRegistry npcRegistry = CitizensAPI.getNPCRegistry();
         int convertedCount = 0;
         for (NPC npc : npcRegistry) {
-            // UUID and name
-            Owner ownerTrait = npc.getTraitNullable(Owner.class);
-            UUID ownerUUID = ownerTrait != null ? ownerTrait.getOwnerId() : null;
-            String name = npc.getName().replaceAll(" ", "_");
+            try {
+                // UUID and name
+                Owner ownerTrait = npc.getTraitNullable(Owner.class);
+                UUID ownerUUID = ownerTrait != null ? ownerTrait.getOwnerId() : null;
+                String name = npc.getName().replaceAll(" ", "_");
 
-            // Location
-            Location loc = npc.getStoredLocation();
-            if (loc == null) {
-                loc = npc.getEntity().getLocation();
-            }
+                // Location
+                Location loc = npc.getStoredLocation();
+                if (loc == null && npc.getEntity() != null) {
+                    loc = npc.getEntity().getLocation();
+                }
+                if (loc == null) {
+                    plugin.getFancyLogger().warn("Skipping Citizens NPC '" + name + "' because it has no location");
+                    continue;
+                }
 
-            NpcData data = new NpcData(name, ownerUUID, loc);
+                NpcData data = new NpcData(name, ownerUUID, loc);
 
-            // type
-            MobType mobTypeTrait = npc.getTraitNullable(MobType.class);
-            if (mobTypeTrait != null) {
-                data.setType(mobTypeTrait.getType());
-            }
+                // type
+                MobType mobTypeTrait = npc.getTraitNullable(MobType.class);
+                if (mobTypeTrait != null) {
+                    data.setType(mobTypeTrait.getType());
+                }
 
-            // skin
-            SkinTrait skinTrait = npc.getTraitNullable(SkinTrait.class);
-            if (skinTrait != null && skinTrait.getSkinName() != null) {
-                String skinName = skinTrait.getSkinName();
-                data.setSkin(skinName);
-            }
-
-            // turn to player
-            LookClose lookCloseTrait = npc.getTraitNullable(LookClose.class);
-            if (lookCloseTrait != null && lookCloseTrait.isEnabled()) {
-                data.setTurnToPlayer(true);
-                data.setTurnToPlayerDistance((int) lookCloseTrait.getRange());
-            }
-
-            // glowing
-            ScoreboardTrait scoreboardTrait = npc.getTraitNullable(ScoreboardTrait.class);
-            if (scoreboardTrait != null && scoreboardTrait.getColor() != null) {
-                data.setGlowing(true);
-                data.setGlowingColor(NamedTextColor.NAMES.value(scoreboardTrait.getColor().name().toLowerCase()));
-            }
-
-            // equipment
-            Equipment equipmentTrait = npc.getTraitNullable(Equipment.class);
-            if (equipmentTrait != null) {
-                for (Map.Entry<Equipment.EquipmentSlot, ItemStack> entry : equipmentTrait.getEquipmentBySlot().entrySet()) {
-                    if (entry.getValue() == null) continue;
-
-                    NpcEquipmentSlot fnSlot = switch (entry.getKey()) {
-                        case HAND -> NpcEquipmentSlot.MAINHAND;
-                        case OFF_HAND -> NpcEquipmentSlot.OFFHAND;
-                        case BOOTS -> NpcEquipmentSlot.FEET;
-                        case LEGGINGS -> NpcEquipmentSlot.LEGS;
-                        case CHESTPLATE, BODY -> NpcEquipmentSlot.CHEST;
-                        case HELMET -> NpcEquipmentSlot.HEAD;
-                        default -> null;
-                    };
-                    if (fnSlot != null) {
-                        data.addEquipment(fnSlot, entry.getValue().clone());
+                // skin
+                SkinTrait skinTrait = npc.getTraitNullable(SkinTrait.class);
+                if (skinTrait != null && skinTrait.getSkinName() != null && !skinTrait.getSkinName().isBlank()) {
+                    String skinName = skinTrait.getSkinName();
+                    try {
+                        data.setSkin(skinName);
+                    } catch (RuntimeException e) {
+                        plugin.getFancyLogger().warn(
+                                "Could not set skin '" + skinName + "' for converted Citizens NPC '" + name + "'",
+                                ThrowableProperty.of(e)
+                        );
                     }
                 }
-            }
 
-            // actions: message
-            int actionIndex = 1;
-            Text textTrait = npc.getTraitNullable(Text.class);
-            if (textTrait != null) {
-                NpcAction action = FancyNpcs.getInstance().getActionManager().getActionByName("message");
-                for (String text : textTrait.getTexts()) {
-                    data.addAction(
-                            ActionTrigger.ANY_CLICK,
-                            actionIndex++,
-                            action,
-                            text
-                    );
+                // turn to player
+                LookClose lookCloseTrait = npc.getTraitNullable(LookClose.class);
+                if (lookCloseTrait != null && lookCloseTrait.isEnabled()) {
+                    data.setTurnToPlayer(true);
+                    data.setTurnToPlayerDistance((int) lookCloseTrait.getRange());
                 }
-            }
 
-            // actions: console command
-            CommandTrait commandTrait = npc.getTraitNullable(CommandTrait.class);
-            if (commandTrait != null) {
-                NpcAction action = FancyNpcs.getInstance().getActionManager().getActionByName("console_command");
-                Map<Integer, Object> commands = (Map<Integer, Object>) ReflectionUtils.getValue(commandTrait, "commands");
-                for (Object commandObj : commands.values()) {
-                    String command = (String) ReflectionUtils.getValue(commandObj, "command");
-
-                    Enum<?> hand = (Enum<?>) ReflectionUtils.getValue(commandObj, "hand");
-                    ActionTrigger trigger = switch (hand.name()) {
-                        case "LEFT", "SHIT_LEFT" -> ActionTrigger.LEFT_CLICK;
-                        case "RIGHT", "SHIFT_RIGHT" -> ActionTrigger.RIGHT_CLICK;
-                        default -> ActionTrigger.ANY_CLICK;
-                    };
-
-                    data.addAction(
-                            trigger,
-                            actionIndex++,
-                            action,
-                            command
-                    );
+                // glowing
+                ScoreboardTrait scoreboardTrait = npc.getTraitNullable(ScoreboardTrait.class);
+                if (scoreboardTrait != null && scoreboardTrait.getColor() != null) {
+                    NamedTextColor color = NamedTextColor.NAMES.value(scoreboardTrait.getColor().name().toLowerCase());
+                    if (color != null) {
+                        data.setGlowing(true);
+                        data.setGlowingColor(color);
+                    }
                 }
-            }
 
-            // Register FancyNpcs npc
-            Npc fnNpc = FancyNpcs.getInstance().getNpcAdapter().apply(data);
-            fnNpc.create();
-            FancyNpcs.getInstance().getNpcManager().registerNpc(fnNpc);
-            convertedCount++;
+                // equipment
+                Equipment equipmentTrait = npc.getTraitNullable(Equipment.class);
+                if (equipmentTrait != null) {
+                    for (Map.Entry<Equipment.EquipmentSlot, ItemStack> entry : equipmentTrait.getEquipmentBySlot().entrySet()) {
+                        if (entry.getValue() == null) continue;
+
+                        NpcEquipmentSlot fnSlot = switch (entry.getKey()) {
+                            case HAND -> NpcEquipmentSlot.MAINHAND;
+                            case OFF_HAND -> NpcEquipmentSlot.OFFHAND;
+                            case BOOTS -> NpcEquipmentSlot.FEET;
+                            case LEGGINGS -> NpcEquipmentSlot.LEGS;
+                            case CHESTPLATE, BODY -> NpcEquipmentSlot.CHEST;
+                            case HELMET -> NpcEquipmentSlot.HEAD;
+                            default -> null;
+                        };
+                        if (fnSlot != null) {
+                            data.addEquipment(fnSlot, entry.getValue().clone());
+                        }
+                    }
+                }
+
+                // actions: message
+                int actionIndex = 1;
+                Text textTrait = npc.getTraitNullable(Text.class);
+                if (textTrait != null) {
+                    NpcAction action = FancyNpcs.getInstance().getActionManager().getActionByName("message");
+                    for (String text : textTrait.getTexts()) {
+                        data.addAction(ActionTrigger.ANY_CLICK, actionIndex++, action, text);
+                    }
+                }
+
+                // actions: console command
+                CommandTrait commandTrait = npc.getTraitNullable(CommandTrait.class);
+                if (commandTrait != null) {
+                    NpcAction action = FancyNpcs.getInstance().getActionManager().getActionByName("console_command");
+                    Map<Integer, Object> commands = (Map<Integer, Object>) ReflectionUtils.getValue(commandTrait, "commands");
+                    if (commands != null) {
+                        for (Object commandObj : commands.values()) {
+                            String command = (String) ReflectionUtils.getValue(commandObj, "command");
+                            if (command == null || command.isBlank()) continue;
+
+                            Enum<?> hand = (Enum<?>) ReflectionUtils.getValue(commandObj, "hand");
+                            ActionTrigger trigger = hand == null ? ActionTrigger.ANY_CLICK : switch (hand.name()) {
+                                case "LEFT", "SHIT_LEFT" -> ActionTrigger.LEFT_CLICK;
+                                case "RIGHT", "SHIFT_RIGHT" -> ActionTrigger.RIGHT_CLICK;
+                                default -> ActionTrigger.ANY_CLICK;
+                            };
+
+                            data.addAction(trigger, actionIndex++, action, command);
+                        }
+                    }
+                }
+
+                // Register FancyNpcs npc
+                Npc fnNpc = FancyNpcs.getInstance().getNpcAdapter().apply(data);
+                fnNpc.create();
+                FancyNpcs.getInstance().getNpcManager().registerNpc(fnNpc);
+                convertedCount++;
+            } catch (Exception e) {
+                plugin.getFancyLogger().warn(
+                        "Failed to convert Citizens NPC '" + npc.getName() + "'",
+                        ThrowableProperty.of(e)
+                );
+            }
         }
 
         if (convertedCount == 0) {

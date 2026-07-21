@@ -39,6 +39,8 @@ public interface FancyNpcsConfig {
 
     String getMineSkinApiKey();
 
+    int getMineSkinTimeout();
+
     List<String> getBlockedCommands();
 
     Map<String, Integer> getMaxNpcsPerPermission();

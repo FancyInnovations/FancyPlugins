@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -30,10 +31,14 @@ public class UUIDFetcher {
     private static final ExtendedFancyLogger LOGGER = new ExtendedFancyLogger("UUIDFetcher");
     private static final String UUID_URL = "https://api.minecraftservices.com/minecraft/profile/lookup/name/%s";
     private static final String NAME_URL = "https://api.minecraftservices.com/minecraft/profile/lookup/%s";
-    private static Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
-    private static Map<String, UUID> uuidCache = new HashMap<String, UUID>();
-    private static Map<UUID, String> nameCache = new HashMap<UUID, String>();
-    private static ExecutorService pool = Executors.newCachedThreadPool();
+    private static final Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
+    private static final ConcurrentMap<String, UUID> uuidCache = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<UUID, String> nameCache = new ConcurrentHashMap<>();
+    private static final ExecutorService pool = Executors.newFixedThreadPool(4, runnable -> {
+        Thread thread = new Thread(runnable, "FancyLib-UUIDFetcher");
+        thread.setDaemon(true);
+        return thread;
+    });
 
     private String name;
     private UUID id;
@@ -55,14 +60,24 @@ public class UUIDFetcher {
      * @param name The name
      */
     public static UUID getUUID(String name) {
-        name = name.toLowerCase();
-        if (uuidCache.containsKey(name)) {
-            return uuidCache.get(name);
+        if (name == null || name.isBlank()) {
+            return null;
+        }
+
+        name = name.toLowerCase(Locale.ROOT);
+        UUID cachedUuid = uuidCache.get(name);
+        if (cachedUuid != null) {
+            return cachedUuid;
         }
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(String.format(UUID_URL, name)).openConnection();
+            connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             UUIDFetcher data = gson.fromJson(new BufferedReader(new InputStreamReader(connection.getInputStream())), UUIDFetcher.class);
+            if (data == null || data.id == null || data.name == null) {
+                LOGGER.warn("UUID lookup returned an incomplete response for name: " + name);
+                return null;
+            }
 
             uuidCache.put(name, data.id);
             nameCache.put(data.id, data.name);
@@ -91,15 +106,25 @@ public class UUIDFetcher {
      * @return The name
      */
     public static String getName(UUID uuid) {
-        if (nameCache.containsKey(uuid)) {
-            return nameCache.get(uuid);
+        if (uuid == null) {
+            return null;
+        }
+
+        String cachedName = nameCache.get(uuid);
+        if (cachedName != null) {
+            return cachedName;
         }
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(String.format(NAME_URL, UUIDTypeAdapter.fromUUID(uuid))).openConnection();
+            connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             UUIDFetcher currentNameData = gson.fromJson(new BufferedReader(new InputStreamReader(connection.getInputStream())), UUIDFetcher.class);
+            if (currentNameData == null || currentNameData.name == null) {
+                LOGGER.warn("Name lookup returned an incomplete response for UUID: " + uuid);
+                return null;
+            }
 
-            uuidCache.put(currentNameData.name.toLowerCase(), uuid);
+            uuidCache.put(currentNameData.name.toLowerCase(Locale.ROOT), uuid);
             nameCache.put(uuid, currentNameData.name);
 
             return currentNameData.name;

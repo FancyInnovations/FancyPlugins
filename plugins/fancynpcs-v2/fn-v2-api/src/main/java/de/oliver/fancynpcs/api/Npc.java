@@ -6,7 +6,6 @@ import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
 import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.executor.ActionExecutor;
-import de.oliver.fancynpcs.api.events.NpcDespawnEvent;
 import de.oliver.fancynpcs.api.events.NpcInteractEvent;
 import de.oliver.fancynpcs.api.utils.Interval;
 import de.oliver.fancynpcs.api.utils.Interval.Unit;
@@ -125,7 +124,6 @@ public abstract class Npc {
 
             } else if (!shouldBeVisible && wasVisible) {
                 remove(player);
-                new NpcDespawnEvent(this, player).callEvent();
             }
         });
     }

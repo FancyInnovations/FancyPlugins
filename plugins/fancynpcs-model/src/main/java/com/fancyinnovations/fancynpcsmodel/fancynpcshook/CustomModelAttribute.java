@@ -4,6 +4,8 @@ import com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelPlugin;
 import de.oliver.fancyanalytics.logger.properties.StringProperty;
 import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.ReflectionUtils;
+import de.oliver.fancylib.serverSoftware.ServerSoftware;
+import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
@@ -25,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CustomModelAttribute {
 
@@ -67,6 +70,22 @@ public class CustomModelAttribute {
             return;
         }
 
+        configureTracker(npc, tracker);
+
+        EntityTrackerRegistry registry = tracker.registry();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            runOnPlayerScheduler(player, () -> registry.spawn(BukkitAdapter.adapt(player)));
+        }
+    }
+
+    /**
+     * Applies the scale and (re-)registers the hitbox click listeners on a tracker.
+     * Called both right after creating a tracker in {@link #setModel} and from
+     * {@link #onTrackerCreated}, since BetterModel discards and recreates trackers
+     * (e.g. on {@code /bettermodel reload}), silently dropping any listeners that
+     * were only registered once at model-set time.
+     */
+    private static void configureTracker(Npc npc, EntityTracker tracker) {
         // Scale
         if (npc.getData().getScale() != 1) {
             tracker.scaler(tracker.scaler().multiply(npc.getData().getScale()));
@@ -89,10 +108,27 @@ public class CustomModelAttribute {
 
             npc.interact(player, ActionTrigger.LEFT_CLICK);
         });
+    }
 
-        EntityTrackerRegistry registry = tracker.registry();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            registry.spawn(BukkitAdapter.adapt(player));
+    /**
+     * Called whenever BetterModel (re-)creates an EntityTracker (e.g. on {@code /bettermodel reload}).
+     * Re-attaches this plugin's hitbox listeners if the tracker belongs to one of our custom-model npcs.
+     */
+    public static void onTrackerCreated(EntityTracker tracker) {
+        UUID entityUuid = tracker.registry().entity().uuid();
+
+        for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
+            if (!hasAttribute(npc)) {
+                continue;
+            }
+
+            Entity bukkitEntity = getBukkitEntity(npc);
+            if (bukkitEntity == null || !bukkitEntity.getUniqueId().equals(entityUuid)) {
+                continue;
+            }
+
+            configureTracker(npc, tracker);
+            return;
         }
     }
 
@@ -150,6 +186,22 @@ public class CustomModelAttribute {
         }
 
         return false;
+    }
+
+    /**
+     * Runs a task on the player's own region scheduler when using Folia.
+     * BetterModel's tracker API touches per-region state (e.g. scheduling hitbox
+     * packets for the player's location) and must be called from the thread that
+     * owns that region, or it fails (NullPointerException on RegionizedData) - the
+     * same reason FancyNpcs itself always sends its packets through this scheduler.
+     */
+    public static void runOnPlayerScheduler(Player player, Runnable task) {
+        if (ServerSoftware.isFolia()) {
+            player.getScheduler().run(FancyNpcsModelPlugin.get(), (t) -> task.run(), null);
+            return;
+        }
+
+        task.run();
     }
 
     public static EntityTracker getEntityTracker(Npc npc) {

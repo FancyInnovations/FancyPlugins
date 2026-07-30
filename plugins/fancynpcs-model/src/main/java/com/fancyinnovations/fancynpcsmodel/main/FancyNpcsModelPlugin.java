@@ -8,8 +8,10 @@ import com.fancyinnovations.fancynpcsmodel.config.FancyNpcsModelConfigImpl;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.CustomModelAttribute;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationLoopAction;
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationOnceAction;
+import com.fancyinnovations.fancynpcsmodel.listeners.NpcDespawnListener;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcInteractListener;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcRemoveListener;
+import com.fancyinnovations.fancynpcsmodel.listeners.NpcSpawnListener;
 import com.fancyinnovations.fancynpcsmodel.metrics.FNMMetrics;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
@@ -25,6 +27,8 @@ import de.oliver.fancylib.versionFetcher.FancySpacesVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
+import kr.toxicity.model.api.BetterModel;
+import kr.toxicity.model.api.event.CreateEntityTrackerEvent;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -148,6 +152,11 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationOnceAction());
         FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationLoopAction());
 
+        // Re-attach hitbox listeners whenever BetterModel (re-)creates a tracker,
+        // e.g. on /bettermodel reload, which discards the previous tracker instances.
+        BetterModel.eventBus().subscribe(this::isEnabled, CreateEntityTrackerEvent.class, event ->
+                CustomModelAttribute.onTrackerCreated(event.tracker()));
+
         metrics.register();
         metrics.checkIfPluginVersionUpdated();
 
@@ -180,6 +189,8 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new NpcInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new NpcRemoveListener(), this);
+        Bukkit.getPluginManager().registerEvents(new NpcSpawnListener(), this);
+        Bukkit.getPluginManager().registerEvents(new NpcDespawnListener(), this);
     }
 
     public void registerTranslator() {

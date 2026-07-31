@@ -16,6 +16,7 @@ import kr.toxicity.model.api.event.hitbox.HitBoxInteractAtEvent;
 import kr.toxicity.model.api.platform.PlatformEntity;
 import kr.toxicity.model.api.tracker.EntityTracker;
 import kr.toxicity.model.api.tracker.EntityTrackerRegistry;
+import kr.toxicity.model.api.tracker.ModelScaler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -87,8 +88,14 @@ public class CustomModelAttribute {
      */
     private static void configureTracker(Npc npc, EntityTracker tracker) {
         // Scale
+        // Uses an absolute value, not tracker.scaler().multiply(...): configureTracker() runs
+        // again on every respawn (setModel() re-runs on every update() cycle), and multiplying
+        // the tracker's current scaler compounds on every single call - the model grows
+        // exponentially the longer the server runs, eventually causing multi-second hitbox
+        // collision-check hangs (BlockGetter#forEachBlockIntersectedBetween) as the model size
+        // explodes.
         if (npc.getData().getScale() != 1) {
-            tracker.scaler(tracker.scaler().multiply(npc.getData().getScale()));
+            tracker.scaler(ModelScaler.value(npc.getData().getScale()));
         }
 
         // Right click on hitbox

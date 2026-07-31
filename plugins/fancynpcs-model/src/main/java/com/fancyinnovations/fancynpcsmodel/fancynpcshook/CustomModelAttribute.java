@@ -76,6 +76,14 @@ public class CustomModelAttribute {
         EntityTrackerRegistry registry = tracker.registry();
         for (Player player : Bukkit.getOnlinePlayers()) {
             runOnPlayerScheduler(player, () -> registry.spawn(BukkitAdapter.adapt(player)));
+
+            // Safety net: on server restart / world change, the model has occasionally been
+            // observed to silently not show up for a player on the first attempt (no error
+            // logged - BetterModel itself seemingly not fully ready yet), only recovering after
+            // a full extra respawn cycle (e.g. re-joining or changing world again). Retrying the
+            // spawn shortly after is harmless (spawn() is safe to call again on an already-shown
+            // model) and self-heals that case without requiring the player to do anything.
+            runOnPlayerSchedulerDelayed(player, () -> registry.spawn(BukkitAdapter.adapt(player)), 40L);
         }
     }
 
@@ -209,6 +217,18 @@ public class CustomModelAttribute {
         }
 
         task.run();
+    }
+
+    /**
+     * Same as {@link #runOnPlayerScheduler}, delayed by the given amount of ticks.
+     */
+    private static void runOnPlayerSchedulerDelayed(Player player, Runnable task, long delayTicks) {
+        if (ServerSoftware.isFolia()) {
+            player.getScheduler().runDelayed(FancyNpcsModelPlugin.get(), (t) -> task.run(), null, delayTicks);
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskLater(FancyNpcsModelPlugin.get(), task, delayTicks);
     }
 
     public static EntityTracker getEntityTracker(Npc npc) {

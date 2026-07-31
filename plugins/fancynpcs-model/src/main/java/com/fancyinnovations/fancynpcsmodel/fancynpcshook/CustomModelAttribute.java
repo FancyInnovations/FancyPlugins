@@ -58,6 +58,17 @@ public class CustomModelAttribute {
             return;
         }
 
+        // FancyNpcs applies attributes (this) before it applies the npc's configured
+        // rotation to its underlying fake entity (Npc#update calls
+        // NpcData#applyAllAttributes before Npc#move), so the entity's live yaw/pitch
+        // can still be stale/default at this point. BetterModel reads the entity's
+        // current rotation when the tracker is created, so without this the model can
+        // spawn facing the wrong way until something else (e.g. /bettermodel reload)
+        // forces a fresh read after the entity's rotation is actually correct.
+        if (npc.getData().getLocation() != null) {
+            bukkitEntity.setRotation(npc.getData().getLocation().getYaw(), npc.getData().getLocation().getPitch());
+        }
+
         // Gets or creates entity tracker
         EntityTracker tracker = BetterModel.model(modelName)
                 .map(r -> r.getOrCreate(BukkitAdapter.adapt(bukkitEntity)))

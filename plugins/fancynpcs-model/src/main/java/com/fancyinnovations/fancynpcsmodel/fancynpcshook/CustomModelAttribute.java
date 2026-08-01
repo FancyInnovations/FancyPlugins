@@ -50,12 +50,26 @@ public class CustomModelAttribute {
         }
         bukkitEntity.customName(Component.empty());
 
-        // Close all existing trackers
-        closeAllTrackers(bukkitEntity);
-
         // remove model if model name is "@none"
         if (modelName.equalsIgnoreCase("@none")) {
+            closeAllTrackers(bukkitEntity);
             return;
+        }
+
+        // setModel() re-runs on every respawn (NpcData#applyAllAttributes is called from
+        // Npc#update, which every spawn() call ends with), almost always with the same
+        // modelName as before. Unconditionally closing and recreating the tracker here on
+        // every single one of those calls tears down and immediately rebuilds BetterModel's
+        // display-entity bones, racing BetterModel's own (partly async) tracker close - this
+        // was observed to desync entity metadata types on the client (IllegalStateException:
+        // "Invalid entity data item type", disconnecting the player) when a respawn happened
+        // shortly after another. getOrCreate() below already returns the existing tracker if
+        // one exists for this exact model, so only close when actually switching models.
+        boolean alreadyOnThisModel = BetterModel.registry(BukkitAdapter.adapt(bukkitEntity))
+                .map(r -> r.tracker(modelName) != null)
+                .orElse(false);
+        if (!alreadyOnThisModel) {
+            closeAllTrackers(bukkitEntity);
         }
 
         // FancyNpcs applies attributes (this) before it applies the npc's configured
@@ -82,7 +96,12 @@ public class CustomModelAttribute {
             return;
         }
 
-        configureTracker(npc, tracker);
+        // Only (re-)register hitbox listeners and scale when the tracker was actually just
+        // (re-)created - tracker.listenHitBox() has no de-duplication, so calling it again on
+        // a reused tracker would stack duplicate listeners and fire actions multiple times.
+        if (!alreadyOnThisModel) {
+            configureTracker(npc, tracker);
+        }
 
         EntityTrackerRegistry registry = tracker.registry();
         for (Player player : Bukkit.getOnlinePlayers()) {

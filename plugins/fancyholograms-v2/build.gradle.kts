@@ -25,7 +25,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.92.+")
 
     implementation(project(":plugins:fancyholograms-v2:api"))
 

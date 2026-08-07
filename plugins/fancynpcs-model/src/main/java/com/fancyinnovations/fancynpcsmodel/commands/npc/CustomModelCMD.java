@@ -1,11 +1,11 @@
 package com.fancyinnovations.fancynpcsmodel.commands.npc;
 
 import com.fancyinnovations.fancynpcsmodel.fancynpcshook.CustomModelAttribute;
+import com.fancyinnovations.fancynpcsmodel.providers.ModelProviderRegistry;
 import com.fancyinnovations.fancynpcsmodel.utils.FancyContext;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
-import kr.toxicity.model.api.BetterModel;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.incendo.cloud.annotations.Argument;
@@ -35,9 +35,9 @@ public class CustomModelCMD extends FancyContext {
     ) {
         NpcAttribute customModelAttribute = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, CustomModelAttribute.ATTRIBUTE_NAME);
 
-        if (model.equalsIgnoreCase("@none")) {
+        if (model.equalsIgnoreCase(CustomModelAttribute.NONE_VALUE)) {
             npc.getData().removeAttribute(customModelAttribute);
-            CustomModelAttribute.closeAllTrackers(npc);
+            CustomModelAttribute.removeModels(npc);
             npc.updateForAll();
 
             translator.translate("commands.npc.custom_model.removed")
@@ -47,7 +47,8 @@ public class CustomModelCMD extends FancyContext {
             return;
         }
 
-        if (BetterModel.model(model).isEmpty()) {
+        ModelProviderRegistry.ResolvedModel resolved = ModelProviderRegistry.resolve(model);
+        if (resolved == null) {
             translator.translate("common.model_not_found")
                     .withPrefix()
                     .replace("npc", npc.getData().getName())
@@ -63,15 +64,16 @@ public class CustomModelCMD extends FancyContext {
         translator.translate("commands.npc.custom_model.applied")
                 .withPrefix()
                 .replace("npc", npc.getData().getName())
-                .replace("model", model)
+                .replace("model", resolved.modelName())
+                .replace("provider", resolved.provider().getDisplayName())
                 .send(sender);
     }
 
     @Suggestions("CustomModelCMD/model")
     public List<String> suggestModels(final CommandContext<CommandSender> context, final CommandInput input) {
-        return new ArrayList<>() {{
-            add("@none");
-            addAll(BetterModel.modelKeys());
-        }};
+        List<String> suggestions = new ArrayList<>();
+        suggestions.add(CustomModelAttribute.NONE_VALUE);
+        suggestions.addAll(ModelProviderRegistry.suggestionValues());
+        return suggestions;
     }
 }

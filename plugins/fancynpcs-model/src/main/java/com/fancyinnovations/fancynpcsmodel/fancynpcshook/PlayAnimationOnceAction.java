@@ -1,11 +1,11 @@
 package com.fancyinnovations.fancynpcsmodel.fancynpcshook;
 
 import com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelPlugin;
+import com.fancyinnovations.fancynpcsmodel.providers.ModelProvider;
+import com.fancyinnovations.fancynpcsmodel.providers.ModelProviderRegistry;
 import de.oliver.fancyanalytics.logger.properties.StringProperty;
 import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.executor.ActionExecutionContext;
-import kr.toxicity.model.api.animation.AnimationModifier;
-import kr.toxicity.model.api.tracker.EntityTracker;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,9 +33,9 @@ public class PlayAnimationOnceAction extends NpcAction {
             return;
         }
 
-        EntityTracker tracker = CustomModelAttribute.getEntityTracker(context.getNpc());
+        ModelProvider provider = ModelProviderRegistry.getActiveProvider(context.getNpc());
 
-        if (!tracker.animate(animation, AnimationModifier.DEFAULT_WITH_PLAY_ONCE)) {
+        if (provider == null || !provider.playAnimation(context.getNpc(), animation, false)) {
             FancyNpcsModelPlugin.get().getFancyLogger().warn(
                     "Failed to play animation",
                     StringProperty.of("npc", context.getNpc().getData().getName()),

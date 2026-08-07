@@ -89,6 +89,11 @@ public class ModelEngineProvider implements ModelProvider {
             return;
         }
 
+        // hide the npc right away, so the entity metadata that FancyNpcs sends
+        // after applying the attributes already contains the invisible flag
+        // (the model itself is only created on the next global tick)
+        hideNpc(npc);
+
         // ModelEngine is not thread safe and attributes might be applied from the
         // FancyNpcs npc thread - create the model on the global region thread
         boolean alreadyScheduled = pendingModels.put(npcId, modelName) != null;
@@ -123,6 +128,7 @@ public class ModelEngineProvider implements ModelProvider {
                     "Cannot apply ModelEngine model to NPC without a location",
                     StringProperty.of("npc_name", npc.getData().getName())
             );
+            restoreNpcVisibility(npc);
             return;
         }
 
@@ -142,6 +148,7 @@ public class ModelEngineProvider implements ModelProvider {
                     StringProperty.of("npc_name", npc.getData().getName())
             );
             dummy.setRemoved(true);
+            restoreNpcVisibility(npc);
             return;
         }
 
@@ -152,6 +159,7 @@ public class ModelEngineProvider implements ModelProvider {
                     StringProperty.of("npc_name", npc.getData().getName())
             );
             dummy.setRemoved(true);
+            restoreNpcVisibility(npc);
             return;
         }
 

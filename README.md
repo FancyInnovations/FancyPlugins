@@ -92,7 +92,7 @@ To run the upstream-compatible monorepo packaging task:
 
 The resulting JAR is written under `plugins/fancynpcs-v2/build/libs/`.
 
-The current upstream `shadowJar` graph still includes legacy `1.21.x` implementation projects. Consequently, a dependency-resolution or toolchain failure in one of those projects can stop packaging before a JAR is produced. Such a failure does not change Exilon's support decision, but it must not be reported as a successful artifact build. Use the supported-module command above to distinguish an Exilon code failure from an unsupported legacy build failure.
+The Exilon `shadowJar` graph packages only FancyNpcs and packet implementations for `26.1.2+`. Legacy `1.21.x` projects remain available for upstream synchronization, but this task does not compile or include them. Use the targeted `:plugins:fancynpcs-v2:shadowJar` task instead of a repository-wide `build` when producing an Exilon artifact.
 
 ## Contributing
 

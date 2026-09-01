@@ -2,10 +2,6 @@ package de.oliver.fancynpcs;
 
 import de.oliver.fancynpcs.api.AttributeManager;
 import de.oliver.fancynpcs.api.NpcAttribute;
-import de.oliver.fancynpcs.v1_21_11.attributes.Attributes_1_21_11;
-import de.oliver.fancynpcs.v1_21_5.attributes.Attributes_1_21_5;
-import de.oliver.fancynpcs.v1_21_6.attributes.Attributes_1_21_6;
-import de.oliver.fancynpcs.v1_21_9.attributes.Attributes_1_21_9;
 import de.oliver.fancynpcs.v26_1_1.attributes.Attributes_26_1_1;
 import de.oliver.fancynpcs.v26_2.attributes.Attributes_26_2;
 import de.oliver.fancynpcs.v26_3.attributes.Attributes_26_3;
@@ -30,10 +26,6 @@ public class AttributeManagerImpl implements AttributeManager {
             case "26.3 Snapshot 10" -> attributes = Attributes_26_3.getAllAttributes();
             case "26.2" -> attributes = Attributes_26_2.getAllAttributes();
             case "26.1.2" -> attributes = Attributes_26_1_1.getAllAttributes();
-            case "1.21.11" -> attributes = Attributes_1_21_11.getAllAttributes();
-            case "1.21.9", "1.21.10" -> attributes = Attributes_1_21_9.getAllAttributes();
-            case "1.21.6", "1.21.7", "1.21.8" -> attributes = Attributes_1_21_6.getAllAttributes();
-            case "1.21.5" -> attributes = Attributes_1_21_5.getAllAttributes();
         }
     }
 

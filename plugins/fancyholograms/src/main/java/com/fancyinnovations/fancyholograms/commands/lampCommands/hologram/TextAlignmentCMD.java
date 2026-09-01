@@ -6,64 +6,62 @@ import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.types.ColorCommandType;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.Color;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class BackgroundCMD {
+public final class TextAlignmentCMD {
 
-    public static final BackgroundCMD INSTANCE = new BackgroundCMD();
+    public static final TextAlignmentCMD INSTANCE = new TextAlignmentCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private BackgroundCMD() {
+    private TextAlignmentCMD() {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> background <color>")
-    @Description("Changes the background color of the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.background")
+    @Command("hologram-new edit <hologram> text_alignment <alignment>")
+    @Description("Sets the text alignment of the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.text_alignment")
     public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @Nullable Color color
+            final @NotNull TextDisplay.TextAlignment alignment
     ) {
-        TextHologramData data = (TextHologramData) hologram.getData();
+        TextHologramData textData = (TextHologramData) hologram.getData();
 
-        TextHologramData copied = data.copy(data.getName());
-        copied.setBackground(color);
-
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BACKGROUND)) {
-            return;
-        }
-
-        if (copied.getBackground() != null && copied.getBackground().equals(data.getBackground())) {
-            translator.translate("commands.hologram.edit.background.already_set")
+        if (alignment == textData.getTextAlignment()) {
+            translator.translate("commands.hologram.edit.text_alignment.already_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("color", ColorCommandType.toString(color))
+                    .replace("alignment", alignment.name())
                     .send(actor.sender());
             return;
         }
 
-        data.setBackground(color);
+        final var copied = textData.copy(textData.getName());
+        copied.setTextAlignment(alignment);
+
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT_ALIGNMENT)) {
+            return;
+        }
+
+        textData.setTextAlignment(copied.getTextAlignment());
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.background.updated")
+        translator.translate("commands.hologram.edit.text_alignment.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("color", ColorCommandType.toString(color))
+                .replace("alignment", alignment.name())
                 .send(actor.sender());
     }
 }

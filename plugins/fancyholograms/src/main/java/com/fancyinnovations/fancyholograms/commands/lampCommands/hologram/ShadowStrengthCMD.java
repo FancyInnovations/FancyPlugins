@@ -1,64 +1,67 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
-import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class BillboardCMD {
+public final class ShadowStrengthCMD {
 
-    public static final BillboardCMD INSTANCE = new BillboardCMD();
+    public static final ShadowStrengthCMD INSTANCE = new ShadowStrengthCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private BillboardCMD() {
+    private ShadowStrengthCMD() {
     }
 
-    @Command("hologram-new edit <hologram> billboard <billboard>")
-    @Description("Changes the billboard of the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.billboard")
+    @Command("hologram-new edit <hologram> shadow_strength <strength>")
+    @Description("Changes the shadow strength of the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.shadow_strength")
     public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @NotNull Display.Billboard billboard
+            final float strength
     ) {
-        TextHologramData data = (TextHologramData) hologram.getData();
-
-        TextHologramData copied = data.copy(data.getName());
-        copied.setBillboard(billboard);
-
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
-            return;
-        }
-
-        if (copied.getBillboard().equals(data.getBillboard())) {
-            translator.translate("commands.hologram.edit.billboard.already_set")
+        if (!(hologram.getData() instanceof DisplayHologramData displayData)) {
+            translator.translate("commands.hologram.edit.shadow_strength.not_display")
                     .withPrefix()
-                    .replace("hologram", hologram.getData().getName())
-                    .replace("billboard", billboard.name())
                     .send(actor.sender());
             return;
         }
 
-        data.setBillboard(billboard);
+        if (Float.compare(strength, displayData.getShadowStrength()) == 0) {
+            translator.translate("commands.hologram.edit.shadow_strength.already_set")
+                    .withPrefix()
+                    .replace("hologram", hologram.getData().getName())
+                    .send(actor.sender());
+            return;
+        }
+
+        final var copied = displayData.copy(displayData.getName());
+        copied.setShadowStrength(strength);
+
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.SHADOW_STRENGTH)) {
+            return;
+        }
+
+        displayData.setShadowStrength(copied.getShadowStrength());
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.billboard.updated")
+        translator.translate("commands.hologram.edit.shadow_strength.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("billboard", billboard.name())
+                .replace("strength", String.valueOf(strength))
                 .send(actor.sender());
     }
 }

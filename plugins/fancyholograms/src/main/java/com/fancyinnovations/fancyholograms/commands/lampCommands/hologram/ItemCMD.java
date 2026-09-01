@@ -1,69 +1,78 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
-import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.types.ColorCommandType;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class BackgroundCMD {
+public final class ItemCMD {
 
-    public static final BackgroundCMD INSTANCE = new BackgroundCMD();
+    public static final ItemCMD INSTANCE = new ItemCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private BackgroundCMD() {
+    private ItemCMD() {
     }
 
-    @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> background <color>")
-    @Description("Changes the background color of the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.background")
+    @IsHologramType(types = {HologramType.ITEM})
+    @Command("hologram-new edit <hologram> item")
+    @Description("Sets the item of the hologram to the item in your main hand")
+    @CommandPermission("fancyholograms.commands.hologram.edit.item")
     public void set(
             final @NotNull BukkitCommandActor actor,
-            final @NotNull Hologram hologram,
-            final @Nullable Color color
+            final @NotNull Hologram hologram
     ) {
-        TextHologramData data = (TextHologramData) hologram.getData();
+        Player player = actor.requirePlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-        TextHologramData copied = data.copy(data.getName());
-        copied.setBackground(color);
-
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BACKGROUND)) {
-            return;
-        }
-
-        if (copied.getBackground() != null && copied.getBackground().equals(data.getBackground())) {
-            translator.translate("commands.hologram.edit.background.already_set")
+        if (item.getType() == Material.AIR || item.getAmount() < 1) {
+            translator.translate("commands.hologram.edit.item.hold_item")
                     .withPrefix()
-                    .replace("hologram", hologram.getData().getName())
-                    .replace("color", ColorCommandType.toString(color))
                     .send(actor.sender());
             return;
         }
 
-        data.setBackground(color);
+        ItemHologramData itemData = (ItemHologramData) hologram.getData();
+
+        if (item.equals(itemData.getItemStack())) {
+            translator.translate("commands.hologram.edit.item.already_set")
+                    .withPrefix()
+                    .replace("hologram", hologram.getData().getName())
+                    .replace("item", item.getType().name())
+                    .send(actor.sender());
+            return;
+        }
+
+        final var copied = itemData.copy(itemData.getName());
+        copied.setItemStack(item);
+
+        if (!HologramCMD.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
+            return;
+        }
+
+        itemData.setItemStack(item);
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.background.updated")
+        translator.translate("commands.hologram.edit.item.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("color", ColorCommandType.toString(color))
+                .replace("item", item.getType().name())
                 .send(actor.sender());
     }
 }

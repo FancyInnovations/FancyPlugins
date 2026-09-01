@@ -343,6 +343,31 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         lamp.register(BlockCMD.INSTANCE);
         lamp.register(BrightnessCMD.INSTANCE);
         lamp.register(CenterCMD.INSTANCE);
+        lamp.register(CopyCMD.INSTANCE);
+        lamp.register(InfoCMD.INSTANCE);
+        lamp.register(ListCMD.INSTANCE);
+        lamp.register(NearbyCMD.INSTANCE);
+        lamp.register(RemoveCMD.INSTANCE);
+        lamp.register(TeleportCMD.INSTANCE);
+        lamp.register(MoveHereCMD.INSTANCE);
+        lamp.register(MoveToCMD.INSTANCE);
+        lamp.register(ItemCMD.INSTANCE);
+        lamp.register(LinkWithNpcCMD.INSTANCE);
+        lamp.register(UnlinkWithNpcCMD.INSTANCE);
+        lamp.register(ScaleCMD.INSTANCE);
+        lamp.register(SeeThroughCMD.INSTANCE);
+        lamp.register(ShadowRadiusCMD.INSTANCE);
+        lamp.register(ShadowStrengthCMD.INSTANCE);
+        lamp.register(TextAlignmentCMD.INSTANCE);
+        lamp.register(TextShadowCMD.INSTANCE);
+        lamp.register(TranslateCMD.INSTANCE);
+        lamp.register(VisibilityCMD.INSTANCE);
+        lamp.register(VisibilityDistanceCMD.INSTANCE);
+        lamp.register(AddLineCMD.INSTANCE);
+        lamp.register(SetLineCMD.INSTANCE);
+        lamp.register(RemoveLineCMD.INSTANCE);
+        lamp.register(InsertBeforeCMD.INSTANCE);
+        lamp.register(InsertAfterCMD.INSTANCE);
     }
 
     private void registerListeners() {

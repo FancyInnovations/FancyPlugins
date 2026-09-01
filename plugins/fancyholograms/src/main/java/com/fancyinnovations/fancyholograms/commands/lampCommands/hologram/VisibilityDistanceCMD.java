@@ -1,64 +1,63 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
-import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
+import revxrsal.commands.annotation.Range;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class BillboardCMD {
+public final class VisibilityDistanceCMD {
 
-    public static final BillboardCMD INSTANCE = new BillboardCMD();
+    public static final VisibilityDistanceCMD INSTANCE = new VisibilityDistanceCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private BillboardCMD() {
+    private VisibilityDistanceCMD() {
     }
 
-    @Command("hologram-new edit <hologram> billboard <billboard>")
-    @Description("Changes the billboard of the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.billboard")
+    @Command("hologram-new edit <hologram> visibility_distance <distance>")
+    @Description("Changes the visibility distance of the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.visibility_distance")
     public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @NotNull Display.Billboard billboard
+            final @Range(min = -1) int distance
     ) {
-        TextHologramData data = (TextHologramData) hologram.getData();
+        HologramData data = hologram.getData();
 
-        TextHologramData copied = data.copy(data.getName());
-        copied.setBillboard(billboard);
-
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
-            return;
-        }
-
-        if (copied.getBillboard().equals(data.getBillboard())) {
-            translator.translate("commands.hologram.edit.billboard.already_set")
+        if (distance == data.getVisibilityDistance()) {
+            translator.translate("commands.hologram.edit.visibility_distance.already_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("billboard", billboard.name())
                     .send(actor.sender());
             return;
         }
 
-        data.setBillboard(billboard);
+        final var copied = data.copy(data.getName());
+        copied.setVisibilityDistance(distance);
+
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.UPDATE_VISIBILITY_DISTANCE)) {
+            return;
+        }
+
+        data.setVisibilityDistance(copied.getVisibilityDistance());
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.billboard.updated")
+        translator.translate("commands.hologram.edit.visibility_distance.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("billboard", billboard.name())
+                .replace("distance", String.valueOf(distance))
                 .send(actor.sender());
     }
 }

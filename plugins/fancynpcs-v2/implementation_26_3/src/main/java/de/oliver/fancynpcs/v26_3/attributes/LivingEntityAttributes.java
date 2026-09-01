@@ -45,12 +45,12 @@ public class LivingEntityAttributes {
         if (isHurt) {
             livingEntity.hurtDuration = 1;
             livingEntity.hurtTime = 1;
-            livingEntity.hurtMarked = true;
+            // livingEntity.hurtMarked = true; // TODO(26.3)
             livingEntity.animateHurt(0);
         } else {
             livingEntity.hurtDuration = 0;
             livingEntity.hurtTime = 0;
-            livingEntity.hurtMarked = false;
+            // livingEntity.hurtMarked = false; // TODO(26.3)
         }
     }
 

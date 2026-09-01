@@ -468,7 +468,7 @@ public class Npc_26_3 extends Npc {
         ServerEntity serverEntity = new ServerEntity(
                 serverPlayer.level(),
                 sittingVehicle,
-                0,
+                UpdateInterval.NEVER,
                 false,
                 FakeSynchronizer.INSTANCE,
                 Set.of()

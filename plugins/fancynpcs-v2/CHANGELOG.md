@@ -1,3 +1,4 @@
+* Initialize backing NPC entity transforms during creation
 * Add support for 26.3
 * Remove support for 1.21.5
 * Removed the `player_command_as_op` action, please use `player_command` and give the necessary permissions to the player instead

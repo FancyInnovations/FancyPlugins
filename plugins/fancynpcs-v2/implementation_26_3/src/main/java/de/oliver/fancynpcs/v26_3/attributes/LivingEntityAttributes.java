@@ -16,15 +16,6 @@ public class LivingEntityAttributes {
     public static List<NpcAttribute> getAllAttributes() {
         List<NpcAttribute> attributes = new ArrayList<>();
 
-        /*attributes.add(new NpcAttribute(
-                "hurt",
-                List.of("true", "false"),
-                Arrays.stream(EntityType.values())
-                        .filter(type -> type.getEntityClass() != null && LivingEntity.class.isAssignableFrom(type.getEntityClass()))
-                        .toList(),
-                LivingEntityAttributes::setHurt
-        ));*/
-
         attributes.add(new NpcAttribute(
                 "use_item",
                 List.of("main_hand", "off_hand", "none"),
@@ -35,23 +26,6 @@ public class LivingEntityAttributes {
         ));
 
         return attributes;
-    }
-
-    private static void setHurt(Npc npc, String value) {
-        net.minecraft.world.entity.LivingEntity livingEntity = ReflectionHelper.getEntity(npc);
-
-        boolean isHurt = Boolean.parseBoolean(value);
-
-        if (isHurt) {
-            livingEntity.hurtDuration = 1;
-            livingEntity.hurtTime = 1;
-            // livingEntity.hurtMarked = true; // TODO(26.3)
-            livingEntity.animateHurt(0);
-        } else {
-            livingEntity.hurtDuration = 0;
-            livingEntity.hurtTime = 0;
-            // livingEntity.hurtMarked = false; // TODO(26.3)
-        }
     }
 
     private static void setUseItem(Npc npc, String value) {

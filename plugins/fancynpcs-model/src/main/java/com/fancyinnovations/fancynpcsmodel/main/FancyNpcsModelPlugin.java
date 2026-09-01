@@ -11,6 +11,8 @@ import com.fancyinnovations.fancynpcsmodel.fancynpcshook.PlayAnimationOnceAction
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcInteractListener;
 import com.fancyinnovations.fancynpcsmodel.listeners.NpcRemoveListener;
 import com.fancyinnovations.fancynpcsmodel.metrics.FNMMetrics;
+import com.fancyinnovations.fancynpcsmodel.providers.ModelProvider;
+import com.fancyinnovations.fancynpcsmodel.providers.ModelProviderRegistry;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
@@ -27,6 +29,7 @@ import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -140,6 +143,21 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
             }
         }, 20L * 20); // 20s
 
+        ModelProviderRegistry.init(fancyLogger);
+        if (ModelProviderRegistry.isEmpty()) {
+            fancyLogger.error("""
+
+                    --------------------------------------------------
+                    No supported model plugin was found.
+                    Please install BetterModel and/or ModelEngine and restart the server.
+                    You can download BetterModel here: https://modrinth.com/plugin/bettermodel/versions?c=release
+                    You can download ModelEngine here: https://mythiccraft.io/index.php?resources/model-engine%E2%80%94ultimate-entity-model-manager.389/
+                    --------------------------------------------------
+                    """);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         registerCommands();
 
         registerListeners();
@@ -158,11 +176,15 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
     public void onDisable() {
         fancyLogger.info("Disabling FancyNpcsModel version %s...".formatted(getDescription().getVersion()));
 
-        for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
-            if (CustomModelAttribute.hasAttribute(npc)) {
-                CustomModelAttribute.closeAllTrackers(npc);
+        if (!ModelProviderRegistry.isEmpty() && Bukkit.getPluginManager().isPluginEnabled("FancyNpcs")) {
+            for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
+                if (CustomModelAttribute.hasAttribute(npc)) {
+                    CustomModelAttribute.removeModels(npc);
+                }
             }
         }
+
+        ModelProviderRegistry.shutdown();
 
         fancyLogger.info("Successfully disabled FancyNpcsModel version %s".formatted(getDescription().getVersion()));
     }
@@ -180,6 +202,13 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new NpcInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new NpcRemoveListener(), this);
+
+        for (ModelProvider provider : ModelProviderRegistry.getProviders()) {
+            Listener listener = provider.createListener();
+            if (listener != null) {
+                Bukkit.getPluginManager().registerEvents(listener, this);
+            }
+        }
     }
 
     public void registerTranslator() {

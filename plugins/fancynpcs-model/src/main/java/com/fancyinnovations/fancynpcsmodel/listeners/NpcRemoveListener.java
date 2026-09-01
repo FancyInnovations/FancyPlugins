@@ -13,7 +13,7 @@ public class NpcRemoveListener implements Listener {
             return;
         }
 
-        CustomModelAttribute.closeAllTrackers(event.getNpc());
+        CustomModelAttribute.removeModels(event.getNpc());
     }
 
 }

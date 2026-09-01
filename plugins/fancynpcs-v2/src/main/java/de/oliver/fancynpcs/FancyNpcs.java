@@ -52,7 +52,6 @@ import de.oliver.fancynpcs.v1_21_9.Npc_1_21_9;
 import de.oliver.fancynpcs.v26_1_1.Npc_26_1_1;
 import de.oliver.fancynpcs.v26_2.Npc_26_2;
 import de.oliver.fancynpcs.v26_3.Npc_26_3;
-import de.oliver.fancysitula.api.utils.ServerVersion;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -289,7 +288,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
 
         visibilityTracker = new VisibilityTracker();
 
-        npcThread.scheduleAtFixedRate(new TurnToPlayerTracker(), 0, 50, TimeUnit.MILLISECONDS);
+        npcThread.scheduleAtFixedRate(new TurnToPlayerTracker(), 0, (config.getTurnToPlayerTrackerInterval() * 50L), TimeUnit.MILLISECONDS);
         npcThread.scheduleAtFixedRate(visibilityTracker, 0, (config.getNpcUpdateVisibilityInterval() * 50L), TimeUnit.MILLISECONDS);
 
         int autosaveInterval = config.getAutoSaveInterval();

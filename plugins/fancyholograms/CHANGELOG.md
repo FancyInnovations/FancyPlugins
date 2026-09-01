@@ -218,3 +218,11 @@ There are several built-in traits that come with FancyHolograms v3:
 3. RANDOM: it will show a random page every X seconds
 
 **File Content Trait**: This trait will show the contents of a file. You can configure the file path
+
+**Custom Component Provider**: This is trait allows other developers to use Adventure components instead of the default list of strings as hologram text.
+Example:
+```java
+hologram.getData().getTraitTrait().addTrait(new CustomComponentProviderTrait(player -> {
+    return MiniMessage.miniMessage().deserialize("<rainbow>My custom component</rainbow>");
+}));
+```

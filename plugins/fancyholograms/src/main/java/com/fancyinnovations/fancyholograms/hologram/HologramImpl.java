@@ -2,6 +2,7 @@ package com.fancyinnovations.fancyholograms.hologram;
 
 import com.fancyinnovations.fancyholograms.api.FancyHolograms;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
+import com.fancyinnovations.fancyholograms.api.data.property.CustomComponentProviderTrait;
 import com.fancyinnovations.fancyholograms.api.data.property.HologramRotation;
 import com.fancyinnovations.fancyholograms.api.events.HologramDespawnEvent;
 import com.fancyinnovations.fancyholograms.api.events.HologramSpawnEvent;
@@ -14,7 +15,6 @@ import de.oliver.fancysitula.factories.FancySitula;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 
 public final class HologramImpl extends Hologram {
@@ -128,7 +128,15 @@ public final class HologramImpl extends Hologram {
 
 
         if (fsDisplay instanceof FS_TextDisplay textDisplay) {
-            textDisplay.setText(getShownText(player));
+
+            // use custom component provider if available
+            if (data.getTraitTrait().isTraitAttached(CustomComponentProviderTrait.class)) {
+                CustomComponentProviderTrait customComponentProvider = data.getTraitTrait().getTrait(CustomComponentProviderTrait.class);
+                assert customComponentProvider != null;
+                textDisplay.setText(customComponentProvider.getComponentForPlayer(player));
+            } else {
+                textDisplay.setText(getShownText(player));
+            }
         }
 
         FancySitula.ENTITY_FACTORY.setEntityDataFor(fsPlayer, fsDisplay);

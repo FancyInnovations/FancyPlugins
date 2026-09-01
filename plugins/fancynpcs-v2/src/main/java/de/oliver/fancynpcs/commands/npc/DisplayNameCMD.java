@@ -84,7 +84,7 @@ public enum DisplayNameCMD {
                 // Transforming the command to a base command with trailed whitespaces and slashes. This also removes namespaced part from the beginning of the command.
                 final String transformedBaseCommand = blockedCommand.replace('/', ' ').strip().split(" ")[0].replaceAll(".*?:+", "");
                 // Comparing click event value with the transformed base command. Returning the result.
-                if (event.value().replace('/', ' ').strip().split(" ")[0].replaceAll(".*?:+", "").equalsIgnoreCase(transformedBaseCommand))
+                if (((ClickEvent.Payload.Text) event.payload()).value().replace('/', ' ').strip().split(" ")[0].replaceAll(".*?:+", "").equalsIgnoreCase(transformedBaseCommand))
                     return true;
             }
             // Returning false as no blocked commands has been found.

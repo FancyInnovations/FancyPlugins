@@ -8,7 +8,7 @@ group = "de.oliver"
 description = "Library for plugin configuration"
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")
     compileOnly("org.jetbrains:annotations:26.1.0")
 

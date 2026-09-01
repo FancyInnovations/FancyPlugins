@@ -17,6 +17,7 @@ allprojects {
 
     repositories {
         maven(url = "https://repo.inventivetalent.org/repository/maven-snapshots/") // for MineSkin
+        maven(url = "https://repo.inventivetalent.org/repository/public/") // for MineSkin
         maven(url = "https://repo.extendedclip.com/releases/") // for PlaceholderAPI
         maven(url = "https://maven.enginehub.org/repo/") // for WorldEdit
         maven(url = "https://maven.citizensnpcs.co/repo") // for Citizens
@@ -24,7 +25,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 
     implementation(project(":plugins:fancynpcs-v2:fn-v2-api"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_3"))
@@ -48,15 +49,15 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
-    implementation("org.incendo:cloud-core:2.0.0")
-    implementation("org.incendo:cloud-paper:2.0.0-beta.16")
-    implementation("org.incendo:cloud-annotations:2.0.0")
-    annotationProcessor("org.incendo:cloud-annotations:2.0.0")
-    implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
+    implementation("org.incendo:cloud-core:2.1.0")
+    implementation("org.incendo:cloud-paper:2.0.0")
+    implementation("org.incendo:cloud-annotations:2.1.0")
+    annotationProcessor("org.incendo:cloud-annotations:2.1.0")
+    implementation("org.mineskin:java-client-jsoup:3.2.6")
 
     compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.13")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.4.3")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.4.5")
     compileOnly("net.citizensnpcs:citizens-main:2.0.42-SNAPSHOT") {
         exclude(group = "*", module = "*")
     }
@@ -93,8 +94,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.2")
-        //serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
+        minecraftVersion("26.3-snapshot-10")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.3-snapshot-10.build.2-alpha.jar"))
 
 
         downloadPlugins {

@@ -1,6 +1,5 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
-import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
@@ -9,9 +8,7 @@ import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.ColorCommandType;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.colors.GlowingColor;
 import de.oliver.fancylib.translations.Translator;
-import de.oliver.fancylib.translations.message.SimpleMessage;
 import org.bukkit.Color;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

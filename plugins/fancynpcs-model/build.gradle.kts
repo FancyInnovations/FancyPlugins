@@ -15,7 +15,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.2.0")
@@ -27,10 +27,10 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
 
-    compileOnly("org.incendo:cloud-core:2.0.0")
-    compileOnly("org.incendo:cloud-paper:2.0.0-beta.16")
-    compileOnly("org.incendo:cloud-annotations:2.0.0")
-    annotationProcessor("org.incendo:cloud-annotations:2.0.0")
+    compileOnly("org.incendo:cloud-core:2.1.0")
+    compileOnly("org.incendo:cloud-paper:2.0.0")
+    compileOnly("org.incendo:cloud-annotations:2.1.0")
+    annotationProcessor("org.incendo:cloud-annotations:2.1.0")
 
     implementation("org.jetbrains:annotations:26.1.0")
 }

@@ -1,28 +1,18 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
-import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
 import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
-import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.BlockMaterialSuggestion;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Range;
-import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
-
-import java.util.UUID;
 
 public final class BrightnessCMD {
 

@@ -25,7 +25,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 
     implementation(project(":plugins:fancydialogs:fd-api"))
 
@@ -43,8 +43,8 @@ dependencies {
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly("org.lushplugins.chatcolorhandler:paper:8.1.1")
-    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.17")
-    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.17")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.18")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.18")
 
     implementation("org.jetbrains:annotations:26.1.0")
 }
@@ -77,8 +77,8 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("26.2")
-        //serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
+        minecraftVersion("26.3-snapshot-10")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.3-snapshot-10.build.2-alpha.jar"))
 
         downloadPlugins {
 //            url("https://fancyspaces.net/api/v1/spaces/s1gGcHj5/versions/A364LHvu/files/FancyWorlds-0.0.4.jar")

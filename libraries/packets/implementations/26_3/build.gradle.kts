@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    paperweight.paperDevBundle("26.2.build.+")
+    paperweight.paperDevBundle("26.3-snapshot-10.build.2-alpha")
 
     compileOnly(project(":libraries:packets:packets-api"))
 

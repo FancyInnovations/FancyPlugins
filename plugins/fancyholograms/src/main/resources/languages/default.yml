@@ -36,12 +36,105 @@ messages:
         no_dot: "{errorColor}Hologram names cannot contain dots."
         canceled: "{errorColor}Hologram creation canceled."
         success: "Successfully created hologram {primaryColor}{name}{secondaryColor} of type {primaryColor}{type}{secondaryColor}."
+      copy:
+        success: "Successfully copied hologram {primaryColor}{hologram}{secondaryColor} to {primaryColor}{name}{secondaryColor}."
+      info:
+        header: "Hologram info for {primaryColor}{name}{secondaryColor}:"
+        name: "{secondaryColor} - Name: {primaryColor}{name}"
+        type: "{secondaryColor} - Type: {primaryColor}{type}"
+        location: "{secondaryColor} - Location: {primaryColor}{world} {x}/{y}/{z}"
+        world_not_loaded: "{warningColor}Warning: The world of this hologram is not loaded!"
+        visibility_distance: "{secondaryColor} - Visibility distance: {primaryColor}{distance}"
+        scale: "{secondaryColor} - Scale: {primaryColor}{scale}"
+        billboard: "{secondaryColor} - Billboard: {primaryColor}{billboard}"
+        shadow_radius: "{secondaryColor} - Shadow radius: {primaryColor}{radius}"
+        shadow_strength: "{secondaryColor} - Shadow strength: {primaryColor}{strength}"
+        linked_npc: "{secondaryColor} - Linked NPC: {primaryColor}{npc}"
+        text_header: "{secondaryColor} - Text:"
+        text_line: "{secondaryColor}   - <reset>{line}"
+        background: "{secondaryColor} - Background: {primaryColor}<{background}>{background}"
+        text_alignment: "{secondaryColor} - Text alignment: {primaryColor}{alignment}"
+        see_through: "{secondaryColor} - See through: {primaryColor}{enabled}"
+        text_shadow: "{secondaryColor} - Text shadow: {primaryColor}{enabled}"
+        update_text_interval_disabled: "{secondaryColor} - Update text interval: {primaryColor}disabled"
+        update_text_interval: "{secondaryColor} - Update text interval: {primaryColor}{interval}s"
+        block: "{secondaryColor} - Block: {primaryColor}{block}"
+        item: "{secondaryColor} - Item: {primaryColor}{item}"
+      list:
+        empty: "{errorColor}There are no holograms."
+        page_out_of_bounds: "{errorColor}Page {primaryColor}{page}{errorColor} does not exist. Total pages: {primaryColor}{max}{errorColor}."
+        header: "Holograms ({primaryColor}{count}{secondaryColor}):"
+        page: "{secondaryColor}Page {primaryColor}{page}{secondaryColor}/{primaryColor}{pages}{secondaryColor}:"
+        entry: "{secondaryColor} - {primaryColor}{name} {secondaryColor}({world} {x}/{y}/{z})"
+      nearby:
+        none_found: "{errorColor}No holograms found in a radius of {primaryColor}{range}{errorColor} blocks."
+        header: "Holograms in a radius of {primaryColor}{range}{secondaryColor} blocks:"
+        entry: "{secondaryColor} - {primaryColor}{name} {secondaryColor}({world} {x}/{y}/{z}, {distance} blocks away)"
+      remove:
+        cancelled: "{errorColor}Hologram removal canceled."
+        success: "Successfully removed hologram {primaryColor}{hologram}{secondaryColor}."
+      teleport:
+        world_not_loaded: "{errorColor}Cannot teleport to hologram because its world is not loaded."
+        success: "Teleported to hologram {primaryColor}{hologram}{secondaryColor}."
+        failed: "{errorColor}Failed to teleport to hologram {primaryColor}{hologram}{errorColor}."
       edit:
         lines:
           line_number_out_of_bounds: "{errorColor}Line number {primaryColor}{line}{errorColor} is out of bounds. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."
           cannot_swap_same_line: "{errorColor}Cannot swap line {primaryColor}{line}{errorColor} with itself."
           move_success: "Successfully moved line {primaryColor}{line}{secondaryColor} to position {primaryColor}{position}{secondaryColor}."
           swap_success: "Successfully swapped line {primaryColor}{line1}{secondaryColor} with line {primaryColor}{line2}{secondaryColor}."
+          added: "Successfully added line to hologram {primaryColor}{hologram}{secondaryColor}."
+          set: "Successfully set line {primaryColor}{line}{secondaryColor} of hologram {primaryColor}{hologram}{secondaryColor}."
+          empty: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} does not have any lines."
+          removed: "Successfully removed line {primaryColor}{line}{secondaryColor} from hologram {primaryColor}{hologram}{secondaryColor}."
+          inserted: "Successfully inserted line at position {primaryColor}{line}{secondaryColor} into hologram {primaryColor}{hologram}{secondaryColor}."
+        move_to:
+          invalid_position: "{errorColor}Invalid position coordinates provided."
+          invalid_yaw: "{errorColor}Invalid yaw angle provided."
+          invalid_pitch: "{errorColor}Invalid pitch angle provided."
+        item:
+          hold_item: "{errorColor}You must hold an item in your main hand."
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has item {primaryColor}{item}{errorColor} set."
+          updated: "Updated the item to {primaryColor}{item}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        link_with_npc:
+          fancynpcs_not_installed: "{errorColor}FancyNpcs is not installed or enabled."
+          already_linked: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} is already linked to NPC {primaryColor}{npc}{errorColor}."
+          npc_not_found: "{errorColor}Could not find NPC {primaryColor}{name}{errorColor}."
+          success: "Successfully linked hologram {primaryColor}{hologram}{secondaryColor} with NPC {primaryColor}{npc}{secondaryColor}."
+        unlink_with_npc:
+          not_linked: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} is not linked to any NPC."
+          success: "Successfully unlinked hologram {primaryColor}{hologram}{secondaryColor} from NPC."
+        scale:
+          not_display: "{errorColor}This command can only be executed on display holograms."
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this scale set."
+          updated: "Updated the scale to {primaryColor}({x}, {y}, {z}){secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        see_through:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has see-through set to {primaryColor}{enabled}{errorColor}."
+          updated: "Set see-through to {primaryColor}{enabled}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        shadow_radius:
+          not_display: "{errorColor}This command can only be executed on display holograms."
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this shadow radius set."
+          updated: "Updated the shadow radius to {primaryColor}{radius}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        shadow_strength:
+          not_display: "{errorColor}This command can only be executed on display holograms."
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this shadow strength set."
+          updated: "Updated the shadow strength to {primaryColor}{strength}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        text_alignment:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has text alignment set to {primaryColor}{alignment}{errorColor}."
+          updated: "Updated the text alignment to {primaryColor}{alignment}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        text_shadow:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has text shadow set to {primaryColor}{enabled}{errorColor}."
+          updated: "Set text shadow to {primaryColor}{enabled}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        translate:
+          not_display: "{errorColor}This command can only be executed on display holograms."
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this translation set."
+          updated: "Updated the translation to {primaryColor}({x}, {y}, {z}){secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        visibility:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has visibility set to {primaryColor}{visibility}{errorColor}."
+          updated: "Updated the visibility to {primaryColor}{visibility}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        visibility_distance:
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this visibility distance set."
+          updated: "Updated the visibility distance to {primaryColor}{distance}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         rotation:
           changed: "Successfully changed the {primaryColor}{axis} {secondaryColor}rotation of hologram {primaryColor}{hologram}{secondaryColor} to {primaryColor}{angle}{secondaryColor} degrees."
         trait:

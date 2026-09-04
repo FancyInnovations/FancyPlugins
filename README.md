@@ -43,6 +43,57 @@ The monorepo uses Gradle as a build system. See [monorepo.md](docs/src/developme
 
 To see specific usage for each package, see the README.md in the respective package directory.
 
+## Exilon fork: building FancyNpcs
+
+This section describes the build and support policy for the Exilon fork. It is not an upstream FancyInnovations support statement.
+
+### Requirements
+
+- JDK 25 available through `JAVA_HOME`.
+- Git.
+- Network access to the Paper and FancyInnovations Maven repositories on the first build.
+- The checked-in Gradle wrapper. A separately installed Gradle version is neither required nor recommended.
+
+Run all commands from the repository root. On Windows, verify the selected JDK and compile every FancyNpcs implementation supported by Exilon with:
+
+```powershell
+java -version
+.\gradlew.bat --configure-on-demand `
+  :plugins:fancynpcs-v2:implementation_26_1_2:compileJava `
+  :plugins:fancynpcs-v2:implementation_26_2:compileJava `
+  :plugins:fancynpcs-v2:implementation_26_3:compileJava
+```
+
+On Linux or macOS:
+
+```bash
+java -version
+./gradlew --configure-on-demand \
+  :plugins:fancynpcs-v2:implementation_26_1_2:compileJava \
+  :plugins:fancynpcs-v2:implementation_26_2:compileJava \
+  :plugins:fancynpcs-v2:implementation_26_3:compileJava
+```
+
+These three tasks are the Exilon compatibility gate. All of them must pass before merging or releasing a FancyNpcs change.
+
+### Supported versions
+
+Exilon only supports the `26.1.2` implementation and newer implementations. The `implementation_1_21_5`, `implementation_1_21_6`, `implementation_1_21_9`, and `implementation_1_21_11` modules are retained from upstream for source synchronization and upstream compatibility, but they are outside Exilon's support matrix.
+
+A failure confined to an `implementation_1_21_*` module does not fail Exilon validation and does not block an Exilon change when every supported task above succeeds. Do not weaken, patch around, or change supported `26.1.2+` code merely to make an unsupported legacy module compile.
+
+### Building the distributable JAR
+
+To run the upstream-compatible monorepo packaging task:
+
+```powershell
+.\gradlew.bat :plugins:fancynpcs-v2:shadowJar
+```
+
+The resulting JAR is written under `plugins/fancynpcs-v2/build/libs/`.
+
+The Exilon `shadowJar` graph packages only FancyNpcs and packet implementations for `26.1.2+`. Legacy `1.21.x` projects remain available for upstream synchronization, but this task does not compile or include them. Use the targeted `:plugins:fancynpcs-v2:shadowJar` task instead of a repository-wide `build` when producing an Exilon artifact.
+
 ## Contributing
 
 You can contribute to this repository by reporting bugs, suggesting features, or contributing code. 

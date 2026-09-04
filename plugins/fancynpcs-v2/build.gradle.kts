@@ -31,14 +31,10 @@ dependencies {
     implementation(project(":plugins:fancynpcs-v2:implementation_26_3"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_2"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_1_2"))
-    implementation(project(":plugins:fancynpcs-v2:implementation_1_21_11"))
-    implementation(project(":plugins:fancynpcs-v2:implementation_1_21_9"))
-    implementation(project(":plugins:fancynpcs-v2:implementation_1_21_6"))
-    implementation(project(":plugins:fancynpcs-v2:implementation_1_21_5"))
 
-    rootProject.subprojects
-        .filter { it.path.startsWith(":libraries:packets:implementations") }
-        .forEach { implementation(project(it.path)) }
+    implementation(project(":libraries:packets:implementations:26_1_2"))
+    implementation(project(":libraries:packets:implementations:26_2"))
+    implementation(project(":libraries:packets:implementations:26_3"))
     implementation(project(":libraries:packets"))
     implementation(project(":libraries:packets:packets-api"))
     implementation(project(":libraries:common"))

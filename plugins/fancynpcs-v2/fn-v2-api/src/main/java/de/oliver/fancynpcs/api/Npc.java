@@ -31,11 +31,13 @@ public abstract class Npc {
     protected final Map<UUID, Boolean> isLookingAtPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Long> lastPlayerInteraction = new ConcurrentHashMap<>();
     private final Translator translator = FancyNpcsPlugin.get().getTranslator();
+    protected final String teamName;
     protected NpcData data;
     protected boolean saveToFile;
 
     public Npc(NpcData data) {
         this.data = data;
+        this.teamName = generateTeamName();
         this.saveToFile = true;
     }
 
@@ -46,6 +48,10 @@ public abstract class Npc {
         }
 
         return ChatColor.translateAlternateColorCodes('&', localName.toString());
+    }
+
+    protected String generateTeamName() {
+        return "npc-" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);
     }
 
     public abstract void create();

@@ -54,21 +54,19 @@ public class DialogImpl extends Dialog {
         return result;
     }
 
-    private boolean checkPerm(Player player, String perm) {
-        if (perm == null) {
+    private boolean checkPerm(Player player, String perm, String valueStr) {
+        if (perm == null || perm.isEmpty()) {
             return true;
         }
-        if (!perm.equals("") && !player.hasPermission(perm)) {
-            return false;
-        }
-        return true;
+        boolean expectedValue = valueStr == null || Boolean.parseBoolean(valueStr);
+        return player.hasPermission(perm) == expectedValue;
     }
 
     private boolean checkRequirements(Player player, Map<String, String> requirements) {
         if (requirements == null) { return true; }
         if (requirements.get("type") == null) { return true; }
         if (requirements.get("type").equals("permission")) {
-            return checkPerm(player, requirements.get("permission"));
+            return checkPerm(player, requirements.get("permission"), requirements.get("value"));
         }
         if (requirements.get("type").equals("stringMatch")) {
             if (requirements.get("input") == null || requirements.get("output") == null) { return true; }

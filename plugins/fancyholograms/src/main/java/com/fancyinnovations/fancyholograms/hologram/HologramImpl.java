@@ -8,6 +8,7 @@ import com.fancyinnovations.fancyholograms.api.events.HologramDespawnEvent;
 import com.fancyinnovations.fancyholograms.api.events.HologramSpawnEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.storage.json.JsonAdapter;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import com.viaversion.viaversion.api.Via;
 import de.oliver.fancysitula.api.entities.*;
@@ -41,7 +42,6 @@ public final class HologramImpl extends Hologram {
             case BLOCK -> this.fsDisplay = new FS_BlockDisplay();
         }
     }
-
 
     @Override
     public void spawnTo(@NotNull final Player player) {
@@ -96,7 +96,6 @@ public final class HologramImpl extends Hologram {
         this.viewers.remove(player.getUniqueId());
     }
 
-
     @Override
     public void updateFor(@NotNull final Player player) {
         if (fsDisplay == null) {
@@ -140,6 +139,11 @@ public final class HologramImpl extends Hologram {
         }
 
         FancySitula.ENTITY_FACTORY.setEntityDataFor(fsPlayer, fsDisplay);
+    }
+
+    @Override
+    public String toJson() {
+        return FancyHologramsPlugin.GSON.toJson(JsonAdapter.hologramDataToJson(this.data));
     }
 
     private void syncWithData() {

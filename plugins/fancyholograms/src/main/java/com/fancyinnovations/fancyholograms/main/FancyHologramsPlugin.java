@@ -32,6 +32,7 @@ import com.fancyinnovations.fancyholograms.trait.builtin.InteractionTrait;
 import com.fancyinnovations.fancyholograms.trait.builtin.MultiplePagesTrait;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.google.gson.Gson;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
@@ -72,6 +73,8 @@ import java.util.function.Function;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
+
+    public static final Gson GSON = new Gson();
 
     private static @Nullable FancyHologramsPlugin INSTANCE;
 

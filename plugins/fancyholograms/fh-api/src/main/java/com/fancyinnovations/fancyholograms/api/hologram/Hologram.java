@@ -213,10 +213,11 @@ public abstract class Hologram {
     }
 
     /**
-     * Serializes the hologram to a JSON representation.
+     * Serializes the hologram to a record class for JSON representation.
+     * This method is intended for internal use and may be subject to change in future versions.
      *
-     * @return the JSON string representing the hologram
+     * @return an object representing the hologram in a JSON-compatible format
      */
     @ApiStatus.Internal
-    public abstract String toJson();
+    public abstract Object toJson();
 }

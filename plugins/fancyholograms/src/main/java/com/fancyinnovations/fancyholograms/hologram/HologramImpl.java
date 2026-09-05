@@ -142,8 +142,8 @@ public final class HologramImpl extends Hologram {
     }
 
     @Override
-    public String toJson() {
-        return FancyHologramsPlugin.GSON.toJson(JsonAdapter.hologramDataToJson(this.data));
+    public Object toJson() {
+        return JsonAdapter.hologramDataToJson(this.data);
     }
 
     private void syncWithData() {

@@ -1,7 +1,10 @@
 package com.fancyinnovations.fancyholograms.hologram;
 
 import com.fancyinnovations.fancyholograms.api.FancyHolograms;
+import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
+import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
+import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.data.property.CustomComponentProviderTrait;
 import com.fancyinnovations.fancyholograms.api.data.property.HologramRotation;
 import com.fancyinnovations.fancyholograms.api.events.HologramDespawnEvent;
@@ -143,7 +146,11 @@ public final class HologramImpl extends Hologram {
 
     @Override
     public Object toJson() {
-        return JsonAdapter.hologramDataToJson(this.data);
+        return switch (data.getType()) {
+            case TEXT -> JsonAdapter.toUnion((TextHologramData) data);
+            case ITEM -> JsonAdapter.toUnion((ItemHologramData) data);
+            case BLOCK -> JsonAdapter.toUnion((BlockHologramData) data);
+        };
     }
 
     private void syncWithData() {

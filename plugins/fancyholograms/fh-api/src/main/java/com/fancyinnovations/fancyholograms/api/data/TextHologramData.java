@@ -217,7 +217,7 @@ public class TextHologramData extends DisplayHologramData {
     public TextHologramData copy(String name) {
         TextHologramData textHologramData = new TextHologramData(name, getLocation());
         textHologramData
-                .setText(this.getText())
+                .setText(new ArrayList<>(this.getText()))
                 .setBackground(this.getBackground())
                 .setTextAlignment(this.getTextAlignment())
                 .setTextShadow(this.hasTextShadow())

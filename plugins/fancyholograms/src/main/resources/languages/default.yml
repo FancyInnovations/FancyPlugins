@@ -58,7 +58,7 @@ messages:
         header: "Hologram info for {primaryColor}{name}{secondaryColor}:"
         name: "{secondaryColor} - Name: {primaryColor}{name}"
         type: "{secondaryColor} - Type: {primaryColor}{type}"
-        location: "{secondaryColor} - Location: {primaryColor}{world} {x}/{y}/{z}"
+        location: "{secondaryColor} - Location: {primaryColor}{world} ({x} / {y} / {z})"
         world_not_loaded: "{warningColor}Warning: The world of this hologram is not loaded!"
         visibility_distance: "{secondaryColor} - Visibility distance: {primaryColor}{distance}"
         scale: "{secondaryColor} - Scale: {primaryColor}{scale}"
@@ -168,7 +168,7 @@ messages:
           list:
             no_traits: "Hologram {primaryColor}{hologram}{secondaryColor} does not have any traits attached."
             header: "Hologram {primaryColor}{hologram}{secondaryColor} has the following traits attached:"
-            entry: "{secondaryColor} - {primaryColor}{name}"
+            entry: "{secondaryColor} - {primaryColor}{name} {secondaryColor}<click:suggest_command:/hologram edit test trait detach {name}><hover:show_text:'{secondaryColor}Suggests you the command to detach the trait from the hologram'>[ᴅᴇᴛᴀᴄʜ]</hover></click>"
         glowing:
           invalid_color: "{errorColor}Invalid glowing color {primaryColor}{color}{{errorColor}}."
           disabled: "Disabled glowing for hologram {primaryColor}{hologram}{secondaryColor}."
@@ -193,4 +193,27 @@ messages:
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this brightness ({brightness}) set."
           updated: "Updated the brightness to {primaryColor}{brightness}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         position:
-          updated: "Updated the position to {primaryColor}({x}, {y}, {z}){secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+          updated: "Updated the position of {primaryColor}{hologram} {secondaryColor}to {primaryColor}{world} ({x} / {y} / {z}){secondaryColor}."
+    hologramtrait:
+      multiple_pages:
+        page_not_found: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} does not have a page with index {primaryColor}{index}{errorColor}."
+        line_not_found: "{errorColor}Could not find line {primaryColor}{line}{errorColor} in page {primaryColor}{page}{errorColor} of hologram {primaryColor}{hologram}{errorColor}."
+        info:
+          header: "Multiple pages info for hologram {primaryColor}{hologram}{secondaryColor}:"
+          mode: "{secondaryColor} - Mode: {primaryColor}{mode}"
+          delay: "{secondaryColor} - Delay: {primaryColor}{delay}ms"
+          current_index: "{secondaryColor} - Current Index: {primaryColor}{index}"
+          pages: "{secondaryColor} - Pages (hover): {primaryColor}{pages}"
+        mode:
+          updated: "Updated the multiple pages mode to {primaryColor}{mode}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        delay:
+          updated: "Updated the multiple pages delay to {primaryColor}{delay}ms{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        current_index:
+          invalid_index: "{errorColor}Invalid index {primaryColor}{index}{errorColor}. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."
+          updated: "Updated the multiple pages current index to {primaryColor}{index}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        add_line:
+          success: "Successfully added line to page {primaryColor}{page}{secondaryColor} of hologram {primaryColor}{hologram}{secondaryColor}."
+        remove_line:
+          success: "Successfully removed line from page {primaryColor}{page}{secondaryColor} of hologram {primaryColor}{hologram}{secondaryColor}."
+        set_line:
+          success: "Successfully set line {primaryColor}{line}{secondaryColor} in page {primaryColor}{page}{secondaryColor} of hologram {primaryColor}{hologram}{secondaryColor}."

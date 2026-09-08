@@ -24,7 +24,7 @@ public final class MoveHereCMD {
     private MoveHereCMD() {
     }
 
-    @Command({"hologram edit <hologram> move_here", "hologram edit <hologram> position"})
+    @Command({"hologram edit <hologram> move_here"})
     @Description("Teleports the hologram to your position")
     @CommandPermission("fancyholograms.commands.hologram.edit.move_here")
     public void moveHere(
@@ -66,6 +66,7 @@ public final class MoveHereCMD {
         translator.translate("commands.hologram.edit.position.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
+                .replace("world", newLocation.getWorld().getName())
                 .replace("x", Formats.COORDINATES_DECIMAL.format(newLocation.x()))
                 .replace("y", Formats.COORDINATES_DECIMAL.format(newLocation.y()))
                 .replace("z", Formats.COORDINATES_DECIMAL.format(newLocation.z()))

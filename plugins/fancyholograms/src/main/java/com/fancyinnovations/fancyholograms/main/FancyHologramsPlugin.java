@@ -16,6 +16,7 @@ import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.Holo
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.BackupCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.ConfigCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.*;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.MultiplePagesTraitCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.*;
 import com.fancyinnovations.fancyholograms.config.FHConfiguration;
 import com.fancyinnovations.fancyholograms.controller.HologramControllerImpl;
@@ -379,6 +380,9 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         lamp.register(RemoveLineCMD.INSTANCE);
         lamp.register(InsertBeforeCMD.INSTANCE);
         lamp.register(InsertAfterCMD.INSTANCE);
+
+        // hologram trait commands
+        lamp.register(MultiplePagesTraitCMD.INSTANCE);
     }
 
     private void registerListeners() {

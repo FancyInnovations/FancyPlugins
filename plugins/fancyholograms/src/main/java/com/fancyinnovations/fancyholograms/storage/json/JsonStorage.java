@@ -154,7 +154,6 @@ public class JsonStorage implements HologramStorage {
             }
             for (JsonDataUnion union : allTextUnions) {
                 HologramData data = JsonAdapter.fromJson(union);
-                data.getTraitTrait().load();
                 data.setFilePath(path);
                 holograms.add(data);
             }

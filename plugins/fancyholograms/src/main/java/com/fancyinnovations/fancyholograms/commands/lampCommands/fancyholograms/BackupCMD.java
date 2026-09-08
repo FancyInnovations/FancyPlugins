@@ -1,10 +1,12 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms;
 
 import com.fancyinnovations.fancyholograms.backup.BackupService;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.BackupFilesSuggestion;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
+import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
@@ -73,7 +75,7 @@ public class BackupCMD {
     @CommandPermission("fancyholograms.commands.fancyholograms.backup.restore")
     public void restore(
             final BukkitCommandActor actor,
-            final String file
+            final @SuggestWith(BackupFilesSuggestion.class) String file
     ) {
         File backupFile = new File(BackupService.BACKUP_FOLDER, file);
 
@@ -105,7 +107,7 @@ public class BackupCMD {
     @CommandPermission("fancyholograms.commands.fancyholograms.backup.delete")
     public void delete(
             final BukkitCommandActor actor,
-            final String file
+            final @SuggestWith(BackupFilesSuggestion.class) String file
     ) {
         File backupFile = new File(BackupService.BACKUP_FOLDER, file);
 

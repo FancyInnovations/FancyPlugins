@@ -23,7 +23,7 @@ public final class ScaleCMD {
     private ScaleCMD() {
     }
 
-    @Command("hologram-new edit <hologram> scale <factor>")
+    @Command("hologram edit <hologram> scale <factor>")
     @Description("Changes the scale of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.scale")
     public void scaleUniform(
@@ -34,7 +34,7 @@ public final class ScaleCMD {
         scale(actor, hologram, factor, factor, factor);
     }
 
-    @Command("hologram-new edit <hologram> scale <x> <y> <z>")
+    @Command("hologram edit <hologram> scale <x> <y> <z>")
     @Description("Changes the scale of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.scale")
     public void scale(

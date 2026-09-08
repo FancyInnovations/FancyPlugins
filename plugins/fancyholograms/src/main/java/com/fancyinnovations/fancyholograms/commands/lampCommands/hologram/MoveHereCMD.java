@@ -24,7 +24,7 @@ public final class MoveHereCMD {
     private MoveHereCMD() {
     }
 
-    @Command({"hologram-new edit <hologram> move_here", "hologram-new edit <hologram> position"})
+    @Command({"hologram edit <hologram> move_here", "hologram edit <hologram> position"})
     @Description("Teleports the hologram to your position")
     @CommandPermission("fancyholograms.commands.hologram.edit.move_here")
     public void moveHere(

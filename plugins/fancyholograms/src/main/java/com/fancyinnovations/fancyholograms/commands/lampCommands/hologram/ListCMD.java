@@ -21,7 +21,7 @@ public final class ListCMD {
     private ListCMD() {
     }
 
-    @Command("hologram-new list")
+    @Command("hologram list")
     @Description("Shows a list of all holograms")
     @CommandPermission("fancyholograms.commands.hologram.list")
     public void list(

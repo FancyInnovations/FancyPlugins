@@ -23,7 +23,7 @@ public final class TranslateCMD {
     private TranslateCMD() {
     }
 
-    @Command("hologram-new edit <hologram> translate <x>")
+    @Command("hologram edit <hologram> translate <x>")
     @Description("Changes the translation of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.translate")
     public void translateUniform(
@@ -34,7 +34,7 @@ public final class TranslateCMD {
         translate(actor, hologram, x, x, x);
     }
 
-    @Command("hologram-new edit <hologram> translate <x> <y> <z>")
+    @Command("hologram edit <hologram> translate <x> <y> <z>")
     @Description("Changes the translation of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.translate")
     public void translate(

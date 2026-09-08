@@ -22,7 +22,7 @@ public final class ShadowStrengthCMD {
     private ShadowStrengthCMD() {
     }
 
-    @Command("hologram-new edit <hologram> shadow_strength <strength>")
+    @Command("hologram edit <hologram> shadow_strength <strength>")
     @Description("Changes the shadow strength of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.shadow_strength")
     public void set(

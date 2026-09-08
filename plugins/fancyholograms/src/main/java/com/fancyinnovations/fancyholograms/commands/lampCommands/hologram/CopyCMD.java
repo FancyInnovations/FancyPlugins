@@ -23,7 +23,7 @@ public final class CopyCMD {
     private CopyCMD() {
     }
 
-    @Command("hologram-new copy <hologram> <name>")
+    @Command("hologram copy <hologram> <name>")
     @Description("Copies a hologram")
     @CommandPermission("fancyholograms.commands.hologram.copy")
     public void copy(

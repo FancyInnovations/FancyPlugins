@@ -22,7 +22,7 @@ public final class UnlinkWithNpcCMD {
     private UnlinkWithNpcCMD() {
     }
 
-    @Command({"hologram-new edit <hologram> unlink_with_npc", "hologram-new edit <hologram> unlink_npc"})
+    @Command({"hologram edit <hologram> unlink_with_npc", "hologram edit <hologram> unlink_npc"})
     @Description("Unlinks the hologram from an NPC")
     @CommandPermission("fancyholograms.commands.hologram.edit.unlink_with_npc")
     public void unlink(

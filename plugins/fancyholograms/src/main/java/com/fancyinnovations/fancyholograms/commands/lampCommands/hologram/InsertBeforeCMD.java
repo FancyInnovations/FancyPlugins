@@ -29,7 +29,7 @@ public final class InsertBeforeCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command({"hologram-new edit <hologram> insert_before <line> <text>", "hologram-new edit <hologram> insert_line_before <line> <text>"})
+    @Command({"hologram edit <hologram> insert_before <line> <text>", "hologram edit <hologram> insert_line_before <line> <text>"})
     @Description("Inserts a line before a specific line in the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.insert_before")
     public void insertBefore(

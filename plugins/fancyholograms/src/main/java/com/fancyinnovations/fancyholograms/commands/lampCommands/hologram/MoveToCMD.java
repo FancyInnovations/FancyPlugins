@@ -30,7 +30,22 @@ public final class MoveToCMD {
     private MoveToCMD() {
     }
 
-    @Command("hologram-new edit <hologram> move_to <x> <y> <z>")
+    public static @Nullable Double calculateCoordinate(@NotNull final String text, @Nullable final Location originLocation, @NotNull final Location callerLocation, @NotNull final Function<Location, Number> extractor) {
+        final var number = Doubles.tryParse(StringUtils.stripStart(text, "~"));
+        final var target = text.startsWith("~~") ? callerLocation : text.startsWith("~") ? originLocation : null;
+
+        if (number == null) {
+            return target == null ? null : extractor.apply(target).doubleValue();
+        }
+
+        if (target == null) {
+            return number;
+        }
+
+        return number + extractor.apply(target).doubleValue();
+    }
+
+    @Command("hologram edit <hologram> move_to <x> <y> <z>")
     @Description("Teleports the hologram to coordinates")
     @CommandPermission("fancyholograms.commands.hologram.edit.move_to")
     public void moveTo(
@@ -101,20 +116,5 @@ public final class MoveToCMD {
                 .replace("y", Formats.COORDINATES_DECIMAL.format(location.y()))
                 .replace("z", Formats.COORDINATES_DECIMAL.format(location.z()))
                 .send(actor.sender());
-    }
-
-    public static @Nullable Double calculateCoordinate(@NotNull final String text, @Nullable final Location originLocation, @NotNull final Location callerLocation, @NotNull final Function<Location, Number> extractor) {
-        final var number = Doubles.tryParse(StringUtils.stripStart(text, "~"));
-        final var target = text.startsWith("~~") ? callerLocation : text.startsWith("~") ? originLocation : null;
-
-        if (number == null) {
-            return target == null ? null : extractor.apply(target).doubleValue();
-        }
-
-        if (target == null) {
-            return number;
-        }
-
-        return number + extractor.apply(target).doubleValue();
     }
 }

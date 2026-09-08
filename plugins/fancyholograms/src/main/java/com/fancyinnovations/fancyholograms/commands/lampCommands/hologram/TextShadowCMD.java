@@ -25,7 +25,7 @@ public final class TextShadowCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> text_shadow <enabled>")
+    @Command("hologram edit <hologram> text_shadow <enabled>")
     @Description("Enables or disables the text shadow of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.text_shadow")
     public void set(

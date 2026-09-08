@@ -28,7 +28,7 @@ public final class RemoveLineCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> remove_line")
+    @Command("hologram edit <hologram> remove_line")
     @Description("Removes a specific line from the hologram (defaults to the last line)")
     @CommandPermission("fancyholograms.commands.hologram.edit.remove_line")
     public void removeLine(

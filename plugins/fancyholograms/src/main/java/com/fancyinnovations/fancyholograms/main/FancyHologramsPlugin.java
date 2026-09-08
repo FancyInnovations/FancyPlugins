@@ -222,9 +222,10 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     public void onEnable() {
         new FancyLib(INSTANCE);
 
-        registerCommands();
         if (configuration.useLampCommands()) {
             registerLampCommands();
+        } else {
+            registerCommands();
         }
 
         registerListeners();

@@ -25,7 +25,7 @@ public final class SeeThroughCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> see_through <enabled>")
+    @Command("hologram edit <hologram> see_through <enabled>")
     @Description("Enables or disables whether the hologram text can be seen through blocks")
     @CommandPermission("fancyholograms.commands.hologram.edit.see_through")
     public void set(

@@ -28,7 +28,7 @@ public final class BackgroundCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> background <color>")
+    @Command("hologram edit <hologram> background <color>")
     @Description("Changes the background color of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.background")
     public void set(

@@ -22,7 +22,7 @@ public final class ConfigCMD {
     private ConfigCMD() {
     }
 
-    @Command("fancyholograms-new config show")
+    @Command("fancyholograms config show")
     @Description("Shows the current configuration")
     @CommandPermission("fancyholograms.commands.fancyholograms.config.show")
     public void show(

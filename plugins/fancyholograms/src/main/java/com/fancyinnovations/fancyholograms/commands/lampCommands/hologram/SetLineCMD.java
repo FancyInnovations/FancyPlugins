@@ -27,7 +27,7 @@ public final class SetLineCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> set_line <line> <text>")
+    @Command("hologram edit <hologram> set_line <line> <text>")
     @Description("Sets the text of a specific line in the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.set_line")
     public void setLine(

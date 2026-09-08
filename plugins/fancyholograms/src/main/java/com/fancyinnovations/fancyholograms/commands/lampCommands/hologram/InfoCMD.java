@@ -22,7 +22,7 @@ public final class InfoCMD {
     private InfoCMD() {
     }
 
-    @Command("hologram-new info <hologram>")
+    @Command("hologram info <hologram>")
     @Description("Shows information about a hologram")
     @CommandPermission("fancyholograms.commands.hologram.info")
     public void info(

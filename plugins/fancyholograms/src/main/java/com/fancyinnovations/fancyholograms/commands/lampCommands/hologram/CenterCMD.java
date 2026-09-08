@@ -24,7 +24,7 @@ public final class CenterCMD {
     private CenterCMD() {
     }
 
-    @Command("hologram-new edit <hologram> center")
+    @Command("hologram edit <hologram> center")
     @Description("Moves the hologram to the center of the current block (x and z coords)")
     @CommandPermission("fancyholograms.commands.hologram.edit.center")
     public void set(

@@ -24,7 +24,7 @@ public final class BrightnessCMD {
     private BrightnessCMD() {
     }
 
-    @Command("hologram-new edit <hologram> brightness <type> <brightness>")
+    @Command("hologram edit <hologram> brightness <type> <brightness>")
     @Description("Changes the block or sky brightness of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.brightness")
     public void set(

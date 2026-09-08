@@ -36,7 +36,7 @@ messages:
         list:
           empty: "{errorColor}There are no backups."
           header: "Hologram backups ({primaryColor}{count}{secondaryColor}):"
-          entry: "{secondaryColor} - {primaryColor}{file} {secondaryColor}<click:suggest_command:/fancyholograms-new backup restore {file}>[ʀᴇѕᴛᴏʀᴇ]</click> <click:suggest_command:/fancyholograms-new backup delete {file}>[ᴅᴇʟᴇᴛᴇ]</click>"
+          entry: "{secondaryColor} - {primaryColor}{file} {secondaryColor}<click:suggest_command:/fancyholograms backup restore {file}>[ʀᴇѕᴛᴏʀᴇ]</click> <click:suggest_command:/fancyholograms backup delete {file}>[ᴅᴇʟᴇᴛᴇ]</click>"
         restore:
           not_found: "{errorColor}Could not find backup file {primaryColor}{file}{errorColor}."
           success: "Successfully restored holograms from backup {primaryColor}{file}{secondaryColor}."

@@ -21,7 +21,7 @@ public final class VisibilityCMD {
     private VisibilityCMD() {
     }
 
-    @Command("hologram-new edit <hologram> visibility <visibility>")
+    @Command("hologram edit <hologram> visibility <visibility>")
     @Description("Sets the visibility mode of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.visibility")
     public void set(

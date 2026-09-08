@@ -21,7 +21,7 @@ public class BackupCMD {
     private BackupCMD() {
     }
 
-    @Command("fancyholograms-new backup create")
+    @Command("fancyholograms backup create")
     @Description("Creates a backup of all holograms and their data")
     @CommandPermission("fancyholograms.commands.fancyholograms.backup.create")
     public void create(
@@ -40,7 +40,7 @@ public class BackupCMD {
         }
     }
 
-    @Command("fancyholograms-new backup list")
+    @Command("fancyholograms backup list")
     @Description("Lists all backup files")
     @CommandPermission("fancyholograms.commands.fancyholograms.backup.list")
     public void list(
@@ -68,7 +68,7 @@ public class BackupCMD {
         }
     }
 
-    @Command("fancyholograms-new backup restore <file>")
+    @Command("fancyholograms backup restore <file>")
     @Description("Restores a backup from the specified file")
     @CommandPermission("fancyholograms.commands.fancyholograms.backup.restore")
     public void restore(
@@ -100,7 +100,7 @@ public class BackupCMD {
         }
     }
 
-    @Command("fancyholograms-new backup delete <file>")
+    @Command("fancyholograms backup delete <file>")
     @Description("Deletes a backup file")
     @CommandPermission("fancyholograms.commands.fancyholograms.backup.delete")
     public void delete(

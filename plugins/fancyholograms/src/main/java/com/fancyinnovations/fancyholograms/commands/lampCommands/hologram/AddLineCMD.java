@@ -25,7 +25,7 @@ public final class AddLineCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> add_line <text>")
+    @Command("hologram edit <hologram> add_line <text>")
     @Description("Adds a line to the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.add_line")
     public void addLine(

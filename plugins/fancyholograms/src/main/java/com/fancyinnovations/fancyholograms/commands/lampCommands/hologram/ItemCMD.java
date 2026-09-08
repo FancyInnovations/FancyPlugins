@@ -28,7 +28,7 @@ public final class ItemCMD {
     }
 
     @IsHologramType(types = {HologramType.ITEM})
-    @Command("hologram-new edit <hologram> item")
+    @Command("hologram edit <hologram> item")
     @Description("Sets the item of the hologram to the item in your main hand")
     @CommandPermission("fancyholograms.commands.hologram.edit.item")
     public void set(

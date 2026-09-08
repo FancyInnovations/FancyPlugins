@@ -29,7 +29,7 @@ public final class SwapLinesCMD {
     }
 
     @IsHologramType(types = HologramType.TEXT)
-    @Command("hologram-new edit <hologram> swap_lines <line1> <line2>")
+    @Command("hologram edit <hologram> swap_lines <line1> <line2>")
     @Description("Swaps two lines")
     @CommandPermission("fancyholograms.hologram.edit.move_line")
     public void swapLines(

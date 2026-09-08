@@ -29,7 +29,7 @@ public final class InsertAfterCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command({"hologram-new edit <hologram> insert_after <line> <text>", "hologram-new edit <hologram> insert_line_after <line> <text>"})
+    @Command({"hologram edit <hologram> insert_after <line> <text>", "hologram edit <hologram> insert_line_after <line> <text>"})
     @Description("Inserts a line after a specific line in the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.insert_after")
     public void insertAfter(

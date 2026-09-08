@@ -25,7 +25,7 @@ public final class TraitCMD {
     private TraitCMD() {
     }
 
-    @Command("hologram-new edit <hologram> trait attach <trait>")
+    @Command("hologram edit <hologram> trait attach <trait>")
     @Description("Attaches a trait to a hologram")
     @CommandPermission("fancyholograms.commands.hologram.trait.attach")
     public void attach(
@@ -51,7 +51,7 @@ public final class TraitCMD {
                 .send(actor.sender());
     }
 
-    @Command("hologram-new edit <hologram> trait detach <trait>")
+    @Command("hologram edit <hologram> trait detach <trait>")
     @Description("Detaches a trait to a hologram")
     @CommandPermission("fancyholograms.commands.hologram.trait.detach")
     public void detach(
@@ -77,7 +77,7 @@ public final class TraitCMD {
                 .send(actor.sender());
     }
 
-    @Command("hologram-new edit <hologram> trait list")
+    @Command("hologram edit <hologram> trait list")
     @Description("Lists all attached traits of a hologram")
     @CommandPermission("fancyholograms.commands.hologram.trait.list")
     public void list(

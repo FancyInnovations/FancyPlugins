@@ -22,7 +22,7 @@ public final class ShadowRadiusCMD {
     private ShadowRadiusCMD() {
     }
 
-    @Command("hologram-new edit <hologram> shadow_radius <radius>")
+    @Command("hologram edit <hologram> shadow_radius <radius>")
     @Description("Changes the shadow radius of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.shadow_radius")
     public void set(

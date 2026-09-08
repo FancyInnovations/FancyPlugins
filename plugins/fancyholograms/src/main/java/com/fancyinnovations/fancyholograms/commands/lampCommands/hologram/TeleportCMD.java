@@ -21,7 +21,7 @@ public final class TeleportCMD {
     private TeleportCMD() {
     }
 
-    @Command("hologram-new teleport <hologram>")
+    @Command("hologram teleport <hologram>")
     @Description("Teleports you to a hologram")
     @CommandPermission("fancyholograms.commands.hologram.teleport")
     public void teleport(

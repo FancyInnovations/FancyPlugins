@@ -28,7 +28,7 @@ public class CreateCMD {
     private CreateCMD() {
     }
 
-    @Command("hologram-new create")
+    @Command("hologram create")
     @Description("Creates a new hologram")
     @CommandPermission("fancyholograms.commands.hologram.create")
     public void create(

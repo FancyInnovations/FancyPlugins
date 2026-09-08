@@ -24,7 +24,7 @@ public final class LinkWithNpcCMD {
     private LinkWithNpcCMD() {
     }
 
-    @Command({"hologram-new edit <hologram> link_with_npc <npc>", "hologram-new edit <hologram> link_npc <npc>"})
+    @Command({"hologram edit <hologram> link_with_npc <npc>", "hologram edit <hologram> link_npc <npc>"})
     @Description("Links the hologram with an NPC")
     @CommandPermission("fancyholograms.commands.hologram.edit.link_with_npc")
     public void link(

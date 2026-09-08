@@ -32,7 +32,7 @@ public final class BlockCMD {
     }
 
     @IsHologramType(types = {HologramType.BLOCK})
-    @Command("hologram-new edit <hologram> block <material>")
+    @Command("hologram edit <hologram> block <material>")
     @Description("Changes the block material for the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.block")
     public void set(

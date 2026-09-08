@@ -23,7 +23,7 @@ public final class VisibilityDistanceCMD {
     private VisibilityDistanceCMD() {
     }
 
-    @Command("hologram-new edit <hologram> visibility_distance <distance>")
+    @Command("hologram edit <hologram> visibility_distance <distance>")
     @Description("Changes the visibility distance of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.visibility_distance")
     public void set(

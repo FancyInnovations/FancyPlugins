@@ -26,7 +26,7 @@ public final class UpdateTextIntervalCMD {
     }
 
     @IsHologramType(types = HologramType.TEXT)
-    @Command("hologram-new edit <hologram> update_text_interval")
+    @Command("hologram edit <hologram> update_text_interval")
     @Description("The interval between the hologram text updates (useful when using placeholders)")
     @CommandPermission("fancyholograms.commands.hologram.update_text_interval")
     public void updateTextInterval(

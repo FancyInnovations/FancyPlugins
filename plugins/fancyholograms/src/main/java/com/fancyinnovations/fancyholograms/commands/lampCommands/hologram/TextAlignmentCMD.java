@@ -26,7 +26,7 @@ public final class TextAlignmentCMD {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram-new edit <hologram> text_alignment <alignment>")
+    @Command("hologram edit <hologram> text_alignment <alignment>")
     @Description("Sets the text alignment of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.text_alignment")
     public void set(

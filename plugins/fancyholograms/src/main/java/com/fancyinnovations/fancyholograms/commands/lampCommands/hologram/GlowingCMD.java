@@ -27,7 +27,7 @@ public final class GlowingCMD {
     }
 
     @IsHologramType(types = {HologramType.ITEM, HologramType.BLOCK})
-    @Command("hologram-new edit <hologram> glowing")
+    @Command("hologram edit <hologram> glowing")
     @Description("Toggle glowing on/off for item and block holograms")
     @CommandPermission("fancyholograms.commands.hologram.glowing")
     public void toggle(
@@ -74,7 +74,7 @@ public final class GlowingCMD {
     }
 
     @IsHologramType(types = {HologramType.ITEM, HologramType.BLOCK})
-    @Command("hologram-new edit <hologram> glowing <color>")
+    @Command("hologram edit <hologram> glowing <color>")
     @Description("Set glowing color for item and block holograms")
     @CommandPermission("fancyholograms.commands.hologram.glowing")
     public void setColor(

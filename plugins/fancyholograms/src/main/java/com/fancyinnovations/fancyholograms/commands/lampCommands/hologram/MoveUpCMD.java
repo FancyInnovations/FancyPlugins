@@ -29,7 +29,7 @@ public final class MoveUpCMD {
     }
 
     @IsHologramType(types = HologramType.TEXT)
-    @Command("hologram-new edit <hologram> move_line_up <line>")
+    @Command("hologram edit <hologram> move_line_up <line>")
     @Description("Moves a line up by one position")
     @CommandPermission("fancyholograms.hologram.edit.move_line")
     public void moveLineUp(

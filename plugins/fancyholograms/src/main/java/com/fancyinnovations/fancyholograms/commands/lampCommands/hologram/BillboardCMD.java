@@ -23,7 +23,7 @@ public final class BillboardCMD {
     private BillboardCMD() {
     }
 
-    @Command("hologram-new edit <hologram> billboard <billboard>")
+    @Command("hologram edit <hologram> billboard <billboard>")
     @Description("Changes the billboard of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.edit.billboard")
     public void set(

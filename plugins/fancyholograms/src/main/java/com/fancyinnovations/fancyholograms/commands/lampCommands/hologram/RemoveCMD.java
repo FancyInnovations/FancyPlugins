@@ -21,7 +21,7 @@ public final class RemoveCMD {
     private RemoveCMD() {
     }
 
-    @Command("hologram-new remove <hologram>")
+    @Command("hologram remove <hologram>")
     @Description("Removes a hologram")
     @CommandPermission("fancyholograms.commands.hologram.remove")
     public void remove(

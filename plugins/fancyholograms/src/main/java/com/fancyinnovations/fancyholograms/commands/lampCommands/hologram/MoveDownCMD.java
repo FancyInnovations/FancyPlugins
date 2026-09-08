@@ -29,7 +29,7 @@ public final class MoveDownCMD {
     }
 
     @IsHologramType(types = HologramType.TEXT)
-    @Command("hologram-new edit <hologram> move_line_down <line>")
+    @Command("hologram edit <hologram> move_line_down <line>")
     @Description("Moves a line down by one position")
     @CommandPermission("fancyholograms.hologram.edit.move_line")
     public void moveLineDown(

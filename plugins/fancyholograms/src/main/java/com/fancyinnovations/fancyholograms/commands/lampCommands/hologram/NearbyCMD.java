@@ -25,7 +25,7 @@ public final class NearbyCMD {
     private NearbyCMD() {
     }
 
-    @Command("hologram-new nearby <range>")
+    @Command("hologram nearby <range>")
     @Description("Shows all holograms nearby in a radius")
     @CommandPermission("fancyholograms.commands.hologram.nearby")
     public void nearby(

@@ -24,7 +24,7 @@ public final class RotationCMD {
     private RotationCMD() {
     }
 
-    @Command("hologram-new edit <hologram> rotation yaw <angle>")
+    @Command("hologram edit <hologram> rotation yaw <angle>")
     @Description("Sets the yaw rotation of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.rotation")
     public void yaw(
@@ -63,7 +63,7 @@ public final class RotationCMD {
                 .send(actor.sender());
     }
 
-    @Command("hologram-new edit <hologram> rotation pitch <angle>")
+    @Command("hologram edit <hologram> rotation pitch <angle>")
     @Description("Sets the pitch rotation of the hologram")
     @CommandPermission("fancyholograms.commands.hologram.rotation")
     public void pitch(

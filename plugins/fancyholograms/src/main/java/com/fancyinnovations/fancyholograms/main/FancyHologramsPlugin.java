@@ -7,11 +7,13 @@ import com.fancyinnovations.fancyholograms.api.HologramRegistry;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTraitRegistry;
+import com.fancyinnovations.fancyholograms.backup.BackupService;
 import com.fancyinnovations.fancyholograms.commands.FancyHologramsCMD;
 import com.fancyinnovations.fancyholograms.commands.FancyHologramsTestCMD;
 import com.fancyinnovations.fancyholograms.commands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HologramTraitCondition;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HologramTypeCondition;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.BackupCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.ConfigCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.*;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.*;
@@ -98,6 +100,8 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     private HologramControllerImpl controller;
     private HologramTraitRegistryImpl traitRegistry;
 
+    private BackupService backupService;
+
     public FancyHologramsPlugin() {
         INSTANCE = this;
 
@@ -178,6 +182,8 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         registry = new HologramRegistryImpl();
         controller = new HologramControllerImpl();
         traitRegistry = new HologramTraitRegistryImpl();
+
+        backupService = new BackupService();
 
         if (!ServerSoftware.isPaper()) {
             fancyLogger.warn("""
@@ -331,6 +337,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
 
         // fancyholograms commands
         lamp.register(ConfigCMD.INSTANCE);
+        lamp.register(BackupCMD.INSTANCE);
 
         // hologram commands
         lamp.register(CreateCMD.INSTANCE);
@@ -469,6 +476,10 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
 
     public HologramStorage getStorage() {
         return storage;
+    }
+
+    public BackupService getBackupService() {
+        return backupService;
     }
 
     public ScheduledExecutorService getHologramThread() {

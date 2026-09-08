@@ -35,6 +35,8 @@ It now uses a more efficient and flexible system that allows for better performa
 
 The file format is now JSON instead of YAML, which allows for better compatibility with other systems and easier parsing.
 
+### File Structure
+
 Many of you are annoyed by the fact that the hologram data was stored in a single file (`holograms.yml`).
 If you had a lot of holograms, this file could become huge and difficult to manage.
 This has been changed in v3.
@@ -90,6 +92,20 @@ If the hologram is a block or item hologram, it will have the `block_data` or `i
 The `hologram_data` component contains the basic information about the hologram, such as its name, location and visibility.
 The `display_data` component contains the display settings for the hologram, such as its scale, shadow and billboard.
 The `text_data` component contains the text settings for the hologram, such as the text itself, text alignment and background color.
+
+### Backups
+
+FancyHolograms v3 will automatically create a backup of your hologram data every 24h (configurable) and keeps every backup for 30 days (configurable).
+You can manage the backups with the `/fancyholograms backup <list|create|restore|delete>` commands. Backups are stored in the `plugins/FancyHolograms/backups/` folder.
+
+Backup intervals and retention can be configured in the `config.yml` file.
+
+You can manually restore a backup:
+1. Stop the server
+2. Delete all files in the `plugins/FancyHolograms/data` folder
+3. Unzip the backup file
+4. Copy the contents of the backup file to the `plugins/FancyHolograms/data` folder
+5. Start the server
 
 ## New Configuration
 

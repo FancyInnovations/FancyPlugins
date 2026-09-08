@@ -29,6 +29,22 @@ messages:
           settings_header: "FancyHolograms settings:"
           experimental_header: "FancyHolograms experimental features:"
           entry: "{secondaryColor} - {path}: {primaryColor}{value} {secondaryColor}(default: {default})"
+      backup:
+        create:
+          success: "Successfully created a backup of all holograms (see 'plugins/FancyHolograms/backups')."
+          failed: "{errorColor}Failed to create a backup of all holograms."
+        list:
+          empty: "{errorColor}There are no backups."
+          header: "Hologram backups ({primaryColor}{count}{secondaryColor}):"
+          entry: "{secondaryColor} - {primaryColor}{file} {secondaryColor}<click:suggest_command:/fancyholograms-new backup restore {file}>[ʀᴇѕᴛᴏʀᴇ]</click> <click:suggest_command:/fancyholograms-new backup delete {file}>[ᴅᴇʟᴇᴛᴇ]</click>"
+        restore:
+          not_found: "{errorColor}Could not find backup file {primaryColor}{file}{errorColor}."
+          success: "Successfully restored holograms from backup {primaryColor}{file}{secondaryColor}."
+          failed: "{errorColor}Failed to restore holograms from backup {primaryColor}{file}{errorColor}."
+        delete:
+          not_found: "{errorColor}Could not find backup file {primaryColor}{file}{errorColor}."
+          success: "Successfully deleted backup {primaryColor}{file}{secondaryColor}."
+          failed: "{errorColor}Failed to delete backup {primaryColor}{file}{errorColor}."
 
     hologram:
       create:

@@ -23,8 +23,8 @@ public final class FHConfiguration implements HologramConfiguration {
 
     public static final String HOLOGRAM_UPDATE_INTERVAL_PATH = "performance.hologram_update_interval_ms";
 
-    public static final String BACKUP_INTERVAL_PATH = "backups.interval";
-    public static final String BACKUP_RETENTION_PATH = "backups.retention";
+    public static final String BACKUP_INTERVAL_PATH = "settings.backups.interval";
+    public static final String BACKUP_RETENTION_PATH = "settings.backups.retention";
 
     public static final String DISABLE_HOLOGRAMS_FOR_BEDROCK_PLAYERS_PATH = "experimental_features.disable_holograms_for_bedrock_players";
     public static final String DISABLE_HOLOGRAMS_FOR_OLD_CLIENTS = "experimental_features.disable_holograms_for_old_clients";

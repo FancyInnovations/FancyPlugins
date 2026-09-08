@@ -81,7 +81,11 @@ messages:
         page_out_of_bounds: "{errorColor}Page {primaryColor}{page}{errorColor} does not exist. Total pages: {primaryColor}{max}{errorColor}."
         header: "Holograms ({primaryColor}{count}{secondaryColor}):"
         page: "{secondaryColor}Page {primaryColor}{page}{secondaryColor}/{primaryColor}{pages}{secondaryColor}:"
-        entry: "{secondaryColor} - {primaryColor}{name} {secondaryColor}({world} {x}/{y}/{z})"
+        entry: "{secondaryColor} - {primaryColor}<hover:show_text:'{secondaryColor}Name: {primaryColor}{name}\n{secondaryColor}Type: {primaryColor}{type}\n{secondaryColor}Location: {primaryColor}{world} ({x} / {y} / {z})'>{name}</hover>{secondaryColor}
+        <click:run_command:/hologram info {name}><hover:show_text:'{secondaryColor}Shows you more details about the hologram'>[ɪɴꜰᴏ]</hover></click> 
+        <click:run_command:/hologram teleport {name}><hover:show_text:'{secondaryColor}Teleports you to the hologram'>[ᴛᴇʟᴇᴘᴏʀᴛ]</hover></click> 
+        <click:suggest_command:/hologram edit {name} ><hover:show_text:'{secondaryColor}Suggests you the command to edit this hologram'>[ᴇᴅɪᴛ]</hover></click> 
+        <click:suggest_command:/hologram remove {name}><hover:show_text:'{secondaryColor}Deletes this hologram'>[ᴅᴇʟᴇᴛᴇ]</hover></click>"
       nearby:
         none_found: "{errorColor}No holograms found in a radius of {primaryColor}{range}{errorColor} blocks."
         header: "Holograms in a radius of {primaryColor}{range}{secondaryColor} blocks:"

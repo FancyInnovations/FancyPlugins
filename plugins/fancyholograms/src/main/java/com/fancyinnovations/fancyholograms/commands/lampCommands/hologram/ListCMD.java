@@ -1,8 +1,10 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
+import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.util.Formats;
 import de.oliver.fancylib.translations.Translator;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Default;
@@ -10,6 +12,8 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Optional;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
+
+import java.util.Collection;
 
 public final class ListCMD {
 
@@ -21,14 +25,14 @@ public final class ListCMD {
     private ListCMD() {
     }
 
-    @Command("hologram list")
+    @Command({"hologram list"})
     @Description("Shows a list of all holograms")
     @CommandPermission("fancyholograms.commands.hologram.list")
     public void list(
             final @NotNull BukkitCommandActor actor,
             final @Optional @Default("1") Integer page
     ) {
-        final var holograms = plugin.getRegistry().getAllPersistent();
+        Collection<Hologram> holograms = plugin.getRegistry().getAllPersistent();
 
         if (holograms.isEmpty()) {
             translator.translate("commands.hologram.list.empty")
@@ -63,13 +67,13 @@ public final class ListCMD {
                 .skip((actualPage - 1) * 10L)
                 .limit(10)
                 .forEach(holo -> {
-                    final var location = holo.getData().getLocation();
-                    if (location == null || holo.getData().getWorldName() == null) {
+                    Location location = holo.getData().getLocation();
+                    if (holo.getData().getWorldName() == null) {
                         return;
                     }
-
                     translator.translate("commands.hologram.list.entry")
                             .replace("name", holo.getData().getName())
+                            .replace("type", holo.getData().getType().name())
                             .replace("x", Formats.COORDINATES_DECIMAL.format(location.x()))
                             .replace("y", Formats.COORDINATES_DECIMAL.format(location.y()))
                             .replace("z", Formats.COORDINATES_DECIMAL.format(location.z()))

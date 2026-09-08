@@ -226,16 +226,35 @@ You can add / remove traits to holograms using the `/hologram edit (hologram) tr
 
 There are several built-in traits that come with FancyHolograms v3:
 
-**Interaction Trait**: This trait will spawn an interaction npc (FancyNpcs is required) around the hologram with some actions (can be configured in `plugins/FancyHolograms/data/traits/interaction_trait`)
+### Interaction Trait
 
-**Multiple Pages Trait**: This trait adds the ability to have multiple pages in one hologram.  There are three modes to cycle through the pages.
-1. MANUAL mode: you set the page number manually (there will be a command for that in the future)
-2. CYCLE mode: it will go to the next page every X seconds and will start at the first page after the it reaches the last one
+This trait will spawn an interaction npc (FancyNpcs is required) around the hologram with some actions (can be configured in `plugins/FancyHolograms/data/traits/interaction_trait`)
+
+### Multiple Pages Trait
+
+This trait adds the ability to have multiple pages in one hologram.
+
+There are three modes to cycle through the pages:
+1. MANUAL mode: you set the page number manually (there is a command, see below)
+2. CYCLE mode: it will go to the next page every X seconds and will start at the first page after it reaches the last one
 3. RANDOM: it will show a random page every X seconds
 
-**File Content Trait**: This trait will show the contents of a file. You can configure the file path
+You can change the mode, delay and pages with the following commands:
+- `/hologramtrait multiple_pages <hologram> info`: shows information the current multiple pages trait configuration
+- `/hologramtrait multiple_pages <hologram> mode <mode>`: changes the mode
+- `/hologramtrait multiple_pages <hologram> delay <delay>`: changes the delay (in milliseconds)
+- `/hologramtrait multiple_pages <hologram> current_index <index>`: sets the current page index (useful for MANUAL mode)
+- `/hologramtrait multiple_pages <hologram> add_line <page> <text>`: adds a line to a page (use page index starting from 1)
+- `/hologramtrait multiple_pages <hologram> set_line <page> <line> <text>`: sets a line in a page
+- `/hologramtrait multiple_pages <hologram> remove_line <page> <line>`: removes a line from a page
 
-**Custom Component Provider**: This is trait allows other developers to use Adventure components instead of the default list of strings as hologram text.
+### File Content Trait
+
+This trait will show the contents of a file. You can configure the file path
+
+### Custom Component Provider Trait
+
+This is trait allows other developers to use Adventure components instead of the default list of strings as hologram text.
 Example:
 ```java
 hologram.getData().getTraitTrait().addTrait(new CustomComponentProviderTrait(player -> {

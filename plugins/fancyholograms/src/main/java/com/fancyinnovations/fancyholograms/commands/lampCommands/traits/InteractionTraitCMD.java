@@ -2,12 +2,14 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.traits;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HasHologramTrait;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.NpcActionSuggestion;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.trait.builtin.InteractionTrait;
 import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
+import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
@@ -90,7 +92,7 @@ public class InteractionTraitCMD {
     public void addAction(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @NotNull String action,
+            final @NotNull @SuggestWith(NpcActionSuggestion.class) String action,
             final @NotNull String value
     ) {
         final InteractionTrait trait = hologram.getData().getTraitTrait().getTrait(InteractionTrait.class);
@@ -170,7 +172,7 @@ public class InteractionTraitCMD {
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
             final int index,
-            final @NotNull String action,
+            final @NotNull @SuggestWith(NpcActionSuggestion.class) String action,
             final @NotNull String value
     ) {
         final InteractionTrait trait = hologram.getData().getTraitTrait().getTrait(InteractionTrait.class);

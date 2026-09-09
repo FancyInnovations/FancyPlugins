@@ -21,7 +21,7 @@ public final class FHConfiguration implements HologramConfiguration {
 
     public static final String LANGUAGE_PATH = "settings.language";
 
-    public static final String HOLOGRAM_UPDATE_INTERVAL_PATH = "performance.hologram_update_interval_ms";
+    public static final String HOLOGRAM_UPDATE_INTERVAL_PATH = "settings.performance.hologram_update_interval_ms";
 
     public static final String BACKUP_INTERVAL_PATH = "settings.backups.interval";
     public static final String BACKUP_RETENTION_PATH = "settings.backups.retention";

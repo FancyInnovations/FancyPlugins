@@ -203,13 +203,13 @@ messages:
         info:
           header: "Multiple pages info for hologram {primaryColor}{hologram}{secondaryColor}:"
           mode: "{secondaryColor} - Mode: {primaryColor}{mode}"
-          delay: "{secondaryColor} - Delay: {primaryColor}{delay}ms"
+          delay: "{secondaryColor} - Delay: {primaryColor}{delay}"
           current_index: "{secondaryColor} - Current Index: {primaryColor}{index}"
           pages: "{secondaryColor} - Pages (hover): {primaryColor}{pages}"
         mode:
           updated: "Updated the multiple pages mode to {primaryColor}{mode}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         delay:
-          updated: "Updated the multiple pages delay to {primaryColor}{delay}ms{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+          updated: "Updated the multiple pages delay to {primaryColor}{delay}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         current_index:
           invalid_index: "{errorColor}Invalid index {primaryColor}{index}{errorColor}. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."
           updated: "Updated the multiple pages current index to {primaryColor}{index}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
@@ -241,10 +241,10 @@ messages:
         info:
           header: "File content info for hologram {primaryColor}{hologram}{secondaryColor}:"
           file_path: "{secondaryColor} - File path: {primaryColor}{file_path}"
-          refresh_interval: "{secondaryColor} - Refresh interval: {primaryColor}{refresh_interval}ms"
+          refresh_interval: "{secondaryColor} - Refresh interval: {primaryColor}{refresh_interval}"
         file_path:
           success: "Successfully updated the file path to {primaryColor}{file_path}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         refresh_interval:
-          success: "Successfully updated the refresh interval to {primaryColor}{refresh_interval}ms{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+          success: "Successfully updated the refresh interval to {primaryColor}{refresh_interval}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         update:
           success: "Successfully updated the file content for hologram {primaryColor}{hologram}{secondaryColor}."

@@ -4,6 +4,7 @@ import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HasHologramTrait;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.trait.builtin.FileContentTrait;
+import de.oliver.fancylib.duration.FancyDuration;
 import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -47,7 +48,7 @@ public class FileContentTraitCMD {
         translator.translate("commands.hologramtrait.file_content.info.refresh_interval")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("refresh_interval", String.valueOf(trait.getConfig().refreshInterval()))
+                .replace("refresh_interval", new FancyDuration(trait.getConfig().refreshInterval()).toString())
                 .send(actor.sender());
     }
 
@@ -79,17 +80,17 @@ public class FileContentTraitCMD {
     public void setRefreshInterval(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final long refresh_interval
+            final FancyDuration refresh_interval
     ) {
         final FileContentTrait trait = hologram.getData().getTraitTrait().getTrait(FileContentTrait.class);
         assert trait != null;
 
-        trait.setRefreshInterval(refresh_interval);
+        trait.setRefreshInterval(refresh_interval.millis());
 
         translator.translate("commands.hologramtrait.file_content.refresh_interval.success")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("refresh_interval", String.valueOf(refresh_interval))
+                .replace("refresh_interval", refresh_interval.toString())
                 .send(actor.sender());
     }
 

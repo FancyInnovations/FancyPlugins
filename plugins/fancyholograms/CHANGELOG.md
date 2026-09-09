@@ -23,7 +23,7 @@ In v3, all commands have been rewritten and simplified.
 If you're using FancyNpcs, you will notice that the commands are now more consistent with the FancyNpcs commands.
 It's now using the [Lamp command framework](https://github.com/Revxrsal/Lamp), which allows for better command handling and easier command creation.
 
-#ä# Translations
+### Translations
 
 Not only the command structure has changed, but also the responses.
 All responses are now configurable. You can find the default responses in the `plugins/FancyHolograms/languages/default.yml` file.
@@ -130,6 +130,32 @@ You can manually restore a backup:
 **Disclaimer:** all configuration options do not migrate automatically. You will have to update your configuration files manually.
 
 The feature flags are now stored in the `config.yml` too. You can find them under the `experimental_features` section.
+
+Configuration options (settings):
+
+| Option                                    | Description                                                                                                                                           | Default     |
+|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `language`                                | The language to use for the plugin.                                                                                                                   | default     |
+| `logging.level`                           | The log level for the plugin (DEBUG, INFO, WARN, ERROR).                                                                                              | INFO        |
+| `logging.version_notification`            | Whether version notifications are muted.                                                                                                              | false       |
+| `register_commands`                       | Whether the plugin should register its commands.                                                                                                      | true        |
+| `spawn_delay_on_join_ms`                  | The delay after player join before holograms are spawned, in milliseconds.                                                                            | 300 (ms)    |
+| `visibility_distance`                     | The default visibility distance for holograms.                                                                                                        | 20 (blocks) |
+| `backups.interval`                        | The interval at which backups are created (in hours).                                                                                                 | 24 (hours)  |
+| `backups.retention`                       | How long backups are kept (in days).                                                                                                                  | 30 (days)   |
+| `saving.save_on_changed`                  | Whether the plugin should save holograms when they are changed.                                                                                       | true        |
+| `saving.autosave.enabled`                 | Whether autosave is enabled.                                                                                                                          | true        |
+| `saving.autosave.interval`                | The interval at which autosave is performed in minutes.                                                                                               | 15 (mins)   |
+| `performance.hologram_update_interval_ms` | The interval at which holograms check for text updates (in milliseconds). Lower values = more responsive but higher CPU usage. Recommended: 200-500ms | 200 (ms)    |
+
+Configuration options (experimental features):
+
+| Option                                                        | Description                                                                                             | Default |
+|---------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------|
+| `experimental_features.disable_holograms_for_old_clients`     | Do not show holograms to clients with a version older than 1.19.4.                                      | false   |
+| `experimental_features.disable_holograms_for_bedrock_players` | Do not show holograms to bedrock players.                                                               | false   |
+| `experimental_features.enable_rotation_improvement`           | When enabled, hologram rotation will be done on display entities instead of the normal entity location. | false   |
+| `experimental_features.enable_folia_visibility_fix`           | When enabled, all holograms will respawn after 100ms when they should spawn.                            | false   |
 
 ## New API
 
@@ -276,7 +302,7 @@ There are three modes to cycle through the pages:
 You can change the mode, delay and pages with the following commands:
 - `/hologramtrait multiple_pages <hologram> info`: shows information the current multiple pages trait configuration
 - `/hologramtrait multiple_pages <hologram> mode <mode>`: changes the mode
-- `/hologramtrait multiple_pages <hologram> delay <delay>`: changes the delay (in milliseconds)
+- `/hologramtrait multiple_pages <hologram> delay <delay>`: changes the delay
 - `/hologramtrait multiple_pages <hologram> current_index <index>`: sets the current page index (useful for MANUAL mode)
 - `/hologramtrait multiple_pages <hologram> add_line <page> <text>`: adds a line to a page (use page index starting from 1)
 - `/hologramtrait multiple_pages <hologram> set_line <page> <line> <text>`: sets a line in a page
@@ -286,11 +312,11 @@ You can change the mode, delay and pages with the following commands:
 
 If this trait is attached to a hologram, it will read the content of a file and display it as the hologram's text.
 
-You can configure the file path and the update interval (in milliseconds) with the following commands:
+You can configure the file path and the update interval with the following commands:
 - `/hologramtrait file_content <hologram> info`: shows information about the current file content trait configuration
 - `/hologramtrait file_content <hologram> update`: forcefully updates the hologram's text from the file
 - `/hologramtrait file_content <hologram> file_path <file path>`: sets the file path (relative to the folder where your server jar is located)
-- `/hologramtrait file_content <hologram> refresh_interval <interval>`: sets the update interval (in milliseconds)
+- `/hologramtrait file_content <hologram> refresh_interval <interval>`: sets the update interval
 
 Be careful what file you set as the file path, as it will be read by the server and displayed to all players.
 

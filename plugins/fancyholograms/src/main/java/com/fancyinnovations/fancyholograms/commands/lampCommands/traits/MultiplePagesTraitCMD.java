@@ -4,6 +4,7 @@ import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HasHologramTrait;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.trait.builtin.MultiplePagesTrait;
+import de.oliver.fancylib.duration.FancyDuration;
 import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -46,7 +47,7 @@ public final class MultiplePagesTraitCMD {
                 .send(actor.sender());
 
         translator.translate("commands.hologramtrait.multiple_pages.info.delay")
-                .replace("delay", String.valueOf(trait.getCycleDelay()))
+                .replace("delay", new FancyDuration(trait.getCycleDelay()).toString())
                 .send(actor.sender());
 
         translator.translate("commands.hologramtrait.multiple_pages.info.current_index")
@@ -87,23 +88,23 @@ public final class MultiplePagesTraitCMD {
     }
 
     @Command("hologramtrait multiple_pages <hologram> delay <delay>")
-    @Description("Sets the delay between page cycles for the hologram in milliseconds")
+    @Description("Sets the delay between page cycles for the hologram")
     @CommandPermission("fancyholograms.commands.hologramtrait.multiple_pages.delay")
     @HasHologramTrait(MultiplePagesTrait.class)
     public void delay(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @Range(min = 0) long delay
+            final FancyDuration delay
     ) {
         final MultiplePagesTrait trait = hologram.getData().getTraitTrait().getTrait(MultiplePagesTrait.class);
         assert trait != null;
 
-        trait.setCycleDelay(delay);
+        trait.setCycleDelay(delay.millis());
 
         translator.translate("commands.hologramtrait.multiple_pages.delay.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("delay", String.valueOf(delay))
+                .replace("delay", delay.toString())
                 .send(actor.sender());
     }
 

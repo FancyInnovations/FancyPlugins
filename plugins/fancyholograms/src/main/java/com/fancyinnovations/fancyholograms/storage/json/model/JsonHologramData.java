@@ -9,10 +9,10 @@ public record JsonHologramData(
         String name,
         HologramType type,
         JsonLocation location,
-        String worldName,
-        Integer visibilityDistance,
+        String world_name,
+        Integer visibility_distance,
         Visibility visibility,
-        String linkedNpcName,
+        String linked_npc_name,
         List<String> traits
 ) {
 }

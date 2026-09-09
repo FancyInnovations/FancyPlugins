@@ -128,12 +128,12 @@ public class JsonAdapter {
     }
 
     public static com.fancyinnovations.fancyholograms.api.data.HologramData fromJson(JsonDataUnion data) {
-        if (!data.hologram_data().worldName().equals(data.hologram_data().location().world())) {
+        if (!data.hologram_data().world_name().equals(data.hologram_data().location().world())) {
             throw new IllegalArgumentException("World name in hologram data does not match location world");
         }
 
         Location loc = new Location(
-                Bukkit.getWorld(data.hologram_data().worldName()),
+                Bukkit.getWorld(data.hologram_data().world_name()),
                 data.hologram_data().location().x(),
                 data.hologram_data().location().y(),
                 data.hologram_data().location().z(),
@@ -174,10 +174,10 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
-                            .setWorldName(data.hologram_data().worldName())// hologram data
-                            .setVisibilityDistance(data.hologram_data().visibilityDistance())
+                            .setWorldName(data.hologram_data().world_name())// hologram data
+                            .setVisibilityDistance(data.hologram_data().visibility_distance())
                             .setVisibility(data.hologram_data().visibility())
-                            .setLinkedNpcName(data.hologram_data().linkedNpcName());
+                            .setLinkedNpcName(data.hologram_data().linked_npc_name());
 
             case ITEM ->
                     new com.fancyinnovations.fancyholograms.api.data.ItemHologramData(data.hologram_data().name(), loc)
@@ -189,10 +189,10 @@ public class JsonAdapter {
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
                             .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
-                            .setWorldName(data.hologram_data().worldName())// hologram data
-                            .setVisibilityDistance(data.hologram_data().visibilityDistance())
+                            .setWorldName(data.hologram_data().world_name())// hologram data
+                            .setVisibilityDistance(data.hologram_data().visibility_distance())
                             .setVisibility(data.hologram_data().visibility())
-                            .setLinkedNpcName(data.hologram_data().linkedNpcName());
+                            .setLinkedNpcName(data.hologram_data().linked_npc_name());
             case BLOCK ->
                     new com.fancyinnovations.fancyholograms.api.data.BlockHologramData(data.hologram_data().name(), loc)
                             .setBlock(Material.getMaterial(data.block_data().block_material())) // block data
@@ -203,10 +203,10 @@ public class JsonAdapter {
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
                             .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
-                            .setWorldName(data.hologram_data().worldName())// hologram data
-                            .setVisibilityDistance(data.hologram_data().visibilityDistance())
+                            .setWorldName(data.hologram_data().world_name())// hologram data
+                            .setVisibilityDistance(data.hologram_data().visibility_distance())
                             .setVisibility(data.hologram_data().visibility())
-                            .setLinkedNpcName(data.hologram_data().linkedNpcName());
+                            .setLinkedNpcName(data.hologram_data().linked_npc_name());
         };
 
         for (String traitName : data.hologram_data().traits()) {

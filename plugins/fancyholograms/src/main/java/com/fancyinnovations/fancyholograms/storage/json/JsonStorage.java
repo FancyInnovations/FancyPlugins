@@ -5,6 +5,7 @@ import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.storage.HologramStorage;
 import com.fancyinnovations.fancyholograms.storage.json.model.JsonDataUnion;
 import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
@@ -12,6 +13,7 @@ import de.oliver.jdb.JDB;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -143,7 +145,9 @@ public class JsonStorage implements HologramStorage {
         return holograms;
     }
 
-    public Collection<HologramData> loadFile(String path) {
+    private Collection<HologramData> loadFile(String path) {
+        migrate1(path);
+
         List<HologramData> holograms = new ArrayList<>();
 
         try {
@@ -162,5 +166,35 @@ public class JsonStorage implements HologramStorage {
         }
 
         return holograms;
+    }
+
+    /**
+     * Fixes snakeCase format in hologram data fields.
+     *
+     * @param path the path to the hologram file
+     */
+    private void migrate1(String path) {
+        FancyHologramsPlugin.get().getFancyLogger().info("Running migration1 for '" + path + "'");
+
+        File file = new File(DATA_DIR, path + ".json");
+        if (!file.exists()) {
+            return;
+        }
+
+        try {
+            String content = new String(Files.readAllBytes(file.toPath()));
+            String newContent = content.replace("\"worldName\":", "\"world_name\":");
+            newContent = newContent.replace("\"visibilityDistance\":", "\"visibility_distance\":");
+            newContent = newContent.replace("\"linkedNpcName\":", "\"linked_npc_name\":");
+
+            if (!content.equals(newContent)) {
+                Files.write(file.toPath(), newContent.getBytes());
+                System.out.println("WOHOHOHOHOOH");
+            }
+        } catch (IOException e) {
+            FancyHologramsPlugin.get().getFancyLogger().error("Failed to replace all in file " + path, ThrowableProperty.of(e));
+        }
+
+        FancyHologramsPlugin.get().getFancyLogger().info("Migration1 for '" + path + "' completed");
     }
 }

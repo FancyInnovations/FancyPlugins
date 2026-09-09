@@ -204,7 +204,7 @@ This will spawn the hologram for the specified players if they meet the visibili
 Read more about the trait feature below.
 
 You can also create your own traits by extending the `HologramTrait` class.
-View the [Javadocs](https://fancyspaces.net/javadoc/fi/snapshots/de.oliver:FancyHolograms/3.0.0-SNAPSHOT.46/index.html) for more information about how the `HologramTrait` class is structured.
+View the [Javadocs](https://fancyspaces.net/javadoc/fi/snapshots/de.oliver:FancyHolograms/3.0.0-SNAPSHOT.73/index.html) for more information about how the `HologramTrait` class is structured.
 You can override all the `on` methods, as well as the `load` and `save` methods.
 
 Every trait has a `storage` JDB (JSON Database) object that can be used to store data related to the trait.
@@ -241,6 +241,11 @@ When the interaction trait is attached to a hologram, you have access to the fol
 - `/hologramtrait interaction <hologram> set_action <index> <action> <value>`: sets an action at a specific index in the interaction trait
 - `/hologramtrait interaction <hologram> clear_actions`: removes all actions from the interaction trait
 
+You can also manually edit the action in a file located at `plugins/FancyHolograms/data/traits/interaction_trait/<hologram name>.json`.
+
+Take a look on the [FancyNpcs wiki](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/tutorials/action-system#actions) for more information about the available actions.
+(Custom actions registered to FancyNpcs are also available!)
+
 ### Multiple Pages Trait
 
 This trait adds the ability to have multiple pages in one hologram.
@@ -265,7 +270,9 @@ This trait will show the contents of a file. You can configure the file path
 
 ### Custom Component Provider Trait
 
-This is trait allows other developers to use Adventure components instead of the default list of strings as hologram text.
+This trait is only meant to be used by developers.
+
+This trait allows other developers to use custom Adventure components instead of the default list of strings as hologram text.
 Example:
 ```java
 hologram.getData().getTraitTrait().addTrait(new CustomComponentProviderTrait(player -> {

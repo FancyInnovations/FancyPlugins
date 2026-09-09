@@ -8,6 +8,7 @@ import de.oliver.plugintests.annotations.FPAfterEach;
 import de.oliver.plugintests.annotations.FPBeforeEach;
 import de.oliver.plugintests.annotations.FPTest;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -48,7 +49,9 @@ public class CreateNpcTest {
     }
 
     @FPTest(name = "Create and register npc")
-    public void createAndRegisterNpc(Player player) {
+    public void createAndRegisterNpc(Player player) throws ReflectiveOperationException {
+        location.setYaw(137.0f);
+        location.setPitch(-23.0f);
         NpcData data = new NpcData(npcName, creatorUUID, location);
         createdNpc = FancyNpcsPlugin.get().getNpcAdapter().apply(data);
         expect(createdNpc).toBeDefined();
@@ -60,8 +63,20 @@ public class CreateNpcTest {
         expect(createdNpc.getData().getLocation()).toEqual(location);
         expect(createdNpc.getData().getType()).toEqual(EntityType.PLAYER);
 
+        Location entityLocation = getBackingEntity(createdNpc).getLocation();
+        expect(entityLocation.getX()).toEqual(location.getX());
+        expect(entityLocation.getY()).toEqual(location.getY());
+        expect(entityLocation.getZ()).toEqual(location.getZ());
+        expect(entityLocation.getYaw()).toEqual(location.getYaw());
+        expect(entityLocation.getPitch()).toEqual(location.getPitch());
+
         NPC_MANAGER.registerNpc(createdNpc);
         expect(NPC_MANAGER.getNpc(npcName)).toBeDefined();
+    }
+
+    private static Entity getBackingEntity(Npc npc) throws ReflectiveOperationException {
+        Object handle = npc.getClass().getMethod("getNpc").invoke(npc);
+        return (Entity) handle.getClass().getMethod("getBukkitEntity").invoke(handle);
     }
 
 }

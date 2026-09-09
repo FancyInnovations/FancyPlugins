@@ -79,6 +79,18 @@ public class Npc_1_21_5 extends Npc {
             npc = factory.create(nmsType, serverLevel);
             isTeamCreated.clear();
         }
+
+        applyDataLocation();
+    }
+
+    private void applyDataLocation() {
+        Location location = data.getLocation();
+        npc.setPosRaw(location.getX(), location.getY(), location.getZ());
+        npc.setRot(location.getYaw(), location.getPitch());
+        npc.setYHeadRot(location.getYaw());
+        if (npc instanceof LivingEntity livingEntity) {
+            livingEntity.setYBodyRot(location.getYaw());
+        }
     }
 
     @Override
@@ -356,11 +368,7 @@ public class Npc_1_21_5 extends Npc {
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
-        npc.setPosRaw(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());
-        npc.setRot(data.getLocation().getYaw(), data.getLocation().getPitch());
-        npc.setYHeadRot(data.getLocation().getYaw());
-        npc.setXRot(data.getLocation().getPitch());
-        npc.setYRot(data.getLocation().getYaw());
+        applyDataLocation();
 
         ClientboundTeleportEntityPacket teleportEntityPacket = new ClientboundTeleportEntityPacket(
                 npc.getId(),

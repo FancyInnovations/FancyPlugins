@@ -42,6 +42,10 @@ Example:
 1. Select a hologram: `/hologram select my_hologram`
 2. Edit something: `/hologram edit .selected billboard FIXED`
 
+You can also use `.nearest` to select the nearest hologram to you.
+
+`.selected` and `.nearest` can be used in any command that requires a hologram name.
+
 ## New Storage System
 
 The storage system has been completely rewritten.

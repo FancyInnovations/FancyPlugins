@@ -217,3 +217,21 @@ messages:
           success: "Successfully removed line from page {primaryColor}{page}{secondaryColor} of hologram {primaryColor}{hologram}{secondaryColor}."
         set_line:
           success: "Successfully set line {primaryColor}{line}{secondaryColor} in page {primaryColor}{page}{secondaryColor} of hologram {primaryColor}{hologram}{secondaryColor}."
+      interaction:
+        info:
+          header: "Interaction info for hologram {primaryColor}{hologram}{secondaryColor}:"
+          hitbox: "{secondaryColor} - Hitbox npc name: {primaryColor}{hitbox}"
+          actions_header: "{secondaryColor} - Actions ({count}):"
+          actions_entry: "{secondaryColor}   {index}. {primaryColor}{action}{secondaryColor}: {primaryColor}{value}"
+        update_hitbox:
+          success: "Successfully updated the hitbox for hologram {primaryColor}{hologram}{secondaryColor}."
+        add_action:
+          success: "Successfully added action {primaryColor}{action}{secondaryColor} with value {primaryColor}{value}{secondaryColor} to hologram {primaryColor}{hologram}{secondaryColor}."
+        remove_action:
+          invalid_index: "{errorColor}Invalid action index {primaryColor}{index}{errorColor}. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."
+          success: "Successfully removed action {primaryColor}{action}{secondaryColor} from hologram {primaryColor}{hologram}{secondaryColor}."
+        clear_actions:
+          success: "Successfully cleared all actions from hologram {primaryColor}{hologram}{secondaryColor}."
+        set_action:
+          invalid_index: "{errorColor}Invalid action index {primaryColor}{index}{errorColor}. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."
+          success: "Successfully set action {primaryColor}{action}{secondaryColor} with value {primaryColor}{value}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

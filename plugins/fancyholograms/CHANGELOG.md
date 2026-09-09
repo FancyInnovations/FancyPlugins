@@ -228,7 +228,18 @@ There are several built-in traits that come with FancyHolograms v3:
 
 ### Interaction Trait
 
-This trait will spawn an interaction npc (FancyNpcs is required) around the hologram with some actions (can be configured in `plugins/FancyHolograms/data/traits/interaction_trait`)
+This trait will spawn a npc (via FancyNpcs) with the type `INTERACTION` and position it around the hologram.
+Interaction entities are completely invisible but have a hitbox that can be interacted with.
+You can configure actions that will be executed when a player interacts with the interaction entity / hologram.
+You can use any action supported by FancyNpcs, such as running a command or sending a message.
+
+When the interaction trait is attached to a hologram, you have access to the following commands:
+- `/hologramtrait interaction <hologram> info`: shows information about the current interaction trait configuration
+- `/hologramtrait interaction <hologram> update_hitbox`: updates the hitbox of the interaction entity to match the hologram's size
+- `/hologramtrait interaction <hologram> add_action <action> <value>`: adds an action to the interaction trait
+- `/hologramtrait interaction <hologram> remove_action <action index>`: removes an action from the interaction trait
+- `/hologramtrait interaction <hologram> set_action <index> <action> <value>`: sets an action at a specific index in the interaction trait
+- `/hologramtrait interaction <hologram> clear_actions`: removes all actions from the interaction trait
 
 ### Multiple Pages Trait
 

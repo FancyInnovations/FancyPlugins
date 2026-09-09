@@ -266,7 +266,15 @@ You can change the mode, delay and pages with the following commands:
 
 ### File Content Trait
 
-This trait will show the contents of a file. You can configure the file path
+If this trait is attached to a hologram, it will read the content of a file and display it as the hologram's text.
+
+You can configure the file path and the update interval (in milliseconds) with the following commands:
+- `/hologramtrait file_content <hologram> info`: shows information about the current file content trait configuration
+- `/hologramtrait file_content <hologram> update`: forcefully updates the hologram's text from the file
+- `/hologramtrait file_content <hologram> file_path <file path>`: sets the file path (relative to the folder where your server jar is located)
+- `/hologramtrait file_content <hologram> refresh_interval <interval>`: sets the update interval (in milliseconds)
+
+Be careful what file you set as the file path, as it will be read by the server and displayed to all players.
 
 ### Custom Component Provider Trait
 

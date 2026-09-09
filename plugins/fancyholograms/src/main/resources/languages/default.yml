@@ -235,3 +235,14 @@ messages:
         set_action:
           invalid_index: "{errorColor}Invalid action index {primaryColor}{index}{errorColor}. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."
           success: "Successfully set action {primaryColor}{action}{secondaryColor} with value {primaryColor}{value}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+      file_content:
+        info:
+          header: "File content info for hologram {primaryColor}{hologram}{secondaryColor}:"
+          file_path: "{secondaryColor} - File path: {primaryColor}{file_path}"
+          refresh_interval: "{secondaryColor} - Refresh interval: {primaryColor}{refresh_interval}ms"
+        file_path:
+          success: "Successfully updated the file path to {primaryColor}{file_path}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        refresh_interval:
+          success: "Successfully updated the refresh interval to {primaryColor}{refresh_interval}ms{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        update:
+          success: "Successfully updated the file content for hologram {primaryColor}{hologram}{secondaryColor}."

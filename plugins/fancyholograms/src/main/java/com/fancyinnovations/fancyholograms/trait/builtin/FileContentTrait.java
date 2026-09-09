@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 
 @ApiStatus.Experimental
 @HologramTraitClass(traitName = "file_content_trait")
@@ -22,6 +23,7 @@ public class FileContentTrait extends HologramTrait {
     );
 
     private Configuration config;
+    private ScheduledFuture<?> updateTask;
 
     @Override
     public void onAttach() {
@@ -32,10 +34,11 @@ public class FileContentTrait extends HologramTrait {
         load();
 
         if (config.refreshInterval > 0) {
-            hologramThread.scheduleWithFixedDelay(
+            updateTask = hologramThread.scheduleWithFixedDelay(
                     this::updateHologram,
                     0,
-                    config.refreshInterval(), java.util.concurrent.TimeUnit.MILLISECONDS);
+                    config.refreshInterval(), java.util.concurrent.TimeUnit.MILLISECONDS
+            );
         } else {
             updateHologram();
         }
@@ -79,7 +82,40 @@ public class FileContentTrait extends HologramTrait {
         }
     }
 
-    record Configuration(
+    public Configuration getConfig() {
+        return config;
+    }
+
+    public void setConfig(Configuration config) {
+        this.config = config;
+        save();
+        updateHologram();
+
+        if (this.updateTask != null && !this.updateTask.cancel(true)) {
+            logger.warn("Failed to cancel existing update task for FileContentTrait");
+        }
+        if (config.refreshInterval > 0) {
+            this.updateTask = hologramThread.scheduleWithFixedDelay(
+                    this::updateHologram,
+                    0,
+                    config.refreshInterval(), java.util.concurrent.TimeUnit.MILLISECONDS
+            );
+        }
+    }
+
+    public void setFilePath(String filePath) {
+        this.config = new Configuration(filePath, this.config.refreshInterval());
+        save();
+        updateHologram();
+    }
+
+    public void setRefreshInterval(long refreshInterval) {
+        this.config = new Configuration(this.config.filePath(), refreshInterval);
+        save();
+        updateHologram();
+    }
+
+    public record Configuration(
             String filePath,
             long refreshInterval
     ) {

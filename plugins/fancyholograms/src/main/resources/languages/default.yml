@@ -97,6 +97,8 @@ messages:
         world_not_loaded: "{errorColor}Cannot teleport to hologram because its world is not loaded."
         success: "Teleported to hologram {primaryColor}{hologram}{secondaryColor}."
         failed: "{errorColor}Failed to teleport to hologram {primaryColor}{hologram}{errorColor}."
+      select:
+        success: "Successfully selected hologram {primaryColor}{hologram}{secondaryColor}."
       edit:
         lines:
           line_number_out_of_bounds: "{errorColor}Line number {primaryColor}{line}{errorColor} is out of bounds. Must be between {primaryColor}{min} {errorColor}and {primaryColor}{max}{errorColor}."

@@ -345,6 +345,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
 
         // hologram commands
         lamp.register(CreateCMD.INSTANCE);
+        lamp.register(SelectCMD.INSTANCE);
         lamp.register(TraitCMD.INSTANCE);
         lamp.register(MoveUpCMD.INSTANCE);
         lamp.register(MoveDownCMD.INSTANCE);

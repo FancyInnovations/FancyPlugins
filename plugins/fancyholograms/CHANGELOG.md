@@ -18,8 +18,12 @@ Read more about the new API [here](#new-api).
 
 In v3, all commands have been rewritten and simplified.
 
+### Framework
+
 If you're using FancyNpcs, you will notice that the commands are now more consistent with the FancyNpcs commands.
 It's now using the [Lamp command framework](https://github.com/Revxrsal/Lamp), which allows for better command handling and easier command creation.
+
+#ä# Translations
 
 Not only the command structure has changed, but also the responses.
 All responses are now configurable. You can find the default responses in the `plugins/FancyHolograms/languages/default.yml` file.
@@ -27,6 +31,16 @@ All responses are now configurable. You can find the default responses in the `p
 You can create your own language files in the `plugins/FancyHolograms/languages/` folder, by copying the `default.yml` file and renaming it to your desired language code (e.g. `nl.yml`, `pl.yml`, etc.).
 
 Remember to set the `language` option in the `config.yml` file to your language code.
+
+### Selecting holograms
+
+To select a hologram, you can use the `/fancyholograms select <hologram_name>` command.
+Once a hologram is selected, you can perform actions on it without having to specify its name again.
+Simply use `.selected` as the hologram name in the command, and it will use the selected hologram.
+
+Example:
+1. Select a hologram: `/hologram select my_hologram`
+2. Edit something: `/hologram edit .selected billboard FIXED`
 
 ## New Storage System
 

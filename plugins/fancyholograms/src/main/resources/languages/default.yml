@@ -24,6 +24,9 @@ messages:
       invalid_type: "{errorColor}This command can only be executed on holograms of the following types: {primaryColor}{types}{secondaryColor}."
   commands:
     fancyholograms:
+      version:
+        current_version: "You are running FancyHolograms {primaryColor}v{version}{secondaryColor}."
+        version_outdated: "You are running an outdated version of FancyHolograms. Please update to the latest version {primaryColor}v{latestVersion}{secondaryColor}({downloadURL})."
       config:
         show:
           settings_header: "FancyHolograms settings:"

@@ -62,6 +62,9 @@ messages:
         no_dot: "{errorColor}Hologram names cannot contain dots."
         canceled: "{errorColor}Hologram creation canceled."
         success: "Successfully created hologram {primaryColor}{name}{secondaryColor} of type {primaryColor}{type}{secondaryColor}."
+        success_actions_text: "Quick actions: {primaryColor}<click:suggest_command:'/hologram edit {name} add_line '>[ᴀᴅᴅ ʟɪɴᴇ]</click> <click:suggest_command:'/hologram edit {name} billboard '>[ѕᴇᴛ ʙɪʟʟʙᴏᴀʀᴅ]</click> <click:suggest_command:'/hologram edit {name} scale '>[ѕᴇᴛ ѕᴄᴀʟᴇ]</click> <click:suggest_command:'/hologram edit {name} background '>[ѕᴇᴛ ʙᴀᴄᴋɢʀᴏᴜɴᴅ]</click>"
+        success_actions_item: "Quick actions: {primaryColor}<click:suggest_command:'/hologram edit {name} item'>[ѕᴇᴛ ɪᴛᴇᴍ]</click> <click:suggest_command:'/hologram edit {name} billboard '>[ѕᴇᴛ ʙɪʟʟʙᴏᴀʀᴅ]</click> <click:suggest_command:'/hologram edit {name} scale '>[ѕᴇᴛ ѕᴄᴀʟᴇ]</click>"
+        success_actions_block: "Quick actions: {primaryColor}<click:suggest_command:'/hologram edit {name} block '>[ѕᴇᴛ ʙʟᴏᴄᴋ]</click> <click:suggest_command:'/hologram edit {name} billboard '>[ѕᴇᴛ ʙɪʟʟʙᴏᴀʀᴅ]</click> <click:suggest_command:'/hologram edit {name} scale '>[ѕᴇᴛ ѕᴄᴀʟᴇ]</click>"
       copy:
         success: "Successfully copied hologram {primaryColor}{hologram}{secondaryColor} to {primaryColor}{name}{secondaryColor}."
       info:

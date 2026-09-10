@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.NpcNameSuggestion;

@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
@@ -12,87 +12,69 @@ import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
+import revxrsal.commands.annotation.Optional;
 import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-import java.util.ArrayList;
-import java.util.List;
+public final class RemoveLineCMD {
 
-public final class SwapLinesCMD {
+    public static final RemoveLineCMD INSTANCE = new RemoveLineCMD();
 
-    public static final SwapLinesCMD INSTANCE = new SwapLinesCMD();
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private SwapLinesCMD() {
+    private RemoveLineCMD() {
     }
 
-    @IsHologramType(types = HologramType.TEXT)
-    @Command("hologram edit <hologram> swap_lines <line1> <line2>")
-    @Description("Swaps two lines")
-    @CommandPermission("fancyholograms.hologram.edit.move_line")
-    public void swapLines(
+    @IsHologramType(types = {HologramType.TEXT})
+    @Command("hologram edit <hologram> remove_line")
+    @Description("Removes a specific line from the hologram (defaults to the last line)")
+    @CommandPermission("fancyholograms.commands.hologram.edit.remove_line")
+    public void removeLine(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @NotNull @SuggestWith(SwapLinesSuggestion.class) int line1,
-            final @NotNull @SuggestWith(SwapLinesSuggestion.class) int line2
+            final @Optional @SuggestWith(SwapLinesSuggestion.class) Integer line
     ) {
         TextHologramData textData = (TextHologramData) hologram.getData();
 
-        List<String> text = textData.getText();
-
-        if (line1 < 1 || line1 > text.size()) {
-            translator.translate("commands.hologram.edit.lines.line_number_out_of_bounds")
+        if (textData.getText().isEmpty()) {
+            translator.translate("commands.hologram.edit.lines.empty")
                     .withPrefix()
-                    .replace("line", String.valueOf(line1))
-                    .replace("min", "1")
-                    .replace("max", String.valueOf(text.size()))
+                    .replace("hologram", hologram.getData().getName())
                     .send(actor.sender());
             return;
         }
 
-        if (line2 < 1 || line2 > text.size()) {
+        int targetLine = (line != null) ? line : textData.getText().size();
+
+        if (targetLine < 1 || targetLine > textData.getText().size()) {
             translator.translate("commands.hologram.edit.lines.line_number_out_of_bounds")
                     .withPrefix()
-                    .replace("line", String.valueOf(line2))
+                    .replace("line", String.valueOf(targetLine))
                     .replace("min", "1")
-                    .replace("max", String.valueOf(text.size()))
-                    .send(actor.sender());
-            return;
-        }
-
-        if (line1 == line2) {
-            translator.translate("commands.hologram.edit.lines.cannot_swap_same_line")
-                    .withPrefix()
-                    .replace("line", String.valueOf(line1))
+                    .replace("max", String.valueOf(textData.getText().size()))
                     .send(actor.sender());
             return;
         }
 
         final var copied = textData.copy(textData.getName());
-        List<String> newText = new ArrayList<>(text);
-
-        String temp = newText.get(line1 - 1);
-        newText.set(line1 - 1, newText.get(line2 - 1));
-        newText.set(line2 - 1, temp);
-
-        copied.setText(newText);
+        copied.removeLine(targetLine - 1);
 
         if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT)) {
             return;
         }
 
-        textData.setText(newText);
+        textData.removeLine(targetLine - 1);
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.lines.swap_success")
+        translator.translate("commands.hologram.edit.lines.removed")
                 .withPrefix()
-                .replace("line1", String.valueOf(line1))
-                .replace("line2", String.valueOf(line2))
+                .replace("hologram", hologram.getData().getName())
+                .replace("line", String.valueOf(targetLine))
                 .send(actor.sender());
     }
 }

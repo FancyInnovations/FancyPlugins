@@ -43,7 +43,7 @@ public class BackupCMD {
     }
 
     @Command("fancyholograms backup list")
-    @Description("Lists all backup files")
+    @Description("Lists all backups that are currently available in the backups folder")
     @CommandPermission("fancyholograms.commands.fancyholograms.backup.list")
     public void list(
             final BukkitCommandActor actor

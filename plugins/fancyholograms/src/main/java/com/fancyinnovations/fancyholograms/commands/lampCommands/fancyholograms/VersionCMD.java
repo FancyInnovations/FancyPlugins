@@ -22,7 +22,7 @@ public class VersionCMD {
     }
 
     @Command("fancyholograms version")
-    @Description("Shows the version of FancyHologramsPlugin")
+    @Description("Shows the current version of the plugin and whether it is up to date")
     @CommandPermission("fancyholograms.commands.fancyholograms.version")
     public void version(
             final BukkitCommandActor actor

@@ -26,7 +26,7 @@ public final class ListCMD {
     }
 
     @Command({"hologram list"})
-    @Description("Shows a list of all holograms")
+    @Description("Shows a list of all currently loaded holograms")
     @CommandPermission("fancyholograms.commands.hologram.list")
     public void list(
             final @NotNull BukkitCommandActor actor,

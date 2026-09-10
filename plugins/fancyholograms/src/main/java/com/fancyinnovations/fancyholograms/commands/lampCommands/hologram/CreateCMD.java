@@ -29,7 +29,7 @@ public class CreateCMD {
     }
 
     @Command("hologram create")
-    @Description("Creates a new hologram")
+    @Description("Creates a new hologram at your location")
     @CommandPermission("fancyholograms.commands.hologram.create")
     public void create(
             final BukkitCommandActor actor,
@@ -86,11 +86,30 @@ public class CreateCMD {
 
         FancyHologramsPlugin.get().getRegistry().register(holo);
 
+        if (actor.isPlayer()) {
+            SelectCMD.selectHologram(actor.requirePlayer(), holo);
+        }
+
         translator.translate("commands.hologram.create.success")
                 .withPrefix()
                 .replace("name", name)
                 .replace("type", type.name())
                 .send(actor.sender());
+
+        switch (type) {
+            case TEXT -> translator.translate("commands.hologram.create.success_actions_text")
+                    .withPrefix()
+                    .replace("name", name)
+                    .send(actor.sender());
+            case ITEM -> translator.translate("commands.hologram.create.success_actions_item")
+                    .withPrefix()
+                    .replace("name", name)
+                    .send(actor.sender());
+            case BLOCK -> translator.translate("commands.hologram.create.success_actions_block")
+                    .withPrefix()
+                    .replace("name", name)
+                    .send(actor.sender());
+        }
     }
 
 }

@@ -1,64 +1,66 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class BillboardCMD {
+public final class SeeThroughCMD {
 
-    public static final BillboardCMD INSTANCE = new BillboardCMD();
+    public static final SeeThroughCMD INSTANCE = new SeeThroughCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private BillboardCMD() {
+    private SeeThroughCMD() {
     }
 
-    @Command("hologram edit <hologram> billboard <billboard>")
-    @Description("Changes the billboard of the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.billboard")
+    @IsHologramType(types = {HologramType.TEXT})
+    @Command("hologram edit <hologram> see_through <enabled>")
+    @Description("Enables or disables whether the hologram text can be seen through blocks")
+    @CommandPermission("fancyholograms.commands.hologram.edit.see_through")
     public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @NotNull Display.Billboard billboard
+            final boolean enabled
     ) {
-        TextHologramData data = (TextHologramData) hologram.getData();
+        TextHologramData textData = (TextHologramData) hologram.getData();
 
-        TextHologramData copied = data.copy(data.getName());
-        copied.setBillboard(billboard);
-
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
-            return;
-        }
-
-        if (copied.getBillboard().equals(data.getBillboard())) {
-            translator.translate("commands.hologram.edit.billboard.already_set")
+        if (enabled == textData.isSeeThrough()) {
+            translator.translate("commands.hologram.edit.see_through.already_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("billboard", billboard.name())
+                    .replace("enabled", enabled ? "enabled" : "disabled")
                     .send(actor.sender());
             return;
         }
 
-        data.setBillboard(billboard);
+        final var copied = textData.copy(textData.getName());
+        copied.setSeeThrough(enabled);
+
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.SEE_THROUGH)) {
+            return;
+        }
+
+        textData.setSeeThrough(copied.isSeeThrough());
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.billboard.updated")
+        translator.translate("commands.hologram.edit.see_through.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("billboard", billboard.name())
+                .replace("enabled", enabled ? "enabled" : "disabled")
                 .send(actor.sender());
     }
 }

@@ -1,69 +1,64 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
-import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.lampCommands.types.ColorCommandType;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
-import org.bukkit.Color;
+import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class BackgroundCMD {
+public final class BillboardCMD {
 
-    public static final BackgroundCMD INSTANCE = new BackgroundCMD();
+    public static final BillboardCMD INSTANCE = new BillboardCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private BackgroundCMD() {
+    private BillboardCMD() {
     }
 
-    @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram edit <hologram> background <color>")
-    @Description("Changes the background color of the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.background")
+    @Command("hologram edit <hologram> billboard <billboard>")
+    @Description("Changes the billboard of the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.billboard")
     public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @Nullable Color color
+            final @NotNull Display.Billboard billboard
     ) {
         TextHologramData data = (TextHologramData) hologram.getData();
 
         TextHologramData copied = data.copy(data.getName());
-        copied.setBackground(color);
+        copied.setBillboard(billboard);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BACKGROUND)) {
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
             return;
         }
 
-        if (copied.getBackground() != null && copied.getBackground().equals(data.getBackground())) {
-            translator.translate("commands.hologram.edit.background.already_set")
+        if (copied.getBillboard().equals(data.getBillboard())) {
+            translator.translate("commands.hologram.edit.billboard.already_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("color", ColorCommandType.toString(color))
+                    .replace("billboard", billboard.name())
                     .send(actor.sender());
             return;
         }
 
-        data.setBackground(color);
+        data.setBillboard(billboard);
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.background.updated")
+        translator.translate("commands.hologram.edit.billboard.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("color", ColorCommandType.toString(color))
+                .replace("billboard", billboard.name())
                 .send(actor.sender());
     }
 }

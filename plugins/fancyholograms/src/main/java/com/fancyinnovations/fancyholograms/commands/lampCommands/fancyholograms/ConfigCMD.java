@@ -26,7 +26,7 @@ public final class ConfigCMD {
     }
 
     @Command("fancyholograms config show")
-    @Description("Shows the current configuration")
+    @Description("Shows all configuration options (and experimental feature flags) and their current value")
     @CommandPermission("fancyholograms.commands.fancyholograms.config.show")
     public void show(
             final BukkitCommandActor actor
@@ -73,7 +73,7 @@ public final class ConfigCMD {
     }
 
     @Command("fancyholograms config reload")
-    @Description("Reloads the config of FancyHolograms.")
+    @Description("Reloads the configuration file and applies the changes")
     @CommandPermission("fancyholograms.commands.fancyholograms.config.reload")
     public void reload(
             final BukkitCommandActor actor

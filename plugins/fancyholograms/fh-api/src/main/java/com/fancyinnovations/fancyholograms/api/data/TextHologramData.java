@@ -16,7 +16,9 @@ import java.util.Objects;
 
 public class TextHologramData extends DisplayHologramData {
 
-    public static final List<String> DEFAULT_TEXT = List.of("Edit this line with /hologram edit <name>");
+    public static final List<String> DEFAULT_TEXT = List.of(
+            "<gray>Use <#ffcc24>/hologram edit <hologram> <gray>to edit this hologram."
+    );
     public static final TextDisplay.TextAlignment DEFAULT_TEXT_ALIGNMENT = TextDisplay.TextAlignment.CENTER;
     public static final boolean DEFAULT_TEXT_SHADOW_STATE = false;
     public static final boolean DEFAULT_SEE_THROUGH = false;

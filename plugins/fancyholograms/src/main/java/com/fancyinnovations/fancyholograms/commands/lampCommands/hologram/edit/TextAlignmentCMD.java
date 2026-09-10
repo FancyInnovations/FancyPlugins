@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
@@ -8,59 +8,60 @@ import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHo
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class SeeThroughCMD {
+public final class TextAlignmentCMD {
 
-    public static final SeeThroughCMD INSTANCE = new SeeThroughCMD();
+    public static final TextAlignmentCMD INSTANCE = new TextAlignmentCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private SeeThroughCMD() {
+    private TextAlignmentCMD() {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram edit <hologram> see_through <enabled>")
-    @Description("Enables or disables whether the hologram text can be seen through blocks")
-    @CommandPermission("fancyholograms.commands.hologram.edit.see_through")
+    @Command("hologram edit <hologram> text_alignment <alignment>")
+    @Description("Sets the text alignment of the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.text_alignment")
     public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final boolean enabled
+            final @NotNull TextDisplay.TextAlignment alignment
     ) {
         TextHologramData textData = (TextHologramData) hologram.getData();
 
-        if (enabled == textData.isSeeThrough()) {
-            translator.translate("commands.hologram.edit.see_through.already_set")
+        if (alignment == textData.getTextAlignment()) {
+            translator.translate("commands.hologram.edit.text_alignment.already_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("enabled", enabled ? "enabled" : "disabled")
+                    .replace("alignment", alignment.name())
                     .send(actor.sender());
             return;
         }
 
         final var copied = textData.copy(textData.getName());
-        copied.setSeeThrough(enabled);
+        copied.setTextAlignment(alignment);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.SEE_THROUGH)) {
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT_ALIGNMENT)) {
             return;
         }
 
-        textData.setSeeThrough(copied.isSeeThrough());
+        textData.setTextAlignment(copied.getTextAlignment());
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.see_through.updated")
+        translator.translate("commands.hologram.edit.text_alignment.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("enabled", enabled ? "enabled" : "disabled")
+                .replace("alignment", alignment.name())
                 .send(actor.sender());
     }
 }

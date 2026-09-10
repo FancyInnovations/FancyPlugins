@@ -87,7 +87,7 @@ tasks {
         }
         publications {
             create<MavenPublication>("maven") {
-                groupId = "de.oliver"
+                groupId = "com.fancyinnovations"
                 artifactId = "FancyHolograms"
                 version = getFHVersion()
                 from(project.components["java"])

@@ -52,7 +52,7 @@ Official documentation is hosted **[here](https://fancyinnovations.com/docs/mine
 
 ## Developer API
 
-More information can be found in **[Documentation](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms/api/getting-started)** and **[Javadocs](https://repo.fancyinnovations.com/javadoc/releases/de/oliver/FancyHolograms/latest)**.
+More information can be found in **[Documentation](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms/api/getting-started)** and **[Javadocs](https://repo.fancyinnovations.com/javadoc/releases/com/fancyinnovations/FancyHolograms/latest)**.
 
 ### Maven
 
@@ -66,7 +66,7 @@ More information can be found in **[Documentation](https://fancyinnovations.com/
 
 ```xml
 <dependency>
-    <groupId>de.oliver</groupId>
+    <groupId>com.fancyinnovations</groupId>
     <artifactId>FancyHolograms</artifactId>
     <version>[VERSION]</version>
     <scope>provided</scope>
@@ -81,7 +81,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("de.oliver:FancyHolograms:[VERSION]")
+    compileOnly("com.fancyinnovations:FancyHolograms:[VERSION]")
 }
 ```
 

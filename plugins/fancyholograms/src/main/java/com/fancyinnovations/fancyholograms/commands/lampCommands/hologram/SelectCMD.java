@@ -35,6 +35,10 @@ public final class SelectCMD {
         return FancyHologramsPlugin.get().getRegistry().get(hologramName);
     }
 
+    public static void selectHologram(@NotNull Player player, @NotNull Hologram hologram) {
+        player.getPersistentDataContainer().set(SELECTED_HOLOGRAM_KEY, PersistentDataType.STRING, hologram.getData().getName());
+    }
+
     @Command("hologram select <hologram>")
     @Description("Selects a hologram, so you can edit it with other commands.")
     @CommandPermission("fancyholograms.commands.hologram.select")
@@ -44,7 +48,7 @@ public final class SelectCMD {
     ) {
         Player player = actor.requirePlayer();
 
-        player.getPersistentDataContainer().set(SELECTED_HOLOGRAM_KEY, PersistentDataType.STRING, hologram.getData().getName());
+        selectHologram(player, hologram);
 
         translator.translate("commands.hologram.select.success")
                 .withPrefix()

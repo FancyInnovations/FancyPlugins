@@ -1,66 +1,69 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.types.ColorCommandType;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.translations.Translator;
+import org.bukkit.Color;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class TextShadowCMD {
+public final class BackgroundCMD {
 
-    public static final TextShadowCMD INSTANCE = new TextShadowCMD();
+    public static final BackgroundCMD INSTANCE = new BackgroundCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private TextShadowCMD() {
+    private BackgroundCMD() {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram edit <hologram> text_shadow <enabled>")
-    @Description("Enables or disables the text shadow of the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.text_shadow")
+    @Command("hologram edit <hologram> background <color>")
+    @Description("Changes the background color of the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.background")
     public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final boolean enabled
+            final @Nullable Color color
     ) {
-        TextHologramData textData = (TextHologramData) hologram.getData();
+        TextHologramData data = (TextHologramData) hologram.getData();
 
-        if (enabled == textData.hasTextShadow()) {
-            translator.translate("commands.hologram.edit.text_shadow.already_set")
+        TextHologramData copied = data.copy(data.getName());
+        copied.setBackground(color);
+
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BACKGROUND)) {
+            return;
+        }
+
+        if (copied.getBackground() != null && copied.getBackground().equals(data.getBackground())) {
+            translator.translate("commands.hologram.edit.background.already_set")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
-                    .replace("enabled", enabled ? "enabled" : "disabled")
+                    .replace("color", ColorCommandType.toString(color))
                     .send(actor.sender());
             return;
         }
 
-        final var copied = textData.copy(textData.getName());
-        copied.setTextShadow(enabled);
-
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT_SHADOW)) {
-            return;
-        }
-
-        textData.setTextShadow(copied.hasTextShadow());
+        data.setBackground(color);
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.text_shadow.updated")
+        translator.translate("commands.hologram.edit.background.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
-                .replace("enabled", enabled ? "enabled" : "disabled")
+                .replace("color", ColorCommandType.toString(color))
                 .send(actor.sender());
     }
 }

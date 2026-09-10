@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;

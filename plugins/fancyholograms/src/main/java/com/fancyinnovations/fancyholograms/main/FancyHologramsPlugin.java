@@ -15,6 +15,7 @@ import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.StorageCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.VersionCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.*;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit.*;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.FileContentTraitCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.InteractionTraitCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.MultiplePagesTraitCMD;

@@ -1,4 +1,4 @@
-package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
+package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
@@ -14,43 +14,53 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class AddLineCMD {
+public final class TextShadowCMD {
 
-    public static final AddLineCMD INSTANCE = new AddLineCMD();
+    public static final TextShadowCMD INSTANCE = new TextShadowCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private AddLineCMD() {
+    private TextShadowCMD() {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command("hologram edit <hologram> add_line <text>")
-    @Description("Adds a line to the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.add_line")
-    public void addLine(
+    @Command("hologram edit <hologram> text_shadow <enabled>")
+    @Description("Enables or disables the text shadow of the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.text_shadow")
+    public void set(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @NotNull String text
+            final boolean enabled
     ) {
         TextHologramData textData = (TextHologramData) hologram.getData();
 
-        final var copied = textData.copy(textData.getName());
-        copied.addLine(text);
-
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT)) {
+        if (enabled == textData.hasTextShadow()) {
+            translator.translate("commands.hologram.edit.text_shadow.already_set")
+                    .withPrefix()
+                    .replace("hologram", hologram.getData().getName())
+                    .replace("enabled", enabled ? "enabled" : "disabled")
+                    .send(actor.sender());
             return;
         }
 
-        textData.addLine(text);
+        final var copied = textData.copy(textData.getName());
+        copied.setTextShadow(enabled);
+
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT_SHADOW)) {
+            return;
+        }
+
+        textData.setTextShadow(copied.hasTextShadow());
 
         if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
             FancyHologramsPlugin.get().getStorage().save(hologram.getData());
         }
 
-        translator.translate("commands.hologram.edit.lines.added")
+        translator.translate("commands.hologram.edit.text_shadow.updated")
                 .withPrefix()
                 .replace("hologram", hologram.getData().getName())
+                .replace("enabled", enabled ? "enabled" : "disabled")
                 .send(actor.sender());
     }
 }

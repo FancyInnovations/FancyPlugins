@@ -32,6 +32,13 @@ messages:
           settings_header: "FancyHolograms settings:"
           experimental_header: "FancyHolograms experimental features:"
           entry: "{secondaryColor} - {path}: {primaryColor}{value} {secondaryColor}(default: {default})"
+        reload:
+          success: "Successfully reloaded FancyHolograms configuration."
+      storage:
+        save:
+          success: "Successfully saved all holograms to storage."
+        load:
+          success: "Successfully loaded all holograms from storage."
       backup:
         create:
           success: "Successfully created a backup of all holograms (see 'plugins/FancyHolograms/backups')."

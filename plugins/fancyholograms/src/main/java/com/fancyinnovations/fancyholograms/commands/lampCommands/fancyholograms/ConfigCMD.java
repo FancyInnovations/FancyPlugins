@@ -2,7 +2,10 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms
 
 import com.fancyinnovations.config.Config;
 import com.fancyinnovations.config.ConfigField;
+import com.fancyinnovations.fancyholograms.config.FHConfiguration;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
+import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancylib.translations.Translator;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -67,7 +70,23 @@ public final class ConfigCMD {
                     .replace("default", String.valueOf(field.defaultValue()))
                     .send(actor.sender());
         }
+    }
 
+    @Command("fancyholograms config reload")
+    @Description("Reloads the config of FancyHolograms.")
+    @CommandPermission("fancyholograms.commands.fancyholograms.config.reload")
+    public void reload(
+            final BukkitCommandActor actor
+    ) {
+        FHConfiguration config = plugin.getFHConfiguration();
+        ExtendedFancyLogger logger = plugin.getFancyLogger();
+
+        config.reload();
+        logger.setCurrentLevel(LogLevel.valueOf(config.getLogLevel()));
+
+        translator.translate("commands.fancyholograms.config.reload.success")
+                .withPrefix()
+                .send(actor.sender());
     }
 
 }

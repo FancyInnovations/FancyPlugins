@@ -20,9 +20,6 @@ import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.FileCont
 import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.InteractionTraitCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.MultiplePagesTraitCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.*;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.FancyHologramsCMD;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.FancyHologramsTestCMD;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.config.FHConfiguration;
 import com.fancyinnovations.fancyholograms.controller.HologramControllerImpl;
 import com.fancyinnovations.fancyholograms.converter.FHConversionRegistry;
@@ -61,7 +58,6 @@ import de.oliver.fancysitula.api.utils.ServerVersion;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -71,7 +67,10 @@ import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -228,11 +227,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     public void onEnable() {
         new FancyLib(INSTANCE);
 
-        if (configuration.useLampCommands()) {
-            registerLampCommands();
-        } else {
-            registerCommands();
-        }
+        registerCommands();
 
         registerListeners();
 
@@ -298,22 +293,6 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     }
 
     private void registerCommands() {
-        Collection<Command> commands = Arrays.asList(new HologramCMD(this), new FancyHologramsCMD(this));
-
-        if (configuration.isRegisterCommands()) {
-            commands.forEach(command -> getServer().getCommandMap().register("fancyholograms", command));
-        } else {
-            commands.stream().filter(Command::isRegistered).forEach(command ->
-                    command.unregister(getServer().getCommandMap()));
-        }
-
-        if (false) {
-            FancyHologramsTestCMD fancyHologramsTestCMD = new FancyHologramsTestCMD(this);
-            getServer().getCommandMap().register("fancyholograms", fancyHologramsTestCMD);
-        }
-    }
-
-    private void registerLampCommands() {
         Lamp.Builder<BukkitCommandActor> lampBuilder = BukkitLamp
                 .builder(this);
 

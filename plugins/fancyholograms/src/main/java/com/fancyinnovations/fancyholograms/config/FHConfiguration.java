@@ -171,7 +171,7 @@ public final class FHConfiguration implements HologramConfiguration {
         config.addField(new ConfigField<>(
                 USE_LAMP_COMMANDS,
                 "Use the new commands made with the Lamp framework.",
-                false,
+                true,
                 false,
                 false,
                 Boolean.class
@@ -259,11 +259,6 @@ public final class FHConfiguration implements HologramConfiguration {
     @Override
     public boolean isHologramsForOldClientsEnabled() {
         return !(boolean) config.get(DISABLE_HOLOGRAMS_FOR_OLD_CLIENTS);
-    }
-
-    @Override
-    public boolean useLampCommands() {
-        return config.get(USE_LAMP_COMMANDS);
     }
 
     @Override

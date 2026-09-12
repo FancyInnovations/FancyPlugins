@@ -80,13 +80,6 @@ public interface HologramConfiguration {
     boolean isHologramsForOldClientsEnabled();
 
     /**
-     * Returns whether the plugin uses lamp commands.
-     *
-     * @return {@code true} if the plugin uses lamp commands, {@code false} otherwise.
-     */
-    boolean useLampCommands();
-
-    /**
      * Returns whether the Folia visibility fix is enabled.
      *
      * @return {@code true} if the Folia visibility fix is enabled, {@code false} otherwise.

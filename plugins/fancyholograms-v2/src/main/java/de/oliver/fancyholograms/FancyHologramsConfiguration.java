@@ -27,6 +27,7 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
     private static final String CONFIG_REGISTER_COMMANDS = "register_commands";
     private static final String CONFIG_UPDATE_VISIBILITY_INTERVAL = "update_visibility_interval";
     private static final String CONFIG_HOLOGRAM_UPDATE_INTERVAL = "performance.hologram_update_interval_ms";
+    private static final String CONFIG_REFRESH_HOLOGRAMS_ON_LOCALE_CHANGE = "refresh_holograms_on_locale_change";
     private static final String CONFIG_REPORT_ERRORS_TO_SENTRY = "report_errors_to_sentry";
     private static final String CONFIG_VERSION = "config_version";
     private static final Map<String, List<String>> CONFIG_COMMENTS = Map.ofEntries(
@@ -40,7 +41,8 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
             Map.entry(CONFIG_VISIBILITY_DISTANCE, List.of("The default visibility distance for holograms.")),
             Map.entry(CONFIG_REGISTER_COMMANDS, List.of("Whether the plugin should register its commands.")),
             Map.entry(CONFIG_UPDATE_VISIBILITY_INTERVAL, List.of("The interval at which hologram visibility is updated in ticks.")),
-            Map.entry(CONFIG_HOLOGRAM_UPDATE_INTERVAL, List.of("The interval at which text holograms refresh placeholder updates in milliseconds. Lower values are more responsive but use more CPU."))
+            Map.entry(CONFIG_HOLOGRAM_UPDATE_INTERVAL, List.of("The interval at which text holograms refresh placeholder updates in milliseconds. Lower values are more responsive but use more CPU.")),
+            Map.entry(CONFIG_REFRESH_HOLOGRAMS_ON_LOCALE_CHANGE, List.of("Whether the holograms will be refreshed for a player when they change their locale."))
     );
     /**
      * Indicates whether autosave is enabled.
@@ -84,6 +86,10 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
      * The interval at which text holograms refresh dynamic text updates.
      */
     private int hologramUpdateInterval;
+    /**
+     * Whether holograms should be refreshed on player locale change.
+     */
+    private boolean refreshHologramsOnLocaleChange;
 
     private void updateChecker(@NotNull FancyHolograms plugin, @NotNull FileConfiguration config) {
         final int latestVersion = 1;
@@ -152,6 +158,7 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
         registerCommands = (boolean) ConfigHelper.getOrDefault(config, CONFIG_REGISTER_COMMANDS, true);
         updateVisibilityInterval = (int) ConfigHelper.getOrDefault(config, CONFIG_UPDATE_VISIBILITY_INTERVAL, 20);
         hologramUpdateInterval = Math.max(10, (int) ConfigHelper.getOrDefault(config, CONFIG_HOLOGRAM_UPDATE_INTERVAL, 200));
+        refreshHologramsOnLocaleChange = (boolean) ConfigHelper.getOrDefault(config, CONFIG_REFRESH_HOLOGRAMS_ON_LOCALE_CHANGE, false);
 
         config.set(CONFIG_REPORT_ERRORS_TO_SENTRY, null);
     }
@@ -220,5 +227,10 @@ public final class FancyHologramsConfiguration implements HologramConfiguration 
     @Override
     public int getHologramUpdateInterval() {
         return hologramUpdateInterval;
+    }
+
+    @Override
+    public boolean isRefreshHologramsOnLocaleChangeEnabled() {
+        return refreshHologramsOnLocaleChange;
     }
 }

@@ -105,6 +105,7 @@ Items will be supported in the body section in a future release.
 `requirements`: The requirement for this field to display
 - `type`: Either `permission` or `stringMatch`.
 - `permission`: If type is `permission`, this is the permission to check for.
+- `value`: If type is `permission`, whether the player should have the permission. `true` (default) requires the player to have the permission, `false` requires the player to NOT have it.
 - `input`: If type is `stringMatch`, this is the string being matched against `output`.
 - `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
@@ -130,6 +131,7 @@ More input types will be added in future releases, such as checkboxes and number
 `requirements`: The requirement for this field to display
 - `type`: Either `permission` or `stringMatch`.
 - `permission`: If type is `permission`, this is the permission to check for.
+- `value`: If type is `permission`, whether the player should have the permission. `true` (default) requires the player to have the permission, `false` requires the player to NOT have it.
 - `input`: If type is `stringMatch`, this is the string being matched against `output`.
 - `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
@@ -151,6 +153,7 @@ More input types will be added in future releases, such as checkboxes and number
 `requirements`: The requirement for this field to display
 - `type`: Either `permission` or `stringMatch`.
 - `permission`: If type is `permission`, this is the permission to check for.
+- `value`: If type is `permission`, whether the player should have the permission. `true` (default) requires the player to have the permission, `false` requires the player to NOT have it.
 - `input`: If type is `stringMatch`, this is the string being matched against `output`.
 - `output`: If type is `stringMatch`, this is the string being matched against `input`.
 
@@ -165,6 +168,7 @@ More input types will be added in future releases, such as checkboxes and number
 - `requirements`: The requirement for this field to display
   - `type`: Either `permission` or `stringMatch`.
   - `permission`: If type is `permission`, this is the permission to check for.
+  - `value`: If type is `permission`, whether the player should have the permission. `true` (default) requires the player to have the permission, `false` requires the player to NOT have it.
   - `input`: If type is `stringMatch`, this is the string being matched against `output`.
   - `output`: If type is `stringMatch`, this is the string being matched against `input`.
 

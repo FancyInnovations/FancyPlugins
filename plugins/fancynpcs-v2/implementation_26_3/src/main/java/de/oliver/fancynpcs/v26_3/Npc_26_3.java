@@ -243,7 +243,7 @@ public class Npc_26_3 extends Npc {
 
         List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
 
-        PlayerTeam team = new PlayerTeam(new Scoreboard(), "npc-" + localName);
+        PlayerTeam team = new PlayerTeam(new Scoreboard(), teamName);
         team.getPlayers().clear();
         team.getPlayers().add(npc instanceof ServerPlayer npcPlayer ? npcPlayer.getGameProfile().name() : npc.getStringUUID());
         team.setColor(Optional.of(PaperAdventure.asVanilla(data.getGlowingColor())));

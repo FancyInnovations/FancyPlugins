@@ -18,21 +18,21 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.ArrayList;
 
-public final class InsertAfterCMD {
+public final class AddLineAfterCMD {
 
-    public static final InsertAfterCMD INSTANCE = new InsertAfterCMD();
+    public static final AddLineAfterCMD INSTANCE = new AddLineAfterCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private InsertAfterCMD() {
+    private AddLineAfterCMD() {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command({"hologram edit <hologram> insert_after <line> <text>", "hologram edit <hologram> insert_line_after <line> <text>"})
-    @Description("Inserts a line after a specific line in the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.insert_after")
-    public void insertAfter(
+    @Command("hologram edit <hologram> add_line_after <line> <text>")
+    @Description("Adds a line after a specific line in the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.add_line_after")
+    public void addLineAfter(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
             final @SuggestWith(SwapLinesSuggestion.class) int line,

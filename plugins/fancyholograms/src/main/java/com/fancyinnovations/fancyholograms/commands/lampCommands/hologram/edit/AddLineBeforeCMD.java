@@ -18,21 +18,21 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.ArrayList;
 
-public final class InsertBeforeCMD {
+public final class AddLineBeforeCMD {
 
-    public static final InsertBeforeCMD INSTANCE = new InsertBeforeCMD();
+    public static final AddLineBeforeCMD INSTANCE = new AddLineBeforeCMD();
 
     private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
     private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
-    private InsertBeforeCMD() {
+    private AddLineBeforeCMD() {
     }
 
     @IsHologramType(types = {HologramType.TEXT})
-    @Command({"hologram edit <hologram> insert_before <line> <text>", "hologram edit <hologram> insert_line_before <line> <text>"})
-    @Description("Inserts a line before a specific line in the hologram")
-    @CommandPermission("fancyholograms.commands.hologram.edit.insert_before")
-    public void insertBefore(
+    @Command("hologram edit <hologram> add_line_before <line> <text>")
+    @Description("Adds a line before a specific line in the hologram")
+    @CommandPermission("fancyholograms.commands.hologram.edit.add_line_before")
+    public void addLineBefore(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
             final @SuggestWith(SwapLinesSuggestion.class) int line,

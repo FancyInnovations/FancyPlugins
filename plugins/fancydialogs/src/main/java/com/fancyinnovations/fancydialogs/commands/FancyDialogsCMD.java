@@ -218,7 +218,7 @@ public final class FancyDialogsCMD {
             new ConfirmationDialog("Are you sure you want to unregister the dialog with ID '" + dialog.getId() + "'? This will remove it from the registry.")
                     .withTitle("Confirm unregister")
                     .withOnConfirm(() -> unregisterDialog(actor, dialog))
-                    .withOnCancel(() -> translator.translate("commands.fancydialogs.registry.unregister.cancelled").withPrefix().send(actor.sender()))
+                    .withOnCancel(() -> translator.translate("commands.fancydialogs.registry.unregister.cancelled").withPrefix().replace("id", dialog.getId()).send(actor.sender()))
                     .ask(actor.asPlayer());
         } else {
             unregisterDialog(actor, dialog);

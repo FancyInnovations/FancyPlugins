@@ -49,6 +49,8 @@ public abstract class Hologram {
             .maximumSize(512)
             .build();
     private String lastRawText = "";
+    private Component cachedGlobalText = null;
+    private String cachedGlobalTextRaw = "";
 
     protected Hologram(@NotNull final HologramData data) {
         this.data = data;
@@ -208,7 +210,7 @@ public abstract class Hologram {
      * Refreshes the hologram for the players currently viewing it.
      */
     public void refreshForViewers() {
-        final var players = getViewers()
+        final var players = this.viewers
                 .stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
@@ -221,8 +223,8 @@ public abstract class Hologram {
      * Refreshes the hologram for players currently viewing it in the same world as the hologram.
      */
     public void refreshForViewersInWorld() {
-        World world = data.getLocation().getWorld();
-        final var players = getViewers()
+        final World world = data.getLocation().getWorld();
+        final var players = this.viewers
                 .stream()
                 .map(Bukkit::getPlayer)
                 .filter(player -> player != null && player.getWorld().equals(world))
@@ -290,10 +292,11 @@ public abstract class Hologram {
             return false;
         }
 
-        int visibilityDistance = data.getVisibilityDistance();
-        double distanceSquared = location.distanceSquared(player.getLocation());
+        final int visibilityDistance = data.getVisibilityDistance();
+        final int visDistSquared = visibilityDistance * visibilityDistance;
+        final double distanceSquared = location.distanceSquared(player.getLocation());
 
-        return distanceSquared <= visibilityDistance * visibilityDistance;
+        return distanceSquared <= visDistSquared;
     }
 
     /**
@@ -369,6 +372,8 @@ public abstract class Hologram {
 
         if (!rawText.equals(lastRawText)) {
             cachedTextPerPlayer.invalidateAll();
+            cachedGlobalText = null;
+            cachedGlobalTextRaw = "";
             lastRawText = rawText;
         }
 
@@ -376,7 +381,17 @@ public abstract class Hologram {
             return MiniMessage.miniMessage().deserialize(rawText);
         }
 
-        final UUID cacheKey = player != null ? player.getUniqueId() : NULL_PLAYER_KEY;
+        if (player == null) {
+            if (rawText.equals(cachedGlobalTextRaw) && cachedGlobalText != null) {
+                return cachedGlobalText;
+            }
+            final Component translated = PaperColor.handler().translate(rawText, null);
+            cachedGlobalText = translated;
+            cachedGlobalTextRaw = rawText;
+            return translated;
+        }
+
+        final UUID cacheKey = player.getUniqueId();
         final Component cached = cachedTextPerPlayer.getIfPresent(cacheKey);
         if (cached != null) {
             return cached;
@@ -390,6 +405,8 @@ public abstract class Hologram {
     @ApiStatus.Internal
     public void clearTextCache() {
         cachedTextPerPlayer.invalidateAll();
+        cachedGlobalText = null;
+        cachedGlobalTextRaw = "";
         lastRawText = "";
     }
 

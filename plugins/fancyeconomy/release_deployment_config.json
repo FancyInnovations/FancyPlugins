@@ -8,13 +8,15 @@
     "platform": "paper",
     "channel": "release",
     "supported_versions": [
-      "26.2"
+      "26.2",
+      "26.3"
     ]
   },
   "modrinth": {
     "project_id": "HwkayEYZ",
     "supported_versions": [
-      "26.2"
+      "26.2",
+      "26.3"
     ],
     "channel": "release",
     "loaders": [
@@ -27,7 +29,8 @@
     "author": "oliver",
     "project_id": "fancyeconomy",
     "supported_versions": [
-      "26.2"
+      "26.2",
+      "26.3"
     ],
     "channel": "Release"
   }

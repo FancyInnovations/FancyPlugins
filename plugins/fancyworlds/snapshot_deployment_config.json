@@ -8,13 +8,15 @@
     "platform": "paper",
     "channel": "alpha",
     "supported_versions": [
-      "26.2"
+      "26.2",
+      "26.3"
     ]
   },
   "modrinth": {
     "project_id": "pQjoA91u",
     "supported_versions": [
-      "26.2"
+      "26.2",
+      "26.3"
     ],
     "channel": "alpha",
     "loaders": [
@@ -26,7 +28,8 @@
     "author": "oliver",
     "project_id": "FancyWorlds",
     "supported_versions": [
-      "26.2"
+      "26.2",
+      "26.3"
     ],
     "channel": "Alpha"
   }

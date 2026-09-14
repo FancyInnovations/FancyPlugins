@@ -61,6 +61,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlockState;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -230,7 +231,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 }
 
                 if (data.getValue() instanceof ItemStack i) {
-                    vanillaValue = net.minecraft.world.item.ItemStack.fromBukkitCopy(i);
+                    vanillaValue = ((CraftItemStack) i).handle.copy(); // TODO (26.3) Bukkit ItemStack to NMS ItemStack conversion
                 }
 
                 if (data.getValue() instanceof BlockState b) {

@@ -125,21 +125,24 @@ public class HologramControllerImpl implements HologramController {
             for (final var hologram : FancyHologramsPlugin.get().getRegistry().getAll()) {
                 HologramData data = hologram.getData();
 
+                if (!data.hasChanges()) {
+                    continue;
+                }
+
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    if (data.hasChanges()) {
-                        FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
-                            if (!shouldSeeHologram(hologram, onlinePlayer)) {
-                                return;
-                            }
+                    FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
+                        if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                            return;
+                        }
 
-                            hologram.updateFor(onlinePlayer);
-                            data.setHasChanges(false);
+                        hologram.updateFor(onlinePlayer);
+                    });
+                }
 
-                            if (data instanceof TextHologramData) {
-                                updateTimes.put(hologram.getData().getName(), time);
-                            }
-                        });
-                    }
+                data.setHasChanges(false);
+
+                if (data instanceof TextHologramData) {
+                    updateTimes.put(hologram.getData().getName(), time);
                 }
             }
         }, 50, 1000, TimeUnit.MILLISECONDS);

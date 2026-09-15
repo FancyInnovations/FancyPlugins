@@ -6,7 +6,6 @@ import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
 import de.oliver.fancylib.MessageHelper;
-import de.oliver.fancylib.UUIDFetcher;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
@@ -15,8 +14,6 @@ import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 @Command("pay")
 @Permission("fancyeconomy.pay")
@@ -39,31 +36,39 @@ public class PayCMD {
             targetName = targetPlayer.getName();
         }
 
-        UUID uuid = targetPlayer != null ? targetPlayer.getUniqueId() : UUIDFetcher.getUUID(targetName);
+        CurrencyPlayer to;
+        if (targetPlayer != null) {
+            if (player.getUniqueId().equals(targetPlayer.getUniqueId())) {
+                FancyEconomy.getInstance().getTranslator()
+                        .translate("cannot-pay-yourself")
+                        .send(player);
+                return;
+            }
 
-        if (uuid == null) {
-            FancyEconomy.getInstance().getTranslator()
-                    .translate("player-not-found")
-                    .replace("player", targetName)
-                    .send(player);
-            return;
-        }
+            to = CurrencyPlayerManager.getPlayer(targetPlayer.getUniqueId(), targetPlayer.getName());
+            to.setUsername(targetPlayer.getName());
+        } else {
+            to = CurrencyPlayerManager.getCachedPlayer(targetName);
+            if (to == null) {
+                FancyEconomy.getInstance().getTranslator()
+                        .translate("player-not-found")
+                        .replace("player", targetName)
+                        .send(player);
+                return;
+            }
 
-        if (player.getUniqueId().equals(uuid)) {
-            FancyEconomy.getInstance().getTranslator()
-                    .translate("cannot-pay-yourself")
-                    .send(player);
-            return;
+            if (player.getUniqueId().equals(to.getUuid())) {
+                FancyEconomy.getInstance().getTranslator()
+                        .translate("cannot-pay-yourself")
+                        .send(player);
+                return;
+            }
         }
 
         Currency currency = CurrencyRegistry.getDefaultCurrency();
 
-        CurrencyPlayer from = CurrencyPlayerManager.getPlayer(player.getUniqueId());
-        CurrencyPlayer to = CurrencyPlayerManager.getPlayer(uuid);
-
-        if (targetPlayer != null) {
-            to.setUsername(targetPlayer.getName());
-        }
+        CurrencyPlayer from = CurrencyPlayerManager.getPlayer(player.getUniqueId(), player.getName());
+        from.setUsername(player.getName());
 
         boolean allowNegativeBalance = FancyEconomy.getInstance().getFancyEconomyConfig().allowNegativeBalance();
         if (!allowNegativeBalance && from.getBalance(currency) < amount) {

@@ -21,6 +21,13 @@ public class CurrencyPlayerManager {
         }
 
         String username = UUIDFetcher.getName(uuid);
+        return getPlayer(uuid, username != null ? username : "N/A");
+    }
+
+    public static CurrencyPlayer getPlayer(UUID uuid, String username) {
+        if (cachedPlayers.containsKey(uuid)) {
+            return cachedPlayers.get(uuid);
+        }
 
         CurrencyPlayer player = new CurrencyPlayer(uuid, username != null ? username : "N/A");
         cachedPlayers.put(uuid, player);
@@ -28,11 +35,25 @@ public class CurrencyPlayerManager {
         return player;
     }
 
-    public static CurrencyPlayer getPlayer(String username) {
+    public static CurrencyPlayer getCachedPlayer(String username) {
+        if (username == null) {
+            return null;
+        }
+
         for (CurrencyPlayer player : cachedPlayers.values()) {
-            if (player.getUsername().equalsIgnoreCase(username)) {
+            String playerName = player.getUsername();
+            if (playerName != null && playerName.equalsIgnoreCase(username)) {
                 return player;
             }
+        }
+
+        return null;
+    }
+
+    public static CurrencyPlayer getPlayer(String username) {
+        CurrencyPlayer cachedPlayer = getCachedPlayer(username);
+        if (cachedPlayer != null) {
+            return cachedPlayer;
         }
 
         UUID uuid = UUIDFetcher.getUUID(username);

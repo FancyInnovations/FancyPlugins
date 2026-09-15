@@ -24,7 +24,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
@@ -37,22 +36,23 @@ import java.util.function.Function;
 
 public class NpcManagerImpl implements NpcManager {
 
-    private final JavaPlugin plugin;
+    private final FancyNpcs plugin;
     private final ExtendedFancyLogger logger;
     private final Function<NpcData, Npc> npcAdapter;
     private final File npcConfigFile;
     private final Map<String, Npc> npcs; // npc id -> npc
     private boolean isLoaded;
 
-    public NpcManagerImpl(JavaPlugin plugin, Function<NpcData, Npc> npcAdapter) {
+    public NpcManagerImpl(FancyNpcs plugin, Function<NpcData, Npc> npcAdapter) {
         this.plugin = plugin;
-        this.logger = FancyNpcs.getInstance().getFancyLogger();
+        this.logger = plugin.getFancyLogger();
         this.npcAdapter = npcAdapter;
         npcs = new ConcurrentHashMap<>();
         npcConfigFile = new File("plugins" + File.separator + "FancyNpcs" + File.separator + "npcs.yml");
         isLoaded = false;
     }
 
+    @Override
     public void registerNpc(Npc npc) {
         if (!FancyNpcs.PLAYER_NPCS_FEATURE_FLAG.isEnabled() && getAllNpcs().stream().anyMatch(npc1 -> npc1.getData().getName().equals(npc.getData().getName()))) {
             throw new IllegalStateException("An NPC with this name already exists");
@@ -61,6 +61,7 @@ public class NpcManagerImpl implements NpcManager {
         }
     }
 
+    @Override
     public void removeNpc(Npc npc) {
         npcs.remove(npc.getData().getId());
 
@@ -118,10 +119,12 @@ public class NpcManagerImpl implements NpcManager {
         return null;
     }
 
+    @Override
     public Collection<Npc> getAllNpcs() {
         return new ArrayList<>(npcs.values());
     }
 
+    @Override
     public void saveNpcs(boolean force) {
         if (!isLoaded) {
             return;
@@ -190,7 +193,7 @@ public class NpcManagerImpl implements NpcManager {
                 }
             }
 
-            for (NpcAttribute attribute : FancyNpcs.getInstance().getAttributeManager().getAllAttributesForEntityType(data.getType())) {
+            for (NpcAttribute attribute : plugin.getAttributeManager().getAllAttributesForEntityType(data.getType())) {
                 String value = data.getAttributes().getOrDefault(attribute, null);
                 npcConfig.set("npcs." + data.getId() + ".attributes." + attribute.getName(), value);
             }
@@ -222,6 +225,7 @@ public class NpcManagerImpl implements NpcManager {
         }
     }
 
+    @Override
     public void loadNpcs() {
         npcs.clear();
         YamlConfiguration npcConfig = YamlConfiguration.loadConfiguration(npcConfigFile);
@@ -280,7 +284,7 @@ public class NpcManagerImpl implements NpcManager {
             SkinData.SkinVariant skinVariant = SkinData.SkinVariant.valueOf(skinVariantStr);
             if (!skinIdentifier.isEmpty()) {
                 try {
-                    skin = FancyNpcs.getInstance().getSkinManagerImpl().getByIdentifier(skinIdentifier, skinVariant);
+                    skin = plugin.getSkinManagerImpl().getByIdentifier(skinIdentifier, skinVariant);
                     skin.setIdentifier(skinIdentifier);
                 } catch (final SkinLoadException e) {
                     logger.error("NPC named '" + name + "' identified by '" + id + "' could not have their skin loaded.");
@@ -298,8 +302,8 @@ public class NpcManagerImpl implements NpcManager {
 
                 if (value != null && !value.isEmpty() && signature != null && !signature.isEmpty()) {
                     SkinData oldSkin = new SkinData(skinIdentifier, SkinData.SkinVariant.AUTO, value, signature);
-                    FancyNpcs.getInstance().getSkinManagerImpl().getFileCache().addSkin(oldSkin);
-                    FancyNpcs.getInstance().getSkinManagerImpl().getMemCache().addSkin(oldSkin);
+                    plugin.getSkinManagerImpl().getFileCache().addSkin(oldSkin);
+                    plugin.getSkinManagerImpl().getMemCache().addSkin(oldSkin);
                 }
             }
 
@@ -330,7 +334,7 @@ public class NpcManagerImpl implements NpcManager {
                         actionsSection.getKeys(false).forEach(order -> {
                             String actionName = npcConfig.getString("npcs." + id + ".actions." + trigger + "." + order + ".action");
                             String value = npcConfig.getString("npcs." + id + ".actions." + trigger + "." + order + ".value");
-                            NpcAction action = FancyNpcs.getInstance().getActionManager().getActionByName(actionName);
+                            NpcAction action = plugin.getActionManager().getActionByName(actionName);
                             if (action == null) {
                                 logger.warn("Could not find action: " + actionName);
                                 action = new UnknownActionAction(actionTrigger, actionName, value, Integer.parseInt(order));
@@ -357,7 +361,7 @@ public class NpcManagerImpl implements NpcManager {
             Map<NpcAttribute, String> attributes = new HashMap<>();
             if (npcConfig.isConfigurationSection("npcs." + id + ".attributes")) {
                 for (String attrName : npcConfig.getConfigurationSection("npcs." + id + ".attributes").getKeys(false)) {
-                    NpcAttribute attribute = FancyNpcs.getInstance().getAttributeManager().getAttributeByName(type, attrName);
+                    NpcAttribute attribute = plugin.getAttributeManager().getAttributeByName(type, attrName);
                     if (attribute == null) {
                         logger.warn("Could not find attribute: " + attrName);
                         continue;
@@ -424,6 +428,7 @@ public class NpcManagerImpl implements NpcManager {
         new NpcsLoadedEvent().callEvent();
     }
 
+    @Override
     public void reloadNpcs() {
         Collection<Npc> npcCopy = new ArrayList<>(getAllNpcs());
         npcs.clear();

@@ -5,24 +5,31 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class WorldListener implements Listener {
 
-    private final boolean hologramLoadLogging = FancyHolograms.get().getHologramConfiguration().isHologramLoadLogging();
+    private final @NotNull FancyHolograms plugin;
+    private final boolean hologramLoadLogging;
+
+    public WorldListener(@NotNull FancyHolograms plugin) {
+        this.plugin = plugin;
+        hologramLoadLogging = plugin.getHologramConfiguration().isHologramLoadLogging();
+    }
 
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
-        FancyHolograms.get().getHologramThread().submit(() -> {
-            if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info("Loading holograms for world " + event.getWorld().getName());
-            FancyHolograms.get().getHologramsManager().loadHolograms(event.getWorld().getName());
+        plugin.getHologramThread().submit(() -> {
+            if (hologramLoadLogging) plugin.getFancyLogger().info("Loading holograms for world " + event.getWorld().getName());
+            plugin.getHologramsManager().loadHolograms(event.getWorld().getName());
         });
     }
 
     @EventHandler
     public void onWorldUnload(WorldUnloadEvent event) {
-        FancyHolograms.get().getHologramThread().submit(() -> {
-            if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info("Unloading holograms for world " + event.getWorld().getName());
-            FancyHolograms.get().getHologramsManager().unloadHolograms(event.getWorld().getName());
+        plugin.getHologramThread().submit(() -> {
+            if (hologramLoadLogging) plugin.getFancyLogger().info("Unloading holograms for world " + event.getWorld().getName());
+            plugin.getHologramsManager().unloadHolograms(event.getWorld().getName());
         });
     }
 

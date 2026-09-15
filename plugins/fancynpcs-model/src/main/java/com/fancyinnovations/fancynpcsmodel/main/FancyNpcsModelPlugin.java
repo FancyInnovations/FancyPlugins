@@ -25,6 +25,8 @@ import de.oliver.fancylib.versionFetcher.FancySpacesVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
+import kr.toxicity.model.api.BetterModel;
+import kr.toxicity.model.api.event.CreateEntityTrackerEvent;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -147,6 +149,11 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         FancyNpcsPlugin.get().getAttributeManager().registerAttribute(CustomModelAttribute.getModelAttribute());
         FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationOnceAction());
         FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationLoopAction());
+
+        // Re-attach hitbox listeners whenever BetterModel (re-)creates a tracker,
+        // e.g. on /bettermodel reload, which discards the previous tracker instances.
+        BetterModel.eventBus().subscribe(this::isEnabled, CreateEntityTrackerEvent.class, event ->
+                CustomModelAttribute.onTrackerCreated(event.tracker()));
 
         metrics.register();
         metrics.checkIfPluginVersionUpdated();

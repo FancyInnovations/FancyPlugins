@@ -12,6 +12,7 @@ import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.types.UnknownActionAction;
 import de.oliver.fancynpcs.api.data.property.NpcVisibility;
 import de.oliver.fancynpcs.api.events.NpcsLoadedEvent;
+import de.oliver.fancynpcs.api.events.NpcUnloadEvent;
 import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.api.skins.SkinLoadException;
 import de.oliver.fancynpcs.api.utils.NpcEquipmentSlot;
@@ -429,6 +430,7 @@ public class NpcManagerImpl implements NpcManager {
         npcs.clear();
         for (Npc npc : npcCopy) {
             npc.removeForAll();
+            new NpcUnloadEvent(npc).callEvent();
         }
 
         loadNpcs();

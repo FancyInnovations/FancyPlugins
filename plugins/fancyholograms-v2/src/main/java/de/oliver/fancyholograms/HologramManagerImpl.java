@@ -209,8 +209,9 @@ public final class HologramManagerImpl implements HologramManager {
             this.loadHolograms();
 
             hologramThread.scheduleAtFixedRate(() -> {
+                final var onlinePlayers = Bukkit.getOnlinePlayers();
                 for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
-                    for (final Player player : Bukkit.getOnlinePlayers()) {
+                    for (final Player player : onlinePlayers) {
                         hologram.forceUpdateShownStateFor(player);
                     }
                 }
@@ -225,19 +226,21 @@ public final class HologramManagerImpl implements HologramManager {
             final var time = System.currentTimeMillis();
 
             for (final var hologram : this.getHolograms()) {
-                HologramData data = hologram.getData();
-                if (data.hasChanges()) {
-                    if (data instanceof TextHologramData) {
-                        hologram.clearTextCache();
-                    }
+                final HologramData data = hologram.getData();
+                if (!data.hasChanges()) {
+                    continue;
+                }
 
-                    hologram.forceUpdate();
-                    hologram.refreshForViewersInWorld();
-                    data.setHasChanges(false);
+                if (data instanceof TextHologramData) {
+                    hologram.clearTextCache();
+                }
 
-                    if (data instanceof TextHologramData) {
-                        updateTimes.put(hologram.getData().getName(), time);
-                    }
+                hologram.forceUpdate();
+                hologram.refreshForViewersInWorld();
+                data.setHasChanges(false);
+
+                if (data instanceof TextHologramData) {
+                    updateTimes.put(hologram.getData().getName(), time);
                 }
             }
         }, 50, 1000, TimeUnit.MILLISECONDS);
@@ -246,22 +249,22 @@ public final class HologramManagerImpl implements HologramManager {
             final var time = System.currentTimeMillis();
 
             for (final var hologram : this.getHolograms()) {
-                if (hologram.getData() instanceof TextHologramData textData) {
-                    final var interval = textData.getTextUpdateInterval();
-                    if (interval < 1) {
-                        continue; // doesn't update
-                    }
-
-                    final var lastUpdate = updateTimes.asMap().get(textData.getName());
-                    if (lastUpdate != null && time < (lastUpdate + interval)) {
-                        continue;
-                    }
-
-                    if (lastUpdate == null || time > (lastUpdate + interval)) {
-                        hologram.refreshForViewersInWorld();
-                        updateTimes.put(textData.getName(), time);
-                    }
+                if (!(hologram.getData() instanceof TextHologramData textData)) {
+                    continue;
                 }
+
+                final var interval = textData.getTextUpdateInterval();
+                if (interval < 1) {
+                    continue;
+                }
+
+                final var lastUpdate = updateTimes.asMap().get(textData.getName());
+                if (lastUpdate != null && time < (lastUpdate + interval)) {
+                    continue;
+                }
+
+                hologram.refreshForViewersInWorld();
+                updateTimes.put(textData.getName(), time);
             }
         }, 50, this.plugin.getHologramConfiguration().getHologramUpdateInterval(), TimeUnit.MILLISECONDS);
     }

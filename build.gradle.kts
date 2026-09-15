@@ -21,6 +21,7 @@ allprojects {
 
         maven(url = "https://repo.lushplugins.org/releases")
         maven(url = "https://repo.papermc.io/repository/maven-public/")
+        maven(url = "https://artifactory.papermc.io/artifactory/releases/")
 //        maven(url = "https://jitpack.io")
     }
 }

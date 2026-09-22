@@ -28,7 +28,7 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
 
     compileOnly("org.incendo:cloud-core:2.1.0")
-    compileOnly("org.incendo:cloud-paper:2.0.0")
+    compileOnly("org.incendo:cloud-paper:2.0.1")
     compileOnly("org.incendo:cloud-annotations:2.1.0")
     annotationProcessor("org.incendo:cloud-annotations:2.1.0")
 
@@ -37,12 +37,12 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("26.2")
-        //serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
+        minecraftVersion("26.3")
+        // serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.3.build.1-alpha.jar"))
 
         downloadPlugins {
-            modrinth("FancyNpcs", "2.11.0")
-            modrinth("BetterModel", "8xoSUfzr") // 3.2.0
+            modrinth("FancyNpcs", "2.12.1")
+            modrinth("BetterModel", "QTU9HP83") // 3.5.0
 //            modrinth("FancyDialogs", "1.1.2.53")
 //            modrinth("FancyHolograms", "2.9.1")
 //            modrinth("FancyDialogs", "1.1.2")

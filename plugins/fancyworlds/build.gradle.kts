@@ -51,8 +51,8 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("26.2")
-        //serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
+        minecraftVersion("26.3")
+        // serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.3.build.1-alpha.jar"))
 
         downloadPlugins {
             modrinth("FancyDialogs", "1.3.0")

@@ -28,6 +28,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.2.build.+")
 
     implementation(project(":plugins:fancynpcs-v2:fn-v2-api"))
+    implementation(project(":plugins:fancynpcs-v2:implementation_26_4"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_3"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_2"))
     implementation(project(":plugins:fancynpcs-v2:implementation_26_1_2"))

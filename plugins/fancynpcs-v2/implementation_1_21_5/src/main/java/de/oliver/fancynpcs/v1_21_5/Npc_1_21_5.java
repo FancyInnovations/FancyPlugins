@@ -226,7 +226,7 @@ public class Npc_1_21_5 extends Npc {
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
-        PlayerTeam team = new PlayerTeam(new Scoreboard(), "npc-" + localName);
+        PlayerTeam team = new PlayerTeam(new Scoreboard(), teamName);
         team.getPlayers().clear();
         team.getPlayers().add(npc instanceof ServerPlayer npcPlayer ? npcPlayer.getGameProfile().getName() : npc.getStringUUID());
         team.setColor(PaperAdventure.asVanilla(data.getGlowingColor()));

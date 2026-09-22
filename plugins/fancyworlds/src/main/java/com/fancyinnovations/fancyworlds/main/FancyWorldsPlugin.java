@@ -2,18 +2,29 @@ package com.fancyinnovations.fancyworlds.main;
 
 import com.fancyinnovations.fancyworlds.api.FancyWorlds;
 import com.fancyinnovations.fancyworlds.api.FancyWorldsConfig;
+import com.fancyinnovations.fancyworlds.api.portals.FPortal;
+import com.fancyinnovations.fancyworlds.api.portals.PortalService;
+import com.fancyinnovations.fancyworlds.api.portals.PortalStorage;
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldStorage;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWConfigCMD;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWVersionCMD;
+import com.fancyinnovations.fancyworlds.commands.portal.PortalCMD;
+import com.fancyinnovations.fancyworlds.commands.types.FPortalCommandType;
 import com.fancyinnovations.fancyworlds.commands.types.FWorldCommandType;
 import com.fancyinnovations.fancyworlds.commands.types.GameruleCommandType;
 import com.fancyinnovations.fancyworlds.commands.world.*;
 import com.fancyinnovations.fancyworlds.config.FancyWorldsConfigImpl;
+import com.fancyinnovations.fancyworlds.listeners.PortalEnterListener;
+import com.fancyinnovations.fancyworlds.listeners.PortalWandListener;
 import com.fancyinnovations.fancyworlds.listeners.WorldLoadListener;
 import com.fancyinnovations.fancyworlds.listeners.WorldUnloadListener;
 import com.fancyinnovations.fancyworlds.metrics.FWMetrics;
+import com.fancyinnovations.fancyworlds.portals.PortalWand;
+import com.fancyinnovations.fancyworlds.portals.selection.PortalSelectionManager;
+import com.fancyinnovations.fancyworlds.portals.service.PortalServiceImpl;
+import com.fancyinnovations.fancyworlds.portals.storage.json.JsonPortalStorage;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import com.fancyinnovations.fancyworlds.worlds.service.WorldServiceImpl;
 import com.fancyinnovations.fancyworlds.worlds.storage.json.JsonWorldStorage;
@@ -59,6 +70,10 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
 
     private WorldStorage worldStorage;
     private WorldService worldService;
+    private PortalStorage portalStorage;
+    private PortalService portalService;
+    private PortalSelectionManager portalSelectionManager;
+    private PortalWand portalWand;
 
     public FancyWorldsPlugin() {
         INSTANCE = this;
@@ -118,6 +133,10 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         // Services
         worldStorage = new JsonWorldStorage();
         worldService = new WorldServiceImpl(worldStorage);
+        portalStorage = new JsonPortalStorage();
+        portalService = new PortalServiceImpl(portalStorage);
+        portalSelectionManager = new PortalSelectionManager();
+        portalWand = new PortalWand(this);
 
         fancyLogger.info("Successfully loaded FancyWorlds version %s".formatted(getDescription().getVersion()));
     }
@@ -192,11 +211,13 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         // parameter types
         lampBuilder.parameterTypes(builder -> {
             builder.addParameterType(FWorld.class, FWorldCommandType.INSTANCE);
+            builder.addParameterType(FPortal.class, FPortalCommandType.INSTANCE);
             builder.addParameterType(GameRule.class, GameruleCommandType.INSTANCE);
         });
 
         // exception handlers
         lampBuilder.exceptionHandler(FWorldCommandType.INSTANCE);
+        lampBuilder.exceptionHandler(FPortalCommandType.INSTANCE);
         lampBuilder.exceptionHandler(GameruleCommandType.INSTANCE);
 
         Lamp<BukkitCommandActor> lamp = lampBuilder.build();
@@ -220,6 +241,9 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         lamp.register(WorldSetSpawnCMD.INSTANCE);
         lamp.register(WorldDifficultyCMD.INSTANCE);
 
+        // portal commands
+        lamp.register(new PortalCMD(portalSelectionManager, portalWand));
+
         // Other
         lamp.register(WorldSeedCMD.INSTANCE);
     }
@@ -227,6 +251,8 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new WorldLoadListener(), this);
         Bukkit.getPluginManager().registerEvents(new WorldUnloadListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PortalWandListener(portalSelectionManager, portalWand), this);
+        Bukkit.getPluginManager().registerEvents(new PortalEnterListener(), this);
     }
 
     public void registerTranslator() {
@@ -298,5 +324,15 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
     @Override
     public WorldService getWorldService() {
         return worldService;
+    }
+
+    @Override
+    public PortalStorage getPortalStorage() {
+        return portalStorage;
+    }
+
+    @Override
+    public PortalService getPortalService() {
+        return portalService;
     }
 }

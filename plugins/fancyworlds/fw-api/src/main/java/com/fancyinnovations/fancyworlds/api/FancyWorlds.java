@@ -2,6 +2,8 @@ package com.fancyinnovations.fancyworlds.api;
 
 import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldStorage;
+import com.fancyinnovations.fancyworlds.api.portals.PortalService;
+import com.fancyinnovations.fancyworlds.api.portals.PortalStorage;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancylib.translations.Translator;
 import org.bukkit.Bukkit;
@@ -23,5 +25,9 @@ public interface FancyWorlds {
     WorldStorage getWorldStorage();
 
     WorldService getWorldService();
+
+    PortalStorage getPortalStorage();
+
+    PortalService getPortalService();
 
 }

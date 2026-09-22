@@ -2,6 +2,7 @@ language_name: default
 messages:
   common:
     world_not_found: "{errorColor}Could not find world {primaryColor}{worldName}{errorColor}."
+    portal_not_found: "{errorColor}Could not find portal {primaryColor}{portalName}{errorColor}."
     gamerule_not_found: "{errorColor}Gamerule {primaryColor}{gameruleName}{errorColor} does not exist."
     world_not_loaded: "{errorColor}World {primaryColor}{worldName}{errorColor} is not loaded. Load it using {primaryColor}/world load {worldName}{errorColor}."
   commands:
@@ -84,3 +85,30 @@ messages:
         current: "Current difficulty in world {primaryColor}{worldName}{secondaryColor} is {primaryColor}{difficulty}{secondaryColor}."
         set:
           success: "Successfully set difficulty to {primaryColor}{difficulty}{secondaryColor} in world {primaryColor}{worldName}{secondaryColor}."
+    portal:
+      wand:
+        success: "You received the portal wand. Left-click the first corner and right-click the second corner."
+      selection:
+        first: "First portal position set to {primaryColor}{x}, {y}, {z}{secondaryColor} in {primaryColor}{worldName}{secondaryColor}."
+        second: "Second portal position set to {primaryColor}{x}, {y}, {z}{secondaryColor} in {primaryColor}{worldName}{secondaryColor}."
+        complete: "Portal region selected ({primaryColor}{volume}{secondaryColor} blocks). Create it with {primaryColor}/portal create <name> <destinationWorld>{secondaryColor}."
+      create:
+        success: "Created portal {primaryColor}{portalName}{secondaryColor} in {primaryColor}{worldName}{secondaryColor} with destination {primaryColor}{destinationWorld}{secondaryColor} ({volume} blocks)."
+        invalid_name: "{errorColor}Portal names may only contain letters, numbers, underscores, and hyphens, with a maximum length of 64 characters."
+        already_exists: "{errorColor}A portal named {primaryColor}{portalName}{errorColor} already exists."
+        incomplete_selection: "{errorColor}Select both corners first using {primaryColor}/portal wand{errorColor}."
+        different_worlds: "{errorColor}Both portal positions must be in the same world."
+        overlaps: "{errorColor}The selected region overlaps portal {primaryColor}{portalName}{errorColor}."
+      list:
+        none: "No portals have been created. Start with {primaryColor}/portal wand{secondaryColor}."
+        header: "Portals ({portalCount}):"
+        entry: "{secondaryColor} - {primaryColor}<hover:show_text:'Click to view portal information'><click:run_command:'/portal info {portalName}'>{portalName}</click></hover>{secondaryColor}: {worldName} → {destinationWorld}"
+      info:
+        result: "Portal {primaryColor}{portalName}{secondaryColor}: world {primaryColor}{worldName}{secondaryColor}, region {primaryColor}{minimum}{secondaryColor} to {primaryColor}{maximum}{secondaryColor}, destination {primaryColor}{destinationWorld}{secondaryColor}, volume {primaryColor}{volume}{secondaryColor}."
+      delete:
+        success: "Deleted portal {primaryColor}{portalName}{secondaryColor}."
+      set_destination:
+        success: "Set portal {primaryColor}{portalName}{secondaryColor}'s destination to {primaryColor}{destinationWorld}{secondaryColor}."
+      use:
+        destination_unavailable: "{errorColor}Portal {primaryColor}{portalName}{errorColor} is unavailable because destination world {primaryColor}{destinationWorld}{errorColor} is not loaded."
+        failed: "{errorColor}Failed to teleport you through portal {primaryColor}{portalName}{errorColor} to {primaryColor}{destinationWorld}{errorColor}."

@@ -27,7 +27,7 @@ public class AttributeManagerImpl implements AttributeManager {
     private void init() {
         String mcVersion = Bukkit.getMinecraftVersion();
         switch (mcVersion) {
-            case "26.4" -> attributes = Attributes_26_4.getAllAttributes();
+            case "26.4 Snapshot 1" -> attributes = Attributes_26_4.getAllAttributes();
             case "26.3" -> attributes = Attributes_26_3.getAllAttributes();
             case "26.2" -> attributes = Attributes_26_2.getAllAttributes();
             case "26.1.2" -> attributes = Attributes_26_1_1.getAllAttributes();

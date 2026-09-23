@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    paperweight.paperDevBundle("26.3.build.+")
+    paperweight.paperDevBundle("26.4-snapshot-1.build.1-alpha")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly(project(":libraries:common"))

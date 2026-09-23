@@ -37,8 +37,8 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("26.3")
-        // serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.3.build.1-alpha.jar"))
+        minecraftVersion("26.4-snapshot-1")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-1.build.1-alpha.jar"))
 
         downloadPlugins {
             modrinth("FancyNpcs", "2.12.1")

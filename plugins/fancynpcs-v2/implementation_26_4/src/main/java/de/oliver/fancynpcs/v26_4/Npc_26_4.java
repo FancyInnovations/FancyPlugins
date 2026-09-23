@@ -8,7 +8,6 @@ import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.JavaOps;
 import de.oliver.fancylib.ReflectionUtils;
-import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.api.NpcData;
@@ -158,9 +157,9 @@ public class Npc_26_4 extends Npc {
         isVisibleForPlayer.put(player.getUniqueId(), true);
 
 
-        int removeNpcsFromPlayerlistDelay = FancyNpcsPlugin.get().getFancyNpcConfig().getRemoveNpcsFromPlayerlistDelay();
+        int removeNpcsFromPlayerlistDelay = fancyNpcsPlugin.getFancyNpcConfig().getRemoveNpcsFromPlayerlistDelay();
         if (!data.isShowInTab() && removeNpcsFromPlayerlistDelay > 0) {
-            FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
+            fancyNpcsPlugin.getNpcThread().schedule(() -> {
                 ClientboundPlayerInfoRemovePacket playerInfoRemovePacket = new ClientboundPlayerInfoRemovePacket(List.of(npc.getUUID()));
                 runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(playerInfoRemovePacket));
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
@@ -331,7 +330,7 @@ public class Npc_26_4 extends Npc {
             move(player, swingArm);
         }
 
-        NpcAttribute playerPoseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "pose");
+        NpcAttribute playerPoseAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "pose");
         if (data.getAttributes().containsKey(playerPoseAttr)) {
             String pose = data.getAttributes().get(playerPoseAttr);
 
@@ -347,7 +346,7 @@ public class Npc_26_4 extends Npc {
         }
 
         if (npc instanceof LivingEntity) {
-            NpcAttribute customModelAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "custom_model");
+            NpcAttribute customModelAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "custom_model");
             boolean hasCustomModel = customModelAttr != null && data.getAttributes().containsKey(customModelAttr);
 
             List<AttributeInstance> changedAttributes = new ArrayList<>();

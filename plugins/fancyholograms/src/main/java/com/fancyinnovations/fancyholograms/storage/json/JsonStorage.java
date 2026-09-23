@@ -77,6 +77,10 @@ public class JsonStorage implements HologramStorage {
 
     @Override
     public void delete(HologramData hologram) {
+        if (hologram.getFilePath() == null || hologram.getFilePath().isEmpty()) {
+            return;
+        }
+
         try {
             JsonDataUnion[] existing = jdb.get(hologram.getFilePath(), JsonDataUnion[].class);
             if (existing == null) {

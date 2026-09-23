@@ -54,6 +54,12 @@ dependencies {
     implementation("org.incendo:cloud-paper:2.0.1")
     implementation("org.incendo:cloud-annotations:2.1.0")
     annotationProcessor("org.incendo:cloud-annotations:2.1.0")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.18")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.18")
+    implementation("org.incendo:cloud-core:2.1.0")
+    implementation("org.incendo:cloud-paper:2.0.1")
+    implementation("org.incendo:cloud-annotations:2.1.0")
+    annotationProcessor("org.incendo:cloud-annotations:2.1.0")
     implementation("org.mineskin:java-client-jsoup:3.2.6")
 
     compileOnly("me.clip:placeholderapi:2.12.2")

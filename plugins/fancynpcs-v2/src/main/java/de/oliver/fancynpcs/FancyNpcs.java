@@ -32,7 +32,8 @@ import de.oliver.fancynpcs.api.NpcManager;
 import de.oliver.fancynpcs.api.actions.types.*;
 import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.api.skins.SkinManager;
-import de.oliver.fancynpcs.commands.CloudCommandManager;
+import de.oliver.fancynpcs.commands.lampCommands.LampCommandManager;
+import de.oliver.fancynpcs.commands.oldCommands.CloudCommandManager;
 import de.oliver.fancynpcs.listeners.*;
 import de.oliver.fancynpcs.skins.SkinManagerImpl;
 import de.oliver.fancynpcs.skins.SkinUtils;
@@ -77,6 +78,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
     public static final FeatureFlag ENABLE_DEBUG_MODE_FEATURE_FLAG = new FeatureFlag("enable-debug-mode", "Enable debug mode", false);
     public static final FeatureFlag ENABLE_FOLIA_VISIBILITY_FIX_FEATURE_FLAG = new FeatureFlag("enable-folia-visibility-fix", "When enabled, all npcs will respawn after 100ms when they should spawn", false);
     public static final FeatureFlag USE_MINECRAFT_USERCACHE_FEATURE_FLAG = new FeatureFlag("use-minecraft-usercache", "Include the content of usercache.json to the username->uuid cache", false);
+    public static final FeatureFlag USE_LAMP_COMMANDS_FEATURE_FLAG = new FeatureFlag("use-lamp-commands", "Use commands made with Lamp instead of Cloud (command frameworks)", false);
 
     private static FancyNpcs instance;
     private final ExtendedFancyLogger fancyLogger;
@@ -87,7 +89,8 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
     private final FeatureFlagConfig featureFlagConfig;
     private final VersionFetcher versionFetcher;
     private final FancyAnalyticsAPI fancyAnalytics;
-    private CloudCommandManager commandManager;
+    private LampCommandManager lampCommandManager;
+    private CloudCommandManager cloudCommandManager;
     private TextConfig textConfig;
     private Translator translator;
     private Function<NpcData, Npc> npcAdapter;
@@ -150,6 +153,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         featureFlagConfig.addFeatureFlag(ENABLE_DEBUG_MODE_FEATURE_FLAG);
         featureFlagConfig.addFeatureFlag(ENABLE_FOLIA_VISIBILITY_FIX_FEATURE_FLAG);
         featureFlagConfig.addFeatureFlag(USE_MINECRAFT_USERCACHE_FEATURE_FLAG);
+        featureFlagConfig.addFeatureFlag(USE_LAMP_COMMANDS_FEATURE_FLAG);
         featureFlagConfig.load();
 
         if (ENABLE_DEBUG_MODE_FEATURE_FLAG.isEnabled()) {
@@ -324,13 +328,17 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             }
         }, 30, npcUpdateInterval, TimeUnit.SECONDS);
 
-        // Creating new instance of CloudCommandManager and registering all needed components.
-        // NOTE: Brigadier is disabled by default. More detailed information about that can be found in CloudCommandManager class.
         if (config.isRegisterCommands()) {
-            commandManager = new CloudCommandManager(this, false)
-                    .registerArguments()
-                    .registerExceptionHandlers()
-                    .registerCommands();
+            if (USE_LAMP_COMMANDS_FEATURE_FLAG.isEnabled()) {
+                lampCommandManager = new LampCommandManager(this);
+                fancyLogger.info("Lamp commands have been registered.");
+            } else {
+                cloudCommandManager = new CloudCommandManager(this, false)
+                        .registerArguments()
+                        .registerExceptionHandlers()
+                        .registerCommands();
+                fancyLogger.info("Cloud commands have been registered.");
+            }
         } else {
             getLogger().warning("Commands and related components have not been registered. This can be changed by setting 'register_commands' to true, and restarting the server.");
         }
@@ -570,10 +578,6 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         return versionConfig;
     }
 
-    public CloudCommandManager getCommandManager() {
-        return commandManager;
-    }
-
     @Override
     public Translator getTranslator() {
         return translator;
@@ -581,8 +585,12 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
 
     @Override
     public void registerCommand(Object command) {
-        if (commandManager != null) {
-            commandManager.getAnnotationParser().parse(command);
+        if (cloudCommandManager != null) {
+            cloudCommandManager.getAnnotationParser().parse(command);
+        }
+
+        if (USE_LAMP_COMMANDS_FEATURE_FLAG.isEnabled() && lampCommandManager != null) {
+            lampCommandManager.register(command);
         }
     }
 

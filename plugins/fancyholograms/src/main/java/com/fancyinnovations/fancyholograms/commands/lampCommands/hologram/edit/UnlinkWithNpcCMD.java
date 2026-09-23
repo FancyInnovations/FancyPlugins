@@ -1,9 +1,8 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
-import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import org.jetbrains.annotations.NotNull;
@@ -12,12 +11,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class UnlinkWithNpcCMD {
+public final class UnlinkWithNpcCMD extends FancyContext {
 
     public static final UnlinkWithNpcCMD INSTANCE = new UnlinkWithNpcCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private UnlinkWithNpcCMD() {
     }
@@ -53,8 +49,8 @@ public final class UnlinkWithNpcCMD {
             npc.updateForAll();
         }
 
-        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
-            FancyHologramsPlugin.get().getStorage().save(hologram.getData());
+        if (config.isSaveOnChangedEnabled()) {
+            plugin.getStorage().save(hologram.getData());
         }
 
         translator.translate("commands.hologram.edit.unlink_with_npc.success")

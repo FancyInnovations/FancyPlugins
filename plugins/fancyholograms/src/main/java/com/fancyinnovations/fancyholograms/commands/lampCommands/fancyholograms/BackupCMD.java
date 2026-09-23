@@ -1,9 +1,8 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms;
 
 import com.fancyinnovations.fancyholograms.backup.BackupService;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.BackupFilesSuggestion;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.SuggestWith;
@@ -13,12 +12,9 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 import java.io.File;
 import java.util.List;
 
-public class BackupCMD {
+public class BackupCMD extends FancyContext {
 
     public static final BackupCMD INSTANCE = new BackupCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private BackupCMD() {
     }

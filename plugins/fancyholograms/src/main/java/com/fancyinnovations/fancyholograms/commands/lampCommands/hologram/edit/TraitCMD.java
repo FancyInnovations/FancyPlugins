@@ -4,10 +4,9 @@ import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTrait;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTraitRegistry;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTraitTrait;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.AttachedTraitsSuggestion;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.DetachedTraitsSuggestion;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -15,12 +14,9 @@ import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class TraitCMD {
+public final class TraitCMD extends FancyContext {
 
     public static final TraitCMD INSTANCE = new TraitCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private TraitCMD() {
     }

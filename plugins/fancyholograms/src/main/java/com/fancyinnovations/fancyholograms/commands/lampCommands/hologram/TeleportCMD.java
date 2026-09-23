@@ -1,8 +1,7 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -11,12 +10,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class TeleportCMD {
+public final class TeleportCMD extends FancyContext {
 
     public static final TeleportCMD INSTANCE = new TeleportCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private TeleportCMD() {
     }

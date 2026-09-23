@@ -6,8 +6,7 @@ import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
 import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramCreateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Display;
@@ -18,12 +17,9 @@ import revxrsal.commands.annotation.Optional;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public class CreateCMD {
+public class CreateCMD extends FancyContext {
 
     public static final CreateCMD INSTANCE = new CreateCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private CreateCMD() {
     }
@@ -74,7 +70,7 @@ public class CreateCMD {
         }
         displayData.setFilePath(name);
 
-        final var holo = FancyHologramsPlugin.get().getHologramFactory().apply(displayData);
+        final var holo = plugin.getHologramFactory().apply(displayData);
         if (!new HologramCreateEvent(holo, actor.requirePlayer()).callEvent()) {
             translator.translate("commands.hologram.create.cancelled")
                     .withPrefix()
@@ -82,9 +78,9 @@ public class CreateCMD {
             return;
         }
 
-        FancyHologramsPlugin.get().getController().refreshHologram(holo, Bukkit.getOnlinePlayers());
+        plugin.getController().refreshHologram(holo, Bukkit.getOnlinePlayers());
 
-        FancyHologramsPlugin.get().getRegistry().register(holo);
+        plugin.getRegistry().register(holo);
 
         if (actor.isPlayer()) {
             SelectCMD.selectHologram(actor.requirePlayer(), holo);

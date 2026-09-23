@@ -3,9 +3,8 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import revxrsal.commands.annotation.Command;
@@ -13,12 +12,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class ScaleCMD {
+public final class ScaleCMD extends FancyContext {
 
     public static final ScaleCMD INSTANCE = new ScaleCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private ScaleCMD() {
     }
@@ -74,8 +70,8 @@ public final class ScaleCMD {
                 copied.getScale().z()
         ));
 
-        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
-            FancyHologramsPlugin.get().getStorage().save(hologram.getData());
+        if (config.isSaveOnChangedEnabled()) {
+            plugin.getStorage().save(hologram.getData());
         }
 
         translator.translate("commands.hologram.edit.scale.updated")

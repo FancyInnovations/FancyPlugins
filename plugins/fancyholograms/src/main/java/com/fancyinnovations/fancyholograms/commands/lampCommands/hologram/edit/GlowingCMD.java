@@ -4,11 +4,10 @@ import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import de.oliver.fancylib.colors.GlowingColor;
-import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.translations.message.SimpleMessage;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -16,12 +15,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class GlowingCMD {
+public final class GlowingCMD extends FancyContext {
 
     public static final GlowingCMD INSTANCE = new GlowingCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private GlowingCMD() {
     }
@@ -54,7 +50,7 @@ public final class GlowingCMD {
         displayData.setGlowingColor(newColor);
 
         // Auto-save if enabled
-        if (plugin.getHologramConfiguration().isSaveOnChangedEnabled()) {
+        if (config.isSaveOnChangedEnabled()) {
             plugin.getStorage().save(hologram.getData());
         }
 
@@ -99,7 +95,7 @@ public final class GlowingCMD {
             displayData.setGlowingColor(GlowingColor.DISABLED);
 
             // Auto-save if enabled
-            if (plugin.getHologramConfiguration().isSaveOnChangedEnabled()) {
+            if (config.isSaveOnChangedEnabled()) {
                 plugin.getStorage().save(hologram.getData());
             }
 
@@ -121,7 +117,7 @@ public final class GlowingCMD {
             displayData.setGlowingColor(color);
 
             // Auto-save if enabled
-            if (plugin.getHologramConfiguration().isSaveOnChangedEnabled()) {
+            if (config.isSaveOnChangedEnabled()) {
                 plugin.getStorage().save(hologram.getData());
             }
 

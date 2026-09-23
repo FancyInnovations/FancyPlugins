@@ -2,8 +2,7 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
 import com.fancyinnovations.fancyholograms.api.events.HologramCreateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,12 +12,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class CopyCMD {
+public final class CopyCMD extends FancyContext {
 
     public static final CopyCMD INSTANCE = new CopyCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private CopyCMD() {
     }
@@ -56,7 +52,7 @@ public final class CopyCMD {
         data.setLocation(location);
         data.setFilePath(name);
 
-        final var copy = FancyHologramsPlugin.get().getHologramFactory().apply(data);
+        final var copy = plugin.getHologramFactory().apply(data);
         copy.getData().setHasChanges(true);
 
         if (!new HologramCreateEvent(copy, player).callEvent()) {
@@ -66,11 +62,11 @@ public final class CopyCMD {
             return;
         }
 
-        FancyHologramsPlugin.get().getController().refreshHologram(copy, Bukkit.getOnlinePlayers());
-        FancyHologramsPlugin.get().getRegistry().register(copy);
+        plugin.getController().refreshHologram(copy, Bukkit.getOnlinePlayers());
+        plugin.getRegistry().register(copy);
 
-        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
-            FancyHologramsPlugin.get().getStorage().save(copy.getData());
+        if (config.isSaveOnChangedEnabled()) {
+            plugin.getStorage().save(copy.getData());
         }
 
         translator.translate("commands.hologram.copy.success")

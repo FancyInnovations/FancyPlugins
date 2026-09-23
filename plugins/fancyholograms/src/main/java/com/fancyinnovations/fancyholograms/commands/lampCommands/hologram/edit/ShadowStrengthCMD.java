@@ -3,21 +3,17 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class ShadowStrengthCMD {
+public final class ShadowStrengthCMD extends FancyContext {
 
     public static final ShadowStrengthCMD INSTANCE = new ShadowStrengthCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private ShadowStrengthCMD() {
     }
@@ -54,8 +50,8 @@ public final class ShadowStrengthCMD {
 
         displayData.setShadowStrength(copied.getShadowStrength());
 
-        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
-            FancyHologramsPlugin.get().getStorage().save(hologram.getData());
+        if (config.isSaveOnChangedEnabled()) {
+            plugin.getStorage().save(hologram.getData());
         }
 
         translator.translate("commands.hologram.edit.shadow_strength.updated")

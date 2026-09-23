@@ -1,9 +1,8 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.util.Formats;
-import de.oliver.fancylib.translations.Translator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -15,12 +14,9 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.Collection;
 
-public final class ListCMD {
+public final class ListCMD extends FancyContext {
 
     public static final ListCMD INSTANCE = new ListCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private ListCMD() {
     }

@@ -4,22 +4,18 @@ import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class SeeThroughCMD {
+public final class SeeThroughCMD extends FancyContext {
 
     public static final SeeThroughCMD INSTANCE = new SeeThroughCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private SeeThroughCMD() {
     }
@@ -53,8 +49,8 @@ public final class SeeThroughCMD {
 
         textData.setSeeThrough(copied.isSeeThrough());
 
-        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
-            FancyHologramsPlugin.get().getStorage().save(hologram.getData());
+        if (config.isSaveOnChangedEnabled()) {
+            plugin.getStorage().save(hologram.getData());
         }
 
         translator.translate("commands.hologram.edit.see_through.updated")

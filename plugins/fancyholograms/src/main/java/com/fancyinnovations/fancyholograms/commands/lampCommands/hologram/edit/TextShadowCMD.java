@@ -4,22 +4,18 @@ import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public final class TextShadowCMD {
+public final class TextShadowCMD extends FancyContext {
 
     public static final TextShadowCMD INSTANCE = new TextShadowCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private TextShadowCMD() {
     }
@@ -53,8 +49,8 @@ public final class TextShadowCMD {
 
         textData.setTextShadow(copied.hasTextShadow());
 
-        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
-            FancyHologramsPlugin.get().getStorage().save(hologram.getData());
+        if (config.isSaveOnChangedEnabled()) {
+            plugin.getStorage().save(hologram.getData());
         }
 
         translator.translate("commands.hologram.edit.text_shadow.updated")

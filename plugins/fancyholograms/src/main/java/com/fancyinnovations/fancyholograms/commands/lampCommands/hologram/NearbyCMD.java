@@ -1,9 +1,8 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.util.Formats;
-import de.oliver.fancylib.translations.Translator;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -15,12 +14,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public final class NearbyCMD {
+public final class NearbyCMD extends FancyContext {
 
     public static final NearbyCMD INSTANCE = new NearbyCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private NearbyCMD() {
     }

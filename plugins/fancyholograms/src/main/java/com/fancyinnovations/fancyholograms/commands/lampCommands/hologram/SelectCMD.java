@@ -1,8 +1,8 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancylib.translations.Translator;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
@@ -14,14 +14,12 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.Optional;
 
-public final class SelectCMD {
+public final class SelectCMD extends FancyContext {
 
     public static final SelectCMD INSTANCE = new SelectCMD();
 
     public static final NamespacedKey SELECTED_HOLOGRAM_KEY = new NamespacedKey(FancyHologramsPlugin.get(), "fancyholograms_selected_hologram");
 
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private SelectCMD() {
     }

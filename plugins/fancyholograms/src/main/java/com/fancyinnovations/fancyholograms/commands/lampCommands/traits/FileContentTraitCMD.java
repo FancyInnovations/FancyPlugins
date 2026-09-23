@@ -1,23 +1,19 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.traits;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HasHologramTrait;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.trait.builtin.FileContentTrait;
 import de.oliver.fancylib.duration.FancyDuration;
-import de.oliver.fancylib.translations.Translator;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public class FileContentTraitCMD {
+public class FileContentTraitCMD extends FancyContext {
 
     public static final FileContentTraitCMD INSTANCE = new FileContentTraitCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private FileContentTraitCMD() {
 

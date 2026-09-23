@@ -2,11 +2,8 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms
 
 import com.fancyinnovations.config.Config;
 import com.fancyinnovations.config.ConfigField;
-import com.fancyinnovations.fancyholograms.config.FHConfiguration;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
-import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import de.oliver.fancyanalytics.logger.LogLevel;
-import de.oliver.fancylib.translations.Translator;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
@@ -15,12 +12,9 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 import java.util.Collection;
 import java.util.Comparator;
 
-public final class ConfigCMD {
+public final class ConfigCMD extends FancyContext {
 
     public static final ConfigCMD INSTANCE = new ConfigCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private ConfigCMD() {
     }
@@ -31,7 +25,7 @@ public final class ConfigCMD {
     public void show(
             final BukkitCommandActor actor
     ) {
-        Config config = plugin.getFHConfiguration().getConfig();
+        Config config = this.config.getConfig();
         Collection<ConfigField<?>> fields = config.getFields().values()
                 .stream()
                 .sorted(Comparator.comparing(ConfigField::path))
@@ -78,9 +72,6 @@ public final class ConfigCMD {
     public void reload(
             final BukkitCommandActor actor
     ) {
-        FHConfiguration config = plugin.getFHConfiguration();
-        ExtendedFancyLogger logger = plugin.getFancyLogger();
-
         config.reload();
         logger.setCurrentLevel(LogLevel.valueOf(config.getLogLevel()));
 

@@ -2,11 +2,10 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit;
 
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.util.Formats;
 import com.google.common.primitives.Doubles;
-import de.oliver.fancylib.translations.Translator;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -20,12 +19,9 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.function.Function;
 
-public final class MoveToCMD {
+public final class MoveToCMD extends FancyContext {
 
     public static final MoveToCMD INSTANCE = new MoveToCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private MoveToCMD() {
     }
@@ -105,8 +101,8 @@ public final class MoveToCMD {
 
         hologram.getData().setLocation(copied.getLocation());
 
-        if (FancyHologramsPlugin.get().getHologramConfiguration().isSaveOnChangedEnabled()) {
-            FancyHologramsPlugin.get().getStorage().save(hologram.getData());
+        if (config.isSaveOnChangedEnabled()) {
+            plugin.getStorage().save(hologram.getData());
         }
 
         translator.translate("commands.hologram.edit.position.updated")

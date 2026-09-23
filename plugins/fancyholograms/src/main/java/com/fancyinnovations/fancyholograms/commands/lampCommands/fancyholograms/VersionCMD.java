@@ -1,8 +1,7 @@
 package com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms;
 
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import de.oliver.fancylib.VersionConfig;
-import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import revxrsal.commands.annotation.Command;
@@ -10,12 +9,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-public class VersionCMD {
+public class VersionCMD extends FancyContext {
 
     public static final VersionCMD INSTANCE = new VersionCMD();
-
-    private final FancyHologramsPlugin plugin = FancyHologramsPlugin.get();
-    private final Translator translator = FancyHologramsPlugin.get().getTranslator();
 
     private VersionCMD() {
 
@@ -27,8 +23,8 @@ public class VersionCMD {
     public void version(
             final BukkitCommandActor actor
     ) {
-        VersionFetcher versionFetcher = FancyHologramsPlugin.get().getVersionFetcher();
-        VersionConfig versionConfig = FancyHologramsPlugin.get().getVersionConfig();
+        VersionFetcher versionFetcher = plugin.getVersionFetcher();
+        VersionConfig versionConfig = plugin.getVersionConfig();
 
         ComparableVersion currentVersion = new ComparableVersion(versionConfig.getVersion());
         ComparableVersion newestVersion = versionFetcher.fetchNewestVersion();

@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 public class NpcControllerImpl implements NpcController {
 
+    private final FancyNpcsPlugin fancyNpcsPlugin = FancyNpcsPlugin.get();
+
     @Override
     public void showNpcTo(@NotNull final Npc npc, @NotNull final Player... players) {
         for (Player player : players) {
@@ -24,8 +26,8 @@ public class NpcControllerImpl implements NpcController {
             npc.spawn(player);
 
             // Respawn the NPC to fix visibility issues on Folia
-            if (ServerSoftware.isFolia() && FancyNpcsPlugin.get().getFeatureFlagConfig().getFeatureFlag("enable-folia-visibility-fix").isEnabled()) {
-                FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
+            if (ServerSoftware.isFolia() && fancyNpcsPlugin.getFeatureFlagConfig().getFeatureFlag("enable-folia-visibility-fix").isEnabled()) {
+                fancyNpcsPlugin.getNpcThread().schedule(() -> {
                     npc.remove(player);
                     npc.spawn(player);
                 }, 100, TimeUnit.MILLISECONDS);
@@ -75,7 +77,7 @@ public class NpcControllerImpl implements NpcController {
 
         int visibilityDistance = (npc.getData().getVisibilityDistance() > -1)
                 ? npc.getData().getVisibilityDistance()
-                : FancyNpcsPlugin.get().getFancyNpcConfig().getVisibilityDistance();
+                : fancyNpcsPlugin.getFancyNpcConfig().getVisibilityDistance();
 
         if (visibilityDistance == 0) {
             return false;
@@ -89,8 +91,8 @@ public class NpcControllerImpl implements NpcController {
         }
 
         // Check if we should skip invisible NPCs
-        if (FancyNpcsPlugin.get().getFancyNpcConfig().isSkipInvisibleNpcs()) {
-            var invisibleAttr = FancyNpcsPlugin.get().getAttributeManager()
+        if (fancyNpcsPlugin.getFancyNpcConfig().isSkipInvisibleNpcs()) {
+            var invisibleAttr = fancyNpcsPlugin.getAttributeManager()
                     .getAttributeByName(npc.getData().getType(), "invisible");
             if (invisibleAttr != null) {
                 String invisibleValue = npc.getData().getAttributes().getOrDefault(invisibleAttr, "false");
@@ -127,7 +129,7 @@ public class NpcControllerImpl implements NpcController {
 
     @Override
     public void refreshAllNpcs(@NotNull final Player player) {
-        for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
+        for (Npc npc : fancyNpcsPlugin.getNpcManager().getAllNpcs()) {
             refreshNpc(npc, player);
         }
     }

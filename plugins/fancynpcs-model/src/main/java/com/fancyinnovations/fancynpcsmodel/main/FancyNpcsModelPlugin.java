@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
@@ -140,13 +139,14 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
             }
         }, 20L * 20); // 20s
 
-        registerCommands();
+        FancyNpcsPlugin fancyNpcsPlugin = FancyNpcsPlugin.get();
+        registerCommands(fancyNpcsPlugin);
 
         registerListeners();
 
-        FancyNpcsPlugin.get().getAttributeManager().registerAttribute(CustomModelAttribute.getModelAttribute());
-        FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationOnceAction());
-        FancyNpcsPlugin.get().getActionManager().registerAction(new PlayAnimationLoopAction());
+        fancyNpcsPlugin.getAttributeManager().registerAttribute(CustomModelAttribute.getModelAttribute());
+        fancyNpcsPlugin.getActionManager().registerAction(new PlayAnimationOnceAction());
+        fancyNpcsPlugin.getActionManager().registerAction(new PlayAnimationLoopAction());
 
         metrics.register();
         metrics.checkIfPluginVersionUpdated();
@@ -167,14 +167,14 @@ public class FancyNpcsModelPlugin extends JavaPlugin {
         fancyLogger.info("Successfully disabled FancyNpcsModel version %s".formatted(getDescription().getVersion()));
     }
 
-    private void registerCommands() {
+    private void registerCommands(FancyNpcsPlugin fancyNpcsPlugin) {
         // fancynpcsmodel commands
-        FancyNpcsPlugin.get().registerCommand(FNMConfigCMD.INSTANCE);
-        FancyNpcsPlugin.get().registerCommand(FNMVersionCMD.INSTANCE);
+        fancyNpcsPlugin.registerCommand(FNMConfigCMD.INSTANCE);
+        fancyNpcsPlugin.registerCommand(FNMVersionCMD.INSTANCE);
 
         // npc commands
-        FancyNpcsPlugin.get().registerCommand(CustomModelCMD.INSTANCE);
-        FancyNpcsPlugin.get().registerCommand(PlayAnimationCMD.INSTANCE);
+        fancyNpcsPlugin.registerCommand(CustomModelCMD.INSTANCE);
+        fancyNpcsPlugin.registerCommand(PlayAnimationCMD.INSTANCE);
     }
 
     private void registerListeners() {

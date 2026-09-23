@@ -16,21 +16,23 @@ import java.util.List;
 
 public class PlayerJoinListener implements Listener {
 
+    private final FancyNpcs plugin = FancyNpcs.getInstance();
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        for (Npc npc : FancyNpcs.getInstance().getNpcManagerImpl().getAllNpcs()) {
+        for (Npc npc : plugin.getNpcManagerImpl().getAllNpcs()) {
             npc.getIsVisibleForPlayer().put(event.getPlayer().getUniqueId(), false);
             npc.getIsLookingAtPlayer().put(event.getPlayer().getUniqueId(), false);
             npc.getIsTeamCreated().put(event.getPlayer().getUniqueId(), false);
         }
 
         // don't spawn the npc for player if he just joined
-        FancyNpcs.getInstance().getVisibilityTracker().addJoinDelayPlayer(event.getPlayer().getUniqueId());
-        FancyNpcs.getInstance().getScheduler().runTaskLater(null, 20L * 2, () -> FancyNpcs.getInstance().getVisibilityTracker().removeJoinDelayPlayer(event.getPlayer().getUniqueId()));
+        plugin.getVisibilityTracker().addJoinDelayPlayer(event.getPlayer().getUniqueId());
+        plugin.getScheduler().runTaskLater(null, 20L * 2, () -> plugin.getVisibilityTracker().removeJoinDelayPlayer(event.getPlayer().getUniqueId()));
 
-        if (!FancyNpcs.getInstance().getFancyNpcConfig().isMuteVersionNotification() && event.getPlayer().hasPermission("FancyNpcs.admin")) {
-            FancyNpcs.getInstance().getScheduler().runTaskAsynchronously(
-                    () -> FancyNpcs.getInstance().getVersionConfig().checkVersionAndDisplay(event.getPlayer(), true)
+        if (!plugin.getFancyNpcConfig().isMuteVersionNotification() && event.getPlayer().hasPermission("FancyNpcs.admin")) {
+            plugin.getScheduler().runTaskAsynchronously(
+                    () -> plugin.getVersionConfig().checkVersionAndDisplay(event.getPlayer(), true)
             );
 
             playerCommandAsOpWarning(event.getPlayer());
@@ -48,14 +50,14 @@ public class PlayerJoinListener implements Listener {
                     property.getSignature()
             );
 
-            FancyNpcs.getInstance().getSkinManagerImpl().getMemCache().addSkin(skinData);
+            plugin.getSkinManagerImpl().getMemCache().addSkin(skinData);
         }
     }
 
     private void playerCommandAsOpWarning(Player p) {
         List<String> affected = new ArrayList<>();
 
-        for (Npc npc : FancyNpcs.getInstance().getNpcManagerImpl().getAllNpcs()) {
+        for (Npc npc : plugin.getNpcManagerImpl().getAllNpcs()) {
             for (List<NpcAction.NpcActionData> actions : npc.getData().getActions().values()) {
                 for (NpcAction.NpcActionData action : actions) {
                     if (action.action().getName().equalsIgnoreCase("player_command_as_op")) {
@@ -69,11 +71,11 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        FancyNpcs.getInstance().getTranslator().translate("player_command_as_op_warning")
+        plugin.getTranslator().translate("player_command_as_op_warning")
                 .withPrefix()
                 .send(p);
 
-        FancyNpcs.getInstance().getTranslator().translate("player_command_as_op_warning_affected")
+        plugin.getTranslator().translate("player_command_as_op_warning_affected")
                 .withPrefix()
                 .replace("affected_npcs", Strings.join(affected, ','))
                 .send(p);

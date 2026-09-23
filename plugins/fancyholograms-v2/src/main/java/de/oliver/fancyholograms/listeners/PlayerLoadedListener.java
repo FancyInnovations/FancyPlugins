@@ -9,11 +9,16 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerLoadedListener implements Listener {
+    private final @NotNull FancyHolograms plugin;
+
+    public PlayerLoadedListener(@NotNull FancyHolograms plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerLoaded(@NotNull final PlayerClientLoadedWorldEvent event) {
-        FancyHolograms.get().getHologramThread().submit(() -> {
-            for (final Hologram hologram : FancyHolograms.get().getHologramsManager().getHolograms()) {
+        plugin.getHologramThread().submit(() -> {
+            for (final Hologram hologram : plugin.getHologramsManager().getHolograms()) {
                 hologram.forceUpdateShownStateFor(event.getPlayer());
             }
         });

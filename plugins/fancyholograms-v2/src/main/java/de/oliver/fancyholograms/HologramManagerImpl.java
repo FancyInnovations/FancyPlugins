@@ -84,6 +84,7 @@ public final class HologramManagerImpl implements HologramManager {
      * @param name The name of the hologram to lookup.
      * @return An optional containing the found hologram, or empty if not found.
      */
+    @Override
     public @NotNull Optional<Hologram> getHologram(@NotNull final String name) {
         return Optional.ofNullable(this.holograms.get(name.toLowerCase(Locale.ROOT)));
     }
@@ -93,6 +94,7 @@ public final class HologramManagerImpl implements HologramManager {
      *
      * @param hologram The hologram to add.
      */
+    @Override
     public void addHologram(@NotNull final Hologram hologram) {
         this.holograms.put(hologram.getData().getName().toLowerCase(Locale.ROOT), hologram);
     }
@@ -102,6 +104,7 @@ public final class HologramManagerImpl implements HologramManager {
      *
      * @param hologram The hologram to remove.
      */
+    @Override
     public void removeHologram(@NotNull final Hologram hologram) {
         this.removeHologram(hologram.getData().getName());
     }
@@ -119,11 +122,11 @@ public final class HologramManagerImpl implements HologramManager {
                     for (UUID viewer : hologram.getViewers()) {
                         Player player = Bukkit.getPlayer(viewer);
                         if (player != null) {
-                            FancyHolograms.get().getHologramThread().submit(() -> hologram.forceHideHologram(player));
+                            plugin.getHologramThread().submit(() -> hologram.forceHideHologram(player));
                         }
                     }
 
-                    FancyHolograms.get().getHologramThread().submit(() -> plugin.getHologramStorage().delete(hologram));
+                    plugin.getHologramThread().submit(() -> plugin.getHologramStorage().delete(hologram));
                 }
         );
 
@@ -136,12 +139,14 @@ public final class HologramManagerImpl implements HologramManager {
      * @param data The hologram data for the new hologram.
      * @return The created hologram.
      */
+    @Override
     public @NotNull Hologram create(@NotNull final HologramData data) {
         Hologram hologram = this.adapter.apply(data);
         hologram.createHologram();
         return hologram;
     }
 
+    @Override
     public void saveHolograms() {
         if (!isLoaded) {
             return;
@@ -162,7 +167,7 @@ public final class HologramManagerImpl implements HologramManager {
         }
         this.isLoaded = true;
 
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(allLoaded)));
             for (Hologram hologram : allLoaded) {
                 if (hologram.getData().getLinkedNpcName() != null) {
@@ -171,7 +176,7 @@ public final class HologramManagerImpl implements HologramManager {
             }
         });
 
-        if (hologramLoadLogging) FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
+        if (hologramLoadLogging) plugin.getFancyLogger().info(String.format("Loaded %d holograms for all loaded worlds", allLoaded.size()));
     }
 
     @Override
@@ -185,7 +190,7 @@ public final class HologramManagerImpl implements HologramManager {
 
         this.isLoaded = true;
 
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             Bukkit.getPluginManager().callEvent(new HologramsLoadedEvent(ImmutableList.copyOf(loaded)));
             for (Hologram hologram : loaded) {
                 if (hologram.getData().getLinkedNpcName() != null) {
@@ -195,7 +200,7 @@ public final class HologramManagerImpl implements HologramManager {
         });
 
         if (this.hologramLoadLogging)
-            FancyHolograms.get().getFancyLogger().info(String.format("Loaded %d holograms for world %s", loaded.size(), world));
+            plugin.getFancyLogger().info(String.format("Loaded %d holograms for world %s", loaded.size(), world));
     }
 
     /**
@@ -269,13 +274,14 @@ public final class HologramManagerImpl implements HologramManager {
     /**
      * Reloads holograms by clearing the existing holograms and loading them again from the plugin's configuration.
      */
+    @Override
     public void reloadHolograms() {
         this.unloadHolograms();
         this.loadHolograms();
     }
 
     public void unloadHolograms() {
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             List<Hologram> unloaded = new ArrayList<>();
 
             for (final var hologram : this.getPersistentHolograms()) {
@@ -297,12 +303,12 @@ public final class HologramManagerImpl implements HologramManager {
     public void unloadHolograms(String world) {
         final var online = List.copyOf(Bukkit.getOnlinePlayers());
 
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             List<Hologram> h = this.getPersistentHolograms().stream()
                     .filter(hologram -> hologram.getData().getLocation().getWorld().getName().equals(world))
                     .toList();
 
-            FancyHolograms.get().getHologramStorage().saveBatch(h, false);
+            plugin.getHologramStorage().saveBatch(h, false);
 
             for (final Hologram hologram : h) {
                 this.holograms.remove(hologram.getName());

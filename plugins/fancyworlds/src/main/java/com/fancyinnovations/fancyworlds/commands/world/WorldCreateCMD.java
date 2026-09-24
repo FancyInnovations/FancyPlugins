@@ -3,14 +3,12 @@ package com.fancyinnovations.fancyworlds.commands.world;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
 import com.fancyinnovations.fancyworlds.utils.FancyContext;
 import com.fancyinnovations.fancyworlds.utils.WorldFileUtils;
-import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
-import com.fancyinnovations.fancyworlds.worlds.FWorldSettingsImpl;
+import com.fancyinnovations.fancyworlds.worlds.service.WorldCreationService;
 import org.bukkit.World;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-import java.util.UUID;
 
 public class WorldCreateCMD extends FancyContext {
 
@@ -27,50 +25,30 @@ public class WorldCreateCMD extends FancyContext {
             @Flag @Optional @Suggest({"normal", "flat", "amplified", "large_biomes"}) String generator,
             @Switch(shorthand = 'x') @Optional Boolean structures
     ) {
-        WorldService service = WorldService.get();
-        if (service.getWorldByName(name) != null) {
+        if (WorldService.get().getWorldByName(name) != null) {
             translator.translate("commands.world.create.already_exists")
-                    .withPrefix()
-                    .replace("worldName", name)
-                    .send(actor.sender());
+                    .withPrefix().replace("worldName", name).send(actor.sender());
             return;
         }
-
         if (WorldFileUtils.isWorldOnDisk(name)) {
             translator.translate("commands.world.create.disk_exists")
-                    .withPrefix()
-                    .replace("worldName", name)
-                    .send(actor.sender());
+                    .withPrefix().replace("worldName", name).send(actor.sender());
             return;
         }
-
-        FWorldImpl fworld = new FWorldImpl(
-                UUID.randomUUID(),
-                name,
-                seed,
-                environment,
-                generator,
-                structures,
-                new FWorldSettingsImpl()
-        );
-
         translator.translate("commands.world.create.generating")
                 .withPrefix()
                 .replace("worldName", name)
                 .send(actor.sender());
 
-        World world = fworld.toWorldCreator().createWorld();
-        if (world == null) {
-            translator.translate("commands.world.create.failed")
-                    .withPrefix()
-                    .replace("worldName", name)
-                    .send(actor.sender());
-            return;
-        }
-
-        fworld.setBukkitWorld(world);
-        service.registerWorld(fworld);
-        translator.translate("commands.world.create.success")
+        WorldCreationService.Result result = WorldCreationService.create(name, seed, environment, generator, structures, false);
+        String key = switch (result.status()) {
+            case CREATED -> "commands.world.create.success";
+            case INVALID_NAME -> "commands.world.create.invalid_name";
+            case ALREADY_EXISTS -> "commands.world.create.already_exists";
+            case DISK_EXISTS -> "commands.world.create.disk_exists";
+            case FAILED -> "commands.world.create.failed";
+        };
+        translator.translate(key)
                 .withPrefix()
                 .replace("worldName", name)
                 .send(actor.sender());

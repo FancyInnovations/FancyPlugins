@@ -1,5 +1,64 @@
 language_name: default
 messages:
+  dialogs:
+    common:
+      previous: "Previous"
+      next: "Next"
+      back: "Back"
+      close: "Close"
+      action_unavailable: "That action is no longer available."
+      yes: "Yes"
+      no: "No"
+    status:
+      loaded: "Loaded"
+      unloaded: "Unloaded"
+    world_list:
+      title: "Worlds"
+      count: "{count} worlds · page {page}/{pages}"
+      empty: "No worlds are linked to FancyWorlds."
+      entry: "{name} ({status})"
+      create: "Create World"
+    world_detail:
+      title: "World: {name}"
+      status: "Status: {status}"
+      environment: "Environment: {value}"
+      generator: "Generator: {value}"
+      structures: "Structures: {value}"
+      seed: "Seed: {value}"
+      counts: "Players: {players} · Entities: {entities} · Chunks: {chunks}"
+      teleport: "Teleport"
+      load: "Load"
+      unload: "Unload"
+      spawn: "Set Spawn Here"
+      delete: "Delete World"
+      delete_question: "Permanently delete world {name}? This cannot be undone."
+    portal_list:
+      title: "Portals"
+      count: "{count} portals · page {page}/{pages}"
+      empty: "No portals have been created."
+      entry: "{name}: {source} → {destination}"
+    portal_detail:
+      title: "Portal: {name}"
+      source: "Source world: {value}"
+      bounds: "Region: {min} to {max}"
+      volume: "Volume: {value} blocks"
+      destination: "Destination: {value}"
+      choose_destination: "New destination"
+      save_destination: "Save Destination"
+      invalid_destination: "That destination world is no longer available."
+      delete: "Delete Portal"
+      delete_question: "Delete portal {name}?"
+    create:
+      title: "Create World"
+      description: "Choose the settings for a new world. Leave seed empty to use the current default."
+      name: "World name"
+      seed: "Seed (optional)"
+      environment: "Environment"
+      generator: "Generator"
+      structures: "Generate structures"
+      submit: "Create World"
+      invalid_seed: "Seed must be a whole number within the 64-bit range."
+      invalid_option: "An invalid world option was submitted."
   common:
     world_not_found: "{errorColor}Could not find world {primaryColor}{worldName}{errorColor}."
     portal_not_found: "{errorColor}Could not find portal {primaryColor}{portalName}{errorColor}."
@@ -35,6 +94,7 @@ messages:
         success: "Successfully unlinked world {primaryColor}{worldName}{secondaryColor} from FancyWorlds."
       create:
         success: "Successfully created world {primaryColor}{worldName}{secondaryColor} <click:run_command:'/world teleport {worldName}'><i>(click to teleport)</i></click>."
+        invalid_name: "{errorColor}World names must contain 1–64 letters, numbers, underscores, or hyphens."
         generating: "Generating world {primaryColor}{worldName}{secondaryColor} ..."
         already_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists."
         disk_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists on disk. Load it using {primaryColor}/world load {worldName}{errorColor} or choose a different name."

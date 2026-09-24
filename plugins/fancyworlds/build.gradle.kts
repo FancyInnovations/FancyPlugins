@@ -55,7 +55,7 @@ tasks {
         serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-1.build.1-alpha.jar"))
 
         downloadPlugins {
-            modrinth("FancyDialogs", "1.4.0")
+//            modrinth("FancyDialogs", "1.4.0")
 //            modrinth("FancyNpcs", "2.9.2")
 //            modrinth("FancyHolograms", "2.9.1")
 //            modrinth("FancyDialogs", "1.1.2")

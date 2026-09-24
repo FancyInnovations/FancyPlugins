@@ -11,11 +11,13 @@ import com.fancyinnovations.fancyworlds.api.worlds.WorldStorage;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWConfigCMD;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWVersionCMD;
 import com.fancyinnovations.fancyworlds.commands.portal.PortalCMD;
+import com.fancyinnovations.fancyworlds.commands.portal.PortalMenuCMD;
 import com.fancyinnovations.fancyworlds.commands.types.FPortalCommandType;
 import com.fancyinnovations.fancyworlds.commands.types.FWorldCommandType;
 import com.fancyinnovations.fancyworlds.commands.types.GameruleCommandType;
 import com.fancyinnovations.fancyworlds.commands.world.*;
 import com.fancyinnovations.fancyworlds.config.FancyWorldsConfigImpl;
+import com.fancyinnovations.fancyworlds.dialogs.WorldsDialogController;
 import com.fancyinnovations.fancyworlds.listeners.PortalEnterListener;
 import com.fancyinnovations.fancyworlds.listeners.PortalWandListener;
 import com.fancyinnovations.fancyworlds.listeners.WorldLoadListener;
@@ -74,6 +76,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
     private PortalService portalService;
     private PortalSelectionManager portalSelectionManager;
     private PortalWand portalWand;
+    private WorldsDialogController dialogs;
 
     public FancyWorldsPlugin() {
         INSTANCE = this;
@@ -187,6 +190,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
             impl.setBukkitWorld(bukkitWorld);
         }
 
+        dialogs = new WorldsDialogController(this);
         registerCommands();
 
         registerListeners();
@@ -200,6 +204,8 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
     @Override
     public void onDisable() {
         fancyLogger.info("Disabling FancyWorlds version %s...".formatted(getDescription().getVersion()));
+
+        if (dialogs != null) dialogs.shutdown();
 
         fancyLogger.info("Successfully disabled FancyWorlds version %s".formatted(getDescription().getVersion()));
     }
@@ -229,6 +235,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         // world commands
         lamp.register(WorldHelpCMD.INSTANCE);
         lamp.register(WorldListCMD.INSTANCE);
+        lamp.register(new WorldMenuCMD(dialogs));
         lamp.register(WorldLinkCMD.INSTANCE);
         lamp.register(WorldUnlinkCMD.INSTANCE);
         lamp.register(WorldCreateCMD.INSTANCE);
@@ -243,6 +250,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
 
         // portal commands
         lamp.register(new PortalCMD(portalSelectionManager, portalWand));
+        lamp.register(new PortalMenuCMD(dialogs));
 
         // Other
         lamp.register(WorldSeedCMD.INSTANCE);
@@ -253,6 +261,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         Bukkit.getPluginManager().registerEvents(new WorldUnloadListener(), this);
         Bukkit.getPluginManager().registerEvents(new PortalWandListener(portalSelectionManager, portalWand), this);
         Bukkit.getPluginManager().registerEvents(new PortalEnterListener(), this);
+        Bukkit.getPluginManager().registerEvents(dialogs, this);
     }
 
     public void registerTranslator() {

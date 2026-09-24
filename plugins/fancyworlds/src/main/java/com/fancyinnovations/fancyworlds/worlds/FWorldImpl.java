@@ -113,7 +113,9 @@ public class FWorldImpl implements FWorld {
         WorldCreator creator = new WorldCreator(name);
         creator.seed(seed);
         creator.environment(environment);
-        creator.generator(generator);
+        if (!generator.equalsIgnoreCase("default")) {
+            creator.generator(generator);
+        }
         creator.generateStructures(generateStructures);
 
         if (generator.equalsIgnoreCase("flat")) {

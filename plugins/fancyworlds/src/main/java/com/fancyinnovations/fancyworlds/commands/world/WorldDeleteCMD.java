@@ -3,6 +3,7 @@ package com.fancyinnovations.fancyworlds.commands.world;
 import com.fancyinnovations.fancydialogs.api.dialogs.ConfirmationDialog;
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
 import com.fancyinnovations.fancyworlds.utils.FancyContext;
+import com.fancyinnovations.fancyworlds.worlds.service.WorldOperations;
 import de.oliver.fancylib.translations.message.SimpleMessage;
 import org.bukkit.Bukkit;
 import revxrsal.commands.annotation.Command;
@@ -10,10 +11,7 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class WorldDeleteCMD extends FancyContext {
 
@@ -37,30 +35,30 @@ public class WorldDeleteCMD extends FancyContext {
         SimpleMessage question = (SimpleMessage) translator.translate("commands.world.delete.confirmation")
                 .replace("worldName", world.getName());
 
-        new ConfirmationDialog(question.getMessage())
-                .withTitle("Confirm deletion")
-                .withOnConfirm(() -> Bukkit.getScheduler().runTask(plugin, () -> deleteImpl(actor, world)))
-                .withOnCancel(
-                        () -> translator.translate("commands.world.delete.cancelled")
-                                .withPrefix()
-                                .replace("worldName", world.getName())
-                                .send(actor.sender())
-                )
-                .ask(actor.asPlayer());
+        if (actor.isPlayer()) {
+            new ConfirmationDialog(question.getMessage())
+                    .withTitle("Confirm deletion")
+                    .withOnConfirm(() -> Bukkit.getScheduler().runTask(plugin, () -> deleteImpl(actor, world)))
+                    .withOnCancel(() -> translator.translate("commands.world.delete.cancelled")
+                            .withPrefix().replace("worldName", world.getName()).send(actor.sender()))
+                    .ask(actor.asPlayer());
+        } else {
+            deleteImpl(actor, world);
+        }
     }
 
     private void deleteImpl(
             final BukkitCommandActor actor,
             final FWorld world
     ) {
-        plugin.getWorldService().unregisterWorld(world);
+        if (world.isWorldLoaded()) {
+            translator.translate("commands.world.delete.world_is_loaded")
+                    .withPrefix().replace("worldName", world.getName()).send(actor.sender());
+            return;
+        }
 
-        File worldDir = Bukkit.getWorldContainer().toPath().resolve(world.getName()).toFile();
         try {
-            Files.walk(worldDir.toPath())
-                    .map(Path::toFile)
-                    .sorted((o1, o2) -> -o1.compareTo(o2)) // Delete children before parents
-                    .forEach(File::delete);
+            WorldOperations.delete(world);
         } catch (IOException e) {
             translator.translate("commands.world.delete.failed")
                     .withPrefix()

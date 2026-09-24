@@ -4,6 +4,7 @@ import com.fancyinnovations.fancydialogs.api.dialogs.ConfirmationDialog;
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
 import com.fancyinnovations.fancyworlds.utils.FancyContext;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
+import com.fancyinnovations.fancyworlds.worlds.service.WorldOperations;
 import de.oliver.fancylib.translations.message.SimpleMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -85,9 +86,7 @@ public class WorldUnloadCMD extends FancyContext {
             }
         }
 
-        if (Bukkit.unloadWorld(world.getBukkitWorld(), true)) {
-            ((FWorldImpl) world).setBukkitWorld(null);
-
+        if (WorldOperations.unload((FWorldImpl) world)) {
             translator.translate("commands.world.unload.success")
                     .withPrefix()
                     .replace("worldName", world.getName())

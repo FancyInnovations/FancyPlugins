@@ -5,6 +5,7 @@ import com.fancyinnovations.fancyworlds.utils.FancyContext;
 import com.fancyinnovations.fancyworlds.utils.WorldFileUtils;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import com.fancyinnovations.fancyworlds.worlds.FWorldSettingsImpl;
+import com.fancyinnovations.fancyworlds.worlds.service.WorldOperations;
 import org.bukkit.World;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
@@ -62,8 +63,7 @@ public class WorldLoadCMD extends FancyContext {
                 .replace("worldName", name)
                 .send(actor.sender());
 
-        World world = fworld.toWorldCreator().createWorld();
-        if (world == null) {
+        if (!WorldOperations.load(fworld)) {
             translator.translate("commands.world.load.failed")
                     .withPrefix()
                     .replace("worldName", name)
@@ -71,8 +71,6 @@ public class WorldLoadCMD extends FancyContext {
             return;
         }
 
-        fworld.setBukkitWorld(world);
-        service.registerWorld(fworld);
         translator.translate("commands.world.load.success")
                 .withPrefix()
                 .replace("worldName", name)

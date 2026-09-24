@@ -146,7 +146,7 @@ public final class WorldsDialogController implements Listener {
         body.add(line(tr("world_detail.status", "status", tr(world.isWorldLoaded() ? "status.loaded" : "status.unloaded"))));
         body.add(line(tr("world_detail.environment", "value", world.getEnvironment().name())));
         body.add(line(tr("world_detail.generator", "value", world.getGenerator())));
-        body.add(line(tr("world_detail.structures", "value", tr(world.canGenerateStructures() ? "common.yes" : "common.no"))));
+        body.add(line(tr("world_detail.structures", "value", tr(world.canGenerateStructures() ? "common.yes_msg" : "common.no_msg"))));
         if (allowed(player, "world.seed")) {
             body.add(line(tr("world_detail.seed", "value", world.getSeed())));
         }
@@ -636,7 +636,7 @@ public final class WorldsDialogController implements Listener {
             }
 
             FancyDialogs.get().getDialogRegistry().unregister(session.dialog().getId());
-            
+
             return true;
         });
     }

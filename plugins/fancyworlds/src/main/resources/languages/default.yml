@@ -7,8 +7,8 @@ messages:
       back: "Back"
       close: "Close"
       action_unavailable: "That action is no longer available."
-      yes: "Yes"
-      no: "No"
+      yes_msg: "Yes"
+      no_msg: "No"
     status:
       loaded: "Loaded"
       unloaded: "Unloaded"

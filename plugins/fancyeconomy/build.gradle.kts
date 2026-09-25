@@ -34,10 +34,11 @@ dependencies {
 
     compileOnly("me.clip:placeholderapi:2.11.5")
 
-    val commandapiVersion = "11.1.0"
+    val commandapiVersion = "12.0.1-SNAPSHOT"
     implementation("dev.jorel:commandapi-paper-shade:$commandapiVersion")
     compileOnly("dev.jorel:commandapi-paper-annotations:$commandapiVersion")
     annotationProcessor("dev.jorel:commandapi-paper-annotations:$commandapiVersion")
+    annotationProcessor("dev.jorel:commandapi-bukkit-core:$commandapiVersion")
 }
 
 paper {
@@ -140,6 +141,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        options.compilerArgs.addAll(listOf("-processor", "dev.jorel.commandapi.annotations.Annotations"))
 
         // Set the release flag. This configures what version bytecode the compiler will emit, as well as what JDK APIs are usable.
         // See https://openjdk.java.net/jeps/247 for more information.

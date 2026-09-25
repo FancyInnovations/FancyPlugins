@@ -87,6 +87,14 @@ messages:
         header: "Linked worlds ({worldCount}):"
         entry_loaded: "{secondaryColor} - {primaryColor}{worldName} {secondaryColor} <hover:show_text:'Click to view world information'><click:run_command:'/world info {worldName}'>[ɪɴғᴏ]</click></hover> <hover:show_text:'Click to teleport'><click:run_command:'/world teleport {worldName}'>[ᴛᴇʟᴇᴘᴏʀᴛ]</click></hover>"
         entry_unloaded: "{secondaryColor} - {primaryColor}{worldName} {secondaryColor}(unloaded)"
+      info:
+        header: "Information for world {primaryColor}{worldName}{secondaryColor}:"
+        status: "{secondaryColor} - Status: {primaryColor}{status}"
+        environment: "{secondaryColor} - Environment: {primaryColor}{environment}"
+        generator: "{secondaryColor} - Generator: {primaryColor}{generator}"
+        structures: "{secondaryColor} - Generate structures: {primaryColor}{structures}"
+        seed: "{secondaryColor} - Seed: {primaryColor}{seed}"
+        counts: "{secondaryColor} - Players: {primaryColor}{playerCount}{secondaryColor}, Entities: {primaryColor}{entityCount}{secondaryColor}, Chunks: {primaryColor}{chunkCount}"
       link:
         success: "Successfully linked world {primaryColor}{worldName}{secondaryColor} to FancyWorlds."
         already_linked: "{errorColor}World {primaryColor}{worldName}{secondaryColor} is already linked to FancyWorlds."

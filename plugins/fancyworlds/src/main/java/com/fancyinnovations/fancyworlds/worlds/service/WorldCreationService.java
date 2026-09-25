@@ -17,19 +17,15 @@ public final class WorldCreationService {
     }
 
     public static Result create(String name, Long seed, World.Environment environment, String generator, Boolean structures) {
-        return create(name, seed, environment, generator, structures, true);
-    }
-
-    public static Result create(String name, Long seed, World.Environment environment, String generator, Boolean structures, boolean validateName) {
-        if (validateName && (name == null || !VALID_NAME.matcher(name).matches())) {
+        if (!isValidName(name)) {
             return new Result(Status.INVALID_NAME, null);
         }
 
         WorldService service = WorldService.get();
-        if (service.getWorldByName(name) != null) {
+        if (service.getAllWorlds().stream().anyMatch(world -> world.getName().equalsIgnoreCase(name))) {
             return new Result(Status.ALREADY_EXISTS, null);
         }
-        if (WorldFileUtils.isWorldOnDisk(name)) {
+        if (WorldFileUtils.findWorldNameOnDisk(name) != null) {
             return new Result(Status.DISK_EXISTS, null);
         }
 
@@ -53,6 +49,10 @@ public final class WorldCreationService {
         service.registerWorld(fworld);
 
         return new Result(Status.CREATED, fworld);
+    }
+
+    public static boolean isValidName(String name) {
+        return name != null && VALID_NAME.matcher(name).matches();
     }
 
     public enum Status {

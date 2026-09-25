@@ -27,6 +27,7 @@ import com.fancyinnovations.fancyworlds.portals.PortalWand;
 import com.fancyinnovations.fancyworlds.portals.selection.PortalSelectionManager;
 import com.fancyinnovations.fancyworlds.portals.service.PortalServiceImpl;
 import com.fancyinnovations.fancyworlds.portals.storage.json.JsonPortalStorage;
+import com.fancyinnovations.fancyworlds.utils.WorldFileUtils;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import com.fancyinnovations.fancyworlds.worlds.service.WorldServiceImpl;
 import com.fancyinnovations.fancyworlds.worlds.storage.json.JsonWorldStorage;
@@ -123,7 +124,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         fancyLogger.setCurrentLevel(logLevel);
 
         // Version checking
-        versionFetcher = new FancySpacesVersionFetcher("FancyWorlds");
+        versionFetcher = new FancySpacesVersionFetcher("fancyworlds", "alpha");
         versionConfig = new VersionConfig(this, versionFetcher);
         versionConfig.load();
 
@@ -183,11 +184,19 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
                 continue;
             }
 
+            if (!WorldFileUtils.isWorldOnDisk(world.getName())) {
+                fancyLogger.warn("Skipping world %s: no matching world data was found on disk".formatted(world.getName()));
+                continue;
+            }
+
             fancyLogger.info("Loading world %s...".formatted(world.getName()));
 
             FWorldImpl impl = (FWorldImpl) world;
             World bukkitWorld = impl.toWorldCreator().createWorld();
             impl.setBukkitWorld(bukkitWorld);
+            if (bukkitWorld != null) {
+                worldService.registerWorld(impl);
+            }
         }
 
         dialogs = new WorldsDialogController(this);
@@ -265,16 +274,18 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
     }
 
     public void registerTranslator() {
-        translator = new Translator(
-                new TextConfig(
-                        "#ffcc24", // color to highlight important information
-                        "gray", // text color for regular messages
-                        "#81E366",
-                        "#E3CA66",
-                        "#E36666",
-                        "<color:#ba8813>[</color><gradient:#ffae00:#fffb00:#ffae00>FancyWorlds</gradient><color:#ba8813>]</color> <gray>"
-                )
-        );
+        if (translator == null) {
+            translator = new Translator(
+                    new TextConfig(
+                            "#ffcc24", // color to highlight important information
+                            "gray", // text color for regular messages
+                            "#81E366",
+                            "#E3CA66",
+                            "#E36666",
+                            "<color:#ba8813>[</color><gradient:#ffae00:#fffb00:#ffae00>FancyWorlds</gradient><color:#ba8813>]</color> <gray>"
+                    )
+            );
+        }
 
         translator.loadLanguages(getDataFolder().getAbsolutePath());
         Language selectedLanguage = translator.getLanguages().stream()

@@ -71,6 +71,14 @@ public class WorldUnloadCMD extends FancyContext {
             final FWorld world,
             final boolean force
     ) {
+        if (!world.isWorldLoaded()) {
+            translator.translate("commands.world.unload.not_loaded")
+                    .withPrefix()
+                    .replace("worldName", world.getName())
+                    .send(actor.sender());
+            return;
+        }
+
         if (world.getBukkitWorld().getPlayerCount() > 0 && force) {
             World fallbackWorld = Bukkit.getWorlds().getFirst();
 

@@ -10,15 +10,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class FWorldImpl implements FWorld {
 
     private final UUID id;
-    private final long seed;
+    private long seed;
     private final World.Environment environment;
     private final String generator;
     private final boolean generateStructures;
-    private String name;
+    private final String name;
     private FWorldSettings settings;
     private World bukkitWorld;
 
@@ -33,7 +34,7 @@ public class FWorldImpl implements FWorld {
     ) {
         this.id = id != null ? id : UUID.randomUUID();
         this.name = name;
-        this.seed = seed != null ? seed : 0L;
+        this.seed = seed != null ? seed : ThreadLocalRandom.current().nextLong();
         this.environment = environment != null ? environment : World.Environment.NORMAL;
         this.generator = generator != null ? generator : "default";
         this.generateStructures = generateStructures != null ? generateStructures : true;
@@ -56,8 +57,7 @@ public class FWorldImpl implements FWorld {
 
     @Override
     public void rename(String newName) {
-        this.name = newName;
-        // TODO: Implement renaming logic for the underlying world
+        throw new UnsupportedOperationException("Renaming worlds is not supported");
     }
 
     @Override
@@ -107,6 +107,9 @@ public class FWorldImpl implements FWorld {
 
     public void setBukkitWorld(World bukkitWorld) {
         this.bukkitWorld = bukkitWorld;
+        if (bukkitWorld != null) {
+            this.seed = bukkitWorld.getSeed();
+        }
     }
 
     public WorldCreator toWorldCreator() {

@@ -25,12 +25,18 @@ public class WorldCreateCMD extends FancyContext {
             @Flag @Optional @Suggest({"normal", "flat", "amplified", "large_biomes"}) String generator,
             @Switch(shorthand = 'x') @Optional Boolean structures
     ) {
-        if (WorldService.get().getWorldByName(name) != null) {
+        if (!WorldCreationService.isValidName(name)) {
+            translator.translate("commands.world.create.invalid_name")
+                    .withPrefix().send(actor.sender());
+            return;
+        }
+
+        if (WorldService.get().getAllWorlds().stream().anyMatch(world -> world.getName().equalsIgnoreCase(name))) {
             translator.translate("commands.world.create.already_exists")
                     .withPrefix().replace("worldName", name).send(actor.sender());
             return;
         }
-        if (WorldFileUtils.isWorldOnDisk(name)) {
+        if (WorldFileUtils.findWorldNameOnDisk(name) != null) {
             translator.translate("commands.world.create.disk_exists")
                     .withPrefix().replace("worldName", name).send(actor.sender());
             return;
@@ -40,7 +46,7 @@ public class WorldCreateCMD extends FancyContext {
                 .replace("worldName", name)
                 .send(actor.sender());
 
-        WorldCreationService.Result result = WorldCreationService.create(name, seed, environment, generator, structures, false);
+        WorldCreationService.Result result = WorldCreationService.create(name, seed, environment, generator, structures);
         String key = switch (result.status()) {
             case CREATED -> "commands.world.create.success";
             case INVALID_NAME -> "commands.world.create.invalid_name";

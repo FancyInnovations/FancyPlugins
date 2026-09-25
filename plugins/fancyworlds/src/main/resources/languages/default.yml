@@ -68,7 +68,7 @@ messages:
     fancyworlds:
       version:
         current_version: "You are running FancyWorlds {primaryColor}v{version}{secondaryColor}."
-        version_outdated: "You are running an outdated version of FancyWorlds. Please update to the latest version {primaryColor}v{latestVersion}{secondaryColor}({downloadURL})."
+        version_outdated: "You are running an outdated version of FancyWorlds. Please update to the latest version {primaryColor}v{latestVersion} {secondaryColor}(<click:open_url:'{downloadURL}'>{downloadURL}</click>)."
       config:
         reload:
           confirmation: "{warningColor}Are you sure you want to reload the configuration? This will apply any changes made to the config file."
@@ -100,6 +100,7 @@ messages:
         disk_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists on disk. Load it using {primaryColor}/world load {worldName}{errorColor} or choose a different name."
         failed: "{errorColor}Failed to create world {primaryColor}{worldName}{errorColor}."
       teleport:
+        invalid_destination: "{errorColor}The destination must be in world {primaryColor}{worldName}{errorColor}."
         success: "Teleported {primaryColor}{playerName}{secondaryColor} to world {primaryColor}{worldName}{secondaryColor}."
         failed: "{errorColor}Failed to teleport {primaryColor}{playerName}{errorColor} to world {primaryColor}{worldName}{errorColor}."
         already_in_world: "{errorColor}You are already in world {primaryColor}{worldName}{errorColor}."

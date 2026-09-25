@@ -4,6 +4,8 @@ import com.fancyinnovations.fancynpcsmodel.main.FancyNpcsModelPlugin;
 import de.oliver.fancyanalytics.logger.properties.StringProperty;
 import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.ReflectionUtils;
+import de.oliver.fancylib.serverSoftware.ServerSoftware;
+import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
@@ -14,6 +16,7 @@ import kr.toxicity.model.api.event.hitbox.HitBoxInteractAtEvent;
 import kr.toxicity.model.api.platform.PlatformEntity;
 import kr.toxicity.model.api.tracker.EntityTracker;
 import kr.toxicity.model.api.tracker.EntityTrackerRegistry;
+import kr.toxicity.model.api.tracker.ModelScaler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -25,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CustomModelAttribute {
 
@@ -46,12 +50,37 @@ public class CustomModelAttribute {
         }
         bukkitEntity.customName(Component.empty());
 
-        // Close all existing trackers
-        closeAllTrackers(bukkitEntity);
-
         // remove model if model name is "@none"
         if (modelName.equalsIgnoreCase("@none")) {
+            closeAllTrackers(bukkitEntity);
             return;
+        }
+
+        // setModel() re-runs on every respawn (NpcData#applyAllAttributes is called from
+        // Npc#update, which every spawn() call ends with), almost always with the same
+        // modelName as before. Unconditionally closing and recreating the tracker here on
+        // every single one of those calls tears down and immediately rebuilds BetterModel's
+        // display-entity bones, racing BetterModel's own (partly async) tracker close - this
+        // was observed to desync entity metadata types on the client (IllegalStateException:
+        // "Invalid entity data item type", disconnecting the player) when a respawn happened
+        // shortly after another. getOrCreate() below already returns the existing tracker if
+        // one exists for this exact model, so only close when actually switching models.
+        boolean alreadyOnThisModel = BetterModel.registry(BukkitAdapter.adapt(bukkitEntity))
+                .map(r -> r.tracker(modelName) != null)
+                .orElse(false);
+        if (!alreadyOnThisModel) {
+            closeAllTrackers(bukkitEntity);
+        }
+
+        // FancyNpcs applies attributes (this) before it applies the npc's configured
+        // rotation to its underlying fake entity (Npc#update calls
+        // NpcData#applyAllAttributes before Npc#move), so the entity's live yaw/pitch
+        // can still be stale/default at this point. BetterModel reads the entity's
+        // current rotation when the tracker is created, so without this the model can
+        // spawn facing the wrong way until something else (e.g. /bettermodel reload)
+        // forces a fresh read after the entity's rotation is actually correct.
+        if (npc.getData().getLocation() != null) {
+            bukkitEntity.setRotation(npc.getData().getLocation().getYaw(), npc.getData().getLocation().getPitch());
         }
 
         // Gets or creates entity tracker
@@ -67,9 +96,36 @@ public class CustomModelAttribute {
             return;
         }
 
+        // Only (re-)register hitbox listeners and scale when the tracker was actually just
+        // (re-)created - tracker.listenHitBox() has no de-duplication, so calling it again on
+        // a reused tracker would stack duplicate listeners and fire actions multiple times.
+        if (!alreadyOnThisModel) {
+            configureTracker(npc, tracker);
+        }
+
+        EntityTrackerRegistry registry = tracker.registry();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            runOnPlayerScheduler(player, () -> registry.spawn(BukkitAdapter.adapt(player)));
+        }
+    }
+
+    /**
+     * Applies the scale and (re-)registers the hitbox click listeners on a tracker.
+     * Called both right after creating a tracker in {@link #setModel} and from
+     * {@link #onTrackerCreated}, since BetterModel discards and recreates trackers
+     * (e.g. on {@code /bettermodel reload}), silently dropping any listeners that
+     * were only registered once at model-set time.
+     */
+    private static void configureTracker(Npc npc, EntityTracker tracker) {
         // Scale
+        // Uses an absolute value, not tracker.scaler().multiply(...): configureTracker() runs
+        // again on every respawn (setModel() re-runs on every update() cycle), and multiplying
+        // the tracker's current scaler compounds on every single call - the model grows
+        // exponentially the longer the server runs, eventually causing multi-second hitbox
+        // collision-check hangs (BlockGetter#forEachBlockIntersectedBetween) as the model size
+        // explodes.
         if (npc.getData().getScale() != 1) {
-            tracker.scaler(tracker.scaler().multiply(npc.getData().getScale()));
+            tracker.scaler(ModelScaler.value(npc.getData().getScale()));
         }
 
         // Right click on hitbox
@@ -89,10 +145,27 @@ public class CustomModelAttribute {
 
             npc.interact(player, ActionTrigger.LEFT_CLICK);
         });
+    }
 
-        EntityTrackerRegistry registry = tracker.registry();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            registry.spawn(BukkitAdapter.adapt(player));
+    /**
+     * Called whenever BetterModel (re-)creates an EntityTracker (e.g. on {@code /bettermodel reload}).
+     * Re-attaches this plugin's hitbox listeners if the tracker belongs to one of our custom-model npcs.
+     */
+    public static void onTrackerCreated(EntityTracker tracker) {
+        UUID entityUuid = tracker.registry().entity().uuid();
+
+        for (Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
+            if (!hasAttribute(npc)) {
+                continue;
+            }
+
+            Entity bukkitEntity = getBukkitEntity(npc);
+            if (bukkitEntity == null || !bukkitEntity.getUniqueId().equals(entityUuid)) {
+                continue;
+            }
+
+            configureTracker(npc, tracker);
+            return;
         }
     }
 
@@ -150,6 +223,22 @@ public class CustomModelAttribute {
         }
 
         return false;
+    }
+
+    /**
+     * Runs a task on the player's own region scheduler when using Folia.
+     * BetterModel's tracker API touches per-region state (e.g. scheduling hitbox
+     * packets for the player's location) and must be called from the thread that
+     * owns that region, or it fails (NullPointerException on RegionizedData) - the
+     * same reason FancyNpcs itself always sends its packets through this scheduler.
+     */
+    public static void runOnPlayerScheduler(Player player, Runnable task) {
+        if (ServerSoftware.isFolia()) {
+            player.getScheduler().run(FancyNpcsModelPlugin.get(), (t) -> task.run(), null);
+            return;
+        }
+
+        task.run();
     }
 
     public static EntityTracker getEntityTracker(Npc npc) {

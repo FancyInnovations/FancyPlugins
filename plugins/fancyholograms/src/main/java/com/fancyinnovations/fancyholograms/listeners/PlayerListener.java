@@ -2,6 +2,8 @@ package com.fancyinnovations.fancyholograms.listeners;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -111,6 +113,25 @@ public final class PlayerListener implements Listener {
                 });
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerLocaleChange(@NotNull final PlayerLocaleChangeEvent event) {
+        if (!this.plugin.getFHConfiguration().isRefreshHologramsOnLocaleChangeEnabled())
+            return;
+
+        Player player = event.getPlayer();
+
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            if (!player.isOnline())
+                return;
+
+            this.plugin.getHologramThread().submit(() -> {
+                for (final Hologram hologram : this.plugin.getRegistry().getAll()) {
+                    this.plugin.getController().refreshHologram(hologram, player);
+                }
+            });
+        }, 1L);
     }
 
 }

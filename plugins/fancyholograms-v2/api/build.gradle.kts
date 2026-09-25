@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
     compileOnly(project(":libraries:common"))
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10")

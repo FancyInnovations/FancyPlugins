@@ -9,6 +9,7 @@ import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -77,9 +79,26 @@ public class BackupService {
      * Creates a backup of the data folder by zipping its contents into a timestamped zip file in the backup folder.
      * If the backup folder does not exist, it will be created.
      *
-     * @return true if the backup was created successfully, false otherwise
+     * @return the result of the backup operation
      */
-    public boolean createBackup() {
+    public BackupResult createBackup() {
+        if (!DATA_FOLDER.isDirectory()) {
+            return BackupResult.NO_DATA;
+        }
+
+        try (Stream<Path> paths = Files.walk(DATA_FOLDER.toPath())) {
+            if (paths.noneMatch(Files::isRegularFile)) {
+                return BackupResult.NO_DATA;
+            }
+        } catch (IOException | UncheckedIOException e) {
+            FancyHologramsPlugin.get().getFancyLogger().error(
+                    "Failed to inspect data folder before creating backup",
+                    StringProperty.of("file", DATA_FOLDER.toString()),
+                    ThrowableProperty.of(e)
+            );
+            return BackupResult.FAILED;
+        }
+
         if (!BACKUP_FOLDER.exists()) {
             BACKUP_FOLDER.mkdirs();
         }
@@ -95,10 +114,10 @@ public class BackupService {
                     StringProperty.of("file", backupFile.toString()),
                     ThrowableProperty.of(e)
             );
-            return false;
+            return BackupResult.FAILED;
         }
 
-        return true;
+        return BackupResult.CREATED;
     }
 
     /**
@@ -192,9 +211,10 @@ public class BackupService {
         long lastBackupTimestamp = getLastBackupTimestamp();
         long backupInterval = FancyHologramsPlugin.get().getConfig().getLong("backups.interval") * 60 * 60 * 1000; // convert hours to milliseconds
         if (System.currentTimeMillis() - lastBackupTimestamp >= backupInterval) {
-            if (createBackup()) {
+            BackupResult result = createBackup();
+            if (result == BackupResult.CREATED) {
                 FancyHologramsPlugin.get().getLogger().info("Created a new backup.");
-            } else {
+            } else if (result == BackupResult.FAILED) {
                 FancyHologramsPlugin.get().getLogger().warning("Failed to create a new backup.");
             }
         }
@@ -210,5 +230,11 @@ public class BackupService {
                 }
             }
         }
+    }
+
+    public enum BackupResult {
+        CREATED,
+        NO_DATA,
+        FAILED
     }
 }

@@ -25,10 +25,14 @@ public class BackupCMD extends FancyContext {
     public void create(
             final BukkitCommandActor actor
     ) {
-        boolean success = plugin.getBackupService().createBackup();
+        BackupService.BackupResult result = plugin.getBackupService().createBackup();
 
-        if (success) {
+        if (result == BackupService.BackupResult.CREATED) {
             translator.translate("commands.fancyholograms.backup.create.success")
+                    .withPrefix()
+                    .send(actor.sender());
+        } else if (result == BackupService.BackupResult.NO_DATA) {
+            translator.translate("commands.fancyholograms.backup.create.no_data")
                     .withPrefix()
                     .send(actor.sender());
         } else {

@@ -42,6 +42,7 @@ messages:
       backup:
         create:
           success: "Successfully created a backup of all holograms (see 'plugins/FancyHolograms/backups')."
+          no_data: "{errorColor}There are no holograms to backup."
           failed: "{errorColor}Failed to create a backup of all holograms."
         list:
           empty: "{errorColor}There are no backups."

@@ -10,11 +10,17 @@ import de.oliver.fancylib.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import revxrsal.commands.annotation.CommandPlaceholder;
+import revxrsal.commands.annotation.Default;
+import revxrsal.commands.annotation.Range;
+import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.annotation.SuggestWith;
+import revxrsal.commands.orphan.OrphanCommand;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class CurrencyBaseCMD {
+public class CurrencyBaseCMD implements OrphanCommand {
 
     private final Currency currency;
 
@@ -22,6 +28,8 @@ public class CurrencyBaseCMD {
         this.currency = currency;
     }
 
+    @CommandPlaceholder
+    @CurrencyPermission
     public void info(Player player) {
         MessageHelper.info(player, " --- FancyEconomy Help ---");
         FancyEconomy.getInstance().getTranslator()
@@ -67,6 +75,8 @@ public class CurrencyBaseCMD {
         }
     }
 
+    @Subcommand("balance")
+    @CurrencyPermission
     public void balance(Player player) {
         CurrencyPlayer currencyPlayer = CurrencyPlayerManager.getPlayer(player.getUniqueId());
         double balance = currencyPlayer.getBalance(currency);
@@ -77,9 +87,11 @@ public class CurrencyBaseCMD {
                 .send(player);
     }
 
+    @Subcommand("balance")
+    @CurrencyPermission
     public void balance(
             Player player,
-            String targetName
+            @SuggestWith(AllPlayersSuggestion.class) String targetName
     ) {
         Player targetPlayer = Bukkit.getPlayer(targetName);
         if (targetPlayer != null) {
@@ -112,10 +124,12 @@ public class CurrencyBaseCMD {
                 .send(player);
     }
 
+    @Subcommand("pay")
+    @CurrencyPermission
     public void pay(
             Player player,
-            String targetName,
-            double amount
+            @SuggestWith(AllPlayersSuggestion.class) String targetName,
+            @Range(min = 0.01) double amount
     ) {
         Player targetPlayer = Bukkit.getPlayer(targetName);
         if (targetPlayer != null) {
@@ -181,6 +195,8 @@ public class CurrencyBaseCMD {
         }
     }
 
+    @Subcommand("withdraw")
+    @CurrencyPermission
     public void withdraw(
             Player player,
             double amount
@@ -248,13 +264,11 @@ public class CurrencyBaseCMD {
                 .send(player);
     }
 
-    public void balancetop(Player player) {
-        balancetop(player, 1);
-    }
-
+    @Subcommand("top")
+    @CurrencyPermission
     public void balancetop(
             Player player,
-            int page
+            @Range(min = 1) @Default("1") int page
     ) {
         BalanceTop balanceTop = BalanceTop.getForCurrency(currency);
 
@@ -285,10 +299,12 @@ public class CurrencyBaseCMD {
                 .send(player);
     }
 
+    @Subcommand("set")
+    @CurrencyPermission(admin = true)
     public void set(
             Player player,
-            String targetName,
-            double amount
+            @SuggestWith(AllPlayersSuggestion.class) String targetName,
+            @Range(min = 0.01) double amount
     ) {
         if (!player.hasPermission("fancyeconomy." + currency.name() + ".admin")) {
             FancyEconomy.getInstance().getTranslator()
@@ -322,10 +338,12 @@ public class CurrencyBaseCMD {
                 .send(player);
     }
 
+    @Subcommand("add")
+    @CurrencyPermission(admin = true)
     public void add(
             Player player,
-            String targetName,
-            double amount
+            @SuggestWith(AllPlayersSuggestion.class) String targetName,
+            @Range(min = 0.01) double amount
     ) {
         if (!player.hasPermission("fancyeconomy." + currency.name() + ".admin")) {
             FancyEconomy.getInstance().getTranslator()
@@ -359,10 +377,12 @@ public class CurrencyBaseCMD {
                 .send(Bukkit.getPlayer(uuid));
     }
 
+    @Subcommand("remove")
+    @CurrencyPermission(admin = true)
     public void remove(
             Player player,
-            String targetName,
-            double amount
+            @SuggestWith(AllPlayersSuggestion.class) String targetName,
+            @Range(min = 0.01) double amount
     ) {
         if (!player.hasPermission("fancyeconomy." + currency.name() + ".admin")) {
             FancyEconomy.getInstance().getTranslator()

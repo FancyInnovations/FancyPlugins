@@ -17,14 +17,14 @@ import de.oliver.fancylib.translations.TextConfig;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.versionFetcher.MasterVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
-import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.CommandAPIPaperConfig;
-import dev.jorel.commandapi.arguments.*;
+import revxrsal.commands.Lamp;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.bukkit.BukkitLamp;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
+import revxrsal.commands.orphan.Orphans;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -66,9 +66,6 @@ public class FancyEconomy extends JavaPlugin {
     public void onLoad() {
         config.reload();
 
-        CommandAPI.onLoad(new CommandAPIPaperConfig(instance).silentLogs(true));
-        registerCommands();
-
         usingVault = getServer().getPluginManager().getPlugin("Vault") != null;
         if (usingVault) {
             vaultEconomy = new FancyEconomyVault(CurrencyRegistry.getDefaultCurrency());
@@ -79,7 +76,6 @@ public class FancyEconomy extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        CommandAPI.onEnable();
         new FancyLib(this);
 
         scheduler.runTaskAsynchronously(() -> {
@@ -126,6 +122,8 @@ public class FancyEconomy extends JavaPlugin {
 
         CurrencyPlayerManager.loadPlayersFromDatabase();
 
+        registerCommands();
+
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), instance);
         Currency.WithdrawItem.WithdrawItemClick.INSTANCE.register();
 
@@ -142,8 +140,6 @@ public class FancyEconomy extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        CommandAPI.onDisable();
-
         for (CurrencyPlayer player : CurrencyPlayerManager.getAllPlayers()) {
             player.save(true);
         }
@@ -154,130 +150,24 @@ public class FancyEconomy extends JavaPlugin {
     }
 
     private void registerCommands() {
-        CommandAPI.registerCommand(FancyEconomyCMD.class);
-        CommandAPI.registerCommand(PayCMD.class);
-        CommandAPI.registerCommand(BalanceCMD.class);
-        CommandAPI.registerCommand(WithdrawCMD.class);
-        CommandAPI.registerCommand(BalanceTopCMD.class);
+        Lamp.Builder<BukkitCommandActor> builder = BukkitLamp.builder(this);
+        builder.permissionFactory((annotations, lamp) -> {
+            CurrencyPermission marker = annotations.get(CurrencyPermission.class);
+            Command command = annotations.get(Command.class);
+            if (marker == null || command == null) {
+                return null;
+            }
 
-        ArgumentSuggestions<CommandSender> allPlayersSuggestion = ArgumentSuggestions.strings(commandSenderSuggestionInfo -> CurrencyPlayerManager.getAllPlayerNames());
+            String currencyName = command.value()[0];
+            String permission = "fancyeconomy." + currencyName + (marker.admin() ? ".admin" : "");
+            return actor -> actor.sender().hasPermission(permission);
+        });
 
+        Lamp<BukkitCommandActor> lamp = builder.build();
+        lamp.register(new FancyEconomyCMD(), new PayCMD(), new BalanceCMD(), new WithdrawCMD(), new BalanceTopCMD());
 
         for (Currency currency : CurrencyRegistry.CURRENCIES) {
-            CurrencyBaseCMD baseCMD = new CurrencyBaseCMD(currency);
-
-            // info command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name())
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.info(sender);
-                    })
-                    .register();
-
-            // balance command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name())
-                    .withArguments(
-                            new LiteralArgument("balance").setListed(false)
-                    )
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.balance(sender);
-                    })
-                    .register();
-
-            // balance others command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name())
-                    .withArguments(
-                            new LiteralArgument("balance").setListed(false)
-                    )
-                    .withArguments(new StringArgument("targetName").includeSuggestions(allPlayersSuggestion))
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.balance(sender, (String) args.get(0));
-                    })
-                    .register();
-
-            // pay command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name())
-                    .withArguments(
-                            new LiteralArgument("pay").setListed(false)
-                    )
-                    .withArguments(new StringArgument("targetName").includeSuggestions(allPlayersSuggestion), new DoubleArgument("amount", 0.01))
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.pay(sender, (String) args.get(0), (Double) args.get(1));
-                    })
-                    .register();
-
-            // withdraw command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name())
-                    .withArguments(
-                            new LiteralArgument("withdraw").setListed(false)
-                    )
-                    .withArguments(new DoubleArgument("amount"))
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.withdraw(sender, (Double) args.get(0));
-                    })
-                    .register();
-
-            // balancetop command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name())
-                    .withArguments(
-                            new LiteralArgument("top").setListed(false)
-                    )
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.balancetop(sender);
-                    })
-                    .register();
-
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name())
-                    .withArguments(
-                            new LiteralArgument("top").setListed(false)
-                    )
-                    .withArguments(new IntegerArgument("page", 1))
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.balancetop(sender, (Integer) args.get(0));
-                    })
-                    .register();
-
-            // set command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name() + ".admin")
-                    .withArguments(
-                            new LiteralArgument("set").setListed(false)
-                    )
-                    .withArguments(new StringArgument("targetName").includeSuggestions(allPlayersSuggestion), new DoubleArgument("amount", 0.01))
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.set(sender, (String) args.get(0), (Double) args.get(1));
-                    })
-                    .register();
-
-            // add command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name() + ".admin")
-                    .withArguments(
-                            new LiteralArgument("add").setListed(false)
-                    )
-                    .withArguments(new StringArgument("targetName").includeSuggestions(allPlayersSuggestion), new DoubleArgument("amount", 0.01))
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.add(sender, (String) args.get(0), (Double) args.get(1));
-                    })
-                    .register();
-
-            // remove command
-            new CommandAPICommand(currency.name())
-                    .withPermission("fancyeconomy." + currency.name() + ".admin")
-                    .withArguments(
-                            new LiteralArgument("remove").setListed(false)
-                    )
-                    .withArguments(new StringArgument("targetName").includeSuggestions(allPlayersSuggestion), new DoubleArgument("amount", 0.01))
-                    .executesPlayer((sender, args) -> {
-                        baseCMD.remove(sender, (String) args.get(0), (Double) args.get(1));
-                    })
-                    .register();
+            lamp.register(Orphans.path(currency.name()).handler(new CurrencyBaseCMD(currency)));
         }
     }
 

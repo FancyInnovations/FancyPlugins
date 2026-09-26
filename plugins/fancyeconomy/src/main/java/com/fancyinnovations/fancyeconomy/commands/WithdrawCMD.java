@@ -6,30 +6,28 @@ import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
 import de.oliver.fancylib.MessageHelper;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.arguments.ADoubleArgument;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
-@Command("withdraw")
-@Permission("fancyeconomy.withdraw")
 public class WithdrawCMD {
 
-    @Default
-    public static void info(CommandSender player) {
+    @Command("withdraw")
+    @CommandPermission("fancyeconomy.withdraw")
+    public void info(CommandSender player) {
         MessageHelper.info(player, " --- FancyEconomy Info ---");
         MessageHelper.info(player, "/withdraw <count> - Withdraw a certain amount of money");
     }
 
-    @Default
-    public static void withdraw(
+    @Command("withdraw")
+    @CommandPermission("fancyeconomy.withdraw")
+    public void withdraw(
             Player player,
-            @ADoubleArgument double amount
+            double amount
     ) {
         Currency currency = CurrencyRegistry.getDefaultCurrency();
 

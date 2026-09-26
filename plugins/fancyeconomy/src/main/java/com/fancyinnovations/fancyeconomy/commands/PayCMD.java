@@ -7,32 +7,31 @@ import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
 import de.oliver.fancylib.MessageHelper;
 import de.oliver.fancylib.UUIDFetcher;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.arguments.ADoubleArgument;
-import dev.jorel.commandapi.annotations.arguments.AStringArgument;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.Range;
+import revxrsal.commands.annotation.SuggestWith;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@Command("pay")
-@Permission("fancyeconomy.pay")
 public class PayCMD {
 
-    @Default
-    public static void info(CommandSender player) {
+    @Command("pay")
+    @CommandPermission("fancyeconomy.pay")
+    public void info(CommandSender player) {
         MessageHelper.info(player, " --- FancyEconomy Info ---");
         MessageHelper.info(player, "/pay <player> <count> - Pay money to a certain player");
     }
 
-    @Default
-    public static void pay(
+    @Command("pay")
+    @CommandPermission("fancyeconomy.pay")
+    public void pay(
             Player player,
-            @AStringArgument String targetName,
-            @ADoubleArgument(min = 0.1) double amount
+            @SuggestWith(AllPlayersSuggestion.class) String targetName,
+            @Range(min = 0.1) double amount
     ) {
         Player targetPlayer = Bukkit.getPlayer(targetName);
         if (targetPlayer != null) {

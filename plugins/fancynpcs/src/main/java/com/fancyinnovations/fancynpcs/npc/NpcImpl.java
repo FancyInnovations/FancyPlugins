@@ -243,6 +243,15 @@ public class NpcImpl extends Npc {
             profile = new FS_GameProfile(fsEntity.getUuid(), localName, properties);
         } else {
             profile = FS_GameProfile.fromBukkit(viewer.getPlayerProfile());
+            if (!profile.getProperties().containsKey("textures")) {
+                if (data.getSkinData() != null && data.getSkinData().hasTexture()) {
+                    profile.getProperties().put("textures", new FS_GameProfile.Property(
+                            "textures",
+                            data.getSkinData().getTextureValue(),
+                            data.getSkinData().getTextureSignature()
+                    ));
+                }
+            }
             profile.setUUID(fsEntity.getUuid());
             profile.setName(localName);
         }

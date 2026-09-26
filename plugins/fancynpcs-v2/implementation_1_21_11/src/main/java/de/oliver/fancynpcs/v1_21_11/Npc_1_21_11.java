@@ -201,27 +201,35 @@ public class Npc_1_21_11 extends Npc {
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
-        npc.setRot(location.getYaw(), location.getPitch());
-        npc.setYHeadRot(location.getYaw());
-        npc.setXRot(location.getPitch());
-        npc.setYRot(location.getYaw());
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
+
+        addPositionRotationPackets(packets, location.getYaw(), location.getPitch());
+
+        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(bundlePacket));
+    }
+
+    private void addPositionRotationPackets(List<Packet<? super ClientGamePacketListener>> packets, float yaw, float pitch) {
+        npc.setRot(yaw, pitch);
+        npc.setYHeadRot(yaw);
+        npc.setXRot(pitch);
+        npc.setYRot(yaw);
 
         ClientboundTeleportEntityPacket teleportEntityPacket = new ClientboundTeleportEntityPacket(
                 npc.getId(),
                 new PositionMoveRotation(
                         new Vec3(data.getLocation().getX(), data.getLocation().getY(), data.getLocation().getZ()),
                         Vec3.ZERO,
-                        location.getYaw(),
-                        location.getPitch()
+                        yaw,
+                        pitch
                 ),
                 Set.of(),
                 false
         );
-        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(teleportEntityPacket));
+        packets.add(teleportEntityPacket);
 
         float angelMultiplier = 256f / 360f;
-        ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (location.getYaw() * angelMultiplier));
-        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(rotateHeadPacket));
+        packets.add(new ClientboundRotateHeadPacket(npc, (byte) (yaw * angelMultiplier)));
     }
 
     @Override
@@ -391,28 +399,10 @@ public class Npc_1_21_11 extends Npc {
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
-        npc.setPosRaw(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());
-        npc.setRot(data.getLocation().getYaw(), data.getLocation().getPitch());
-        npc.setYHeadRot(data.getLocation().getYaw());
-        npc.setXRot(data.getLocation().getPitch());
-        npc.setYRot(data.getLocation().getYaw());
-
         List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
-        ClientboundTeleportEntityPacket teleportEntityPacket = new ClientboundTeleportEntityPacket(
-                npc.getId(),
-                new PositionMoveRotation(
-                        new Vec3(data.getLocation().getX(), data.getLocation().getY(), data.getLocation().getZ()),
-                        Vec3.ZERO,
-                        data.getLocation().getYaw(),
-                        data.getLocation().getPitch()
-                ),
-                Set.of(),
-                false
-        );
-        packets.add(teleportEntityPacket);
 
-        float angelMultiplier = 256f / 360f;
-        packets.add(new ClientboundRotateHeadPacket(npc, (byte) (data.getLocation().getYaw() * angelMultiplier)));
+        npc.setPosRaw(data.getLocation().x(), data.getLocation().y(), data.getLocation().z());
+        addPositionRotationPackets(packets, data.getLocation().getYaw(), data.getLocation().getPitch());
 
         if (swingArm && npc instanceof ServerPlayer) {
             packets.add(new ClientboundAnimatePacket(npc, 0));

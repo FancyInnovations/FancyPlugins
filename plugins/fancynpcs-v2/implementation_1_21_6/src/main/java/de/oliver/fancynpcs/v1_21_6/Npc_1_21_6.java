@@ -66,11 +66,9 @@ public class Npc_1_21_6 extends Npc {
     public void create() {
         MinecraftServer minecraftServer = ((CraftServer) Bukkit.getServer()).getServer();
         ServerLevel serverLevel = ((CraftWorld) data.getLocation().getWorld()).getHandle();
-        GameProfile gameProfile = new GameProfile(uuid, localName);
 
         if (data.getType() == org.bukkit.entity.EntityType.PLAYER) {
-            npc = new ServerPlayer(minecraftServer, serverLevel, new GameProfile(uuid, ""), ClientInformation.createDefault());
-            ((ServerPlayer) npc).gameProfile = gameProfile;
+            npc = new ServerPlayer(minecraftServer, serverLevel, new GameProfile(uuid, localName), ClientInformation.createDefault());
         } else {
             Optional<Holder.Reference<EntityType<?>>> entityTypeReference = BuiltInRegistries.ENTITY_TYPE.get(CraftNamespacedKey.toMinecraft(data.getType().getKey()));
             EntityType<?> nmsType = entityTypeReference.get().value(); // TODO handle empty

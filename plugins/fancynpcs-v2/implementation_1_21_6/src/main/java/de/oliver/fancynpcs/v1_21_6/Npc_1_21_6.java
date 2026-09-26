@@ -173,20 +173,18 @@ public class Npc_1_21_6 extends Npc {
 
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
         if (npc instanceof ServerPlayer npcPlayer) {
-            ClientboundPlayerInfoRemovePacket playerInfoRemovePacket = new ClientboundPlayerInfoRemovePacket(List.of((npcPlayer.getUUID())));
-            runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(playerInfoRemovePacket));
+            packets.add(new ClientboundPlayerInfoRemovePacket(List.of((npcPlayer.getUUID()))));
         }
 
-        // remove entity
-        ClientboundRemoveEntitiesPacket removeEntitiesPacket = new ClientboundRemoveEntitiesPacket(npc.getId());
-        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(removeEntitiesPacket));
+        packets.add(new ClientboundRemoveEntitiesPacket(npc.getId()));
 
-        // remove sitting vehicle
         if (sittingVehicle != null) {
-            ClientboundRemoveEntitiesPacket removeSittingVehiclePacket = new ClientboundRemoveEntitiesPacket(sittingVehicle.getId());
-            runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(removeSittingVehiclePacket));
+            packets.add(new ClientboundRemoveEntitiesPacket(sittingVehicle.getId()));
         }
+        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(bundlePacket));
 
         isVisibleForPlayer.put(serverPlayer.getUUID(), false);
     }
@@ -380,6 +378,7 @@ public class Npc_1_21_6 extends Npc {
         npc.setXRot(data.getLocation().getPitch());
         npc.setYRot(data.getLocation().getYaw());
 
+        List<Packet<? super ClientGamePacketListener>> packets = new ArrayList<>();
         ClientboundTeleportEntityPacket teleportEntityPacket = new ClientboundTeleportEntityPacket(
                 npc.getId(),
                 new PositionMoveRotation(
@@ -391,16 +390,16 @@ public class Npc_1_21_6 extends Npc {
                 Set.of(),
                 false
         );
-        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(teleportEntityPacket));
+        packets.add(teleportEntityPacket);
 
         float angelMultiplier = 256f / 360f;
-        ClientboundRotateHeadPacket rotateHeadPacket = new ClientboundRotateHeadPacket(npc, (byte) (data.getLocation().getYaw() * angelMultiplier));
-        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(rotateHeadPacket));
+        packets.add(new ClientboundRotateHeadPacket(npc, (byte) (data.getLocation().getYaw() * angelMultiplier)));
 
         if (swingArm && npc instanceof ServerPlayer) {
-            ClientboundAnimatePacket animatePacket = new ClientboundAnimatePacket(npc, 0);
-            runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(animatePacket));
+            packets.add(new ClientboundAnimatePacket(npc, 0));
         }
+        ClientboundBundlePacket bundlePacket = new ClientboundBundlePacket(packets);
+        runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(bundlePacket));
     }
 
     private ClientboundPlayerInfoUpdatePacket.Entry getEntry(ServerPlayer npcPlayer, ServerPlayer viewer) {

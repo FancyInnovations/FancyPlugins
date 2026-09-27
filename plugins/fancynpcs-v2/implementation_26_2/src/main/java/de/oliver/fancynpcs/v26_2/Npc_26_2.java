@@ -319,8 +319,7 @@ public class Npc_26_2 extends Npc {
         }
 
         if (!equipmentList.isEmpty()) {
-            ClientboundSetEquipmentPacket setEquipmentPacket = new ClientboundSetEquipmentPacket(npc.getId(), equipmentList);
-            packets.add(setEquipmentPacket);
+            packets.add(new ClientboundSetEquipmentPacket(npc.getId(), equipmentList));
         }
 
         if (npc instanceof ServerPlayer) {
@@ -342,8 +341,7 @@ public class Npc_26_2 extends Npc {
                 setSitting(serverPlayer);
             } else {
                 if (sittingVehicle != null) {
-                    ClientboundRemoveEntitiesPacket removeSittingVehiclePacket = new ClientboundRemoveEntitiesPacket(sittingVehicle.getId());
-                    packets.add(removeSittingVehiclePacket);
+                    packets.add(new ClientboundRemoveEntitiesPacket(sittingVehicle.getId()));
                 }
             }
 
@@ -365,8 +363,7 @@ public class Npc_26_2 extends Npc {
             }
 
             if (!changedAttributes.isEmpty()) {
-                ClientboundUpdateAttributesPacket updateAttributesPacket = new ClientboundUpdateAttributesPacket(npc.getId(), changedAttributes);
-                packets.add(updateAttributesPacket);
+                packets.add(new ClientboundUpdateAttributesPacket(npc.getId(), changedAttributes));
             }
         }
 

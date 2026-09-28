@@ -1,6 +1,6 @@
 plugins {
     id("com.gradleup.shadow") version "9.6.1" apply false
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.24" apply false
+    id("io.papermc.paperweight.userdev") version "2.0-SNAPSHOT" apply false
     id("xyz.jpenilla.run-paper") version "3.1.0" apply false
     id("de.eldoria.plugin-yml.paper") version "0.9.0" apply false
 }

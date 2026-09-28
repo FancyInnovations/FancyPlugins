@@ -2,6 +2,7 @@ package com.fancyinnovations.fancyworlds.worlds.service;
 
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
+import com.fancyinnovations.fancyworlds.main.FancyWorldsPlugin;
 import com.fancyinnovations.fancyworlds.utils.WorldFileUtils;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ public final class WorldOperations {
     }
 
     public static boolean load(FWorldImpl world) {
-        if (world.isWorldLoaded() || !world.isWorldOnDisk()) return false;
+        if (world.isWorldLoaded() || !world.isWorldOnDisk() || FancyWorldsPlugin.get().getBackupService().isBusy(world.getName())) return false;
         WorldService service = WorldService.get();
         boolean newlyLinked = service.getWorldByName(world.getName()) == null;
         // The load event fires before createWorld returns and must resolve to this same FWorld.
@@ -68,6 +69,7 @@ public final class WorldOperations {
 
     public static void delete(FWorld world) throws IOException {
         if (world.isWorldLoaded()) throw new IOException("World is loaded");
+        if (FancyWorldsPlugin.get().getBackupService().isBusy(world.getName())) throw new IOException("World backup is in progress");
 
         Path container = Bukkit.getWorldContainer().toPath().toAbsolutePath().normalize();
         Path directory = WorldFileUtils.getWorldDirectory(world.getName()).toAbsolutePath().normalize();

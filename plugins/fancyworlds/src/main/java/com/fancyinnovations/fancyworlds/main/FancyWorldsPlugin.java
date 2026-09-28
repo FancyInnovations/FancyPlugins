@@ -8,6 +8,7 @@ import com.fancyinnovations.fancyworlds.api.portals.PortalStorage;
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
 import com.fancyinnovations.fancyworlds.api.worlds.WorldStorage;
+import com.fancyinnovations.fancyworlds.backups.WorldBackupService;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWConfigCMD;
 import com.fancyinnovations.fancyworlds.commands.fancyworlds.FWVersionCMD;
 import com.fancyinnovations.fancyworlds.commands.portal.PortalCMD;
@@ -73,6 +74,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
 
     private WorldStorage worldStorage;
     private WorldService worldService;
+    private WorldBackupService backupService;
     private PortalStorage portalStorage;
     private PortalService portalService;
     private PortalSelectionManager portalSelectionManager;
@@ -137,6 +139,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         // Services
         worldStorage = new JsonWorldStorage();
         worldService = new WorldServiceImpl(worldStorage);
+        backupService = new WorldBackupService(this);
         portalStorage = new JsonPortalStorage();
         portalService = new PortalServiceImpl(portalStorage);
         portalSelectionManager = new PortalSelectionManager();
@@ -252,6 +255,7 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
         lamp.register(WorldTeleportCMD.INSTANCE);
         lamp.register(WorldLoadCMD.INSTANCE);
         lamp.register(WorldDeleteCMD.INSTANCE);
+        lamp.register(new WorldBackupCMD(backupService));
         lamp.register(WorldUnloadCMD.INSTANCE);
         lamp.register(WorldGamerulesCMD.INSTANCE);
         lamp.register(WorldTimeCMD.INSTANCE);
@@ -345,6 +349,10 @@ public class FancyWorldsPlugin extends JavaPlugin implements FancyWorlds {
     @Override
     public WorldService getWorldService() {
         return worldService;
+    }
+
+    public WorldBackupService getBackupService() {
+        return backupService;
     }
 
     @Override

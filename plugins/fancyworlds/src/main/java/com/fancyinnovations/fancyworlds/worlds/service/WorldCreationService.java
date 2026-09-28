@@ -1,6 +1,7 @@
 package com.fancyinnovations.fancyworlds.worlds.service;
 
 import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
+import com.fancyinnovations.fancyworlds.main.FancyWorldsPlugin;
 import com.fancyinnovations.fancyworlds.utils.WorldFileUtils;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import com.fancyinnovations.fancyworlds.worlds.FWorldSettingsImpl;
@@ -27,6 +28,9 @@ public final class WorldCreationService {
         }
         if (WorldFileUtils.findWorldNameOnDisk(name) != null) {
             return new Result(Status.DISK_EXISTS, null);
+        }
+        if (FancyWorldsPlugin.get().getBackupService().isBusy(name)) {
+            return new Result(Status.FAILED, null);
         }
 
         FWorldImpl fworld = new FWorldImpl(UUID.randomUUID(), name, seed, environment, generator, structures, new FWorldSettingsImpl());

@@ -99,13 +99,7 @@ public class NpcManagerImpl implements NpcManager {
 
     @Override
     public Npc getNpcById(String id) {
-        for (Npc npc : getAllNpcs()) {
-            if (npc.getData().getId().equals(id)) {
-                return npc;
-            }
-        }
-
-        return null;
+        return npcs.get(id);
     }
 
     @Override
@@ -139,7 +133,7 @@ public class NpcManagerImpl implements NpcManager {
             }
         }
 
-        YamlConfiguration npcConfig = YamlConfiguration.loadConfiguration(npcConfigFile);
+        YamlConfiguration npcConfigRoot = YamlConfiguration.loadConfiguration(npcConfigFile);
 
         for (Npc npc : getAllNpcs()) {
             if (!npc.isSaveToFile()) {
@@ -152,53 +146,57 @@ public class NpcManagerImpl implements NpcManager {
             }
 
             NpcData data = npc.getData();
+            ConfigurationSection npcConfig = npcConfigRoot.getConfigurationSection("npcs." + data.getId());
+            if (npcConfig == null) {
+                npcConfig = npcConfigRoot.createSection("npcs." + data.getId());
+            }
 
-            npcConfig.set("npcs." + data.getId() + ".name", data.getName());
-            npcConfig.set("npcs." + data.getId() + ".creator", data.getCreator().toString());
-            npcConfig.set("npcs." + data.getId() + ".displayName", data.getDisplayName());
-            npcConfig.set("npcs." + data.getId() + ".type", data.getType().name());
-            npcConfig.set("npcs." + data.getId() + ".location.world", data.getLocation().getWorld().getName());
-            npcConfig.set("npcs." + data.getId() + ".location.x", data.getLocation().getX());
-            npcConfig.set("npcs." + data.getId() + ".location.y", data.getLocation().getY());
-            npcConfig.set("npcs." + data.getId() + ".location.z", data.getLocation().getZ());
-            npcConfig.set("npcs." + data.getId() + ".location.yaw", data.getLocation().getYaw());
-            npcConfig.set("npcs." + data.getId() + ".location.pitch", data.getLocation().getPitch());
-            npcConfig.set("npcs." + data.getId() + ".showInTab", data.isShowInTab());
-            npcConfig.set("npcs." + data.getId() + ".spawnEntity", data.isSpawnEntity());
-            npcConfig.set("npcs." + data.getId() + ".collidable", data.isCollidable());
-            npcConfig.set("npcs." + data.getId() + ".glowing", data.isGlowing());
-            npcConfig.set("npcs." + data.getId() + ".glowingColor", data.getGlowingColor().toString());
-            npcConfig.set("npcs." + data.getId() + ".turnToPlayer", data.isTurnToPlayer());
-            npcConfig.set("npcs." + data.getId() + ".turnToPlayerDistance", data.getTurnToPlayerDistance());
-            npcConfig.set("npcs." + data.getId() + ".messages", null);
-            npcConfig.set("npcs." + data.getId() + ".playerCommands", null);
-            npcConfig.set("npcs." + data.getId() + ".serverCommands", null);
-            npcConfig.set("npcs." + data.getId() + ".sendMessagesRandomly", null);
-            npcConfig.set("npcs." + data.getId() + ".interactionCooldown", data.getInteractionCooldown());
-            npcConfig.set("npcs." + data.getId() + ".scale", data.getScale());
-            npcConfig.set("npcs." + data.getId() + ".visibility_distance", data.getVisibilityDistance());
-            npcConfig.set("npcs." + data.getId() + ".visibility", data.getVisibility().name());
+            npcConfig.set("name", data.getName());
+            npcConfig.set("creator", data.getCreator().toString());
+            npcConfig.set("displayName", data.getDisplayName());
+            npcConfig.set("type", data.getType().name());
+            npcConfig.set("location.world", data.getLocation().getWorld().getName());
+            npcConfig.set("location.x", data.getLocation().getX());
+            npcConfig.set("location.y", data.getLocation().getY());
+            npcConfig.set("location.z", data.getLocation().getZ());
+            npcConfig.set("location.yaw", data.getLocation().getYaw());
+            npcConfig.set("location.pitch", data.getLocation().getPitch());
+            npcConfig.set("showInTab", data.isShowInTab());
+            npcConfig.set("spawnEntity", data.isSpawnEntity());
+            npcConfig.set("collidable", data.isCollidable());
+            npcConfig.set("glowing", data.isGlowing());
+            npcConfig.set("glowingColor", data.getGlowingColor().toString());
+            npcConfig.set("turnToPlayer", data.isTurnToPlayer());
+            npcConfig.set("turnToPlayerDistance", data.getTurnToPlayerDistance());
+            npcConfig.set("messages", null);
+            npcConfig.set("playerCommands", null);
+            npcConfig.set("serverCommands", null);
+            npcConfig.set("sendMessagesRandomly", null);
+            npcConfig.set("interactionCooldown", data.getInteractionCooldown());
+            npcConfig.set("scale", data.getScale());
+            npcConfig.set("visibility_distance", data.getVisibilityDistance());
+            npcConfig.set("visibility", data.getVisibility().name());
 
             if (data.getSkinData() != null) {
-                npcConfig.set("npcs." + data.getId() + ".skin.identifier", data.getSkinData().getIdentifier());
-                npcConfig.set("npcs." + data.getId() + ".skin.variant", data.getSkinData().getVariant().name());
+                npcConfig.set("skin.identifier", data.getSkinData().getIdentifier());
+                npcConfig.set("skin.variant", data.getSkinData().getVariant().name());
             } else {
-                npcConfig.set("npcs." + data.getId() + ".skin.identifier", null);
+                npcConfig.set("skin.identifier", null);
             }
-            npcConfig.set("npcs." + data.getId() + ".skin.mirrorSkin", data.isMirrorSkin());
+            npcConfig.set("skin.mirrorSkin", data.isMirrorSkin());
 
             if (data.getEquipment() != null) {
                 for (Map.Entry<NpcEquipmentSlot, ItemStack> entry : data.getEquipment().entrySet()) {
-                    npcConfig.set("npcs." + data.getId() + ".equipment." + entry.getKey().name(), entry.getValue());
+                    npcConfig.set("equipment." + entry.getKey().name(), entry.getValue());
                 }
             }
 
             for (NpcAttribute attribute : plugin.getAttributeManager().getAllAttributesForEntityType(data.getType())) {
                 String value = data.getAttributes().getOrDefault(attribute, null);
-                npcConfig.set("npcs." + data.getId() + ".attributes." + attribute.getName(), value);
+                npcConfig.set("attributes." + attribute.getName(), value);
             }
 
-            npcConfig.set("npcs." + data.getId() + ".actions", null);
+            npcConfig.set("actions", null);
             for (Map.Entry<ActionTrigger, List<NpcAction.NpcActionData>> entry : npc.getData().getActions().entrySet()) {
                 for (NpcAction.NpcActionData actionData : entry.getValue()) {
                     if (actionData == null) {
@@ -206,11 +204,11 @@ public class NpcManagerImpl implements NpcManager {
                     }
 
                     if (actionData.action() instanceof UnknownActionAction unknownActionAction) {
-                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".action", unknownActionAction.getUnknownActionName());
-                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".value", unknownActionAction.getUnknownActionValue());
+                        npcConfig.set("actions." + entry.getKey().name() + "." + actionData.order() + ".action", unknownActionAction.getUnknownActionName());
+                        npcConfig.set("actions." + entry.getKey().name() + "." + actionData.order() + ".value", unknownActionAction.getUnknownActionValue());
                     } else {
-                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".action", actionData.action().getName());
-                        npcConfig.set("npcs." + data.getId() + ".actions." + entry.getKey().name() + "." + actionData.order() + ".value", actionData.value());
+                        npcConfig.set("actions." + entry.getKey().name() + "." + actionData.order() + ".action", actionData.action().getName());
+                        npcConfig.set("actions." + entry.getKey().name() + "." + actionData.order() + ".value", actionData.value());
                     }
                 }
             }
@@ -219,7 +217,7 @@ public class NpcManagerImpl implements NpcManager {
         }
 
         try {
-            npcConfig.save(npcConfigFile);
+            npcConfigRoot.save(npcConfigFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -228,33 +226,37 @@ public class NpcManagerImpl implements NpcManager {
     @Override
     public void loadNpcs() {
         npcs.clear();
-        YamlConfiguration npcConfig = YamlConfiguration.loadConfiguration(npcConfigFile);
+        YamlConfiguration npcConfigRoot = YamlConfiguration.loadConfiguration(npcConfigFile);
 
-        if (!npcConfig.isConfigurationSection("npcs")) {
+        if (!npcConfigRoot.isConfigurationSection("npcs")) {
             this.setLoaded();
             return;
         }
 
-        for (String id : npcConfig.getConfigurationSection("npcs").getKeys(false)) {
-            String name = npcConfig.getString("npcs." + id + ".name");
+        for (String id : npcConfigRoot.getConfigurationSection("npcs").getKeys(false)) {
+            ConfigurationSection npcConfig = npcConfigRoot.getConfigurationSection("npcs." + id);
+            if (npcConfig == null) {
+                continue;
+            }
+            String name = npcConfig.getString("name");
             if (name == null) name = id;
 
-            String creatorStr = npcConfig.getString("npcs." + id + ".creator");
+            String creatorStr = npcConfig.getString("creator");
             UUID creator = creatorStr == null ? null : UUID.fromString(creatorStr);
 
-            String displayName = npcConfig.getString("npcs." + id + ".displayName", "<empty>");
-            EntityType type = EntityType.valueOf(npcConfig.getString("npcs." + id + ".type", "PLAYER").toUpperCase());
+            String displayName = npcConfig.getString("displayName", "<empty>");
+            EntityType type = EntityType.valueOf(npcConfig.getString("type", "PLAYER").toUpperCase());
 
             Location location = null;
 
             try {
-                location = npcConfig.getLocation("npcs." + id + ".location");
+                location = npcConfig.getLocation("location");
             } catch (Exception ignored) {
                 logger.warn("Could not load location for npc '" + id + "'");
             }
 
             if (location == null) {
-                String worldName = npcConfig.getString("npcs." + id + ".location.world");
+                String worldName = npcConfig.getString("location.world");
                 World world = Bukkit.getWorld(worldName);
 
                 if (world == null) {
@@ -269,18 +271,18 @@ public class NpcManagerImpl implements NpcManager {
                     continue;
                 }
 
-                double x = npcConfig.getDouble("npcs." + id + ".location.x");
-                double y = npcConfig.getDouble("npcs." + id + ".location.y");
-                double z = npcConfig.getDouble("npcs." + id + ".location.z");
-                float yaw = (float) npcConfig.getDouble("npcs." + id + ".location.yaw");
-                float pitch = (float) npcConfig.getDouble("npcs." + id + ".location.pitch");
+                double x = npcConfig.getDouble("location.x");
+                double y = npcConfig.getDouble("location.y");
+                double z = npcConfig.getDouble("location.z");
+                float yaw = (float) npcConfig.getDouble("location.yaw");
+                float pitch = (float) npcConfig.getDouble("location.pitch");
 
                 location = new Location(world, x, y, z, yaw, pitch);
             }
 
             SkinData skin = null;
-            String skinIdentifier = npcConfig.getString("npcs." + id + ".skin.identifier", npcConfig.getString("npcs." + id + ".skin.uuid", ""));
-            String skinVariantStr = npcConfig.getString("npcs." + id + ".skin.variant", SkinData.SkinVariant.AUTO.name());
+            String skinIdentifier = npcConfig.getString("skin.identifier", npcConfig.getString("skin.uuid", ""));
+            String skinVariantStr = npcConfig.getString("skin.variant", SkinData.SkinVariant.AUTO.name());
             SkinData.SkinVariant skinVariant = SkinData.SkinVariant.valueOf(skinVariantStr);
             if (!skinIdentifier.isEmpty()) {
                 try {
@@ -293,12 +295,12 @@ public class NpcManagerImpl implements NpcManager {
             }
 
 
-            if (npcConfig.isSet("npcs." + id + ".skin.value") && npcConfig.isSet("npcs." + id + ".skin.signature")) {
+            if (npcConfig.isSet("skin.value") && npcConfig.isSet("skin.signature")) {
                 // using old skin system --> take backup
-                takeBackup(npcConfig);
+                takeBackup(npcConfigRoot);
 
-                String value = npcConfig.getString("npcs." + id + ".skin.value");
-                String signature = npcConfig.getString("npcs." + id + ".skin.signature");
+                String value = npcConfig.getString("skin.value");
+                String signature = npcConfig.getString("skin.signature");
 
                 if (value != null && !value.isEmpty() && signature != null && !signature.isEmpty()) {
                     SkinData oldSkin = new SkinData(skinIdentifier, SkinData.SkinVariant.AUTO, value, signature);
@@ -307,19 +309,19 @@ public class NpcManagerImpl implements NpcManager {
                 }
             }
 
-            boolean mirrorSkin = npcConfig.getBoolean("npcs." + id + ".skin.mirrorSkin");
+            boolean mirrorSkin = npcConfig.getBoolean("skin.mirrorSkin");
 
-            boolean showInTab = npcConfig.getBoolean("npcs." + id + ".showInTab");
-            boolean spawnEntity = npcConfig.getBoolean("npcs." + id + ".spawnEntity");
-            boolean collidable = npcConfig.getBoolean("npcs." + id + ".collidable", true);
-            boolean glowing = npcConfig.getBoolean("npcs." + id + ".glowing");
-            NamedTextColor glowingColor = NamedTextColor.NAMES.value(npcConfig.getString("npcs." + id + ".glowingColor", "white"));
-            boolean turnToPlayer = npcConfig.getBoolean("npcs." + id + ".turnToPlayer");
-            int turnToPlayerDistance = npcConfig.getInt("npcs." + id + ".turnToPlayerDistance", -1);
+            boolean showInTab = npcConfig.getBoolean("showInTab");
+            boolean spawnEntity = npcConfig.getBoolean("spawnEntity");
+            boolean collidable = npcConfig.getBoolean("collidable", true);
+            boolean glowing = npcConfig.getBoolean("glowing");
+            NamedTextColor glowingColor = NamedTextColor.NAMES.value(npcConfig.getString("glowingColor", "white"));
+            boolean turnToPlayer = npcConfig.getBoolean("turnToPlayer");
+            int turnToPlayerDistance = npcConfig.getInt("turnToPlayerDistance", -1);
 
             Map<ActionTrigger, List<NpcAction.NpcActionData>> actions = new ConcurrentHashMap<>();
 
-            ConfigurationSection actiontriggerSection = npcConfig.getConfigurationSection("npcs." + id + ".actions");
+            ConfigurationSection actiontriggerSection = npcConfig.getConfigurationSection("actions");
             if (actiontriggerSection != null) {
                 actiontriggerSection.getKeys(false).forEach(trigger -> {
                     ActionTrigger actionTrigger = ActionTrigger.getByName(trigger);
@@ -329,11 +331,11 @@ public class NpcManagerImpl implements NpcManager {
                     }
 
                     List<NpcAction.NpcActionData> actionList = new ArrayList<>();
-                    ConfigurationSection actionsSection = npcConfig.getConfigurationSection("npcs." + id + ".actions." + trigger);
+                    ConfigurationSection actionsSection = npcConfig.getConfigurationSection("actions." + trigger);
                     if (actionsSection != null) {
                         actionsSection.getKeys(false).forEach(order -> {
-                            String actionName = npcConfig.getString("npcs." + id + ".actions." + trigger + "." + order + ".action");
-                            String value = npcConfig.getString("npcs." + id + ".actions." + trigger + "." + order + ".value");
+                            String actionName = npcConfig.getString("actions." + trigger + "." + order + ".action");
+                            String value = npcConfig.getString("actions." + trigger + "." + order + ".value");
                             NpcAction action = plugin.getActionManager().getActionByName(actionName);
                             if (action == null) {
                                 logger.warn("Could not find action: " + actionName);
@@ -352,22 +354,22 @@ public class NpcManagerImpl implements NpcManager {
                 });
             }
 
-            float interactionCooldown = (float) npcConfig.getDouble("npcs." + id + ".interactionCooldown", 0);
-            float scale = (float) npcConfig.getDouble("npcs." + id + ".scale", 1);
-            int visibilityDistance = npcConfig.getInt("npcs." + id + ".visibility_distance", -1);
-            String visibilityStr = npcConfig.getString("npcs." + id + ".visibility", "ALL");
+            float interactionCooldown = (float) npcConfig.getDouble("interactionCooldown", 0);
+            float scale = (float) npcConfig.getDouble("scale", 1);
+            int visibilityDistance = npcConfig.getInt("visibility_distance", -1);
+            String visibilityStr = npcConfig.getString("visibility", "ALL");
             NpcVisibility visibility = NpcVisibility.byString(visibilityStr).orElse(NpcVisibility.ALL);
 
             Map<NpcAttribute, String> attributes = new HashMap<>();
-            if (npcConfig.isConfigurationSection("npcs." + id + ".attributes")) {
-                for (String attrName : npcConfig.getConfigurationSection("npcs." + id + ".attributes").getKeys(false)) {
+            if (npcConfig.isConfigurationSection("attributes")) {
+                for (String attrName : npcConfig.getConfigurationSection("attributes").getKeys(false)) {
                     NpcAttribute attribute = plugin.getAttributeManager().getAttributeByName(type, attrName);
                     if (attribute == null) {
                         logger.warn("Could not find attribute: " + attrName);
                         continue;
                     }
 
-                    String value = npcConfig.getString("npcs." + id + ".attributes." + attrName);
+                    String value = npcConfig.getString("attributes." + attrName);
                     if (!attribute.isValidValue(value)) {
                         logger.warn("Invalid value for attribute: " + attrName);
                         continue;
@@ -403,10 +405,10 @@ public class NpcManagerImpl implements NpcManager {
             );
             Npc npc = npcAdapter.apply(data);
 
-            if (npcConfig.isConfigurationSection("npcs." + id + ".equipment")) {
-                for (String equipmentSlotStr : npcConfig.getConfigurationSection("npcs." + id + ".equipment").getKeys(false)) {
+            if (npcConfig.isConfigurationSection("equipment")) {
+                for (String equipmentSlotStr : npcConfig.getConfigurationSection("equipment").getKeys(false)) {
                     NpcEquipmentSlot equipmentSlot = NpcEquipmentSlot.parse(equipmentSlotStr);
-                    ItemStack item = npcConfig.getItemStack("npcs." + id + ".equipment." + equipmentSlotStr);
+                    ItemStack item = npcConfig.getItemStack("equipment." + equipmentSlotStr);
                     npc.getData().addEquipment(equipmentSlot, item);
                 }
             }

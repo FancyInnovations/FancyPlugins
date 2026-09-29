@@ -82,13 +82,7 @@ public class NpcManagerImpl implements NpcManager {
 
     @Override
     public Npc getNpcById(String id) {
-        for (Npc npc : getAllNpcs()) {
-            if (npc.getData().getId().equals(id)) {
-                return npc;
-            }
-        }
-
-        return null;
+        return npcs.get(id);
     }
 
     @Override

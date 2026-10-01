@@ -20,7 +20,7 @@ public class CamelAttributes {
         attributes.add(new NpcAttribute(
                 "pose",
                 List.of("standing", "sitting", "dashing"),
-                List.of(EntityType.CAMEL),
+                List.of(EntityType.CAMEL, EntityType.CAMEL_HUSK),
                 CamelAttributes::setPose
         ));
 

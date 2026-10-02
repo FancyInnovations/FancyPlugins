@@ -1,5 +1,6 @@
 package de.oliver.fancyholograms.storage;
 
+import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyholograms.FancyHolograms;
 import de.oliver.fancyholograms.api.HologramStorage;
 import de.oliver.fancyholograms.api.data.BlockHologramData;
@@ -27,6 +28,7 @@ public class FlatFileHologramStorage implements HologramStorage {
 
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
     private static final File HOLOGRAMS_CONFIG_FILE = new File("plugins/FancyHolograms/holograms.yml");
+    private final ExtendedFancyLogger logger = FancyHolograms.get().getFancyLogger();
 
     @Override
     public void saveBatch(Collection<Hologram> holograms, boolean override) {
@@ -53,7 +55,7 @@ public class FlatFileHologramStorage implements HologramStorage {
             }
         }
 
-        FancyHolograms.get().getFancyLogger().debug("Saved " + holograms.size() + " holograms to file (override=" + override + ")");
+        logger.debug("Saved " + holograms.size() + " holograms to file (override=" + override + ")");
     }
 
     @Override
@@ -74,7 +76,7 @@ public class FlatFileHologramStorage implements HologramStorage {
             }
         }
 
-        FancyHolograms.get().getFancyLogger().debug("Saved hologram " + hologram.getData().getName() + " to file");
+        logger.debug("Saved hologram " + hologram.getData().getName() + " to file");
     }
 
     @Override
@@ -95,20 +97,20 @@ public class FlatFileHologramStorage implements HologramStorage {
             }
         }
 
-        FancyHolograms.get().getFancyLogger().debug("Deleted hologram " + hologram.getData().getName() + " from file");
+        logger.debug("Deleted hologram " + hologram.getData().getName() + " from file");
     }
 
     @Override
     public Collection<Hologram> loadAll() {
         List<Hologram> holograms = readHolograms(FlatFileHologramStorage.HOLOGRAMS_CONFIG_FILE, null);
-        FancyHolograms.get().getFancyLogger().debug("Loaded " + holograms.size() + " holograms from file");
+        logger.debug("Loaded " + holograms.size() + " holograms from file");
         return holograms;
     }
 
     @Override
     public Collection<Hologram> loadAll(String world) {
         List<Hologram> holograms = readHolograms(FlatFileHologramStorage.HOLOGRAMS_CONFIG_FILE, world);
-        FancyHolograms.get().getFancyLogger().debug("Loaded " + holograms.size() + " holograms from file (world=" + world + ")");
+        logger.debug("Loaded " + holograms.size() + " holograms from file (world=" + world + ")");
         return holograms;
     }
 
@@ -121,14 +123,14 @@ public class FlatFileHologramStorage implements HologramStorage {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
             if (!config.isConfigurationSection("holograms")) {
-                FancyHolograms.get().getFancyLogger().warn("No holograms section found in config");
+                logger.warn("No holograms section found in config");
                 return new ArrayList<>(0);
             }
 
             int configVersion = config.getInt("version", 1);
             if (configVersion != 2) {
-                FancyHolograms.get().getFancyLogger().warn("Config version is not 2, skipping loading holograms");
-                FancyHolograms.get().getFancyLogger().warn("Old config version detected, skipping loading holograms");
+                logger.warn("Config version is not 2, skipping loading holograms");
+                logger.warn("Old config version detected, skipping loading holograms");
                 return new ArrayList<>(0);
             }
 
@@ -138,7 +140,7 @@ public class FlatFileHologramStorage implements HologramStorage {
             for (String name : hologramsSection.getKeys(false)) {
                 ConfigurationSection holoSection = hologramsSection.getConfigurationSection(name);
                 if (holoSection == null) {
-                    FancyHolograms.get().getFancyLogger().warn("Could not load hologram section in config");
+                    logger.warn("Could not load hologram section in config");
                     continue;
                 }
 
@@ -148,13 +150,13 @@ public class FlatFileHologramStorage implements HologramStorage {
 
                 String typeName = holoSection.getString("type");
                 if (typeName == null) {
-                    FancyHolograms.get().getFancyLogger().warn("HologramType was not saved");
+                    logger.warn("HologramType was not saved");
                     continue;
                 }
 
                 HologramType type = HologramType.getByName(typeName);
                 if (type == null) {
-                    FancyHolograms.get().getFancyLogger().warn("Could not parse HologramType");
+                    logger.warn("Could not parse HologramType");
                     continue;
                 }
 
@@ -166,7 +168,7 @@ public class FlatFileHologramStorage implements HologramStorage {
                 }
 
                 if (!displayData.read(holoSection, name)) {
-                    FancyHolograms.get().getFancyLogger().warn("Could not read hologram data - skipping hologram");
+                    logger.warn("Could not read hologram data - skipping hologram");
                     continue;
                 }
 
@@ -174,7 +176,7 @@ public class FlatFileHologramStorage implements HologramStorage {
                 holograms.add(hologram);
             }
 
-            FancyHolograms.get().getFancyLogger().debug("Loaded " + holograms.size() + " holograms from file");
+            logger.debug("Loaded " + holograms.size() + " holograms from file");
             return holograms;
         } finally {
             lock.readLock().unlock();
@@ -197,7 +199,7 @@ public class FlatFileHologramStorage implements HologramStorage {
         }
 
         hologram.getData().write(holoSection, holoName);
-        FancyHolograms.get().getFancyLogger().debug("Wrote hologram " + holoName + " to config");
+        logger.debug("Wrote hologram " + holoName + " to config");
     }
 
     private void saveConfig(YamlConfiguration config) {
@@ -214,11 +216,11 @@ public class FlatFileHologramStorage implements HologramStorage {
                 lock.writeLock().unlock();
             }
 
-            if(!FancyHolograms.canGet()) {
+            if (!FancyHolograms.canGet()) {
                 return;
             }
 
-            FancyHolograms.get().getFancyLogger().debug("Saved config to file");
+            logger.debug("Saved config to file");
         });
     }
 }

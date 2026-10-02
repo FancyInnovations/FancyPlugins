@@ -7,13 +7,18 @@ import com.fancyinnovations.fancyholograms.api.HologramRegistry;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTraitRegistry;
-import com.fancyinnovations.fancyholograms.commands.FancyHologramsCMD;
-import com.fancyinnovations.fancyholograms.commands.FancyHologramsTestCMD;
-import com.fancyinnovations.fancyholograms.commands.HologramCMD;
+import com.fancyinnovations.fancyholograms.backup.BackupService;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HologramTraitCondition;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.HologramTypeCondition;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.BackupCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.ConfigCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.StorageCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms.VersionCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.*;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.hologram.edit.*;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.FileContentTraitCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.InteractionTraitCMD;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.traits.MultiplePagesTraitCMD;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.types.*;
 import com.fancyinnovations.fancyholograms.config.FHConfiguration;
 import com.fancyinnovations.fancyholograms.controller.HologramControllerImpl;
@@ -32,6 +37,7 @@ import com.fancyinnovations.fancyholograms.trait.builtin.InteractionTrait;
 import com.fancyinnovations.fancyholograms.trait.builtin.MultiplePagesTrait;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.google.gson.Gson;
 import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
@@ -52,7 +58,6 @@ import de.oliver.fancysitula.api.utils.ServerVersion;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +67,10 @@ import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -72,6 +80,8 @@ import java.util.function.Function;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
+
+    public static final Gson GSON = new Gson();
 
     private static @Nullable FancyHologramsPlugin INSTANCE;
 
@@ -94,6 +104,8 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     private HologramRegistryImpl registry;
     private HologramControllerImpl controller;
     private HologramTraitRegistryImpl traitRegistry;
+
+    private BackupService backupService;
 
     public FancyHologramsPlugin() {
         INSTANCE = this;
@@ -176,6 +188,8 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         controller = new HologramControllerImpl();
         traitRegistry = new HologramTraitRegistryImpl();
 
+        backupService = new BackupService();
+
         if (!ServerSoftware.isPaper()) {
             fancyLogger.warn("""
                     --------------------------------------------------
@@ -214,9 +228,6 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         new FancyLib(INSTANCE);
 
         registerCommands();
-        if (configuration.useLampCommands()) {
-            registerLampCommands();
-        }
 
         registerListeners();
 
@@ -282,22 +293,6 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
     }
 
     private void registerCommands() {
-        Collection<Command> commands = Arrays.asList(new HologramCMD(this), new FancyHologramsCMD(this));
-
-        if (configuration.isRegisterCommands()) {
-            commands.forEach(command -> getServer().getCommandMap().register("fancyholograms", command));
-        } else {
-            commands.stream().filter(Command::isRegistered).forEach(command ->
-                    command.unregister(getServer().getCommandMap()));
-        }
-
-        if (false) {
-            FancyHologramsTestCMD fancyHologramsTestCMD = new FancyHologramsTestCMD(this);
-            getServer().getCommandMap().register("fancyholograms", fancyHologramsTestCMD);
-        }
-    }
-
-    private void registerLampCommands() {
         Lamp.Builder<BukkitCommandActor> lampBuilder = BukkitLamp
                 .builder(this);
 
@@ -327,10 +322,14 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         Lamp<BukkitCommandActor> lamp = lampBuilder.build();
 
         // fancyholograms commands
+        lamp.register(VersionCMD.INSTANCE);
         lamp.register(ConfigCMD.INSTANCE);
+        lamp.register(StorageCMD.INSTANCE);
+        lamp.register(BackupCMD.INSTANCE);
 
         // hologram commands
         lamp.register(CreateCMD.INSTANCE);
+        lamp.register(SelectCMD.INSTANCE);
         lamp.register(TraitCMD.INSTANCE);
         lamp.register(MoveUpCMD.INSTANCE);
         lamp.register(MoveDownCMD.INSTANCE);
@@ -343,6 +342,36 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         lamp.register(BlockCMD.INSTANCE);
         lamp.register(BrightnessCMD.INSTANCE);
         lamp.register(CenterCMD.INSTANCE);
+        lamp.register(CopyCMD.INSTANCE);
+        lamp.register(InfoCMD.INSTANCE);
+        lamp.register(ListCMD.INSTANCE);
+        lamp.register(NearbyCMD.INSTANCE);
+        lamp.register(RemoveCMD.INSTANCE);
+        lamp.register(TeleportCMD.INSTANCE);
+        lamp.register(MoveHereCMD.INSTANCE);
+        lamp.register(MoveToCMD.INSTANCE);
+        lamp.register(ItemCMD.INSTANCE);
+        lamp.register(LinkWithNpcCMD.INSTANCE);
+        lamp.register(UnlinkWithNpcCMD.INSTANCE);
+        lamp.register(ScaleCMD.INSTANCE);
+        lamp.register(SeeThroughCMD.INSTANCE);
+        lamp.register(ShadowRadiusCMD.INSTANCE);
+        lamp.register(ShadowStrengthCMD.INSTANCE);
+        lamp.register(TextAlignmentCMD.INSTANCE);
+        lamp.register(TextShadowCMD.INSTANCE);
+        lamp.register(TranslateCMD.INSTANCE);
+        lamp.register(VisibilityCMD.INSTANCE);
+        lamp.register(VisibilityDistanceCMD.INSTANCE);
+        lamp.register(AddLineCMD.INSTANCE);
+        lamp.register(SetLineCMD.INSTANCE);
+        lamp.register(RemoveLineCMD.INSTANCE);
+        lamp.register(AddLineBeforeCMD.INSTANCE);
+        lamp.register(AddLineAfterCMD.INSTANCE);
+
+        // hologram trait commands
+        lamp.register(MultiplePagesTraitCMD.INSTANCE);
+        lamp.register(InteractionTraitCMD.INSTANCE);
+        lamp.register(FileContentTraitCMD.INSTANCE);
     }
 
     private void registerListeners() {
@@ -441,6 +470,10 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
 
     public HologramStorage getStorage() {
         return storage;
+    }
+
+    public BackupService getBackupService() {
+        return backupService;
     }
 
     public ScheduledExecutorService getHologramThread() {

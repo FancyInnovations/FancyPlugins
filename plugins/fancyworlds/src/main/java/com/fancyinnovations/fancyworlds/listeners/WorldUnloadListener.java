@@ -5,6 +5,7 @@ import com.fancyinnovations.fancyworlds.utils.FancyContext;
 import com.fancyinnovations.fancyworlds.worlds.FWorldImpl;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldUnloadEvent;
 
@@ -16,7 +17,7 @@ public class WorldUnloadListener extends FancyContext implements Listener {
         this.service = WorldService.get();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
         World world = event.getWorld();
         FWorldImpl fworld = (FWorldImpl) service.getWorldByName(world.getName());

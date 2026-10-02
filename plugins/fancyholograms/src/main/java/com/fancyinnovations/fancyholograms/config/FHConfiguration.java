@@ -21,7 +21,10 @@ public final class FHConfiguration implements HologramConfiguration {
 
     public static final String LANGUAGE_PATH = "settings.language";
 
-    public static final String HOLOGRAM_UPDATE_INTERVAL_PATH = "performance.hologram_update_interval_ms";
+    public static final String HOLOGRAM_UPDATE_INTERVAL_PATH = "settings.performance.hologram_update_interval_ms";
+
+    public static final String BACKUP_INTERVAL_PATH = "settings.backups.interval";
+    public static final String BACKUP_RETENTION_PATH = "settings.backups.retention";
 
     public static final String DISABLE_HOLOGRAMS_FOR_BEDROCK_PLAYERS_PATH = "experimental_features.disable_holograms_for_bedrock_players";
     public static final String DISABLE_HOLOGRAMS_FOR_OLD_CLIENTS = "experimental_features.disable_holograms_for_old_clients";
@@ -125,6 +128,24 @@ public final class FHConfiguration implements HologramConfiguration {
                 Integer.class
         ));
 
+        config.addField(new ConfigField<>(
+                BACKUP_INTERVAL_PATH,
+                "The interval at which backups are created (in hours).",
+                false,
+                24,
+                false,
+                Integer.class
+        ));
+
+        config.addField(new ConfigField<>(
+                BACKUP_RETENTION_PATH,
+                "How long backups are kept (in days).",
+                false,
+                30,
+                false,
+                Integer.class
+        ));
+
         /*
             FEATURE FLAGS
          */
@@ -150,7 +171,7 @@ public final class FHConfiguration implements HologramConfiguration {
         config.addField(new ConfigField<>(
                 USE_LAMP_COMMANDS,
                 "Use the new commands made with the Lamp framework.",
-                false,
+                true,
                 false,
                 false,
                 Boolean.class
@@ -241,11 +262,6 @@ public final class FHConfiguration implements HologramConfiguration {
     }
 
     @Override
-    public boolean useLampCommands() {
-        return config.get(USE_LAMP_COMMANDS);
-    }
-
-    @Override
     public boolean isFoliaVisibilityFixEnabled() {
         return config.get(ENABLE_FOLIA_VISIBILITY_FIX);
     }
@@ -255,6 +271,7 @@ public final class FHConfiguration implements HologramConfiguration {
         return config.get(ENABLE_ROTATION_IMPROVEMENT);
     }
 
+    @Override
     public int getHologramUpdateInterval() {
         Integer value = config.get(HOLOGRAM_UPDATE_INTERVAL_PATH);
         if (value == null || value < 10) {
@@ -262,4 +279,15 @@ public final class FHConfiguration implements HologramConfiguration {
         }
         return value;
     }
+
+    @Override
+    public int getBackupInterval() {
+        return config.get(BACKUP_INTERVAL_PATH);
+    }
+
+    @Override
+    public int getBackupRetention() {
+        return config.get(BACKUP_RETENTION_PATH);
+    }
+
 }

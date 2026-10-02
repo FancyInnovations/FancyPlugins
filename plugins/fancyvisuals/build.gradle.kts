@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
     rootProject.subprojects
         .filter { it.path.startsWith(":libraries:packets:implementations") }
@@ -32,17 +32,17 @@ dependencies {
     implementation(project(":libraries:packets"))
     implementation(project(":libraries:packets:packets-api"))
     implementation(project(":libraries:config"))
-    compileOnly("de.oliver.FancyAnalytics:mc-api:0.1.13") // loaded in FancyVisualLoader
+    compileOnly("de.oliver.FancyAnalytics:mc-api:0.1.15") // loaded in FancyVisualLoader
     compileOnly("de.oliver.FancyAnalytics:logger:0.0.10") // loaded in FancyVisualLoader
 
     implementation("org.lushplugins.chatcolorhandler:paper:8.1.1")
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
 
     // commands
-    implementation("org.incendo:cloud-core:2.0.0")
+    implementation("org.incendo:cloud-core:2.1.0")
     implementation("org.incendo:cloud-paper:2.0.0-beta.10")
-    implementation("org.incendo:cloud-annotations:2.0.0")
-    annotationProcessor("org.incendo:cloud-annotations:2.0.0")
+    implementation("org.incendo:cloud-annotations:2.1.0")
+    annotationProcessor("org.incendo:cloud-annotations:2.1.0")
 }
 
 paper {

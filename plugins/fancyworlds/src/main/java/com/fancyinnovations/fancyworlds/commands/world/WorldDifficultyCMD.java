@@ -33,6 +33,14 @@ public class WorldDifficultyCMD extends FancyContext {
             }
         }
 
+        if (!world.isWorldLoaded()) {
+            translator.translate("common.world_not_loaded")
+                    .withPrefix()
+                    .replace("worldName", world.getName())
+                    .send(actor.sender());
+            return;
+        }
+
         world.getBukkitWorld().setDifficulty(difficulty);
 
         translator.translate("commands.world.difficulty.set.success")
@@ -58,6 +66,14 @@ public class WorldDifficultyCMD extends FancyContext {
                         .send(actor.sender());
                 return;
             }
+        }
+
+        if (!world.isWorldLoaded()) {
+            translator.translate("common.world_not_loaded")
+                    .withPrefix()
+                    .replace("worldName", world.getName())
+                    .send(actor.sender());
+            return;
         }
 
         Difficulty difficulty = world.getBukkitWorld().getDifficulty();

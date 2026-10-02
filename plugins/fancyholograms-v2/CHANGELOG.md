@@ -1,0 +1,1 @@
+* Reduce memory allocation ([#332](https://github.com/FancyInnovations/FancyPlugins/pull/332))

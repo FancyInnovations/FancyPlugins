@@ -80,13 +80,6 @@ public interface HologramConfiguration {
     boolean isHologramsForOldClientsEnabled();
 
     /**
-     * Returns whether the plugin uses lamp commands.
-     *
-     * @return {@code true} if the plugin uses lamp commands, {@code false} otherwise.
-     */
-    boolean useLampCommands();
-
-    /**
      * Returns whether the Folia visibility fix is enabled.
      *
      * @return {@code true} if the Folia visibility fix is enabled, {@code false} otherwise.
@@ -97,4 +90,26 @@ public interface HologramConfiguration {
      * @return Whether the hologram rotation improvement is enabled.
      */
     boolean isHologramRotationImprovementEnabled();
+
+
+    /**
+     * Returns the interval at which holograms check for text updates.
+     *
+     * @return The hologram update interval in milliseconds.
+     */
+    int getHologramUpdateInterval();
+
+    /**
+     * Returns the interval at which backups are created.
+     *
+     * @return The backup interval in hours.
+     */
+    int getBackupInterval();
+
+    /**
+     * Returns how long backups are kept
+     *
+     * @return The backup retention in days.
+     */
+    int getBackupRetention();
 }

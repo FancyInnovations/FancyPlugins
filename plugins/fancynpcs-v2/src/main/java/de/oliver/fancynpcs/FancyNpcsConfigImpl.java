@@ -51,6 +51,11 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
     private int npcUpdateVisibilityInterval;
 
     /**
+     * The interval at which the turn-to-player tracker runs. In ticks.
+     */
+    private int turnToPlayerTrackerInterval;
+
+    /**
      * Indicates whether commands should be registered.
      * <p>
      * This is useful for users who want to use the plugin's API only.
@@ -132,6 +137,9 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
         npcUpdateVisibilityInterval = (int) ConfigHelper.getOrDefault(config, "npc_update_visibility_interval", 20);
         config.setInlineComments("npc_update_visibility_interval", List.of("The interval at which the NPC visibility is updated (in ticks)."));
 
+        turnToPlayerTrackerInterval = (int) ConfigHelper.getOrDefault(config, "turn_to_player_tracker_interval", 3);
+        config.setInlineComments("turn_to_player_tracker_interval", List.of("The interval at which the turn-to-player tracker runs (in ticks)."));
+
         registerCommands = (boolean) ConfigHelper.getOrDefault(config, "register_commands", true);
         config.setInlineComments("register_commands", List.of("Whether the plugin should register its commands."));
 
@@ -208,6 +216,11 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
 
     public int getNpcUpdateVisibilityInterval() {
         return npcUpdateVisibilityInterval;
+    }
+
+    @Override
+    public int getTurnToPlayerTrackerInterval() {
+        return turnToPlayerTrackerInterval;
     }
 
     public boolean isRegisterCommands() {

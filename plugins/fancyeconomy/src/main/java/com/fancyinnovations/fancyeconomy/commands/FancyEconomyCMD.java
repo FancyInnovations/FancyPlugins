@@ -5,28 +5,25 @@ import com.fancyinnovations.fancyeconomy.currencies.Currency;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
 import de.oliver.fancylib.MessageHelper;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.Subcommand;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.command.CommandSender;
 
-@Command("fancyeconomy")
-@Permission("fancyeconomy.admin")
 public class FancyEconomyCMD {
 
-    @Default
-    public static void info(CommandSender player) {
+    @Command("fancyeconomy")
+    @CommandPermission("fancyeconomy.admin")
+    public void info(CommandSender player) {
         MessageHelper.info(player, " --- FancyEconomy Info ---");
         MessageHelper.info(player, "/FancyEconomy reload - plugin config reload");
         MessageHelper.info(player, "/FancyEconomy version - checks for a new version of the plugin");
         MessageHelper.info(player, "/FancyEconomy currencies - shows a list of all currencies");
     }
 
-    @Subcommand("version")
-    @Permission("fancyeconomy.admin")
-    public static void version(CommandSender player) {
+    @Command("fancyeconomy version")
+    @CommandPermission("fancyeconomy.admin")
+    public void version(CommandSender player) {
         MessageHelper.info(player, "<i>Checking version, please wait...</i>");
         FancyEconomy.getInstance().getScheduler().runTaskAsynchronously(() -> {
             ComparableVersion newestVersion = FancyEconomy.getInstance().getVersionFetcher().fetchNewestVersion();
@@ -42,9 +39,9 @@ public class FancyEconomyCMD {
         });
     }
 
-    @Subcommand("reload")
-    @Permission("fancyeconomy.admin")
-    public static void reload(CommandSender player) {
+    @Command("fancyeconomy reload")
+    @CommandPermission("fancyeconomy.admin")
+    public void reload(CommandSender player) {
         //FancyEconomy.getInstance().getTranslator().loadLanguages(); // TODO: Reload translations
         FancyEconomy.getInstance().getFancyEconomyConfig().reload();
         CurrencyPlayerManager.loadPlayersFromDatabase();
@@ -53,9 +50,9 @@ public class FancyEconomyCMD {
                 .send(player);
     }
 
-    @Subcommand("currencies")
-    @Permission("fancyeconomy.admin")
-    public static void currencies(CommandSender player) {
+    @Command("fancyeconomy currencies")
+    @CommandPermission("fancyeconomy.admin")
+    public void currencies(CommandSender player) {
         Currency defaultCurrency = CurrencyRegistry.getDefaultCurrency();
         FancyEconomy.getInstance().getTranslator()
                 .translate("currency-list")

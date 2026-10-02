@@ -1,14 +1,89 @@
 language_name: default
 messages:
+  dialogs:
+    common:
+      previous: "Previous"
+      next: "Next"
+      back: "Back"
+      close: "Close"
+      action_unavailable: "That action is no longer available."
+      yes_msg: "Yes"
+      no_msg: "No"
+    status:
+      loaded: "Loaded"
+      unloaded: "Unloaded"
+    world_list:
+      title: "Worlds"
+      count: "{count} worlds · page {page}/{pages}"
+      empty: "No worlds are linked to FancyWorlds."
+      entry: "{name} ({status})"
+      create: "Create World"
+    world_detail:
+      title: "World: {name}"
+      status: "Status: {status}"
+      environment: "Environment: {value}"
+      generator: "Generator: {value}"
+      structures: "Structures: {value}"
+      seed: "Seed: {value}"
+      counts: "Players: {players} · Entities: {entities} · Chunks: {chunks}"
+      teleport: "Teleport"
+      load: "Load"
+      unload: "Unload"
+      spawn: "Set Spawn Here"
+      delete: "Delete World"
+      delete_question: "Permanently delete world {name}? This cannot be undone."
+      backup_create: "Create Backup"
+      backups: "Backups"
+    backup_list:
+      title: "Backups: {name}"
+      count: "{count} backups · page {page}/{pages}"
+      empty: "No backups have been created for this world."
+      entry: "{createdAt} · {backupId}"
+    backup_detail:
+      title: "Backup: {name}"
+      id: "Backup ID: {backupId}"
+      created: "Created: {createdAt}"
+      replace: "Replace World"
+      replace_question: "Replace unloaded world {name} with backup {backupId}? Current world files will be removed."
+      new_name: "New world name"
+      restore_as: "Restore as New World"
+    portal_list:
+      title: "Portals"
+      count: "{count} portals · page {page}/{pages}"
+      empty: "No portals have been created."
+      entry: "{name}: {source} → {destination}"
+    portal_detail:
+      title: "Portal: {name}"
+      source: "Source world: {value}"
+      bounds: "Region: {min} to {max}"
+      volume: "Volume: {value} blocks"
+      destination: "Destination: {value}"
+      choose_destination: "New destination"
+      save_destination: "Save Destination"
+      invalid_destination: "That destination world is no longer available."
+      delete: "Delete Portal"
+      delete_question: "Delete portal {name}?"
+    create:
+      title: "Create World"
+      description: "Choose the settings for a new world. Leave seed empty to use the current default."
+      name: "World name"
+      seed: "Seed (optional)"
+      environment: "Environment"
+      generator: "Generator"
+      structures: "Generate structures"
+      submit: "Create World"
+      invalid_seed: "Seed must be a whole number within the 64-bit range."
+      invalid_option: "An invalid world option was submitted."
   common:
     world_not_found: "{errorColor}Could not find world {primaryColor}{worldName}{errorColor}."
+    portal_not_found: "{errorColor}Could not find portal {primaryColor}{portalName}{errorColor}."
     gamerule_not_found: "{errorColor}Gamerule {primaryColor}{gameruleName}{errorColor} does not exist."
     world_not_loaded: "{errorColor}World {primaryColor}{worldName}{errorColor} is not loaded. Load it using {primaryColor}/world load {worldName}{errorColor}."
   commands:
     fancyworlds:
       version:
         current_version: "You are running FancyWorlds {primaryColor}v{version}{secondaryColor}."
-        version_outdated: "You are running an outdated version of FancyWorlds. Please update to the latest version {primaryColor}v{latestVersion}{secondaryColor}({downloadURL})."
+        version_outdated: "You are running an outdated version of FancyWorlds. Please update to the latest version {primaryColor}v{latestVersion} {secondaryColor}(<click:open_url:'{downloadURL}'>{downloadURL}</click>)."
       config:
         reload:
           confirmation: "{warningColor}Are you sure you want to reload the configuration? This will apply any changes made to the config file."
@@ -27,6 +102,14 @@ messages:
         header: "Linked worlds ({worldCount}):"
         entry_loaded: "{secondaryColor} - {primaryColor}{worldName} {secondaryColor} <hover:show_text:'Click to view world information'><click:run_command:'/world info {worldName}'>[ɪɴғᴏ]</click></hover> <hover:show_text:'Click to teleport'><click:run_command:'/world teleport {worldName}'>[ᴛᴇʟᴇᴘᴏʀᴛ]</click></hover>"
         entry_unloaded: "{secondaryColor} - {primaryColor}{worldName} {secondaryColor}(unloaded)"
+      info:
+        header: "Information for world {primaryColor}{worldName}{secondaryColor}:"
+        status: "{secondaryColor} - Status: {primaryColor}{status}"
+        environment: "{secondaryColor} - Environment: {primaryColor}{environment}"
+        generator: "{secondaryColor} - Generator: {primaryColor}{generator}"
+        structures: "{secondaryColor} - Generate structures: {primaryColor}{structures}"
+        seed: "{secondaryColor} - Seed: {primaryColor}{seed}"
+        counts: "{secondaryColor} - Players: {primaryColor}{playerCount}{secondaryColor}, Entities: {primaryColor}{entityCount}{secondaryColor}, Chunks: {primaryColor}{chunkCount}"
       link:
         success: "Successfully linked world {primaryColor}{worldName}{secondaryColor} to FancyWorlds."
         already_linked: "{errorColor}World {primaryColor}{worldName}{secondaryColor} is already linked to FancyWorlds."
@@ -34,11 +117,13 @@ messages:
         success: "Successfully unlinked world {primaryColor}{worldName}{secondaryColor} from FancyWorlds."
       create:
         success: "Successfully created world {primaryColor}{worldName}{secondaryColor} <click:run_command:'/world teleport {worldName}'><i>(click to teleport)</i></click>."
+        invalid_name: "{errorColor}World names must contain 1–64 letters, numbers, underscores, or hyphens."
         generating: "Generating world {primaryColor}{worldName}{secondaryColor} ..."
         already_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists."
         disk_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists on disk. Load it using {primaryColor}/world load {worldName}{errorColor} or choose a different name."
         failed: "{errorColor}Failed to create world {primaryColor}{worldName}{errorColor}."
       teleport:
+        invalid_destination: "{errorColor}The destination must be in world {primaryColor}{worldName}{errorColor}."
         success: "Teleported {primaryColor}{playerName}{secondaryColor} to world {primaryColor}{worldName}{secondaryColor}."
         failed: "{errorColor}Failed to teleport {primaryColor}{playerName}{errorColor} to world {primaryColor}{worldName}{errorColor}."
         already_in_world: "{errorColor}You are already in world {primaryColor}{worldName}{errorColor}."
@@ -62,6 +147,22 @@ messages:
         cancelled: "Deletion of world {primaryColor}{worldName}{secondaryColor} cancelled."
         failed: "{errorColor}Failed to delete world {primaryColor}{worldName}{errorColor}."
         success: "Successfully deleted world {primaryColor}{worldName}{secondaryColor}."
+      backup:
+        progress: "Processing backup operation for world {primaryColor}{worldName}{secondaryColor} ..."
+        created: "Created backup {primaryColor}{backupId}{secondaryColor} for world {primaryColor}{worldName}{secondaryColor}."
+        restored: "Restored backup {primaryColor}{backupId}{secondaryColor} over world {primaryColor}{worldName}{secondaryColor}. The world remains unloaded."
+        cloned: "Restored backup {primaryColor}{backupId}{secondaryColor} as new world {primaryColor}{worldName}{secondaryColor}. The world remains unloaded."
+        loaded: "{errorColor}World {primaryColor}{worldName}{errorColor} is loaded. Unload it before backing up or restoring."
+        busy: "{errorColor}A backup operation is already using world {primaryColor}{worldName}{errorColor}."
+        not_found: "{errorColor}The original linked world for this backup is no longer available. Use restore-as to create a new world."
+        invalid_name: "{errorColor}World names must contain 1–64 letters, numbers, underscores, or hyphens."
+        name_exists: "{errorColor}A world named {primaryColor}{worldName}{errorColor} already exists."
+        invalid_archive: "{errorColor}Backup {primaryColor}{backupId}{errorColor} is missing or invalid."
+        failed: "{errorColor}Backup operation failed for world {primaryColor}{worldName}{errorColor}. Check the server log."
+        empty: "No backups found for world {primaryColor}{worldName}{secondaryColor}."
+        list_header: "Backups for {primaryColor}{worldName}{secondaryColor} (page {page}/{pages}):"
+        list_entry: "{secondaryColor} - {primaryColor}{backupId}{secondaryColor} · {createdAt}"
+        confirm_replace: "{warningColor}Replace unloaded world {primaryColor}{worldName}{warningColor} with backup {primaryColor}{backupId}{warningColor}? Current world files will be removed."
       gamerules:
         list:
           header: "Gamerules for world {primaryColor}{worldName}{secondaryColor}:"
@@ -84,3 +185,30 @@ messages:
         current: "Current difficulty in world {primaryColor}{worldName}{secondaryColor} is {primaryColor}{difficulty}{secondaryColor}."
         set:
           success: "Successfully set difficulty to {primaryColor}{difficulty}{secondaryColor} in world {primaryColor}{worldName}{secondaryColor}."
+    portal:
+      wand:
+        success: "You received the portal wand. Left-click the first corner and right-click the second corner."
+      selection:
+        first: "First portal position set to {primaryColor}{x}, {y}, {z}{secondaryColor} in {primaryColor}{worldName}{secondaryColor}."
+        second: "Second portal position set to {primaryColor}{x}, {y}, {z}{secondaryColor} in {primaryColor}{worldName}{secondaryColor}."
+        complete: "Portal region selected ({primaryColor}{volume}{secondaryColor} blocks). Create it with {primaryColor}/portal create <name> <destinationWorld>{secondaryColor}."
+      create:
+        success: "Created portal {primaryColor}{portalName}{secondaryColor} in {primaryColor}{worldName}{secondaryColor} with destination {primaryColor}{destinationWorld}{secondaryColor} ({volume} blocks)."
+        invalid_name: "{errorColor}Portal names may only contain letters, numbers, underscores, and hyphens, with a maximum length of 64 characters."
+        already_exists: "{errorColor}A portal named {primaryColor}{portalName}{errorColor} already exists."
+        incomplete_selection: "{errorColor}Select both corners first using {primaryColor}/portal wand{errorColor}."
+        different_worlds: "{errorColor}Both portal positions must be in the same world."
+        overlaps: "{errorColor}The selected region overlaps portal {primaryColor}{portalName}{errorColor}."
+      list:
+        none: "No portals have been created. Start with {primaryColor}/portal wand{secondaryColor}."
+        header: "Portals ({portalCount}):"
+        entry: "{secondaryColor} - {primaryColor}<hover:show_text:'Click to view portal information'><click:run_command:'/portal info {portalName}'>{portalName}</click></hover>{secondaryColor}: {worldName} → {destinationWorld}"
+      info:
+        result: "Portal {primaryColor}{portalName}{secondaryColor}: world {primaryColor}{worldName}{secondaryColor}, region {primaryColor}{minimum}{secondaryColor} to {primaryColor}{maximum}{secondaryColor}, destination {primaryColor}{destinationWorld}{secondaryColor}, volume {primaryColor}{volume}{secondaryColor}."
+      delete:
+        success: "Deleted portal {primaryColor}{portalName}{secondaryColor}."
+      set_destination:
+        success: "Set portal {primaryColor}{portalName}{secondaryColor}'s destination to {primaryColor}{destinationWorld}{secondaryColor}."
+      use:
+        destination_unavailable: "{errorColor}Portal {primaryColor}{portalName}{errorColor} is unavailable because destination world {primaryColor}{destinationWorld}{errorColor} is not loaded."
+        failed: "{errorColor}Failed to teleport you through portal {primaryColor}{portalName}{errorColor} to {primaryColor}{destinationWorld}{errorColor}."

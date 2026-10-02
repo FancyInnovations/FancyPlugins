@@ -2,6 +2,7 @@ package com.fancyinnovations.fancyworlds.commands.world;
 
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
 import com.fancyinnovations.fancyworlds.utils.FancyContext;
+import com.fancyinnovations.fancyworlds.worlds.service.WorldOperations;
 import org.bukkit.Location;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -37,7 +38,11 @@ public class WorldSetSpawnCMD extends FancyContext {
             location = actor.requirePlayer().getLocation();
         }
 
-        world.getBukkitWorld().setSpawnLocation(location);
+        if (!WorldOperations.setSpawn(world, location)) {
+            translator.translate("common.world_not_loaded")
+                    .withPrefix().replace("worldName", world.getName()).send(actor.sender());
+            return;
+        }
 
         translator.translate("commands.world.set_spawn.success")
                 .withPrefix()

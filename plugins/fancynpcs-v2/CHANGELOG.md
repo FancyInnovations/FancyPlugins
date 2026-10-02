@@ -1,1 +1,1 @@
-* Removed the `player_command_as_op` action, please use `player_command` and give the necessary permissions to the player instead
+* Reduce memory allocation ([#332](https://github.com/FancyInnovations/FancyPlugins/pull/332))

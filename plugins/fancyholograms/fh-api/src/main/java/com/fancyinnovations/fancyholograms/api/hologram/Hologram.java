@@ -212,4 +212,12 @@ public abstract class Hologram {
         lastRawText = "";
     }
 
+    /**
+     * Serializes the hologram to a record class for JSON representation.
+     * This method is intended for internal use and may be subject to change in future versions.
+     *
+     * @return an object representing the hologram in a JSON-compatible format
+     */
+    @ApiStatus.Internal
+    public abstract Object toJson();
 }

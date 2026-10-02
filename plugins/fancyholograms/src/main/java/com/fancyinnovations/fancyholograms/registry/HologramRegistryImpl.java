@@ -26,6 +26,8 @@ public class HologramRegistryImpl implements HologramRegistry {
 
         boolean registered = holograms.putIfAbsent(hologram.getData().getName(), hologram) != null;
 
+        hologram.getData().getTraitTrait().load();
+
         hologram.getData().getTraitTrait().onRegister();
 
         return registered;
@@ -83,7 +85,7 @@ public class HologramRegistryImpl implements HologramRegistry {
         for (Hologram hologram : holograms.values()) {
             hologram.getData().getTraitTrait().onUnregister();
         }
-        
+
         holograms.clear();
     }
 }

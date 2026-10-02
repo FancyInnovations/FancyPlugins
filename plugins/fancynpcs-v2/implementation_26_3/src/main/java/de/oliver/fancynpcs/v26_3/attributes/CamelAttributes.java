@@ -30,7 +30,7 @@ public class CamelAttributes {
     private static void setPose(Npc npc, String value) {
         Camel camel = ReflectionHelper.getEntity(npc);
 
-        Bukkit.getScheduler().runTask(FancyNpcsPlugin.get().getPlugin(), () -> {
+        Bukkit.getGlobalRegionScheduler().run(FancyNpcsPlugin.get().getPlugin(), (_) -> {
             switch (value.toLowerCase()) {
                 case "standing" -> {
                     camel.setPose(Pose.STANDING);

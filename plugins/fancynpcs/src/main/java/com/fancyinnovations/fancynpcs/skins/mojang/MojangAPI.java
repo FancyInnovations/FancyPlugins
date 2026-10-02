@@ -1,6 +1,7 @@
 package com.fancyinnovations.fancynpcs.skins.mojang;
 
 import com.google.gson.Gson;
+import de.oliver.fancyanalytics.logger.ExtendedFancyLogger;
 import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import com.fancyinnovations.fancynpcs.api.FancyNpcsPlugin;
 import com.fancyinnovations.fancynpcs.api.skins.SkinData;
@@ -18,6 +19,7 @@ public class MojangAPI {
 
     private final HttpClient client;
     private final Gson gson = new Gson();
+    private final ExtendedFancyLogger logger = FancyNpcsPlugin.get().getFancyLogger();
 
     public MojangAPI(Executor executor) {
         this.client = HttpClient.newBuilder()
@@ -27,7 +29,7 @@ public class MojangAPI {
     }
 
     public SkinData fetchSkin(String uuid, SkinData.SkinVariant variant) throws RatelimitException {
-        FancyNpcsPlugin.get().getFancyLogger().debug("Fetching skin from MojangAPI for " + uuid);
+        logger.debug("Fetching skin from MojangAPI for " + uuid);
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -37,8 +39,8 @@ public class MojangAPI {
 
             HttpResponse<String> resp = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (resp.statusCode() < 200 || resp.statusCode() >= 300) {
-                FancyNpcsPlugin.get().getFancyLogger().warn("Failed to fetch skin from Mojang API for " + uuid + " (status code: " + resp.statusCode() + ")");
-                FancyNpcsPlugin.get().getFancyLogger().debug("Body: " + resp.body());
+                logger.warn("Failed to fetch skin from Mojang API for " + uuid + " (status code: " + resp.statusCode() + ")");
+                logger.debug("Body: " + resp.body());
                 return null;
             } else if (resp.statusCode() == 429) {
                 throw new RatelimitException(System.currentTimeMillis() + 1000 * 10); // retry in next run
@@ -47,12 +49,12 @@ public class MojangAPI {
             RequestResponse response = gson.fromJson(resp.body(), RequestResponse.class);
             RequestResponseProperty textures = response.getProperty("textures");
 
-            FancyNpcsPlugin.get().getFancyLogger().debug("Skin fetched from MojangAPI for " + uuid);
+            logger.debug("Skin fetched from MojangAPI for " + uuid);
             return new SkinData(uuid, variant, textures.value(), textures.signature());
         } catch (RatelimitException e) {
             throw e; // rethrow
         } catch (Exception e) {
-            FancyNpcsPlugin.get().getFancyLogger().warn("Failed to fetch skin from Mojang API for " + uuid, ThrowableProperty.of(e));
+            logger.warn("Failed to fetch skin from Mojang API for " + uuid, ThrowableProperty.of(e));
             return null;
         }
     }

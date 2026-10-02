@@ -87,7 +87,7 @@ public class InteractionTrait extends HologramTrait {
         }
     }
 
-    private void updateHitbox() {
+    public void updateHitbox() {
         if (FN.getNpcManager().getNpc("hologram_hitbox_for_" + hologram.getData().getName()) == null) {
             this.hitbox = FN.getNpcAdapter().apply(new NpcData(
                     "hologram_hitbox_for_" + hologram.getData().getName(),
@@ -98,23 +98,22 @@ public class InteractionTrait extends HologramTrait {
             this.hitbox.getData().setType(EntityType.INTERACTION);
             this.hitbox.getData().setDisplayName("<empty>");
 
-            List<NpcAction.NpcActionData> actions = new ArrayList<>();
-            for (ActionConfig acfg : this.config.actions()) {
-                NpcAction action = FN.getActionManager().getActionByName(acfg.action());
-                if (action == null) {
-                    logger.warn("Action " + acfg.action() + " is not registered");
-                    continue;
-                }
-
-                actions.add(new NpcAction.NpcActionData(actions.size(), action, acfg.value()));
-            }
-
-            this.hitbox.getData().getActions().put(ActionTrigger.ANY_CLICK, actions);
-
             this.hitbox.create();
             this.hitbox.spawnForAll();
             FN.getNpcManager().registerNpc(this.hitbox);
         }
+
+        List<NpcAction.NpcActionData> actions = new ArrayList<>();
+        for (ActionConfig acfg : this.config.actions()) {
+            NpcAction action = FN.getActionManager().getActionByName(acfg.action());
+            if (action == null) {
+                logger.warn("Action " + acfg.action() + " is not registered");
+                continue;
+            }
+
+            actions.add(new NpcAction.NpcActionData(actions.size(), action, acfg.value()));
+        }
+        this.hitbox.getData().getActions().put(ActionTrigger.ANY_CLICK, actions);
 
         this.hitbox.getData().setLocation(hologram.getData().getLocation());
 
@@ -124,6 +123,8 @@ public class InteractionTrait extends HologramTrait {
         NpcAttribute heightAttr = FN.getAttributeManager().getAttributeByName(EntityType.INTERACTION, "height");
         this.hitbox.getData().addAttribute(heightAttr, String.valueOf(calcHeight()));
 
+        this.hitbox.removeForAll();
+        this.hitbox.spawnForAll();
         this.hitbox.updateForAll();
     }
 
@@ -146,6 +147,20 @@ public class InteractionTrait extends HologramTrait {
         double widthPerCharacter = 0.12;
         double scale = ((TextHologramData) hologram.getData()).getScale().x;
         return maxCharacters * widthPerCharacter * scale;
+    }
+
+    public Configuration getConfig() {
+        return config;
+    }
+
+    public void setConfig(Configuration config) {
+        this.config = config;
+        save();
+        updateHitbox();
+    }
+
+    public Npc getHitbox() {
+        return hitbox;
     }
 
     public record ActionConfig(

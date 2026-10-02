@@ -3,38 +3,23 @@ package com.fancyinnovations.fancyeconomy.commands;
 import com.fancyinnovations.fancyeconomy.FancyEconomy;
 import com.fancyinnovations.fancyeconomy.currencies.*;
 import de.oliver.fancylib.MessageHelper;
-import dev.jorel.commandapi.annotations.Alias;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.arguments.AIntegerArgument;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.Default;
+import revxrsal.commands.annotation.Range;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@Command("balancetop")
-@Permission("fancyeconomy.balancetop")
-@Alias({"baltop"})
 public class BalanceTopCMD {
 
     public static final int ENTRIES_PER_PAGE = 10;
 
-    @Default
-    public static void info(Player player) {
-        MessageHelper.info(player, " --- FancyEconomy Info ---");
-        MessageHelper.info(player, "/balancetop - Shows the richest players");
-        MessageHelper.info(player, "/balancetop <page> - Shows the richest players");
-    }
-
-    @Default
-    public static void balancetop(Player player) {
-        balancetop(player, 1);
-    }
-
-    @Default
-    public static void balancetop(
+    @Command({"balancetop", "baltop"})
+    @CommandPermission("fancyeconomy.balancetop")
+    public void balancetop(
             Player player,
-            @AIntegerArgument(min = 1) int page
+            @Range(min = 1) @Default("1") int page
     ) {
         Currency currency = CurrencyRegistry.getDefaultCurrency();
 

@@ -6,7 +6,6 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.JavaOps;
 import de.oliver.fancylib.ReflectionUtils;
-import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.api.NpcData;
@@ -143,9 +142,9 @@ public class Npc_1_21_5 extends Npc {
         isVisibleForPlayer.put(player.getUniqueId(), true);
 
 
-        int removeNpcsFromPlayerlistDelay = FancyNpcsPlugin.get().getFancyNpcConfig().getRemoveNpcsFromPlayerlistDelay();
+        int removeNpcsFromPlayerlistDelay = fancyNpcsPlugin.getFancyNpcConfig().getRemoveNpcsFromPlayerlistDelay();
         if (!data.isShowInTab() && removeNpcsFromPlayerlistDelay > 0) {
-            FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
+            fancyNpcsPlugin.getNpcThread().schedule(() -> {
                 ClientboundPlayerInfoRemovePacket playerInfoRemovePacket = new ClientboundPlayerInfoRemovePacket(List.of(npc.getUUID()));
                 runOnPlayerScheduler(serverPlayer.getBukkitEntity(), () -> serverPlayer.connection.send(playerInfoRemovePacket));
             }, removeNpcsFromPlayerlistDelay, TimeUnit.MILLISECONDS);
@@ -304,7 +303,7 @@ public class Npc_1_21_5 extends Npc {
             move(player, swingArm);
         }
 
-        NpcAttribute playerPoseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "pose");
+        NpcAttribute playerPoseAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(org.bukkit.entity.EntityType.PLAYER, "pose");
         if (data.getAttributes().containsKey(playerPoseAttr)) {
             String pose = data.getAttributes().get(playerPoseAttr);
 

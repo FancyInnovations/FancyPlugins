@@ -30,7 +30,11 @@ public abstract class Npc {
     protected final Map<UUID, Boolean> isVisibleForPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Boolean> isLookingAtPlayer = new ConcurrentHashMap<>();
     protected final Map<UUID, Long> lastPlayerInteraction = new ConcurrentHashMap<>();
-    private final Translator translator = FancyNpcsPlugin.get().getTranslator();
+    /**
+     * Cached plugin instance to avoid expensive call via plugin manager.
+     */
+    protected final FancyNpcsPlugin fancyNpcsPlugin = FancyNpcsPlugin.get();
+    private final Translator translator = fancyNpcsPlugin.getTranslator();
     protected final String teamName;
     protected NpcData data;
     protected boolean saveToFile;
@@ -59,7 +63,7 @@ public abstract class Npc {
     public abstract void spawn(Player player);
 
     public void spawnForAll() {
-        FancyNpcsPlugin.get().getNpcThread().submit(() -> {
+        fancyNpcsPlugin.getNpcThread().submit(() -> {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 spawn(onlinePlayer);
             }
@@ -85,7 +89,7 @@ public abstract class Npc {
             return false;
         }
 
-        int visibilityDistance = (data.getVisibilityDistance() > -1) ? data.getVisibilityDistance() : FancyNpcsPlugin.get().getFancyNpcConfig().getVisibilityDistance();
+        int visibilityDistance = (data.getVisibilityDistance() > -1) ? data.getVisibilityDistance() : fancyNpcsPlugin.getFancyNpcConfig().getVisibilityDistance();
 
         if (visibilityDistance == 0) {
             return false;
@@ -107,13 +111,13 @@ public abstract class Npc {
             return false;
         }
 
-        return !FancyNpcsPlugin.get().getFancyNpcConfig().isSkipInvisibleNpcs()
+        return !fancyNpcsPlugin.getFancyNpcConfig().isSkipInvisibleNpcs()
                 || !data.getAttributes().getOrDefault(INVISIBLE_ATTRIBUTE, "false").equalsIgnoreCase("true")
                 || data.isGlowing() || !data.getEquipment().isEmpty();
     }
 
     public void checkAndUpdateVisibility(Player player) {
-        FancyNpcsPlugin.get().getNpcThread().submit(() -> {
+        fancyNpcsPlugin.getNpcThread().submit(() -> {
             boolean shouldBeVisible = shouldBeVisible(player);
             boolean wasVisible = isVisibleForPlayer.getOrDefault(player.getUniqueId(), false);
 
@@ -121,8 +125,8 @@ public abstract class Npc {
                 spawn(player);
 
                 // Respawn the npc to fix visibility issues on Folia
-                if (ServerSoftware.isFolia() && FancyNpcsPlugin.get().getFeatureFlagConfig().getFeatureFlag("enable-folia-visibility-fix").isEnabled()) {
-                    FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
+                if (ServerSoftware.isFolia() && fancyNpcsPlugin.getFeatureFlagConfig().getFeatureFlag("enable-folia-visibility-fix").isEnabled()) {
+                    fancyNpcsPlugin.getNpcThread().schedule(() -> {
                         remove(player);
                         spawn(player);
                     }, 100, TimeUnit.MILLISECONDS);
@@ -145,7 +149,7 @@ public abstract class Npc {
     public abstract void update(Player player, boolean swingArm);
 
     public void update(Player player) {
-        update(player, FancyNpcsPlugin.get().getFancyNpcConfig().isSwingArmOnUpdate());
+        update(player, fancyNpcsPlugin.getFancyNpcConfig().isSwingArmOnUpdate());
     }
 
     public void updateForAll(boolean swingArm) {
@@ -155,13 +159,13 @@ public abstract class Npc {
     }
 
     public void updateForAll() {
-        updateForAll(FancyNpcsPlugin.get().getFancyNpcConfig().isSwingArmOnUpdate());
+        updateForAll(fancyNpcsPlugin.getFancyNpcConfig().isSwingArmOnUpdate());
     }
 
     public abstract void move(Player player, boolean swingArm);
 
     public void move(Player player) {
-        move(player, FancyNpcsPlugin.get().getFancyNpcConfig().isSwingArmOnUpdate());
+        move(player, fancyNpcsPlugin.getFancyNpcConfig().isSwingArmOnUpdate());
     }
 
     public void moveForAll(boolean swingArm) {
@@ -171,7 +175,7 @@ public abstract class Npc {
     }
 
     public void moveForAll() {
-        moveForAll(FancyNpcsPlugin.get().getFancyNpcConfig().isSwingArmOnUpdate());
+        moveForAll(fancyNpcsPlugin.getFancyNpcConfig().isSwingArmOnUpdate());
     }
 
     public void interact(Player player) {
@@ -185,7 +189,7 @@ public abstract class Npc {
             final Interval interactionCooldownLeft = Interval.between(lastInteractionMillis + interactionCooldownMillis, System.currentTimeMillis(), Unit.MILLISECONDS);
             if (interactionCooldownLeft.as(Unit.MILLISECONDS) > 0) {
 
-                if (!FancyNpcsPlugin.get().getFancyNpcConfig().isInteractionCooldownMessageDisabled()) {
+                if (!fancyNpcsPlugin.getFancyNpcConfig().isInteractionCooldownMessageDisabled()) {
                     translator.translate("interaction_on_cooldown").replace("time", interactionCooldownLeft.toString()).send(player);
                 }
 
@@ -268,7 +272,7 @@ public abstract class Npc {
     protected void runOnPlayerScheduler(Player player, Runnable task) {
         if (ServerSoftware.isFolia()) {
             player.getScheduler().run(
-                    FancyNpcsPlugin.get().getPlugin(),
+                    fancyNpcsPlugin.getPlugin(),
                     (t) -> task.run(),
                     null
             );

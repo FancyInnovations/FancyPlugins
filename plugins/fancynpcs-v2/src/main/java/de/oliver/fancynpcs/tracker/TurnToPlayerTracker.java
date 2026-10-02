@@ -23,6 +23,10 @@ public class TurnToPlayerTracker implements Runnable {
 
             for (Npc npc : npcs) {
                 NpcData npcData = npc.getData();
+                if (!npcData.isTurnToPlayer()) {
+                    continue;
+                }
+
                 Location npcLocation = npcData.getLocation();
 
                 if (npcLocation == null || !npcLocation.getWorld().getName().equalsIgnoreCase(playerLocation.getWorld().getName())) {
@@ -38,7 +42,7 @@ public class TurnToPlayerTracker implements Runnable {
                 int npcTurnDistance = npcData.getTurnToPlayerDistance();
                 int effectiveTurnDistance = (npcTurnDistance == -1) ? defaultTurnToPlayerDistance : npcTurnDistance;
 
-                if (npcData.isTurnToPlayer() && distance < effectiveTurnDistance) {
+                if (distance < effectiveTurnDistance) {
                     // Calculate the base eye height for the entity type
                     double baseEyeHeight = getEntityEyeHeight(npcData.getType());
 

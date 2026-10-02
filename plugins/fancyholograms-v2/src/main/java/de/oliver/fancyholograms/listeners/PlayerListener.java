@@ -9,12 +9,9 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public final class PlayerListener implements Listener {
 
@@ -40,7 +37,7 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(@NotNull final PlayerQuitEvent event) {
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             for (final var hologram : this.plugin.getHologramsManager().getHolograms()) {
                 hologram.forceHideHologram(event.getPlayer());
             }
@@ -49,7 +46,7 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(@NotNull final PlayerJoinEvent event) {
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             for (final var hologram : this.plugin.getHologramsManager().getHolograms()) {
                 hologram.forceHideHologram(event.getPlayer());
                 hologram.forceUpdateShownStateFor(event.getPlayer());
@@ -59,7 +56,7 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(@NotNull final PlayerTeleportEvent event) {
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
                 hologram.forceUpdateShownStateFor(event.getPlayer());
             }
@@ -68,7 +65,7 @@ public final class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWorldChange(@NotNull final PlayerChangedWorldEvent event) {
-        FancyHolograms.get().getHologramThread().submit(() -> {
+        plugin.getHologramThread().submit(() -> {
             for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
                 hologram.forceUpdateShownStateFor(event.getPlayer());
             }
@@ -95,7 +92,7 @@ public final class PlayerListener implements Listener {
         if (loadingResourcePacks.getOrDefault(uuid, 0) <= 0) {
             loadingResourcePacks.remove(uuid);
 
-            FancyHolograms.get().getHologramThread().submit(() -> {
+            plugin.getHologramThread().submit(() -> {
                 for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
                     hologram.refreshHologram(event.getPlayer());
                 }

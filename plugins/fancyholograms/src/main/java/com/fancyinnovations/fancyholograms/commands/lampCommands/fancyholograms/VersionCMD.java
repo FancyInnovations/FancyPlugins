@@ -1,0 +1,47 @@
+package com.fancyinnovations.fancyholograms.commands.lampCommands.fancyholograms;
+
+import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
+import de.oliver.fancylib.VersionConfig;
+import de.oliver.fancylib.versionFetcher.VersionFetcher;
+import org.apache.maven.artifact.versioning.ComparableVersion;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.Description;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
+
+public class VersionCMD extends FancyContext {
+
+    public static final VersionCMD INSTANCE = new VersionCMD();
+
+    private VersionCMD() {
+
+    }
+
+    @Command("fancyholograms version")
+    @Description("Shows the current version of the plugin and whether it is up to date")
+    @CommandPermission("fancyholograms.commands.fancyholograms.version")
+    public void version(
+            final BukkitCommandActor actor
+    ) {
+        VersionFetcher versionFetcher = plugin.getVersionFetcher();
+        VersionConfig versionConfig = plugin.getVersionConfig();
+
+        ComparableVersion currentVersion = new ComparableVersion(versionConfig.getVersion());
+        ComparableVersion newestVersion = versionFetcher.fetchNewestVersion();
+
+        translator.translate("commands.fancyholograms.version.current_version")
+                .withPrefix()
+                .replace("version", versionConfig.getVersion())
+                .send(actor.sender());
+
+        if (newestVersion != null && currentVersion.compareTo(newestVersion) < 0) {
+            translator.translate("commands.fancyholograms.version.version_outdated")
+                    .withPrefix()
+                    .replace("version", versionConfig.getVersion())
+                    .replace("latestVersion", newestVersion.toString())
+                    .replace("downloadURL", versionFetcher.getDownloadUrl())
+                    .send(actor.sender());
+        }
+    }
+
+}

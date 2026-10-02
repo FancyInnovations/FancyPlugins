@@ -2,6 +2,7 @@ package com.fancyinnovations.fancyholograms.tests.mocks;
 
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.fancyinnovations.fancyholograms.storage.json.JsonAdapter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,5 +34,10 @@ public class HologramMock extends Hologram {
     @Override
     public void updateFor(@NotNull Player player) {
         updateForCallback.run();
+    }
+
+    @Override
+    public Object toJson() {
+        return JsonAdapter.hologramDataToJson(data);
     }
 }

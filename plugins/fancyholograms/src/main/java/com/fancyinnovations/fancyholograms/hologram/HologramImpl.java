@@ -1,12 +1,17 @@
 package com.fancyinnovations.fancyholograms.hologram;
 
 import com.fancyinnovations.fancyholograms.api.FancyHolograms;
+import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
+import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
+import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.fancyinnovations.fancyholograms.api.data.property.CustomComponentProviderTrait;
 import com.fancyinnovations.fancyholograms.api.data.property.HologramRotation;
 import com.fancyinnovations.fancyholograms.api.events.HologramDespawnEvent;
 import com.fancyinnovations.fancyholograms.api.events.HologramSpawnEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.storage.json.JsonAdapter;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import com.viaversion.viaversion.api.Via;
 import de.oliver.fancysitula.api.entities.*;
@@ -14,7 +19,6 @@ import de.oliver.fancysitula.factories.FancySitula;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 
 public final class HologramImpl extends Hologram {
@@ -41,7 +45,6 @@ public final class HologramImpl extends Hologram {
             case BLOCK -> this.fsDisplay = new FS_BlockDisplay();
         }
     }
-
 
     @Override
     public void spawnTo(@NotNull final Player player) {
@@ -96,7 +99,6 @@ public final class HologramImpl extends Hologram {
         this.viewers.remove(player.getUniqueId());
     }
 
-
     @Override
     public void updateFor(@NotNull final Player player) {
         if (fsDisplay == null) {
@@ -128,10 +130,27 @@ public final class HologramImpl extends Hologram {
 
 
         if (fsDisplay instanceof FS_TextDisplay textDisplay) {
-            textDisplay.setText(getShownText(player));
+
+            // use custom component provider if available
+            if (data.getTraitTrait().isTraitAttached(CustomComponentProviderTrait.class)) {
+                CustomComponentProviderTrait customComponentProvider = data.getTraitTrait().getTrait(CustomComponentProviderTrait.class);
+                assert customComponentProvider != null;
+                textDisplay.setText(customComponentProvider.getComponentForPlayer(player));
+            } else {
+                textDisplay.setText(getShownText(player));
+            }
         }
 
         FancySitula.ENTITY_FACTORY.setEntityDataFor(fsPlayer, fsDisplay);
+    }
+
+    @Override
+    public Object toJson() {
+        return switch (data.getType()) {
+            case TEXT -> JsonAdapter.toUnion((TextHologramData) data);
+            case ITEM -> JsonAdapter.toUnion((ItemHologramData) data);
+            case BLOCK -> JsonAdapter.toUnion((BlockHologramData) data);
+        };
     }
 
     private void syncWithData() {

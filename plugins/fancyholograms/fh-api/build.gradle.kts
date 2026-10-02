@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
     compileOnly(project(":libraries:common"))
     compileOnly(project(":libraries:jdb"))
@@ -87,7 +87,7 @@ tasks {
         }
         publications {
             create<MavenPublication>("maven") {
-                groupId = "de.oliver"
+                groupId = "com.fancyinnovations"
                 artifactId = "FancyHolograms"
                 version = getFHVersion()
                 from(project.components["java"])

@@ -5,32 +5,20 @@ import com.fancyinnovations.fancyeconomy.currencies.Currency;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayer;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyPlayerManager;
 import com.fancyinnovations.fancyeconomy.currencies.CurrencyRegistry;
-import de.oliver.fancylib.MessageHelper;
 import de.oliver.fancylib.UUIDFetcher;
-import dev.jorel.commandapi.annotations.Alias;
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.jorel.commandapi.annotations.arguments.AStringArgument;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.SuggestWith;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@Command("balance")
-@Permission("fancyeconomy.balance")
-@Alias({"bal"})
 public class BalanceCMD {
 
-    @Default
-    public static void info(Player player) {
-        MessageHelper.info(player, " --- FancyEconomy Info ---");
-        MessageHelper.info(player, "/balance - Shows your balance");
-        MessageHelper.info(player, "/balance <player> - Shows a player's balance");
-    }
-
-    @Default
-    public static void balance(Player player) {
+    @Command({"balance", "bal"})
+    @CommandPermission("fancyeconomy.balance")
+    public void balance(Player player) {
         CurrencyPlayer currencyPlayer = CurrencyPlayerManager.getPlayer(player.getUniqueId());
         Currency currency = CurrencyRegistry.getDefaultCurrency();
         double balance = currencyPlayer.getBalance(currency);
@@ -41,11 +29,11 @@ public class BalanceCMD {
                 .send(player);
     }
 
-    @Default
-    @Permission("fancyeconomy.balance.others")
-    public static void balance(
+    @Command({"balance", "bal"})
+    @CommandPermission("fancyeconomy.balance.others")
+    public void balance(
             Player player,
-            @AStringArgument String targetName
+            @SuggestWith(AllPlayersSuggestion.class) String targetName
     ) {
         Player targetPlayer = Bukkit.getPlayer(targetName);
         if (targetPlayer != null) {

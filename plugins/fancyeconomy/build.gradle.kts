@@ -21,23 +21,21 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:config"))
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.15")
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
 
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
 
     compileOnly("me.clip:placeholderapi:2.11.5")
 
-    val commandapiVersion = "11.1.0"
-    implementation("dev.jorel:commandapi-paper-shade:$commandapiVersion")
-    compileOnly("dev.jorel:commandapi-paper-annotations:$commandapiVersion")
-    annotationProcessor("dev.jorel:commandapi-paper-annotations:$commandapiVersion")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.18")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.18")
 }
 
 paper {
@@ -69,15 +67,13 @@ java {
 
 tasks {
     runServer {
-        minecraftVersion("26.2")
-        //serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
+        minecraftVersion("26.4-snapshot-1")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-1.build.1-alpha.jar"))
     }
 
     shadowJar {
         archiveClassifier.set("")
         archiveBaseName.set("FancyEconomy")
-
-        relocate("dev.jorel.commandapi", "com.fancyinnovations.fancyeconomy.commandapi")
     }
 
     publishing {
@@ -140,6 +136,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        options.compilerArgs.add("-parameters")
 
         // Set the release flag. This configures what version bytecode the compiler will emit, as well as what JDK APIs are usable.
         // See https://openjdk.java.net/jeps/247 for more information.

@@ -10,6 +10,12 @@ public interface FWorld {
 
     String getName();
 
+    /**
+     * Renaming worlds is not currently supported because it requires moving the
+     * world's files and updating Paper's world identity.
+     *
+     * @throws UnsupportedOperationException always
+     */
     void rename(String newName);
 
     long getSeed();

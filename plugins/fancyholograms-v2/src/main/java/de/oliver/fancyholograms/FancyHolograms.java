@@ -245,6 +245,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
         }
     }
 
+    @Override
     public ScheduledExecutorService getHologramThread() {
         return hologramThread;
     }
@@ -282,8 +283,8 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        getServer().getPluginManager().registerEvents(new WorldListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerLoadedListener(), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerLoadedListener(this), this);
 
         if (PluginUtils.isFancyNpcsEnabled()) {
             getServer().getPluginManager().registerEvents(new NpcListener(this), this);
@@ -356,9 +357,9 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
         }));
 
         fancyAnalytics.registerNumberMetric(new MetricSupplier<>("amount_holograms", () -> (double) hologramsManager.getHolograms().size()));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_update_notifications", () -> configuration.areVersionNotificationsEnabled() ? "true" : "false"));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("fflag_disable_holograms_for_bedrock_players", () -> FHFeatureFlags.DISABLE_HOLOGRAMS_FOR_BEDROCK_PLAYERS.isEnabled() ? "true" : "false"));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("using_development_build", () -> versionConfig.isDevelopmentBuild() ? "true" : "false"));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_update_notifications", () -> Boolean.toString(configuration.areVersionNotificationsEnabled())));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("fflag_disable_holograms_for_bedrock_players", () -> Boolean.toString(FHFeatureFlags.DISABLE_HOLOGRAMS_FOR_BEDROCK_PLAYERS.isEnabled())));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("using_development_build", () -> Boolean.toString(versionConfig.isDevelopmentBuild())));
 
         fancyAnalytics.registerStringArrayMetric(new MetricSupplier<>("hologram_type", () -> {
             if (hologramsManager == null) {

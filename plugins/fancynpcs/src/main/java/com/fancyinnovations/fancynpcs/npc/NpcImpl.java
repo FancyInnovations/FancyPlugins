@@ -1,7 +1,6 @@
 package com.fancyinnovations.fancynpcs.npc;
 
 import de.oliver.fancylib.RandomUtils;
-import com.fancyinnovations.fancynpcs.api.FancyNpcsPlugin;
 import com.fancyinnovations.fancynpcs.api.Npc;
 import com.fancyinnovations.fancynpcs.api.NpcAttribute;
 import com.fancyinnovations.fancynpcs.api.NpcData;
@@ -49,6 +48,7 @@ public class NpcImpl extends Npc {
 
     // Mannequin support detection (1.21.9+)
     private static final boolean MANNEQUIN_SUPPORTED;
+
     static {
         boolean supported = false;
         try {
@@ -177,9 +177,9 @@ public class NpcImpl extends Npc {
         isVisibleForPlayer.put(player.getUniqueId(), true);
 
         // Schedule removal from playerlist after delay (not needed for Mannequin)
-        int removeDelay = FancyNpcsPlugin.get().getFancyNpcConfig().getRemoveNpcsFromPlayerlistDelay();
+        int removeDelay = fancyNpcsPlugin.getFancyNpcConfig().getRemoveNpcsFromPlayerlistDelay();
         if (data.getType() == EntityType.PLAYER && !usingMannequin && !data.isShowInTab() && removeDelay > 0) {
-            FancyNpcsPlugin.get().getNpcThread().schedule(() -> {
+            fancyNpcsPlugin.getNpcThread().schedule(() -> {
                 FancySitula.PACKET_FACTORY.createPlayerInfoRemovePacket(List.of(fsEntity.getUuid())).send(fsPlayer);
             }, removeDelay, TimeUnit.MILLISECONDS);
         }
@@ -396,7 +396,7 @@ public class NpcImpl extends Npc {
         }
 
         // Handle sitting pose using FancySitula
-        NpcAttribute poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, "pose");
+        NpcAttribute poseAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(EntityType.PLAYER, "pose");
         if (poseAttr != null && data.getAttributes().containsKey(poseAttr)) {
             String pose = data.getAttributes().get(poseAttr);
             if (pose.equals("sitting")) {
@@ -414,7 +414,7 @@ public class NpcImpl extends Npc {
 
         // Handle baby attribute for ageable mobs (needs separate packet with specific accessor)
         if (isAgeableMob(data.getType())) {
-            NpcAttribute babyAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(data.getType(), "baby");
+            NpcAttribute babyAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(data.getType(), "baby");
             if (babyAttr != null && data.getAttributes().containsKey(babyAttr)) {
                 boolean isBaby = Boolean.parseBoolean(data.getAttributes().get(babyAttr));
                 sendBabyAttribute(fsPlayer, isBaby);
@@ -472,7 +472,7 @@ public class NpcImpl extends Npc {
         }
 
         // Check for on_fire attribute (0x01)
-        NpcAttribute onFireAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(data.getType(), "on_fire");
+        NpcAttribute onFireAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(data.getType(), "on_fire");
         if (onFireAttr != null && data.getAttributes().containsKey(onFireAttr)) {
             if (Boolean.parseBoolean(data.getAttributes().get(onFireAttr))) {
                 sharedFlags |= 0x01;
@@ -480,7 +480,7 @@ public class NpcImpl extends Npc {
         }
 
         // Check for invisible attribute (0x20)
-        NpcAttribute invisibleAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(data.getType(), "invisible");
+        NpcAttribute invisibleAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(data.getType(), "invisible");
         if (invisibleAttr != null && data.getAttributes().containsKey(invisibleAttr)) {
             if (Boolean.parseBoolean(data.getAttributes().get(invisibleAttr))) {
                 sharedFlags |= 0x20;
@@ -490,7 +490,7 @@ public class NpcImpl extends Npc {
         fsEntity.setSharedFlags(sharedFlags);
 
         // Check for shaking attribute (ticks frozen)
-        NpcAttribute shakingAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(data.getType(), "shaking");
+        NpcAttribute shakingAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(data.getType(), "shaking");
         if (shakingAttr != null && data.getAttributes().containsKey(shakingAttr)) {
             if (Boolean.parseBoolean(data.getAttributes().get(shakingAttr))) {
                 fsEntity.setTicksFrozen(140); // Enough ticks to show shaking effect
@@ -537,7 +537,7 @@ public class NpcImpl extends Npc {
 
             // Apply Mannequin pose from attributes
             // The pose attribute is registered for PLAYER type when Mannequin is available
-            NpcAttribute poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, "pose");
+            NpcAttribute poseAttr = fancyNpcsPlugin.getAttributeManager().getAttributeByName(EntityType.PLAYER, "pose");
             if (poseAttr != null && data.getAttributes().containsKey(poseAttr)) {
                 String pose = data.getAttributes().get(poseAttr);
                 fsMannequin.setPose(pose);

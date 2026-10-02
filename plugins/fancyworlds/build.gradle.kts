@@ -30,7 +30,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
     implementation(project(":plugins:fancyworlds:fw-api"))
 
@@ -38,24 +38,24 @@ dependencies {
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:config"))
     implementation("de.oliver.FancyAnalytics:java-sdk:0.0.6")
-    implementation("de.oliver.FancyAnalytics:mc-api:0.1.13")
+    implementation("de.oliver.FancyAnalytics:mc-api:0.1.15")
     implementation("de.oliver.FancyAnalytics:logger:0.0.10")
 
     compileOnly(project(":plugins:fancydialogs:fd-api"))
     compileOnly("org.lushplugins.chatcolorhandler:paper:8.1.1")
-    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.17")
-    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.17")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.18")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.18")
 
     implementation("org.jetbrains:annotations:26.1.0")
 }
 
 tasks {
     runServer {
-        minecraftVersion("26.2")
-        //serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.2.build.1-alpha.jar"))
+        minecraftVersion("26.4-snapshot-1")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-1.build.1-alpha.jar"))
 
         downloadPlugins {
-            modrinth("FancyDialogs", "1.3.0")
+//            modrinth("FancyDialogs", "1.4.0")
 //            modrinth("FancyNpcs", "2.9.2")
 //            modrinth("FancyHolograms", "2.9.1")
 //            modrinth("FancyDialogs", "1.1.2")

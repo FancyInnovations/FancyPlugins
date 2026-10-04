@@ -1,12 +1,10 @@
 package de.oliver.fancynpcs.v26_1_1.attributes;
 
-import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.v26_1_1.ReflectionHelper;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.camel.Camel;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
@@ -30,25 +28,23 @@ public class CamelAttributes {
     private static void setPose(Npc npc, String value) {
         Camel camel = ReflectionHelper.getEntity(npc);
 
-        Bukkit.getGlobalRegionScheduler().run(FancyNpcsPlugin.get().getPlugin(), (_) -> {
-            switch (value.toLowerCase()) {
-                case "standing" -> {
-                    camel.setPose(Pose.STANDING);
-                    camel.setDashing(false);
-                    camel.resetLastPoseChangeTick(camel.level().getGameTime());
-                }
-                case "sitting" -> {
-                    camel.setPose(Pose.SITTING);
-                    camel.setDashing(false);
-                    camel.resetLastPoseChangeTick(-camel.level().getGameTime());
-                }
-                case "dashing" -> {
-                    camel.setPose(Pose.STANDING);
-                    camel.setDashing(true);
-                    camel.resetLastPoseChangeTick(camel.level().getGameTime());
-                }
+        switch (value.toLowerCase()) {
+            case "standing" -> {
+                camel.setPose(Pose.STANDING);
+                camel.setDashing(false);
+                camel.resetLastPoseChangeTick(camel.level().getGameTime());
             }
-        });
+            case "sitting" -> {
+                camel.setPose(Pose.SITTING);
+                camel.setDashing(false);
+                camel.resetLastPoseChangeTick(-camel.level().getGameTime());
+            }
+            case "dashing" -> {
+                camel.setPose(Pose.STANDING);
+                camel.setDashing(true);
+                camel.resetLastPoseChangeTick(camel.level().getGameTime());
+            }
+        }
     }
 
 }

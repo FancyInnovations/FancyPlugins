@@ -82,4 +82,13 @@ public interface HologramConfiguration {
     default int getHologramUpdateInterval() {
         return 200;
     }
+
+    /**
+     * Returns whether processed hologram text should be cached.
+     *
+     * @return {@code true} if processed hologram text should be cached, {@code false} otherwise.
+     */
+    default boolean isTextCacheEnabled() {
+        return true;
+    }
 }

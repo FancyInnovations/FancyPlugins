@@ -18,7 +18,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
-    compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.2.0")
+    compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.5.0")
 
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))

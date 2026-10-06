@@ -6,6 +6,7 @@ import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
+import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.CurrentLineSuggestion;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions.SwapLinesSuggestion;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,7 @@ public final class SetLineCMD extends FancyContext {
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
             final @SuggestWith(SwapLinesSuggestion.class) int line,
-            final @NotNull String text
+            final @NotNull @SuggestWith(CurrentLineSuggestion.class) String text
     ) {
         TextHologramData textData = (TextHologramData) hologram.getData();
 

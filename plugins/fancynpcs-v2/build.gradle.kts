@@ -120,8 +120,10 @@ tasks {
     }
 
     shadowJar {
-        relocate("org.incendo", "de.oliver")
-        relocate("org.lushplugins.chatcolorhandler", "de.oliver.fancynpcs.libs.chatcolorhandler")
+        relocate("org.incendo.cloud", "com.fancyinnovations.fancynpcs.libs.cloud")
+        relocate("revxrsal.commands", "com.fancyinnovations.fancynpcs.libs.lamp")
+        relocate("org.lushplugins.chatcolorhandler", "com.fancyinnovations.fancynpcs.libs.chatcolorhandler")
+
         archiveClassifier.set("")
         archiveBaseName.set("FancyNpcs")
         dependsOn(":plugins:fancynpcs-v2:fn-v2-api:shadowJar")

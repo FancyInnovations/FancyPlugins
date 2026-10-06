@@ -82,4 +82,11 @@ public interface HologramConfiguration {
     default int getHologramUpdateInterval() {
         return 200;
     }
+
+    /**
+     * Returns whether holograms should be refreshed on player locale change.
+     *
+     * @return {@code true} if holograms should be refreshed on locale change, {@code false} otherwise.
+     */
+    boolean isRefreshHologramsOnLocaleChangeEnabled();
 }

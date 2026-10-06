@@ -18,7 +18,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.3.build.+")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
-    compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.2.0")
+    compileOnly("io.github.toxicity188:bettermodel-bukkit-api:3.5.0")
 
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
@@ -37,8 +37,8 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("26.4-snapshot-1")
-        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-1.build.1-alpha.jar"))
+        minecraftVersion("26.4-snapshot-3")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-3.build.1-alpha.jar"))
 
         downloadPlugins {
             modrinth("FancyNpcs", "2.12.1")

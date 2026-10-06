@@ -91,4 +91,10 @@ public interface HologramConfiguration {
     default boolean isTextCacheEnabled() {
         return true;
     }
+
+     * Returns whether holograms should be refreshed on player locale change.
+     *
+     * @return {@code true} if holograms should be refreshed on locale change, {@code false} otherwise.
+     */
+    boolean isRefreshHologramsOnLocaleChangeEnabled();
 }

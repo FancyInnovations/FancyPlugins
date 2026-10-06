@@ -38,6 +38,11 @@ public class HologramBuilderTest {
         expect(hologram.getData().getName()).toBe("Test");
         expect(hologram.getData().getLocation()).toEqual(player.getLocation());
         expect(hologram.getData().getType()).toEqual(HologramType.TEXT);
+
+        if (!(hologram.getData() instanceof TextHologramData data)) {
+            throw new AssertionError("Hologram is not a text hologram");
+        }
+        expect(data.getTextOpacity()).toEqual(TextHologramData.DEFAULT_TEXT_OPACITY);
     }
 
     @FPTest(name = "Test text hologram builder with one line")
@@ -95,6 +100,7 @@ public class HologramBuilderTest {
                 .textShadow(true)
                 .seeThrough(true)
                 .updateTextInterval(420)
+                .textOpacity(128)
                 .visibilityDistance(42)
                 .visibility(Visibility.ALL)
                 .persistent(false)
@@ -120,6 +126,7 @@ public class HologramBuilderTest {
         expect(data.hasTextShadow()).toBe(true);
         expect(data.isSeeThrough()).toBe(true);
         expect(data.getTextUpdateInterval()).toEqual(420);
+        expect(data.getTextOpacity()).toEqual((byte) 128);
         expect(data.getVisibilityDistance()).toEqual(42);
         expect(data.getVisibility()).toEqual(Visibility.ALL);
         expect(data.isPersistent()).toBe(false);
@@ -132,6 +139,22 @@ public class HologramBuilderTest {
         expect(data.getShadowRadius()).toEqual(0.5f);
         expect(data.getShadowStrength()).toEqual(0.7f);
         expect(data.getInterpolationDuration()).toEqual(100);
+    }
+
+    @FPTest(name = "Test text hologram builder with text opacity")
+    public void testTextHologramBuilderWithTextOpacity(Player player) {
+        Hologram hologram = TextHologramBuilder.create("Test", player.getLocation())
+                .textOpacity(200)
+                .build();
+
+        if (!(hologram.getData() instanceof TextHologramData data)) {
+            throw new AssertionError("Hologram is not a text hologram");
+        }
+
+        expect(data.getTextOpacity()).toEqual((byte) 200);
+
+        TextHologramData copy = data.copy("TestCopy");
+        expect(copy.getTextOpacity()).toEqual((byte) 200);
     }
 
     @FPTest(name = "Test item hologram builder")
@@ -172,6 +195,44 @@ public class HologramBuilderTest {
         }
 
         expect(data.getBlock()).toEqual(Material.DIRT);
+    }
+
+    @FPTest(name = "Test block hologram builder with block state property")
+    public void testBlockHologramBuilderWithBlockStateProperty(Player player) {
+        Hologram hologram = BlockHologramBuilder.create("Test", player.getLocation())
+                .block(Material.STRUCTURE_BLOCK, "mode", "save")
+                .build();
+
+        if (!(hologram.getData() instanceof BlockHologramData data)) {
+            throw new AssertionError("Hologram is not a block hologram");
+        }
+
+        expect(data.getBlock()).toEqual(Material.STRUCTURE_BLOCK);
+        expect(data.getBlockStateProperties().get("mode")).toEqual("save");
+    }
+
+    @FPTest(name = "Test block hologram builder with block state fluent method")
+    public void testBlockHologramBuilderWithBlockStateFluent(Player player) {
+        Hologram hologram = BlockHologramBuilder.create("Test", player.getLocation())
+                .block(Material.CHEST)
+                .blockState("facing", "south")
+                .build();
+
+        if (!(hologram.getData() instanceof BlockHologramData data)) {
+            throw new AssertionError("Hologram is not a block hologram");
+        }
+
+        expect(data.getBlock()).toEqual(Material.CHEST);
+        expect(data.getBlockStateProperties().get("facing")).toEqual("south");
+
+        BlockHologramData copy = data.copy("TestCopy");
+        expect(copy.getBlock()).toEqual(Material.CHEST);
+        expect(copy.getBlockStateProperties().get("facing")).toEqual("south");
+
+        // Mutating copy should not mutate original
+        copy.setBlockStateProperty("facing", "north");
+        expect(copy.getBlockStateProperties().get("facing")).toEqual("north");
+        expect(data.getBlockStateProperties().get("facing")).toEqual("south");
     }
 
     @FPTest(name = "Test hologram builder registering")

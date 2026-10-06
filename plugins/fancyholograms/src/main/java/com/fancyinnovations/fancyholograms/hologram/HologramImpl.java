@@ -182,6 +182,9 @@ public final class HologramImpl extends Hologram {
             // line width
             textDisplay.setLineWidth(Hologram.LINE_WIDTH);
 
+            // opacity
+            textDisplay.setTextOpacity(textData.getTextOpacity());
+
             // background
             final var background = textData.getBackground();
             if (background == null) {
@@ -211,7 +214,9 @@ public final class HologramImpl extends Hologram {
             // block
 
 //            BlockType blockType = RegistryAccess.registryAccess().getRegistry(RegistryKey.BLOCK).get(blockData.getBlock().getKey());
-            blockDisplay.setBlock(blockData.getBlock().createBlockData().createBlockState());
+            if (blockData.getBlockData() != null) {
+                blockDisplay.setBlock(blockData.getBlockData().createBlockState());
+            }
         }
 
         if (data instanceof com.fancyinnovations.fancyholograms.api.data.DisplayHologramData displayData) {

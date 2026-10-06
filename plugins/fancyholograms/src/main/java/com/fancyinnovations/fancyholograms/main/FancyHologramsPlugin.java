@@ -340,6 +340,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         lamp.register(BackgroundCMD.INSTANCE);
         lamp.register(BillboardCMD.INSTANCE);
         lamp.register(BlockCMD.INSTANCE);
+        lamp.register(BlockStateCMD.INSTANCE);
         lamp.register(BrightnessCMD.INSTANCE);
         lamp.register(CenterCMD.INSTANCE);
         lamp.register(CopyCMD.INSTANCE);
@@ -359,6 +360,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         lamp.register(ShadowStrengthCMD.INSTANCE);
         lamp.register(TextAlignmentCMD.INSTANCE);
         lamp.register(TextShadowCMD.INSTANCE);
+        lamp.register(TextOpacityCMD.INSTANCE);
         lamp.register(TranslateCMD.INSTANCE);
         lamp.register(VisibilityCMD.INSTANCE);
         lamp.register(VisibilityDistanceCMD.INSTANCE);

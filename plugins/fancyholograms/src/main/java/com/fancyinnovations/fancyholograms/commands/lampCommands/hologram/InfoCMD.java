@@ -114,6 +114,11 @@ public final class InfoCMD extends FancyContext {
                     .replace("enabled", textData.hasTextShadow() ? "enabled" : "disabled")
                     .send(actor.sender());
 
+            int opacityPercentage = Math.round((Byte.toUnsignedInt(textData.getTextOpacity()) * 100.0f) / 255.0f);
+            translator.translate("commands.hologram.info.text_opacity")
+                    .replace("opacity", String.valueOf(opacityPercentage))
+                    .send(actor.sender());
+
             if (textData.getTextUpdateInterval() == -1) {
                 translator.translate("commands.hologram.info.update_text_interval_disabled")
                         .send(actor.sender());
@@ -126,6 +131,16 @@ public final class InfoCMD extends FancyContext {
             translator.translate("commands.hologram.info.block")
                     .replace("block", blockData.getBlock().name())
                     .send(actor.sender());
+
+            java.util.Map<String, String> properties = blockData.getBlockStateProperties();
+            if (!properties.isEmpty()) {
+                String propertiesStr = properties.entrySet().stream()
+                        .map(e -> e.getKey() + "=" + e.getValue())
+                        .collect(java.util.stream.Collectors.joining(", "));
+                translator.translate("commands.hologram.info.blockstate")
+                        .replace("properties", propertiesStr)
+                        .send(actor.sender());
+            }
         } else if (data instanceof ItemHologramData itemData) {
             translator.translate("commands.hologram.info.item")
                     .replace("item", itemData.getItemStack().getType().name())

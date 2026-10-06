@@ -117,4 +117,23 @@ public class TextHologramBuilder extends HologramBuilder {
         return this;
     }
 
+    /**
+     * Sets the opacity of the text hologram.
+     *
+     * @param textOpacity the text opacity byte (-1 or 255 for fully opaque, 0 for fully transparent)
+     */
+    public TextHologramBuilder textOpacity(byte textOpacity) {
+        ((TextHologramData) data).setTextOpacity(textOpacity);
+        return this;
+    }
+
+    /**
+     * Sets the opacity of the text hologram.
+     *
+     * @param textOpacity the text opacity value (0 to 255)
+     */
+    public TextHologramBuilder textOpacity(int textOpacity) {
+        return textOpacity((byte) textOpacity);
+    }
+
 }

@@ -197,6 +197,44 @@ public class HologramBuilderTest {
         expect(data.getBlock()).toEqual(Material.DIRT);
     }
 
+    @FPTest(name = "Test block hologram builder with block state property")
+    public void testBlockHologramBuilderWithBlockStateProperty(Player player) {
+        Hologram hologram = BlockHologramBuilder.create("Test", player.getLocation())
+                .block(Material.STRUCTURE_BLOCK, "mode", "save")
+                .build();
+
+        if (!(hologram.getData() instanceof BlockHologramData data)) {
+            throw new AssertionError("Hologram is not a block hologram");
+        }
+
+        expect(data.getBlock()).toEqual(Material.STRUCTURE_BLOCK);
+        expect(data.getBlockStateProperties().get("mode")).toEqual("save");
+    }
+
+    @FPTest(name = "Test block hologram builder with block state fluent method")
+    public void testBlockHologramBuilderWithBlockStateFluent(Player player) {
+        Hologram hologram = BlockHologramBuilder.create("Test", player.getLocation())
+                .block(Material.CHEST)
+                .blockState("facing", "south")
+                .build();
+
+        if (!(hologram.getData() instanceof BlockHologramData data)) {
+            throw new AssertionError("Hologram is not a block hologram");
+        }
+
+        expect(data.getBlock()).toEqual(Material.CHEST);
+        expect(data.getBlockStateProperties().get("facing")).toEqual("south");
+
+        BlockHologramData copy = data.copy("TestCopy");
+        expect(copy.getBlock()).toEqual(Material.CHEST);
+        expect(copy.getBlockStateProperties().get("facing")).toEqual("south");
+
+        // Mutating copy should not mutate original
+        copy.setBlockStateProperty("facing", "north");
+        expect(copy.getBlockStateProperties().get("facing")).toEqual("north");
+        expect(data.getBlockStateProperties().get("facing")).toEqual("south");
+    }
+
     @FPTest(name = "Test hologram builder registering")
     public void testHologramBuilderRegistering(Player player) {
         String hologramName = UUID.randomUUID().toString();

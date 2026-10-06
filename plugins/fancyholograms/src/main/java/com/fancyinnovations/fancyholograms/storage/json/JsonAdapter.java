@@ -76,7 +76,7 @@ public class JsonAdapter {
 
     public static JsonBlockHologramData blockHologramDataToJson(com.fancyinnovations.fancyholograms.api.data.BlockHologramData data) {
         return new JsonBlockHologramData(
-                data.getBlock().name()
+                data.getBlockData() != null ? data.getBlockData().getAsString() : data.getBlock().name()
         );
     }
 
@@ -195,20 +195,31 @@ public class JsonAdapter {
                             .setVisibilityDistance(data.hologram_data().visibility_distance())
                             .setVisibility(data.hologram_data().visibility())
                             .setLinkedNpcName(data.hologram_data().linked_npc_name());
-            case BLOCK ->
-                    new com.fancyinnovations.fancyholograms.api.data.BlockHologramData(data.hologram_data().name(), loc)
-                            .setBlock(Material.getMaterial(data.block_data().block_material())) // block data
-                            .setBillboard(data.display_data().billboard()) // display data
-                            .setScale(scale)
-                            .setTranslation(translation)
-                            .setBrightness(brightness)
-                            .setShadowRadius(data.display_data().shadow_radius())
-                            .setShadowStrength(data.display_data().shadow_strength())
-                            .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
-                            .setWorldName(data.hologram_data().world_name())// hologram data
-                            .setVisibilityDistance(data.hologram_data().visibility_distance())
-                            .setVisibility(data.hologram_data().visibility())
-                            .setLinkedNpcName(data.hologram_data().linked_npc_name());
+            case BLOCK -> {
+                com.fancyinnovations.fancyholograms.api.data.BlockHologramData blockHologramData = new com.fancyinnovations.fancyholograms.api.data.BlockHologramData(data.hologram_data().name(), loc);
+                String blockMatOrData = data.block_data().block_material();
+                try {
+                    blockHologramData.setBlockData(Bukkit.createBlockData(blockMatOrData));
+                } catch (Exception e) {
+                    Material mat = Material.getMaterial(blockMatOrData.toUpperCase());
+                    if (mat == null) {
+                        mat = com.fancyinnovations.fancyholograms.api.data.BlockHologramData.DEFAULT_BLOCK;
+                    }
+                    blockHologramData.setBlock(mat);
+                }
+                yield blockHologramData
+                        .setBillboard(data.display_data().billboard()) // display data
+                        .setScale(scale)
+                        .setTranslation(translation)
+                        .setBrightness(brightness)
+                        .setShadowRadius(data.display_data().shadow_radius())
+                        .setShadowStrength(data.display_data().shadow_strength())
+                        .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
+                        .setWorldName(data.hologram_data().world_name())// hologram data
+                        .setVisibilityDistance(data.hologram_data().visibility_distance())
+                        .setVisibility(data.hologram_data().visibility())
+                        .setLinkedNpcName(data.hologram_data().linked_npc_name());
+            }
         };
 
         for (String traitName : data.hologram_data().traits()) {

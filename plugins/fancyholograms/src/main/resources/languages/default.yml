@@ -90,6 +90,7 @@ messages:
         update_text_interval_disabled: "{secondaryColor} - Update text interval: {primaryColor}disabled"
         update_text_interval: "{secondaryColor} - Update text interval: {primaryColor}{interval}s"
         block: "{secondaryColor} - Block: {primaryColor}{block}"
+        blockstate: "{secondaryColor} - Block state: {primaryColor}{properties}"
         item: "{secondaryColor} - Item: {primaryColor}{item}"
       list:
         empty: "{errorColor}There are no holograms."
@@ -210,6 +211,12 @@ messages:
           not_a_block: "{errorColor}Material {primaryColor}{material}{errorColor} is not a valid block."
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this block ({material}) set."
           updated: "Updated the block to {primaryColor}{material}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        blockstate:
+          not_a_block: "{errorColor}Material {primaryColor}{material}{errorColor} is not a valid block."
+          invalid_property: "{errorColor}Property {primaryColor}{property}{errorColor} is not valid for block {primaryColor}{material}{errorColor}. Valid properties: {primaryColor}{valid_properties}{errorColor}."
+          invalid_value: "{errorColor}Value {primaryColor}{value}{errorColor} is not valid for property {primaryColor}{property}{errorColor}."
+          already_set: "{errorColor}Property {primaryColor}{property}{errorColor} is already set to {primaryColor}{value}{errorColor}."
+          updated: "Updated block state property {primaryColor}{property}{secondaryColor} to {primaryColor}{value}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         brightness:
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this brightness ({brightness}) set."
           updated: "Updated the brightness to {primaryColor}{brightness}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."

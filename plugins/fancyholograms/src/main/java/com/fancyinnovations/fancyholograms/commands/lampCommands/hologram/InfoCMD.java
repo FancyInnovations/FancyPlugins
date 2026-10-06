@@ -131,6 +131,16 @@ public final class InfoCMD extends FancyContext {
             translator.translate("commands.hologram.info.block")
                     .replace("block", blockData.getBlock().name())
                     .send(actor.sender());
+
+            java.util.Map<String, String> properties = blockData.getBlockStateProperties();
+            if (!properties.isEmpty()) {
+                String propertiesStr = properties.entrySet().stream()
+                        .map(e -> e.getKey() + "=" + e.getValue())
+                        .collect(java.util.stream.Collectors.joining(", "));
+                translator.translate("commands.hologram.info.blockstate")
+                        .replace("properties", propertiesStr)
+                        .send(actor.sender());
+            }
         } else if (data instanceof ItemHologramData itemData) {
             translator.translate("commands.hologram.info.item")
                     .replace("item", itemData.getItemStack().getType().name())

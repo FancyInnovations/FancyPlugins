@@ -70,7 +70,9 @@ public class Npc_1_21_11 extends Npc {
         ServerLevel serverLevel = ((CraftWorld) data.getLocation().getWorld()).getHandle();
 
         if (data.getType() == org.bukkit.entity.EntityType.PLAYER) {
-            npc = new ServerPlayer(minecraftServer, serverLevel, new GameProfile(uuid, localName), ClientInformation.createDefault());
+            npc = new ServerPlayer(minecraftServer, serverLevel, new GameProfile(uuid, ""), ClientInformation.createDefault());
+            // we can't use legacy color codes in the constructor since they are used in an adventure component there
+            ((ServerPlayer) npc).gameProfile = new GameProfile(uuid, localName);
         } else {
             Optional<Holder.Reference<EntityType<?>>> entityTypeReference = BuiltInRegistries.ENTITY_TYPE.get(CraftNamespacedKey.toMinecraft(data.getType().getKey()));
             EntityType<?> nmsType = entityTypeReference.get().value(); // TODO handle empty

@@ -114,6 +114,11 @@ public final class InfoCMD extends FancyContext {
                     .replace("enabled", textData.hasTextShadow() ? "enabled" : "disabled")
                     .send(actor.sender());
 
+            int opacityPercentage = Math.round((Byte.toUnsignedInt(textData.getTextOpacity()) * 100.0f) / 255.0f);
+            translator.translate("commands.hologram.info.text_opacity")
+                    .replace("opacity", String.valueOf(opacityPercentage))
+                    .send(actor.sender());
+
             if (textData.getTextUpdateInterval() == -1) {
                 translator.translate("commands.hologram.info.update_text_interval_disabled")
                         .send(actor.sender());

@@ -10,6 +10,7 @@ public record JsonTextHologramData(
         Boolean see_through,
         TextDisplay.TextAlignment text_alignment,
         Integer text_update_interval,
-        String background_color
+        String background_color,
+        Integer text_opacity
 ) {
 }

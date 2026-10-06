@@ -86,6 +86,7 @@ messages:
         text_alignment: "{secondaryColor} - Text alignment: {primaryColor}{alignment}"
         see_through: "{secondaryColor} - See through: {primaryColor}{enabled}"
         text_shadow: "{secondaryColor} - Text shadow: {primaryColor}{enabled}"
+        text_opacity: "{secondaryColor} - Text opacity: {primaryColor}{opacity}%"
         update_text_interval_disabled: "{secondaryColor} - Update text interval: {primaryColor}disabled"
         update_text_interval: "{secondaryColor} - Update text interval: {primaryColor}{interval}s"
         block: "{secondaryColor} - Block: {primaryColor}{block}"
@@ -161,6 +162,10 @@ messages:
         text_shadow:
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has text shadow set to {primaryColor}{enabled}{errorColor}."
           updated: "Set text shadow to {primaryColor}{enabled}{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
+        text_opacity:
+          invalid_range: "{errorColor}Invalid text opacity. Must be between {primaryColor}0%{errorColor} and {primaryColor}100%{errorColor}."
+          already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has text opacity set to {primaryColor}{opacity}%{errorColor}."
+          updated: "Updated the text opacity to {primaryColor}{opacity}%{secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         translate:
           not_display: "{errorColor}This command can only be executed on display holograms."
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this translation set."

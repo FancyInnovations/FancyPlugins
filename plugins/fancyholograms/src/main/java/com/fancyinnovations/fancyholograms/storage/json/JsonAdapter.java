@@ -69,7 +69,8 @@ public class JsonAdapter {
                 data.isSeeThrough(),
                 data.getTextAlignment(),
                 data.getTextUpdateInterval(),
-                data.getBackground() == null ? "" : "#" + Integer.toHexString(data.getBackground().asARGB())
+                data.getBackground() == null ? "" : "#" + Integer.toHexString(data.getBackground().asARGB()),
+                Byte.toUnsignedInt(data.getTextOpacity())
         );
     }
 
@@ -168,6 +169,7 @@ public class JsonAdapter {
                             .setTextShadow(data.text_data().text_shadow())
                             .setSeeThrough(data.text_data().see_through())
                             .setTextUpdateInterval(data.text_data().text_update_interval())
+                            .setTextOpacity(data.text_data().text_opacity() != null ? data.text_data().text_opacity().byteValue() : com.fancyinnovations.fancyholograms.api.data.TextHologramData.DEFAULT_TEXT_OPACITY)
                             .setBillboard(data.display_data().billboard()) // display data
                             .setScale(scale)
                             .setTranslation(translation)

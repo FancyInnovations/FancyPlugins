@@ -263,7 +263,7 @@ public abstract class Npc {
     }
 
     /**
-     * Runs a task on the player's scheduler, when using Folia
+     * Runs a task on the player's scheduler, when using Folia.
      *
      * @param player The player whose scheduler to run the task on.
      * @param task   The task to run.

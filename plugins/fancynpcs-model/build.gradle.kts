@@ -55,7 +55,7 @@ tasks {
     }
 
     shadowJar {
-        relocate("org.incendo", "de.oliver")
+        relocate("org.incendo.cloud", "com.fancyinnovations.fancynpcs.libs.cloud")
         archiveClassifier.set("")
         archiveBaseName.set("FancyNpcsModel")
     }

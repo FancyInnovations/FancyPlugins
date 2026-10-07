@@ -2,6 +2,7 @@ package de.oliver.fancyholograms.api.hologram;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import de.oliver.fancyholograms.api.FancyHologramsPlugin;
 import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.data.property.Visibility;
@@ -376,14 +377,19 @@ public abstract class Hologram {
             return MiniMessage.miniMessage().deserialize(rawText);
         }
 
+        final boolean cacheText = FancyHologramsPlugin.get().getHologramConfiguration().isTextCacheEnabled();
         final UUID cacheKey = player != null ? player.getUniqueId() : NULL_PLAYER_KEY;
-        final Component cached = cachedTextPerPlayer.getIfPresent(cacheKey);
-        if (cached != null) {
-            return cached;
+        if (cacheText) {
+            final Component cached = cachedTextPerPlayer.getIfPresent(cacheKey);
+            if (cached != null) {
+                return cached;
+            }
         }
 
         final Component translated = PaperColor.handler().translate(rawText, player);
-        cachedTextPerPlayer.put(cacheKey, translated);
+        if (cacheText) {
+            cachedTextPerPlayer.put(cacheKey, translated);
+        }
         return translated;
     }
 

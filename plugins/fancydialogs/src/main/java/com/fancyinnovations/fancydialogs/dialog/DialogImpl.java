@@ -58,10 +58,7 @@ public class DialogImpl extends Dialog {
         if (perm == null) {
             return true;
         }
-        if (!perm.isEmpty() && !player.hasPermission(perm)) {
-            return false;
-        }
-        return true;
+        return perm.isEmpty() || player.hasPermission(perm);
     }
 
     private boolean checkRequirements(Player player, Map<String, String> requirements) {

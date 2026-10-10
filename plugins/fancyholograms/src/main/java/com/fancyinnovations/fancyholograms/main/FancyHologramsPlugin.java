@@ -45,6 +45,7 @@ import de.oliver.fancyanalytics.logger.appender.ConsoleAppender;
 import de.oliver.fancyanalytics.logger.appender.JsonAppender;
 import de.oliver.fancylib.FancyLib;
 import de.oliver.fancylib.VersionConfig;
+import de.oliver.fancylib.colors.GlowingColor;
 import de.oliver.fancylib.duration.FancyDuration;
 import de.oliver.fancylib.logging.PluginMiddleware;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
@@ -305,7 +306,7 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
         lampBuilder.parameterTypes(builder -> {
             builder.addParameterType(Hologram.class, HologramCommandType.INSTANCE);
             builder.addParameterType(HologramTraitRegistry.TraitInfo.class, TraitCommandType.INSTANCE);
-            builder.addParameterType(de.oliver.fancylib.colors.GlowingColor.class, GlowingColorCommandType.INSTANCE);
+            builder.addParameterType(GlowingColor.class, GlowingColorCommandType.INSTANCE);
             builder.addParameterType(FancyDuration.class, DurationCommandType.INSTANCE);
             builder.addParameterType(Color.class, ColorCommandType.INSTANCE);
         });

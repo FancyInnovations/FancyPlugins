@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 @ApiStatus.Experimental
 @HologramTraitClass(traitName = "file_content_trait")
@@ -37,7 +38,7 @@ public class FileContentTrait extends HologramTrait {
             updateTask = hologramThread.scheduleWithFixedDelay(
                     this::updateHologram,
                     0,
-                    config.refreshInterval(), java.util.concurrent.TimeUnit.MILLISECONDS
+                    config.refreshInterval(), TimeUnit.MILLISECONDS
             );
         } else {
             updateHologram();
@@ -98,7 +99,7 @@ public class FileContentTrait extends HologramTrait {
             this.updateTask = hologramThread.scheduleWithFixedDelay(
                     this::updateHologram,
                     0,
-                    config.refreshInterval(), java.util.concurrent.TimeUnit.MILLISECONDS
+                    config.refreshInterval(), TimeUnit.MILLISECONDS
             );
         }
     }

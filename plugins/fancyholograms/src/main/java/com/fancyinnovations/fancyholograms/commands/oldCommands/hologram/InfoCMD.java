@@ -1,9 +1,6 @@
 package com.fancyinnovations.fancyholograms.commands.oldCommands.hologram;
 
-import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
-import com.fancyinnovations.fancyholograms.api.data.HologramData;
-import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
-import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.fancyinnovations.fancyholograms.api.data.*;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.Subcommand;
 import de.oliver.fancylib.MessageHelper;
@@ -41,7 +38,7 @@ public class InfoCMD implements Subcommand {
 
         MessageHelper.info(player, "Visibility distance: <gray>" + data.getVisibilityDistance() + " blocks");
 
-        if (data instanceof com.fancyinnovations.fancyholograms.api.data.DisplayHologramData displayData) {
+        if (data instanceof DisplayHologramData displayData) {
             Vector3f scale = displayData.getScale();
             if (scale.x() == scale.y() && scale.y() == scale.z()) {
                 MessageHelper.info(player, "Scale: <gray>x" + displayData.getScale().x());

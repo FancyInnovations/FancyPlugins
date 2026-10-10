@@ -11,6 +11,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public final class InfoCMD extends FancyContext {
 
     public static final InfoCMD INSTANCE = new InfoCMD();
@@ -134,11 +137,11 @@ public final class InfoCMD extends FancyContext {
                         .replace("block", blockData.getBlock().name())
                         .send(actor.sender());
 
-                java.util.Map<String, String> properties = blockData.getBlockStateProperties();
+                Map<String, String> properties = blockData.getBlockStateProperties();
                 if (!properties.isEmpty()) {
                     String propertiesStr = properties.entrySet().stream()
                             .map(e -> e.getKey() + "=" + e.getValue())
-                            .collect(java.util.stream.Collectors.joining(", "));
+                            .collect(Collectors.joining(", "));
                     translator.translate("commands.hologram.info.blockstate")
                             .replace("properties", propertiesStr)
                             .send(actor.sender());

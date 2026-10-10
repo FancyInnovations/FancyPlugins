@@ -1,6 +1,6 @@
 package com.fancyinnovations.fancyholograms.storage;
 
-import com.fancyinnovations.fancyholograms.api.data.HologramData;
+import com.fancyinnovations.fancyholograms.api.data.*;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import org.bukkit.Location;
@@ -23,7 +23,7 @@ public class YamlHologramStorage implements HologramStorage {
     public static final File HOLOGRAMS_CONFIG_FILE = new File("plugins/FancyHolograms/holograms.yml");
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-    public void saveBatch(Collection<com.fancyinnovations.fancyholograms.api.data.HologramData> holograms) {
+    public void saveBatch(Collection<HologramData> holograms) {
         lock.readLock().lock();
 
         boolean success = false;
@@ -46,7 +46,7 @@ public class YamlHologramStorage implements HologramStorage {
         FancyHologramsPlugin.get().getFancyLogger().debug("Saved " + holograms.size() + " holograms to file");
     }
 
-    public void save(com.fancyinnovations.fancyholograms.api.data.HologramData hologram) {
+    public void save(HologramData hologram) {
         lock.readLock().lock();
 
         boolean success = false;
@@ -66,7 +66,7 @@ public class YamlHologramStorage implements HologramStorage {
         FancyHologramsPlugin.get().getFancyLogger().debug("Saved hologram " + hologram.getName() + " to file");
     }
 
-    public void delete(com.fancyinnovations.fancyholograms.api.data.HologramData hologram) {
+    public void delete(HologramData hologram) {
         lock.readLock().lock();
 
         boolean success = false;
@@ -86,14 +86,14 @@ public class YamlHologramStorage implements HologramStorage {
         FancyHologramsPlugin.get().getFancyLogger().debug("Deleted hologram " + hologram.getName() + " from file");
     }
 
-    public Collection<com.fancyinnovations.fancyholograms.api.data.HologramData> loadAll() {
-        List<com.fancyinnovations.fancyholograms.api.data.HologramData> holograms = readHolograms(YamlHologramStorage.HOLOGRAMS_CONFIG_FILE, null);
+    public Collection<HologramData> loadAll() {
+        List<HologramData> holograms = readHolograms(YamlHologramStorage.HOLOGRAMS_CONFIG_FILE, null);
         FancyHologramsPlugin.get().getFancyLogger().debug("Loaded " + holograms.size() + " holograms from file");
         return holograms;
     }
 
-    public Collection<com.fancyinnovations.fancyholograms.api.data.HologramData> loadAll(String world) {
-        List<com.fancyinnovations.fancyholograms.api.data.HologramData> holograms = readHolograms(YamlHologramStorage.HOLOGRAMS_CONFIG_FILE, world);
+    public Collection<HologramData> loadAll(String world) {
+        List<HologramData> holograms = readHolograms(YamlHologramStorage.HOLOGRAMS_CONFIG_FILE, world);
         FancyHologramsPlugin.get().getFancyLogger().debug("Loaded " + holograms.size() + " holograms from file (world=" + world + ")");
         return holograms;
     }
@@ -101,7 +101,7 @@ public class YamlHologramStorage implements HologramStorage {
     /**
      * @param world The world to load the holograms from. (null for all worlds)
      */
-    private List<com.fancyinnovations.fancyholograms.api.data.HologramData> readHolograms(@NotNull File configFile, @Nullable String world) {
+    private List<HologramData> readHolograms(@NotNull File configFile, @Nullable String world) {
         lock.readLock().lock();
         try {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
@@ -118,7 +118,7 @@ public class YamlHologramStorage implements HologramStorage {
                 return new ArrayList<>(0);
             }
 
-            List<com.fancyinnovations.fancyholograms.api.data.HologramData> holograms = new ArrayList<>();
+            List<HologramData> holograms = new ArrayList<>();
 
             ConfigurationSection hologramsSection = config.getConfigurationSection("holograms");
             for (String name : hologramsSection.getKeys(false)) {
@@ -144,14 +144,14 @@ public class YamlHologramStorage implements HologramStorage {
                     continue;
                 }
 
-                com.fancyinnovations.fancyholograms.api.data.DisplayHologramData displayData = null;
+                DisplayHologramData displayData = null;
                 switch (type) {
                     case TEXT ->
-                            displayData = new com.fancyinnovations.fancyholograms.api.data.TextHologramData(name, new Location(null, 0, 0, 0));
+                            displayData = new TextHologramData(name, new Location(null, 0, 0, 0));
                     case ITEM ->
-                            displayData = new com.fancyinnovations.fancyholograms.api.data.ItemHologramData(name, new Location(null, 0, 0, 0));
+                            displayData = new ItemHologramData(name, new Location(null, 0, 0, 0));
                     case BLOCK ->
-                            displayData = new com.fancyinnovations.fancyholograms.api.data.BlockHologramData(name, new Location(null, 0, 0, 0));
+                            displayData = new BlockHologramData(name, new Location(null, 0, 0, 0));
                 }
                 displayData.setWorldName(holoSection.getString("location.world"));
 

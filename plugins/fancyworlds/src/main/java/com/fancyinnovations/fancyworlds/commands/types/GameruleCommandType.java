@@ -1,11 +1,8 @@
 package com.fancyinnovations.fancyworlds.commands.types;
 
-import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
-import com.fancyinnovations.fancyworlds.api.worlds.WorldService;
 import com.fancyinnovations.fancyworlds.main.FancyWorldsPlugin;
 import net.kyori.adventure.key.Key;
 import org.bukkit.GameRule;
-import org.bukkit.GameRules;
 import org.bukkit.Registry;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.autocomplete.SuggestionProvider;

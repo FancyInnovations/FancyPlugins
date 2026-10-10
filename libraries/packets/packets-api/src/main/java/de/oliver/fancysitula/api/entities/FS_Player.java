@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class FS_Player extends FS_Entity {
 
-    protected Map<FS_EquipmentSlot, ItemStack> equipment;
+    protected final Map<FS_EquipmentSlot, ItemStack> equipment;
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData skinCustomizationData =
+    protected final FS_ClientboundSetEntityDataPacket.EntityData skinCustomizationData =
             new FS_ClientboundSetEntityDataPacket.EntityData(FS_PlayerData.SKIN_CUSTOMIZATION, FS_PlayerData.SKIN_ALL);
 
     public FS_Player() {

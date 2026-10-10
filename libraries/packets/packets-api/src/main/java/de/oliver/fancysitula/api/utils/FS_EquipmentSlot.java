@@ -1,5 +1,7 @@
 package de.oliver.fancysitula.api.utils;
 
+import org.bukkit.inventory.EquipmentSlot;
+
 public enum FS_EquipmentSlot {
     MAINHAND,
     OFFHAND,
@@ -11,7 +13,7 @@ public enum FS_EquipmentSlot {
     SADDLE, // Added in 1.21.5
     ;
 
-    public static FS_EquipmentSlot fromBukkit(org.bukkit.inventory.EquipmentSlot equipmentSlot) {
+    public static FS_EquipmentSlot fromBukkit(EquipmentSlot equipmentSlot) {
         return switch (equipmentSlot) {
             case HAND -> MAINHAND;
             case OFF_HAND -> OFFHAND;

@@ -30,7 +30,6 @@ public final class FancyVisuals extends JavaPlugin implements FancyVisualsAPI {
     private final AnalyticsManager analyticsManager;
     private final FancyVisualsConfig fancyVisualsConfig;
     private final NametagConfig nametagConfig;
-    private ExecutorService workerExecutor;
 
     private JsonPlayerConfigStore playerConfigStore;
 
@@ -62,7 +61,7 @@ public final class FancyVisuals extends JavaPlugin implements FancyVisualsAPI {
         nametagConfig.load();
 
         // worker executor
-        this.workerExecutor = Executors.newFixedThreadPool(
+        ExecutorService workerExecutor = Executors.newFixedThreadPool(
                 fancyVisualsConfig.getAmountWorkerThreads(),
                 new ThreadFactoryBuilder()
                         .setNameFormat("FancyVisualsWorker-%d")

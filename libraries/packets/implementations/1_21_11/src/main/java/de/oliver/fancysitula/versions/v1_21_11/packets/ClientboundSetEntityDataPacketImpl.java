@@ -49,7 +49,6 @@ import net.minecraft.world.entity.animal.fish.TropicalFish;
 import net.minecraft.world.entity.animal.equine.Horse;
 import net.minecraft.world.entity.animal.equine.Llama;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.decoration.Mannequin;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.illager.SpellcasterIllager;
 import net.minecraft.world.entity.HumanoidArm;
@@ -277,7 +276,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.CAT_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }
@@ -305,7 +304,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.COW_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }
@@ -320,7 +319,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.CHICKEN_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }
@@ -335,7 +334,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.PIG_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }
@@ -474,7 +473,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
 
                 dataValues.add(SynchedEntityData.DataValue.create(accessor, vanillaValue));
             } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 

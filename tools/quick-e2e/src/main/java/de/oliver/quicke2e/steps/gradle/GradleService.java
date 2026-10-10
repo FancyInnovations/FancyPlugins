@@ -17,7 +17,7 @@ public class GradleService {
             Process process = processBuilder.start();
             process.waitFor();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

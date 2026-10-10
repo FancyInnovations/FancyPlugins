@@ -17,7 +17,7 @@ public abstract class FS_ServerboundPacket {
         CUSTOM_CLICK_ACTION("ServerboundCustomClickActionPacket"),
         ;
 
-        private String packetClassName;
+        private final String packetClassName;
 
         Type(String packetClassName) {
             this.packetClassName = packetClassName;

@@ -2,7 +2,7 @@ package de.oliver.fancyvisuals.config;
 
 public class NametagConfig {
 
-    private int distributionBucketSize;
+    private final int distributionBucketSize;
 
     public NametagConfig() {
         distributionBucketSize = 10;

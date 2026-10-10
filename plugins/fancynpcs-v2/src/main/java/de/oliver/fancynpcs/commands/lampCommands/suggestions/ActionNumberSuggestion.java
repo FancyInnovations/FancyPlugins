@@ -9,6 +9,7 @@ import revxrsal.commands.node.ExecutionContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public final class ActionNumberSuggestion implements SuggestionProvider<BukkitCommandActor> {
 
@@ -16,7 +17,7 @@ public final class ActionNumberSuggestion implements SuggestionProvider<BukkitCo
     public @NotNull Collection<String> getSuggestions(@NotNull ExecutionContext<BukkitCommandActor> context) {
         Npc npc = context.getResolvedArgumentOrNull("npc");
         ActionTrigger trigger = context.getResolvedArgumentOrNull("trigger");
-        if (npc == null || trigger == null) return java.util.List.of();
+        if (npc == null || trigger == null) return List.of();
 
         ArrayList<String> result = new ArrayList<>();
         for (int i = 1; i <= npc.getData().getActions(trigger).size(); i++) {

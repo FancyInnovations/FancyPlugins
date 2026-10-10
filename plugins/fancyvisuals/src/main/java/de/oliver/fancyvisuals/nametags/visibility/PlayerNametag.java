@@ -24,7 +24,7 @@ public class PlayerNametag {
     private final Nametag nametag;
     private final Player player;
     private final Set<UUID> viewers;
-    private FS_TextDisplay fsTextDisplay;
+    private final FS_TextDisplay fsTextDisplay;
 
     public PlayerNametag(Nametag nametag, Player player) {
         this.nametag = nametag;
@@ -70,12 +70,7 @@ public class PlayerNametag {
             return false;
         }
 
-        boolean inDistance = isInDistance(viewer.getLocation(), player.getLocation(), 24);
-        if (!inDistance) {
-            return false;
-        }
-
-        return true;
+        return isInDistance(viewer.getLocation(), player.getLocation(), 24);
     }
 
     public void showTo(Player viewer) {

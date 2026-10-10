@@ -1,10 +1,7 @@
 package com.fancyinnovations.fancyholograms.hologram;
 
 import com.fancyinnovations.fancyholograms.api.FancyHolograms;
-import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
-import com.fancyinnovations.fancyholograms.api.data.HologramData;
-import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
-import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
+import com.fancyinnovations.fancyholograms.api.data.*;
 import com.fancyinnovations.fancyholograms.api.data.property.CustomComponentProviderTrait;
 import com.fancyinnovations.fancyholograms.api.data.property.HologramRotation;
 import com.fancyinnovations.fancyholograms.api.events.HologramDespawnEvent;
@@ -14,6 +11,7 @@ import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.storage.json.JsonAdapter;
 import com.fancyinnovations.fancyholograms.util.PluginUtils;
 import com.viaversion.viaversion.api.Via;
+import de.oliver.fancylib.colors.GlowingColor;
 import de.oliver.fancysitula.api.entities.*;
 import de.oliver.fancysitula.factories.FancySitula;
 import org.bukkit.Location;
@@ -178,7 +176,7 @@ public final class HologramImpl extends Hologram {
         }
 
 
-        if (fsDisplay instanceof FS_TextDisplay textDisplay && data instanceof com.fancyinnovations.fancyholograms.api.data.TextHologramData textData) {
+        if (fsDisplay instanceof FS_TextDisplay textDisplay && data instanceof TextHologramData textData) {
             // line width
             textDisplay.setLineWidth(Hologram.LINE_WIDTH);
 
@@ -207,10 +205,10 @@ public final class HologramImpl extends Hologram {
                     textDisplay.setAlignRight(false);
                 }
             }
-        } else if (fsDisplay instanceof FS_ItemDisplay itemDisplay && data instanceof com.fancyinnovations.fancyholograms.api.data.ItemHologramData itemData) {
+        } else if (fsDisplay instanceof FS_ItemDisplay itemDisplay && data instanceof ItemHologramData itemData) {
             // item
             itemDisplay.setItem(itemData.getItemStack());
-        } else if (fsDisplay instanceof FS_BlockDisplay blockDisplay && data instanceof com.fancyinnovations.fancyholograms.api.data.BlockHologramData blockData) {
+        } else if (fsDisplay instanceof FS_BlockDisplay blockDisplay && data instanceof BlockHologramData blockData) {
             // block
 
 //            BlockType blockType = RegistryAccess.registryAccess().getRegistry(RegistryKey.BLOCK).get(blockData.getBlock().getKey());
@@ -219,7 +217,7 @@ public final class HologramImpl extends Hologram {
             }
         }
 
-        if (data instanceof com.fancyinnovations.fancyholograms.api.data.DisplayHologramData displayData) {
+        if (data instanceof DisplayHologramData displayData) {
             // interpolation
             fsDisplay.setTransformationInterpolationDuration(displayData.getInterpolationDuration());
             fsDisplay.setTransformationInterpolationStartDeltaTicks(0);
@@ -245,7 +243,7 @@ public final class HologramImpl extends Hologram {
             fsDisplay.setShadowStrength(displayData.getShadowStrength());
 
             // glowing
-            if (displayData.getGlowingColor() != null && displayData.getGlowingColor() != de.oliver.fancylib.colors.GlowingColor.DISABLED && displayData.getGlowingColor().getColor() != null) {
+            if (displayData.getGlowingColor() != null && displayData.getGlowingColor() != GlowingColor.DISABLED && displayData.getGlowingColor().getColor() != null) {
                 byte currentFlags = 0;
                 try {
                     currentFlags = fsDisplay.getSharedFlags();

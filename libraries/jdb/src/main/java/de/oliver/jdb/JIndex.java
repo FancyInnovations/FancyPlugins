@@ -34,7 +34,7 @@ public record JIndex(
         try {
             Files.write(indexFile.toPath(), json.getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

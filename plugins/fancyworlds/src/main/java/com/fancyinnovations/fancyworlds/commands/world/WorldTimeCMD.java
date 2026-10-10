@@ -2,8 +2,6 @@ package com.fancyinnovations.fancyworlds.commands.world;
 
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;
 import com.fancyinnovations.fancyworlds.utils.FancyContext;
-import org.bukkit.GameRule;
-import org.bukkit.Registry;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;

@@ -6,6 +6,7 @@ import de.oliver.fancyholograms.api.events.HologramShowEvent;
 import de.oliver.fancyholograms.api.hologram.Hologram;
 import de.oliver.fancysitula.api.entities.*;
 import de.oliver.fancysitula.factories.FancySitula;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +26,7 @@ public final class HologramImpl extends Hologram {
     }
 
     @Override
-    public @Nullable org.bukkit.entity.Display getDisplayEntity() {
+    public @Nullable Display getDisplayEntity() {
         return null;
     }
 

@@ -6,6 +6,7 @@ import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 
 public class WorldLoadedListener implements Listener {
 
@@ -21,7 +22,7 @@ public class WorldLoadedListener implements Listener {
     }
 
     @EventHandler
-    public void onWorldUnload(org.bukkit.event.world.WorldUnloadEvent event) {
+    public void onWorldUnload(WorldUnloadEvent event) {
         for (Hologram hologram : FancyHologramsPlugin.get().getRegistry().getAll()) {
             HologramData data = hologram.getData();
 

@@ -37,7 +37,7 @@ public class FWorldImpl implements FWorld {
         this.seed = seed != null ? seed : ThreadLocalRandom.current().nextLong();
         this.environment = environment != null ? environment : World.Environment.NORMAL;
         this.generator = generator != null ? generator : "default";
-        this.generateStructures = generateStructures != null ? generateStructures : true;
+        this.generateStructures = generateStructures == null || generateStructures;
         this.settings = settings != null ? settings : new FWorldSettingsImpl();
     }
 

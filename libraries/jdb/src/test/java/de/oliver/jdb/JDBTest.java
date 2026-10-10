@@ -23,7 +23,7 @@ public class JDBTest {
     public static void cleanUpDirectory(String path) throws IOException {
         Path directory = Paths.get(path);
         if (Files.exists(directory)) {
-            Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(directory, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     Files.delete(file);

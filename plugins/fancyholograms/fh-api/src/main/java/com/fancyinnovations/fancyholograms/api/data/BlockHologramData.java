@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class BlockHologramData extends DisplayHologramData {
 
-    public static Material DEFAULT_BLOCK = Material.GRASS_BLOCK;
+    public static final Material DEFAULT_BLOCK = Material.GRASS_BLOCK;
 
     private Material block = DEFAULT_BLOCK;
     private BlockData blockData;

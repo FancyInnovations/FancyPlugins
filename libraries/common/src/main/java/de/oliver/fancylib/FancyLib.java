@@ -16,7 +16,7 @@ import org.jetbrains.annotations.ApiStatus;
 public class FancyLib {
 
     private static FancyLib instance;
-    private static ExtendedFancyLogger logger = new ExtendedFancyLogger("FancyLib");
+    private static final ExtendedFancyLogger logger = new ExtendedFancyLogger("FancyLib");
 
     private final JavaPlugin plugin;
     private final FancyScheduler scheduler;

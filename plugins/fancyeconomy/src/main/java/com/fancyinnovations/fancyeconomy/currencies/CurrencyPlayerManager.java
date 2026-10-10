@@ -81,7 +81,7 @@ public class CurrencyPlayerManager {
                 FancyEconomy.getInstance().getSaveWorkload().addValue(() -> currencyPlayer);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         /*
@@ -111,7 +111,7 @@ public class CurrencyPlayerManager {
 
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

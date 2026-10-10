@@ -14,12 +14,10 @@ import java.util.List;
 @Deprecated
 public class FeatureFlagConfig {
 
-    private final Plugin plugin;
     private final File configFile;
     private final List<FeatureFlag> featureFlags;
 
     public FeatureFlagConfig(Plugin plugin) {
-        this.plugin = plugin;
         this.configFile = new File("plugins" + File.separator + plugin.getName() + File.separator + "featureFlags.yml");
         this.featureFlags = new ArrayList<>();
     }
@@ -30,7 +28,7 @@ public class FeatureFlagConfig {
                 new File(configFile.getParent()).mkdirs();
                 configFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 
@@ -59,7 +57,7 @@ public class FeatureFlagConfig {
         try {
             config.save(configFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

@@ -8,21 +8,21 @@ import java.util.List;
 
 public class FS_Display extends FS_Entity {
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData transformationInterpolationStartDeltaTicksData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.TRANSFORMATION_INTERPOLATION_START_DELTA_TICKS, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData transformationInterpolationDurationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.TRANSFORMATION_INTERPOLATION_DURATION, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData posRotInterpolationDurationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.POS_ROT_INTERPOLATION_DURATION, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData translationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.TRANSLATION, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData scaleData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.SCALE, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData leftRotationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.LEFT_ROTATION, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData rightRotationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.RIGHT_ROTATION, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData billboardRenderConstraintsData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.BILLBOARD_RENDER_CONSTRAINTS, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData brightnessOverrideData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.BRIGHTNESS_OVERRIDE, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData viewRangeData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.VIEW_RANGE, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData shadowRadiusData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.SHADOW_RADIUS, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData shadowStrengthData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.SHADOW_STRENGTH, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData widthData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.WIDTH, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData heightData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.HEIGHT, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData glowColorOverrideData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.GLOW_COLOR_OVERRIDE, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData transformationInterpolationStartDeltaTicksData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.TRANSFORMATION_INTERPOLATION_START_DELTA_TICKS, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData transformationInterpolationDurationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.TRANSFORMATION_INTERPOLATION_DURATION, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData posRotInterpolationDurationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.POS_ROT_INTERPOLATION_DURATION, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData translationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.TRANSLATION, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData scaleData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.SCALE, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData leftRotationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.LEFT_ROTATION, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData rightRotationData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.RIGHT_ROTATION, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData billboardRenderConstraintsData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.BILLBOARD_RENDER_CONSTRAINTS, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData brightnessOverrideData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.BRIGHTNESS_OVERRIDE, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData viewRangeData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.VIEW_RANGE, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData shadowRadiusData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.SHADOW_RADIUS, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData shadowStrengthData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.SHADOW_STRENGTH, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData widthData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.WIDTH, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData heightData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.HEIGHT, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData glowColorOverrideData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_DisplayData.GLOW_COLOR_OVERRIDE, null);
 
     public FS_Display(EntityType type) {
         super(type);

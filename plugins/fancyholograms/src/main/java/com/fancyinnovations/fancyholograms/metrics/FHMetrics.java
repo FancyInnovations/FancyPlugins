@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class FHMetrics {
 
-    private ExtendedFancyLogger logger;
+    private final ExtendedFancyLogger logger;
     private FancyAnalyticsAPI fancyAnalytics;
 
     public FHMetrics() {

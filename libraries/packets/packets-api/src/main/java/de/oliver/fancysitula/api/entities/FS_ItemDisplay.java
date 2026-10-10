@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FS_ItemDisplay extends FS_Display {
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData itemData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_ItemDisplayData.ITEM, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData itemData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_ItemDisplayData.ITEM, null);
 
     public FS_ItemDisplay() {
         super(EntityType.ITEM_DISPLAY);

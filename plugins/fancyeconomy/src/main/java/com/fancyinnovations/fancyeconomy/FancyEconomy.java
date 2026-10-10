@@ -38,7 +38,7 @@ public class FancyEconomy extends JavaPlugin {
     private Translator translator;
     private FancyEconomyVault vaultEconomy;
     private Database database;
-    private DistributedWorkload<CurrencyPlayer> saveWorkload;
+    private final DistributedWorkload<CurrencyPlayer> saveWorkload;
     private boolean usingVault;
     private boolean usingPlaceholderAPI;
 

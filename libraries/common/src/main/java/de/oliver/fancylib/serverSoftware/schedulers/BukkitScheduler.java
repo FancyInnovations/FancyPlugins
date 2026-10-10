@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class BukkitScheduler implements FancyScheduler {
 
     BukkitTask bukkitTask;
-    JavaPlugin plugin;
+    final JavaPlugin plugin;
 
     public BukkitScheduler(JavaPlugin plugin) {
         this.plugin = plugin;

@@ -91,9 +91,9 @@ public record Currency(String name, String symbol, boolean isWithdrawable, Withd
 
         public static class WithdrawItemClick implements ItemClick {
 
-            public static WithdrawItemClick INSTANCE = new WithdrawItemClick();
+            public static final WithdrawItemClick INSTANCE = new WithdrawItemClick();
 
-            private static List<NamespacedKey> REQUIRED_KEYS = Arrays.asList(
+            private static final List<NamespacedKey> REQUIRED_KEYS = Arrays.asList(
                     WITHDRAW_OWNER,
                     WITHDRAW_CURRENCY,
                     WITHDRAW_AMOUNT

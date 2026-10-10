@@ -23,27 +23,27 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FS_Mannequin extends FS_Entity {
 
-    protected Map<FS_EquipmentSlot, ItemStack> equipment;
+    protected final Map<FS_EquipmentSlot, ItemStack> equipment;
 
     // Avatar data (inherited from Avatar base class)
-    protected FS_ClientboundSetEntityDataPacket.EntityData skinCustomizationData =
+    protected final FS_ClientboundSetEntityDataPacket.EntityData skinCustomizationData =
             new FS_ClientboundSetEntityDataPacket.EntityData(FS_AvatarData.DATA_PLAYER_MODE_CUSTOMISATION, FS_AvatarData.SKIN_ALL);
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData mainHandData =
+    protected final FS_ClientboundSetEntityDataPacket.EntityData mainHandData =
             new FS_ClientboundSetEntityDataPacket.EntityData(FS_AvatarData.DATA_PLAYER_MAIN_HAND, null);
 
     // Mannequin-specific data
-    protected FS_ClientboundSetEntityDataPacket.EntityData profileData =
+    protected final FS_ClientboundSetEntityDataPacket.EntityData profileData =
             new FS_ClientboundSetEntityDataPacket.EntityData(FS_MannequinData.DATA_PROFILE, null);
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData immovableData =
+    protected final FS_ClientboundSetEntityDataPacket.EntityData immovableData =
             new FS_ClientboundSetEntityDataPacket.EntityData(FS_MannequinData.DATA_IMMOVABLE, true);
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData descriptionData =
+    protected final FS_ClientboundSetEntityDataPacket.EntityData descriptionData =
             new FS_ClientboundSetEntityDataPacket.EntityData(FS_MannequinData.DATA_DESCRIPTION, null);
 
     // Pose data (from Entity base class, but Mannequin only supports specific poses)
-    protected FS_ClientboundSetEntityDataPacket.EntityData poseData =
+    protected final FS_ClientboundSetEntityDataPacket.EntityData poseData =
             new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.POSE, "STANDING");
 
     // Valid Mannequin poses

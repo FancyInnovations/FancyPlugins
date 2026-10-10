@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderApiEnv extends PlaceholderExpansion {
     public static int i = 0;
-    public static String[] strings = new String[]{
+    public static final String[] strings = new String[]{
             "Grabsky",
             "OakLoaf",
             "GommeHD",

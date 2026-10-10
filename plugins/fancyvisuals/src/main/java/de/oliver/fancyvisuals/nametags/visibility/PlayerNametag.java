@@ -24,7 +24,7 @@ public class PlayerNametag {
     private final Nametag nametag;
     private final Player player;
     private final Set<UUID> viewers;
-    private FS_TextDisplay fsTextDisplay;
+    private final FS_TextDisplay fsTextDisplay;
 
     public PlayerNametag(Nametag nametag, Player player) {
         this.nametag = nametag;

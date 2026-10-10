@@ -6,8 +6,8 @@ public class BalanceTop {
     private static final Map<Currency, BalanceTop> balanceTops = new HashMap<>();
 
     private final Currency currency;
-    private Map<Integer, UUID> baltopPlaces;
-    private Map<UUID, Integer> baltopPlayers;
+    private final Map<Integer, UUID> baltopPlaces;
+    private final Map<UUID, Integer> baltopPlayers;
 
     public BalanceTop(Currency currency) {
         this.currency = currency;

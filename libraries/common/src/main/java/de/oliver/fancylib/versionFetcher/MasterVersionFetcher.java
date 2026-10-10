@@ -8,7 +8,7 @@ public class MasterVersionFetcher implements VersionFetcher {
 
     private final String pluginName;
     private ComparableVersion newestVersion;
-    private LinkedList<VersionFetcher> fetchers;
+    private final LinkedList<VersionFetcher> fetchers;
 
     public MasterVersionFetcher(String pluginName) {
         this.pluginName = pluginName;

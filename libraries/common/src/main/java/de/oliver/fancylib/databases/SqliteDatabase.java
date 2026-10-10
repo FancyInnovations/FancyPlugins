@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 public class SqliteDatabase extends MySqlDatabase {
 
     protected final String path;
-    protected File file;
+    protected final File file;
 
     public SqliteDatabase(String path) {
         super(null, null, null, null, null);

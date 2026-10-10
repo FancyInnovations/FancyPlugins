@@ -136,7 +136,7 @@ public class FS_Mannequin extends FS_Entity {
     public Optional<Component> getDescription() {
         @SuppressWarnings("unchecked")
         Optional<Component> value = (Optional<Component>) descriptionData.getValue();
-        return value != null ? value : Optional.empty();
+        return value.isPresent() ? value : Optional.empty();
     }
 
     public void setDescription(Optional<Component> description) {

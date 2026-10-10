@@ -4,7 +4,7 @@ import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
 
 /**
  * Entity data accessors for AbstractHorse (Horse, Donkey, Mule, Camel, etc.)
- *
+ * <p> <p>
  * NOTE: Horses do NOT have a SADDLED flag in entity data. Saddles are controlled
  * via the EquipmentSlot.SADDLE equipment slot, not entity data flags.
  * To show a saddle on a horse, use the equipment packet with FS_EquipmentSlot.SADDLE.
@@ -14,7 +14,7 @@ public class FS_AbstractHorseData {
     /**
      * Use {@link Byte} as value - horse flags
      * Bit flags: FLAG_TAMED (0x02), FLAG_BRED (0x08), FLAG_EATING (0x10), FLAG_STANDING (0x20), FLAG_MOUTH_OPEN (0x40)
-     *
+     * <p>
      * NOTE: There is NO FLAG_SADDLED - saddles are equipment, not entity data.
      */
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor FLAGS = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.animal.equine.AbstractHorse", "DATA_ID_FLAGS");

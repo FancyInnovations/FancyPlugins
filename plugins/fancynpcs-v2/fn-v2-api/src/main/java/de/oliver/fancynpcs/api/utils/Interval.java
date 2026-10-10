@@ -198,7 +198,7 @@ public final class Interval {
         public static @Nullable Unit fromShortCode(final @NotNull String shortCode) {
             // Iterating over all units and finding one that matches provided short code.
             for (final Unit unit : Unit.values())
-                if (unit.shortCode.equalsIgnoreCase(shortCode) == true)
+                if (unit.shortCode.equalsIgnoreCase(shortCode))
                     return unit;
             // Unit has not been found. Returning null.
             return null;

@@ -69,9 +69,7 @@ public final class FancyHologramsCMD extends Command {
 
                 MessageHelper.success(sender, "Reloaded config and holograms");
             }
-            case "version" -> {
-                FancyHologramsPlugin.get().getHologramThread().submit(() -> FancyHologramsPlugin.get().getVersionConfig().checkVersionAndDisplay(sender, false));
-            }
+            case "version" -> FancyHologramsPlugin.get().getHologramThread().submit(() -> FancyHologramsPlugin.get().getVersionConfig().checkVersionAndDisplay(sender, false));
             case "convert" -> {
                 if (args.length < 3) {
                     MessageHelper.info(sender, "Usage: /fancyholograms convert <type> <targets> [args...]");

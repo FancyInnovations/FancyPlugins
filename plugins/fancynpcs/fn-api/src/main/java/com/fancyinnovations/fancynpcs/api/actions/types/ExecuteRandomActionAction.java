@@ -1,5 +1,6 @@
 package com.fancyinnovations.fancynpcs.api.actions.types;
 
+import com.fancyinnovations.fancynpcs.api.FancyNpcsPlugin;
 import com.fancyinnovations.fancynpcs.api.actions.NpcAction;
 import com.fancyinnovations.fancynpcs.api.actions.executor.ActionExecutionContext;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,27 @@ public class ExecuteRandomActionAction extends NpcAction {
     public void execute(@NotNull ActionExecutionContext context, String value) {
         int currentIndex = context.getActionIndex();
         int actionCount = context.getActions().size();
+
+        if (currentIndex >= actionCount) {
+            NpcActionData fallback = context.getActions().stream()
+                    .filter(action -> !(action.action() instanceof ExecuteRandomActionAction))
+                    .findFirst()
+                    .orElse(null);
+
+            String npcId = context.getNpc().getData().getId();
+            String trigger = context.getTrigger().name();
+
+            if (fallback == null) {
+                FancyNpcsPlugin.get().getFancyLogger().warn("Misconfigured execute_random_action for npc '" + npcId + "' (trigger " + trigger + "): no other actions to choose from. Add at least one non-random action to this trigger. Skipping execution.");
+                context.terminate();
+                return;
+            }
+
+            FancyNpcsPlugin.get().getFancyLogger().warn("Misplaced execute_random_action for npc '" + npcId + "' (trigger " + trigger + "): no following actions to choose from. Falling back to first available action '" + fallback.action().getName() + "'. Move execute_random_action before the actions it should choose from.");
+            fallback.action().execute(context, fallback.value());
+            context.terminate();
+            return;
+        }
 
         int randomIndex = getRandomIndex(currentIndex, actionCount);
 

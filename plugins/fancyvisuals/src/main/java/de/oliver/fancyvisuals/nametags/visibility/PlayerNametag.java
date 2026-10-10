@@ -70,12 +70,7 @@ public class PlayerNametag {
             return false;
         }
 
-        boolean inDistance = isInDistance(viewer.getLocation(), player.getLocation(), 24);
-        if (!inDistance) {
-            return false;
-        }
-
-        return true;
+        return isInDistance(viewer.getLocation(), player.getLocation(), 24);
     }
 
     public void showTo(Player viewer) {

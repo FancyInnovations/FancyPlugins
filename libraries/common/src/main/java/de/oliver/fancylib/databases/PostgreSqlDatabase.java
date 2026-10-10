@@ -78,8 +78,7 @@ public class PostgreSqlDatabase implements Database {
     @Override
     public ResultSet executeQuery(String query) {
         try {
-            ResultSet resultSet = connection.createStatement().executeQuery(query);
-            return resultSet;
+            return connection.createStatement().executeQuery(query);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

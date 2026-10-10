@@ -69,8 +69,8 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
                     .build()
     );
     private FancyAnalyticsAPI fancyAnalytics;
-    private HologramConfiguration configuration = new FancyHologramsConfiguration();
-    private HologramStorage hologramStorage = new FlatFileHologramStorage();
+    private HologramConfiguration configuration;
+    private HologramStorage hologramStorage;
     private @Nullable HologramManagerImpl hologramsManager;
 
     public FancyHolograms() {
@@ -94,6 +94,8 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
                 List.of(consoleAppender, jsonAppender),
                 List.of(new PluginMiddleware(this))
         );
+        this.configuration = new FancyHologramsConfiguration();
+        this.hologramStorage = new FlatFileHologramStorage(this);
     }
 
     public static @NotNull FancyHolograms get() {

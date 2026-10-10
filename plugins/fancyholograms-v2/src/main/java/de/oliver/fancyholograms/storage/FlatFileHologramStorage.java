@@ -28,7 +28,17 @@ public class FlatFileHologramStorage implements HologramStorage {
 
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
     private static final File HOLOGRAMS_CONFIG_FILE = new File("plugins/FancyHolograms/holograms.yml");
-    private final ExtendedFancyLogger logger = FancyHolograms.get().getFancyLogger();
+    private final FancyHolograms plugin;
+    private final ExtendedFancyLogger logger;
+
+    public FlatFileHologramStorage(@NotNull FancyHolograms plugin) {
+        this.plugin = plugin;
+        this.logger = plugin.getFancyLogger();
+    }
+
+    public FlatFileHologramStorage() {
+        this(FancyHolograms.get());
+    }
 
     @Override
     public void saveBatch(Collection<Hologram> holograms, boolean override) {
@@ -172,7 +182,7 @@ public class FlatFileHologramStorage implements HologramStorage {
                     continue;
                 }
 
-                Hologram hologram = FancyHolograms.get().getHologramManager().create(displayData);
+                Hologram hologram = plugin.getHologramManager().create(displayData);
                 holograms.add(hologram);
             }
 
@@ -206,7 +216,7 @@ public class FlatFileHologramStorage implements HologramStorage {
         config.set("version", 2);
         config.setInlineComments("version", List.of("DO NOT CHANGE"));
 
-        FancyHolograms.get().getFileStorageExecutor().execute(() -> {
+        plugin.getFileStorageExecutor().execute(() -> {
             lock.writeLock().lock();
             try {
                 config.save(HOLOGRAMS_CONFIG_FILE);

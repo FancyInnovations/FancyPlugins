@@ -183,7 +183,14 @@ public abstract class Npc {
     }
 
     public void interact(Player player, ActionTrigger actionTrigger) {
-        if (data.getInteractionCooldown() > 0) {
+        List<NpcAction.NpcActionData> actions = data.getActions(actionTrigger);
+        boolean hasActions = !actions.isEmpty();
+        if (!hasActions && (actionTrigger == ActionTrigger.LEFT_CLICK || actionTrigger == ActionTrigger.RIGHT_CLICK)) {
+            hasActions = !data.getActions(ActionTrigger.ANY_CLICK).isEmpty();
+        }
+
+        // Triggers without actions neither check nor trigger the interaction cooldown.
+        if (hasActions && data.getInteractionCooldown() > 0) {
             final long interactionCooldownMillis = (long) (data.getInteractionCooldown() * 1000);
             final long lastInteractionMillis = lastPlayerInteraction.getOrDefault(player.getUniqueId(), 0L);
             final Interval interactionCooldownLeft = Interval.between(lastInteractionMillis + interactionCooldownMillis, System.currentTimeMillis(), Unit.MILLISECONDS);
@@ -198,7 +205,6 @@ public abstract class Npc {
             lastPlayerInteraction.put(player.getUniqueId(), System.currentTimeMillis());
         }
 
-        List<NpcAction.NpcActionData> actions = data.getActions(actionTrigger);
         if (!new NpcInteractEvent(this, data.getOnClick(), actions, player, actionTrigger).callEvent()) {
             return;
         }

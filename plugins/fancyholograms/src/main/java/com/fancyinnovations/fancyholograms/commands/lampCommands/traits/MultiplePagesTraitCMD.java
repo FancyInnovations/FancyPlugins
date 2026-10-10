@@ -50,15 +50,15 @@ public final class MultiplePagesTraitCMD extends FancyContext {
                 .replace("index", String.valueOf(trait.getCurrentPageIndex() + 1))
                 .send(actor.sender());
 
-        String pages = "";
+        StringBuilder pages = new StringBuilder();
         for (int i = 0; i < trait.getPages().size(); i++) {
             String lines = String.join("\n", trait.getPages().get(i).lines());
 
-            pages += "<hover:show_text:'" + lines + "'>[" + (i + 1) + "]</hover> ";
+            pages.append("<hover:show_text:'").append(lines).append("'>[").append(i + 1).append("]</hover> ");
         }
 
         translator.translate("commands.hologramtrait.multiple_pages.info.pages")
-                .replace("pages", pages)
+                .replace("pages", pages.toString())
                 .send(actor.sender());
     }
 

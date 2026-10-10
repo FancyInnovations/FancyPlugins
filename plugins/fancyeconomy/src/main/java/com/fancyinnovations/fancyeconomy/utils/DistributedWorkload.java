@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 
 public class DistributedWorkload<T> implements Runnable {
 
-    private final String workloadName;
     private final Consumer<T> action;
     private final Predicate<T> escapeCondition;
     private final List<LinkedList<Supplier<T>>> suppliedValueMatrix;
@@ -17,8 +16,7 @@ public class DistributedWorkload<T> implements Runnable {
     private final boolean runAsync;
     private int currentPosition;
 
-    public DistributedWorkload(String workloadName, Consumer<T> action, Predicate<T> escapeCondition, int distributionSize, boolean runAsync) {
-        this.workloadName = workloadName;
+    public DistributedWorkload(Consumer<T> action, Predicate<T> escapeCondition, int distributionSize, boolean runAsync) {
         this.action = action;
         this.escapeCondition = escapeCondition;
         this.distributionSize = distributionSize;

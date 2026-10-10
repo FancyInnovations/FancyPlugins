@@ -7,7 +7,6 @@ import java.util.LinkedList;
 public class MasterVersionFetcher implements VersionFetcher {
 
     private final String pluginName;
-    private ComparableVersion newestVersion;
     private final LinkedList<VersionFetcher> fetchers;
 
     public MasterVersionFetcher(String pluginName) {
@@ -24,8 +23,7 @@ public class MasterVersionFetcher implements VersionFetcher {
         for (VersionFetcher fetcher : fetchers) {
             ComparableVersion version = fetcher.fetchNewestVersion();
             if (version == null) continue;
-            newestVersion = version;
-            return newestVersion;
+            return version;
         }
         return null;
     }

@@ -15,7 +15,6 @@ import java.util.function.Supplier;
  */
 public class DistributedWorkload<T> implements Runnable {
 
-    private final String workloadName;
     private final Consumer<T> action;
     private final Predicate<T> escapeCondition;
     private final int bucketSize;
@@ -34,7 +33,6 @@ public class DistributedWorkload<T> implements Runnable {
      * @param executorService the executor service to be used for asynchronous execution
      */
     public DistributedWorkload(String workloadName, Consumer<T> action, Predicate<T> escapeCondition, int bucketSize, ExecutorService executorService) {
-        this.workloadName = workloadName;
         this.action = action;
         this.escapeCondition = escapeCondition;
         this.bucketSize = bucketSize;

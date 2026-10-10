@@ -36,7 +36,6 @@ public class FancyEconomy extends JavaPlugin {
     private final VersionFetcher versionFetcher;
     private final FancyEconomyConfig config;
     private Translator translator;
-    private FancyEconomyVault vaultEconomy;
     private Database database;
     private final DistributedWorkload<CurrencyPlayer> saveWorkload;
     private boolean usingVault;
@@ -50,7 +49,6 @@ public class FancyEconomy extends JavaPlugin {
         config = new FancyEconomyConfig();
         versionFetcher = new MasterVersionFetcher("FancyEconomy");
         saveWorkload = new DistributedWorkload<>(
-                "FancyEconomy_save",
                 player -> player.save(false),
                 player -> false,
                 5,
@@ -68,7 +66,7 @@ public class FancyEconomy extends JavaPlugin {
 
         usingVault = getServer().getPluginManager().getPlugin("Vault") != null;
         if (usingVault) {
-            vaultEconomy = new FancyEconomyVault(CurrencyRegistry.getDefaultCurrency());
+            FancyEconomyVault vaultEconomy = new FancyEconomyVault(CurrencyRegistry.getDefaultCurrency());
             getServer().getServicesManager().register(Economy.class, vaultEconomy, instance, ServicePriority.Highest);
             getLogger().info("Registered Vault economy");
         }

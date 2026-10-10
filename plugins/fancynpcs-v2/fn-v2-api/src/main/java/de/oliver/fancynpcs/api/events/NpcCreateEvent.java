@@ -2,7 +2,6 @@ package de.oliver.fancynpcs.api.events;
 
 import de.oliver.fancynpcs.api.Npc;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

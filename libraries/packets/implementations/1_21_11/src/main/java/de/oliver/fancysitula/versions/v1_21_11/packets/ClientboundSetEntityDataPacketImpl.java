@@ -49,7 +49,6 @@ import net.minecraft.world.entity.animal.fish.TropicalFish;
 import net.minecraft.world.entity.animal.equine.Horse;
 import net.minecraft.world.entity.animal.equine.Llama;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.decoration.Mannequin;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.illager.SpellcasterIllager;
 import net.minecraft.world.entity.HumanoidArm;

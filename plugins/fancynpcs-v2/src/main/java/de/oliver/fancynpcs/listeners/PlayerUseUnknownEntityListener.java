@@ -4,7 +4,6 @@ import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
 import de.oliver.fancynpcs.FancyNpcs;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
-import de.oliver.fancynpcs.api.events.NpcInteractEvent;
 import de.oliver.fancynpcs.api.events.NpcPreInteractEvent;
 import de.oliver.fancysitula.api.utils.ServerVersion;
 import org.bukkit.entity.EntityType;

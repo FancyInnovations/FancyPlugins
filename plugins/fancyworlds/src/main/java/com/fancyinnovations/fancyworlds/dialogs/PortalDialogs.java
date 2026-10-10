@@ -4,7 +4,7 @@ import com.fancyinnovations.fancydialogs.api.data.DialogBodyData;
 import com.fancyinnovations.fancydialogs.api.data.DialogButton;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogInputs;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogSelect;
-import com.fancyinnovations.fancydialogs.api.dialogs.ConfirmationDialog;import com.fancyinnovations.fancyworlds.dialogs.WorldsDialogController.Choice;
+import com.fancyinnovations.fancydialogs.api.dialogs.ConfirmationDialog;
 import com.fancyinnovations.fancyworlds.dialogs.WorldsDialogController.Choice;
 import com.fancyinnovations.fancyworlds.api.portals.FPortal;
 import com.fancyinnovations.fancyworlds.api.worlds.FWorld;

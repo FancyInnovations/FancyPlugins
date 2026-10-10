@@ -2,17 +2,12 @@ package de.oliver.fancynpcs.api.events;
 
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.actions.ActionTrigger;
-import de.oliver.fancynpcs.api.actions.NpcAction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Is fired when a player interacts with a NPC.

@@ -6,7 +6,6 @@ import de.oliver.fancysitula.api.teams.FS_CollisionRule;
 import de.oliver.fancysitula.api.teams.FS_NameTagVisibility;
 import de.oliver.fancysitula.versions.v26_3.utils.VanillaPlayerAdapter;
 import io.papermc.paper.adventure.PaperAdventure;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.protocol.game.ClientboundSetPlayerTeamPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;

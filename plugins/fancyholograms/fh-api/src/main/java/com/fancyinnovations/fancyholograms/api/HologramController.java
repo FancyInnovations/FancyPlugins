@@ -2,7 +2,6 @@ package com.fancyinnovations.fancyholograms.api;
 
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

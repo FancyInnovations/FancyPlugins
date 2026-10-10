@@ -4,7 +4,7 @@ import com.fancyinnovations.fancydialogs.api.data.DialogButton;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogCheckbox;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogInputs;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogSelect;
-import com.fancyinnovations.fancydialogs.api.data.inputs.DialogTextField;import com.fancyinnovations.fancyworlds.dialogs.WorldsDialogController.Choice;
+import com.fancyinnovations.fancydialogs.api.data.inputs.DialogTextField;
 import com.fancyinnovations.fancyworlds.dialogs.WorldsDialogController.Choice;
 import com.fancyinnovations.fancyworlds.worlds.service.WorldCreationService;
 import org.bukkit.World;

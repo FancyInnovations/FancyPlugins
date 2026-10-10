@@ -241,9 +241,7 @@ public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
         Lamp.Builder<BukkitCommandActor> lampBuilder = BukkitLamp
                 .builder(this);
 
-        lampBuilder.parameterTypes(builder -> {
-            builder.addParameterType(Dialog.class, DialogCommandType.INSTANCE);
-        });
+        lampBuilder.parameterTypes(builder -> builder.addParameterType(Dialog.class, DialogCommandType.INSTANCE));
 
         lampBuilder.exceptionHandler(DialogCommandType.INSTANCE);
 

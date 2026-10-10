@@ -2,7 +2,9 @@ package com.fancyinnovations.fancyholograms.commands.lampCommands.suggestions;
 
 import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import org.bukkit.Axis;
 import org.bukkit.Instrument;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.*;
 import org.jetbrains.annotations.NotNull;
@@ -10,10 +12,7 @@ import revxrsal.commands.autocomplete.SuggestionProvider;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.node.ExecutionContext;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class BlockStateValueSuggestion implements SuggestionProvider<BukkitCommandActor> {
@@ -41,89 +40,41 @@ public class BlockStateValueSuggestion implements SuggestionProvider<BukkitComma
             return List.of("true", "false");
         }
 
-        if (blockData instanceof Directional directional && property.equalsIgnoreCase("facing")) {
-            return directional.getFaces().stream().map(f -> f.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Orientable orientable && property.equalsIgnoreCase("axis")) {
-            return orientable.getAxes().stream().map(a -> a.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Rotatable && property.equalsIgnoreCase("rotation")) {
-            return IntStream.rangeClosed(0, 15).mapToObj(Integer::toString).toList();
-        }
-        if (blockData instanceof StructureBlock && property.equalsIgnoreCase("mode")) {
-            return Arrays.stream(StructureBlock.Mode.values()).map(m -> m.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Stairs && property.equalsIgnoreCase("shape")) {
-            return Arrays.stream(Stairs.Shape.values()).map(s -> s.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Slab && property.equalsIgnoreCase("type")) {
-            return Arrays.stream(Slab.Type.values()).map(t -> t.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Chest && property.equalsIgnoreCase("type")) {
-            return Arrays.stream(Chest.Type.values()).map(t -> t.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Door && property.equalsIgnoreCase("hinge")) {
-            return Arrays.stream(Door.Hinge.values()).map(h -> h.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Bisected && property.equalsIgnoreCase("half")) {
-            return Arrays.stream(Bisected.Half.values()).map(h -> h.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Bed && property.equalsIgnoreCase("part")) {
-            return Arrays.stream(Bed.Part.values()).map(p -> p.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Ageable ageable && property.equalsIgnoreCase("age")) {
-            return IntStream.rangeClosed(0, ageable.getMaximumAge()).mapToObj(Integer::toString).toList();
-        }
-        if (blockData instanceof Levelled levelled && property.equalsIgnoreCase("level")) {
-            return IntStream.rangeClosed(0, levelled.getMaximumLevel()).mapToObj(Integer::toString).toList();
-        }
-        if (blockData instanceof AnaloguePowerable ap && property.equalsIgnoreCase("power")) {
-            return IntStream.rangeClosed(0, ap.getMaximumPower()).mapToObj(Integer::toString).toList();
-        }
-        if (blockData instanceof FaceAttachable && (property.equalsIgnoreCase("face") || property.equalsIgnoreCase("attachment"))) {
-            return Arrays.stream(FaceAttachable.AttachedFace.values()).map(f -> f.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Bell && property.equalsIgnoreCase("attachment")) {
-            return Arrays.stream(Bell.Attachment.values()).map(a -> a.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof RedstoneWire rw) {
-            if (property.equalsIgnoreCase("north") || property.equalsIgnoreCase("south") || property.equalsIgnoreCase("east") || property.equalsIgnoreCase("west")) {
-                return Arrays.stream(RedstoneWire.Connection.values()).map(c -> c.name().toLowerCase()).toList();
-            }
-            if (property.equalsIgnoreCase("power")) {
-                return IntStream.rangeClosed(0, rw.getMaximumPower()).mapToObj(Integer::toString).toList();
-            }
-        }
-        if (blockData instanceof Snow snow && property.equalsIgnoreCase("layers")) {
-            return IntStream.rangeClosed(1, snow.getMaximumLayers()).mapToObj(Integer::toString).toList();
-        }
-        if (blockData instanceof Cake cake && property.equalsIgnoreCase("bites")) {
-            return IntStream.rangeClosed(0, cake.getMaximumBites()).mapToObj(Integer::toString).toList();
-        }
-        if (blockData instanceof TechnicalPiston && property.equalsIgnoreCase("type")) {
-            return Arrays.stream(TechnicalPiston.Type.values()).map(t -> t.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof Bamboo bamboo) {
-            if (property.equalsIgnoreCase("leaves")) {
-                return Arrays.stream(Bamboo.Leaves.values()).map(l -> l.name().toLowerCase()).toList();
-            }
-            if (property.equalsIgnoreCase("age")) {
-                return IntStream.rangeClosed(0, bamboo.getMaximumAge()).mapToObj(Integer::toString).toList();
-            }
-            if (property.equalsIgnoreCase("stage")) {
-                return List.of("0", "1");
-            }
-        }
-        if (blockData instanceof NoteBlock && property.equalsIgnoreCase("instrument")) {
-            return Arrays.stream(Instrument.values()).map(i -> i.name().toLowerCase()).toList();
-        }
-        if (blockData instanceof NoteBlock && property.equalsIgnoreCase("note")) {
-            return IntStream.rangeClosed(0, 24).mapToObj(Integer::toString).toList();
-        }
-        if (blockData instanceof Rail && property.equalsIgnoreCase("shape")) {
-            return Arrays.stream(Rail.Shape.values()).map(s -> s.name().toLowerCase()).toList();
-        }
+        String p = property.toLowerCase();
+        return switch (blockData) {
+            case Directional directional when p.equals("facing") -> names(directional.getFaces().toArray(BlockFace[]::new));
+            case Orientable orientable when p.equals("axis") -> names(orientable.getAxes().toArray(Axis[]::new));
+            case Rotatable _ when p.equals("rotation") -> range(0, 15);
+            case StructureBlock _ when p.equals("mode") -> names(StructureBlock.Mode.values());
+            case Stairs _ when p.equals("shape") -> names(Stairs.Shape.values());
+            case Slab _ when p.equals("type") -> names(Slab.Type.values());
+            case Chest _ when p.equals("type") -> names(Chest.Type.values());
+            case Door _ when p.equals("hinge") -> names(Door.Hinge.values());
+            case Bisected _ when p.equals("half") -> names(Bisected.Half.values());
+            case Bed _ when p.equals("part") -> names(Bed.Part.values());
+            case Bell _ when p.equals("attachment") -> names(Bell.Attachment.values());
+            case Rail _ when p.equals("shape") -> names(Rail.Shape.values());
+            case TechnicalPiston _ when p.equals("type") -> names(TechnicalPiston.Type.values());
+            case FaceAttachable _ when p.equals("face") || p.equals("attachment") -> names(FaceAttachable.AttachedFace.values());
+            case Ageable ageable when p.equals("age") -> range(0, ageable.getMaximumAge());
+            case Levelled levelled when p.equals("level") -> range(0, levelled.getMaximumLevel());
+            case AnaloguePowerable analoguePowerable when p.equals("power") -> range(0, analoguePowerable.getMaximumPower());
+            case Snow snow when p.equals("layers") -> range(1, snow.getMaximumLayers());
+            case Cake cake when p.equals("bites") -> range(0, cake.getMaximumBites());
+            case RedstoneWire _ when Set.of("north", "south", "east", "west").contains(p) -> names(RedstoneWire.Connection.values());
+            case Bamboo _ when p.equals("leaves") -> names(Bamboo.Leaves.values());
+            case Bamboo _ when p.equals("stage") -> List.of("0", "1");
+            case NoteBlock _ when p.equals("instrument") -> names(Instrument.values());
+            case NoteBlock _ when p.equals("note") -> range(0, 24);
+            default -> List.of();
+        };
+    }
 
-        return List.of();
+    private List<String> names(Enum<?>[] values) {
+        return Arrays.stream(values).map(anEnum -> anEnum.name().toLowerCase()).toList();
+    }
+
+    private List<String> range(int from, int to) {
+        return IntStream.rangeClosed(from, to).mapToObj(Integer::toString).toList();
     }
 }

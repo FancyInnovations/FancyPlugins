@@ -31,8 +31,8 @@ public class UUIDFetcher {
     private static final String UUID_URL = "https://api.minecraftservices.com/minecraft/profile/lookup/name/%s";
     private static final String NAME_URL = "https://api.minecraftservices.com/minecraft/profile/lookup/%s";
     private static Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
-    private static Map<String, UUID> uuidCache = new HashMap<String, UUID>();
-    private static Map<UUID, String> nameCache = new HashMap<UUID, String>();
+    private static Map<String, UUID> uuidCache = new HashMap<>();
+    private static Map<UUID, String> nameCache = new HashMap<>();
     private static ExecutorService pool = Executors.newCachedThreadPool();
 
     private String name;

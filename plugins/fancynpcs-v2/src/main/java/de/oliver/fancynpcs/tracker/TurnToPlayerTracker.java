@@ -62,9 +62,7 @@ public class TurnToPlayerTracker implements Runnable {
                     // Comparing the previous state with current state to prevent event from being called continuously.
                     if (wasPreviouslyLooking == null || !wasPreviouslyLooking) {
                         // Calling NpcStartLookingEvent from the main thread.
-                        FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
-                            new NpcStartLookingEvent(npc, player).callEvent();
-                        });
+                        FancyNpcs.getInstance().getScheduler().runTask(null, () -> new NpcStartLookingEvent(npc, player).callEvent());
                     }
                     // Updating state if changed.
                 } else if (npcData.isTurnToPlayer() && npc.getIsLookingAtPlayer().getOrDefault(player.getUniqueId(), false)) {
@@ -74,9 +72,7 @@ public class TurnToPlayerTracker implements Runnable {
                         npc.move(player, false);
                     }
                     // Calling NpcStopLookingEvent from the main thread.
-                    FancyNpcs.getInstance().getScheduler().runTask(null, () -> {
-                        new NpcStopLookingEvent(npc, player).callEvent();
-                    });
+                    FancyNpcs.getInstance().getScheduler().runTask(null, () -> new NpcStopLookingEvent(npc, player).callEvent());
                 }
             }
         }

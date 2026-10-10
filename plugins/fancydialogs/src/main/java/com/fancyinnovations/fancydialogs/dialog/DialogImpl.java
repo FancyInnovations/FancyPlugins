@@ -98,46 +98,47 @@ public class DialogImpl extends Dialog {
             for (DialogInput input : data.inputs().all()) {
                 if (!checkRequirements(player, input.getRequirements())) { continue; }
                 FS_DialogInputControl control = null;
-                if (input instanceof DialogTextField textField) {
-                    String label = replaceArgs(textField.getLabel(), args);
-                    String placeholder = replaceArgs(textField.getPlaceholder(), args);
-                    control = new FS_DialogTextInput(
-                            (textField.getWidth() == null || (textField.getWidth() <= 0 || textField.getWidth() >= 1024))
-                                    ? 200 : textField.getWidth(),
-                            PaperColor.handler().translateRaw(label, player, Parsers::placeholder),
-                            !label.isEmpty(),
-                            PaperColor.handler().translateRaw(placeholder, player, Parsers::placeholder),
-                            textField.getMaxLength(),
-                            textField.getMaxLines() > 0 ?
-                                    new FS_DialogTextInput.MultilineOptions(textField.getMaxLines(), null) :
-                                    null
-                    );
-                } else if (input instanceof DialogSelect select) {
-                    List<FS_DialogSingleOptionInput.Entry> entries = new ArrayList<>();
-                    for (DialogSelect.Entry entry : select.getOptions()) {
-                        entries.add(
-                                new FS_DialogSingleOptionInput.Entry(
-                                        PaperColor.handler().translateRaw(replaceArgs(entry.value(), args), player, Parsers::placeholder),
-                                        PaperColor.handler().translateRaw(replaceArgs(entry.display(), args), player, Parsers::placeholder),
-                                        entry.initial()
-                                )
+                switch (input) {
+                    case DialogTextField textField -> {
+                        String label = replaceArgs(textField.getLabel(), args);
+                        String placeholder = replaceArgs(textField.getPlaceholder(), args);
+                        control = new FS_DialogTextInput(
+                                (textField.getWidth() == null || (textField.getWidth() <= 0 || textField.getWidth() >= 1024))
+                                        ? 200 : textField.getWidth(),
+                                PaperColor.handler().translateRaw(label, player, Parsers::placeholder),
+                                !label.isEmpty(),
+                                PaperColor.handler().translateRaw(placeholder, player, Parsers::placeholder),
+                                textField.getMaxLength(),
+                                textField.getMaxLines() > 0 ?
+                                        new FS_DialogTextInput.MultilineOptions(textField.getMaxLines(), null) :
+                                        null
                         );
                     }
-                    String selectLabel = replaceArgs(select.getLabel(), args);
-                    control = new FS_DialogSingleOptionInput(
-                            (select.getWidth() == null || (select.getWidth() <= 0 || select.getWidth() >= 1024))
-                                    ? 200 : select.getWidth(),
-                            entries,
-                            PaperColor.handler().translateRaw(selectLabel, player, Parsers::placeholder),
-                            !selectLabel.isEmpty()
-                    );
-                } else if (input instanceof DialogCheckbox checkbox) {
-                    String checkboxLabel = replaceArgs(input.getLabel(), args);
-                    control = new FS_DialogBooleanInput(checkboxLabel, checkbox.isInitial(), "true", "false");
-                }
-
-                if (control == null) {
-                    throw new IllegalArgumentException("Unsupported input type: " + input.getClass().getSimpleName());
+                    case DialogSelect select -> {
+                        List<FS_DialogSingleOptionInput.Entry> entries = new ArrayList<>();
+                        for (DialogSelect.Entry entry : select.getOptions()) {
+                            entries.add(
+                                    new FS_DialogSingleOptionInput.Entry(
+                                            PaperColor.handler().translateRaw(replaceArgs(entry.value(), args), player, Parsers::placeholder),
+                                            PaperColor.handler().translateRaw(replaceArgs(entry.display(), args), player, Parsers::placeholder),
+                                            entry.initial()
+                                    )
+                            );
+                        }
+                        String selectLabel = replaceArgs(select.getLabel(), args);
+                        control = new FS_DialogSingleOptionInput(
+                                (select.getWidth() == null || (select.getWidth() <= 0 || select.getWidth() >= 1024))
+                                        ? 200 : select.getWidth(),
+                                entries,
+                                PaperColor.handler().translateRaw(selectLabel, player, Parsers::placeholder),
+                                !selectLabel.isEmpty()
+                        );
+                    }
+                    case DialogCheckbox checkbox -> {
+                        String checkboxLabel = replaceArgs(input.getLabel(), args);
+                        control = new FS_DialogBooleanInput(checkboxLabel, checkbox.isInitial(), "true", "false");
+                    }
+                    default -> throw new IllegalArgumentException("Unsupported input type: " + input.getClass().getSimpleName());
                 }
 
                 FS_DialogInput fsDialogInput = new FS_DialogInput(input.getKey(), control);

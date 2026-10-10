@@ -52,16 +52,14 @@ public enum ListCMD {
         // Using AtomicInteger counter because streams don't expose entry index.
         final AtomicInteger count = new AtomicInteger(0);
         // Iterating over each NPC referenced in the stream. Usage of forEachOrdered should presumably preserve element order.
-        stream.forEachOrdered(npc -> {
-            translator.translate("npc_list_entry")
-                    .replace("number", String.valueOf(count.incrementAndGet()))
-                    .replace("npc", npc.getData().getName())
-                    .replace("location_x", COORDS_FORMAT.format(npc.getData().getLocation().x()))
-                    .replace("location_y", COORDS_FORMAT.format(npc.getData().getLocation().y()))
-                    .replace("location_z", COORDS_FORMAT.format(npc.getData().getLocation().z()))
-                    .replace("world", npc.getData().getLocation().getWorld().getName())
-                    .send(sender);
-        });
+        stream.forEachOrdered(npc -> translator.translate("npc_list_entry")
+                .replace("number", String.valueOf(count.incrementAndGet()))
+                .replace("npc", npc.getData().getName())
+                .replace("location_x", COORDS_FORMAT.format(npc.getData().getLocation().x()))
+                .replace("location_y", COORDS_FORMAT.format(npc.getData().getLocation().y()))
+                .replace("location_z", COORDS_FORMAT.format(npc.getData().getLocation().z()))
+                .replace("world", npc.getData().getLocation().getWorld().getName())
+                .send(sender));
 
         final int totalCount = count.get(); // change this, once we have a page system
         translator.translate("npc_list_footer")

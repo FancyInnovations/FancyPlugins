@@ -86,10 +86,11 @@ public class VersionConfig {
     }
 
     private String outdatedVersion(String latestVersion, String downloadUrl) {
-        String result = "This server is using an outdated version of {plugin}\n" +
-                "Current version: {current_ver}\n" +
-                "Latest version: {latest_ver}\n" +
-                "Download latest version: <click:open_url:'{download_url}'><u>click here</u></click>";
+        String result = """
+                This server is using an outdated version of {plugin}
+                Current version: {current_ver}
+                Latest version: {latest_ver}
+                Download latest version: <click:open_url:'{download_url}'><u>click here</u></click>""";
 
         result = result.replace("{plugin}", plugin.getName())
                 .replace("{current_ver}", version)

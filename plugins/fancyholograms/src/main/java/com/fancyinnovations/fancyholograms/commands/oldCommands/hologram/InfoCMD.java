@@ -1,6 +1,9 @@
 package com.fancyinnovations.fancyholograms.commands.oldCommands.hologram;
 
+import com.fancyinnovations.fancyholograms.api.data.BlockHologramData;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
+import com.fancyinnovations.fancyholograms.api.data.ItemHologramData;
+import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.Subcommand;
 import de.oliver.fancylib.MessageHelper;
@@ -55,30 +58,31 @@ public class InfoCMD implements Subcommand {
             MessageHelper.info(player, "Linked npc: <gray>" + data.getLinkedNpcName());
         }
 
-        if (data instanceof com.fancyinnovations.fancyholograms.api.data.TextHologramData textData) {
-            MessageHelper.info(player, "Text: ");
-            for (String line : textData.getText()) {
-                MessageHelper.info(player, " <reset> " + line);
-            }
+        switch (data) {
+            case TextHologramData textData -> {
+                MessageHelper.info(player, "Text: ");
+                for (String line : textData.getText()) {
+                    MessageHelper.info(player, " <reset> " + line);
+                }
 
-            if (textData.getBackground() != null) {
-                MessageHelper.info(player, "Background: <gray>" + '#' + Integer.toHexString(textData.getBackground().asARGB()));
-            } else {
-                MessageHelper.info(player, "Background: <gray>default");
-            }
+                if (textData.getBackground() != null) {
+                    MessageHelper.info(player, "Background: <gray>" + '#' + Integer.toHexString(textData.getBackground().asARGB()));
+                } else {
+                    MessageHelper.info(player, "Background: <gray>default");
+                }
 
-            MessageHelper.info(player, "Text alignment: <gray>" + textData.getTextAlignment().name());
-            MessageHelper.info(player, "See through: <gray>" + (textData.isSeeThrough() ? "enabled" : "disabled"));
-            MessageHelper.info(player, "Text shadow: <gray>" + (textData.hasTextShadow() ? "enabled" : "disabled"));
-            if (textData.getTextUpdateInterval() == -1) {
-                MessageHelper.info(player, "Update text interval: <gray>not updating");
-            } else {
-                MessageHelper.info(player, "Update text interval: <gray>" + textData.getTextUpdateInterval() + " millseconds");
+                MessageHelper.info(player, "Text alignment: <gray>" + textData.getTextAlignment().name());
+                MessageHelper.info(player, "See through: <gray>" + (textData.isSeeThrough() ? "enabled" : "disabled"));
+                MessageHelper.info(player, "Text shadow: <gray>" + (textData.hasTextShadow() ? "enabled" : "disabled"));
+                if (textData.getTextUpdateInterval() == -1) {
+                    MessageHelper.info(player, "Update text interval: <gray>not updating");
+                } else {
+                    MessageHelper.info(player, "Update text interval: <gray>" + textData.getTextUpdateInterval() + " millseconds");
+                }
             }
-        } else if (data instanceof com.fancyinnovations.fancyholograms.api.data.BlockHologramData blockData) {
-            MessageHelper.info(player, "Block: <gray>" + blockData.getBlock().name());
-        } else if (data instanceof com.fancyinnovations.fancyholograms.api.data.ItemHologramData itemData) {
-            MessageHelper.info(player, "Item: <gray>" + itemData.getItemStack().getType().name());
+            case BlockHologramData blockData -> MessageHelper.info(player, "Block: <gray>" + blockData.getBlock().name());
+            case ItemHologramData itemData -> MessageHelper.info(player, "Item: <gray>" + itemData.getItemStack().getType().name());
+            default -> throw new IllegalStateException("Unexpected value: " + data);
         }
 
         return true;

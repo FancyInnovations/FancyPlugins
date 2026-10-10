@@ -214,8 +214,7 @@ public class ConfigJSON {
      * Try to convert numeric values (e.g., Double) to the requested numeric target type
      */
     private Object tryConvertNumber(Object value, Class<?> target) {
-        if (!(value instanceof Number)) return null;
-        Number num = (Number) value;
+        if (!(value instanceof Number num)) return null;
         if (target == Integer.class || target == int.class) {
             return num.intValue();
         } else if (target == Long.class || target == long.class) {

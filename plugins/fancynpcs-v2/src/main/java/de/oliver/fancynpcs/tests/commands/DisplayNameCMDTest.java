@@ -39,27 +39,21 @@ public class DisplayNameCMDTest {
         String displayName = "<red>Test Display Name";
         expect(player.performCommand("npc displayname " + npcName + " " + displayName)).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().getDisplayName()).toEqual(displayName);
-        });
+        delay(() -> expect(npc.getData().getDisplayName()).toEqual(displayName));
     }
 
     @FPTest(name = "Set display name to none")
     public void setDisplayNameToNone(Player player) {
         expect(player.performCommand("npc displayname " + npcName + " @none")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().getDisplayName()).toEqual("<empty>");
-        });
+        delay(() -> expect(npc.getData().getDisplayName()).toEqual("<empty>"));
     }
 
     @FPTest(name = "Set display name to empty")
     public void setDisplayNameToEmpty(Player player) {
         expect(player.performCommand("npc displayname " + npcName + " <empty>")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().getDisplayName()).toEqual("<empty>");
-        });
+        delay(() -> expect(npc.getData().getDisplayName()).toEqual("<empty>"));
     }
 
     @FPTest(name = "Set display name with blocked command")
@@ -68,13 +62,11 @@ public class DisplayNameCMDTest {
         if (blockedCommands.isEmpty()) {
             return;
         }
-        String blockedCommand = blockedCommands.get(0);
+        String blockedCommand = blockedCommands.getFirst();
 
         expect(player.performCommand("npc displayname " + npcName + " <click:run_command:'/" + blockedCommand + "'>hello</click>")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().getDisplayName()).toEqual(npcName);
-        });
+        delay(() -> expect(npc.getData().getDisplayName()).toEqual(npcName));
     }
 
 }

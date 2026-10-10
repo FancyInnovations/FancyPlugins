@@ -81,37 +81,27 @@ public final class CloudCommandManager {
         commandManager.exceptionController().registerHandler(ArgumentParseException.class, unwrappingHandler(WorldParser.WorldParseException.class));
         commandManager.exceptionController().registerHandler(ArgumentParseException.class, unwrappingHandler(ReplyingParseException.class));
         // Overriding some default handlers to send specialized messages.
-        commandManager.exceptionController().registerHandler(NoPermissionException.class, (exceptionContext) -> {
-            translator.translate("command_missing_permissions")
-                    .withPrefix()
-                    .send(exceptionContext.context().sender());
-        });
+        commandManager.exceptionController().registerHandler(NoPermissionException.class, (exceptionContext) -> translator.translate("command_missing_permissions")
+                .withPrefix()
+                .send(exceptionContext.context().sender()));
         // DEV NOTE: No need to compare sender types until we decide to make a console-only command. Should get the job done for the time being.
-        commandManager.exceptionController().registerHandler(InvalidCommandSenderException.class, (exceptionContext) -> {
-            translator.translate("command_player_only")
-                    .withPrefix()
-                    .send(exceptionContext.context().sender());
-        });
-        commandManager.exceptionController().registerHandler(NumberParseException.class, (exceptionContext) -> {
-            translator.translate("command_invalid_number")
-                    .withPrefix()
-                    .replaceStripped("input", exceptionContext.exception().input())
-                    .replace("min", exceptionContext.exception().range().min().toString())
-                    .replace("max", exceptionContext.exception().range().max().toString())
-                    .send(exceptionContext.context().sender());
-        });
-        commandManager.exceptionController().registerHandler(BooleanParser.BooleanParseException.class, (exceptionContext) -> {
-            translator.translate("command_invalid_boolean")
-                    .withPrefix()
-                    .replaceStripped("input", exceptionContext.exception().input())
-                    .send(exceptionContext.context().sender());
-        });
-        commandManager.exceptionController().registerHandler(WorldParser.WorldParseException.class, (exceptionContext) -> {
-            translator.translate("command_invalid_world")
-                    .withPrefix()
-                    .replaceStripped("input", exceptionContext.exception().input())
-                    .send(exceptionContext.context().sender());
-        });
+        commandManager.exceptionController().registerHandler(InvalidCommandSenderException.class, (exceptionContext) -> translator.translate("command_player_only")
+                .withPrefix()
+                .send(exceptionContext.context().sender()));
+        commandManager.exceptionController().registerHandler(NumberParseException.class, (exceptionContext) -> translator.translate("command_invalid_number")
+                .withPrefix()
+                .replaceStripped("input", exceptionContext.exception().input())
+                .replace("min", exceptionContext.exception().range().min().toString())
+                .replace("max", exceptionContext.exception().range().max().toString())
+                .send(exceptionContext.context().sender()));
+        commandManager.exceptionController().registerHandler(BooleanParser.BooleanParseException.class, (exceptionContext) -> translator.translate("command_invalid_boolean")
+                .withPrefix()
+                .replaceStripped("input", exceptionContext.exception().input())
+                .send(exceptionContext.context().sender()));
+        commandManager.exceptionController().registerHandler(WorldParser.WorldParseException.class, (exceptionContext) -> translator.translate("command_invalid_world")
+                .withPrefix()
+                .replaceStripped("input", exceptionContext.exception().input())
+                .send(exceptionContext.context().sender()));
         // DEV NOTE: Temporary solution until https://github.com/Incendo/cloud-minecraft/pull/70 is merged.
         commandManager.exceptionController().register(ExceptionHandlerRegistration.<CommandSender, ArgumentParseException>builder(TypeToken.get(ArgumentParseException.class))
                 .exceptionFilter(exception -> exception.getCause() instanceof ParserException parserException && parserException.argumentParserClass() == LocationParser.class)

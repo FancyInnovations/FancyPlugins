@@ -35,9 +35,7 @@ public class TurnToPlayerCMDTest {
     public void setTurnToPlayerToTrue(Player player) {
         expect(player.performCommand("npc turn_to_player " + npcName + " true")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().isTurnToPlayer()).toBe(true);
-        });
+        delay(() -> expect(npc.getData().isTurnToPlayer()).toBe(true));
     }
 
     @FPTest(name = "Set turnToPlayer to false")
@@ -46,9 +44,7 @@ public class TurnToPlayerCMDTest {
 
         expect(player.performCommand("npc turn_to_player " + npcName + " false")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().isTurnToPlayer()).toBe(false);
-        });
+        delay(() -> expect(npc.getData().isTurnToPlayer()).toBe(false));
     }
 
 }

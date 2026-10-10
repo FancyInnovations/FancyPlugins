@@ -397,9 +397,9 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         }));
 
         fancyAnalytics.registerNumberMetric(new MetricSupplier<>("amount_npcs", () -> (double) npcManager.getAllNpcs().size()));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_update_notifications", () -> config.isMuteVersionNotification() ? "false" : "true"));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_player_npcs_fflag", () -> PLAYER_NPCS_FEATURE_FLAG.isEnabled() ? "true" : "false"));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("using_development_build", () -> versionConfig.isDevelopmentBuild() ? "true" : "false"));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_update_notifications", () -> Boolean.toString(!config.isMuteVersionNotification())));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_player_npcs_fflag", () -> Boolean.toString(PLAYER_NPCS_FEATURE_FLAG.isEnabled())));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("using_development_build", () -> Boolean.toString(versionConfig.isDevelopmentBuild())));
         fancyAnalytics.registerStringMetric(new MetricSupplier<>("language", () -> translator.getSelectedLanguage().getLanguageCode()));
 
         fancyAnalytics.registerNumberMetric(new MetricSupplier<>("avg_interaction_cooldown", () -> {

@@ -126,17 +126,16 @@ public class FS_Mannequin extends FS_Entity {
 
     public boolean isImmovable() {
         Object value = immovableData.getValue();
-        return value != null ? (boolean) value : true;
+        return value == null || (boolean) value;
     }
 
     public void setImmovable(boolean immovable) {
         this.immovableData.setValue(immovable);
     }
 
+    @SuppressWarnings("unchecked")
     public Optional<Component> getDescription() {
-        @SuppressWarnings("unchecked")
-        Optional<Component> value = (Optional<Component>) descriptionData.getValue();
-        return value.isPresent() ? value : Optional.empty();
+        return (Optional<Component>) descriptionData.getValue();
     }
 
     public void setDescription(Optional<Component> description) {

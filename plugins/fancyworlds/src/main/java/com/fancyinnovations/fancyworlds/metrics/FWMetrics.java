@@ -59,8 +59,8 @@ public class FWMetrics {
         }));
 
         fancyAnalytics.registerNumberMetric(new MetricSupplier<>("amount_worlds", () -> (double) worldService.getAllWorlds().size()));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_update_notifications", () -> FancyWorldsPlugin.get().getFancyWorldsConfig().areVersionNotificationsMuted() ? "false" : "true"));
-        fancyAnalytics.registerStringMetric(new MetricSupplier<>("using_development_build", () -> FancyWorldsPlugin.get().getVersionConfig().isDevelopmentBuild() ? "true" : "false"));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("enabled_update_notifications", () -> Boolean.toString(!FancyWorldsPlugin.get().getFancyWorldsConfig().areVersionNotificationsMuted())));
+        fancyAnalytics.registerStringMetric(new MetricSupplier<>("using_development_build", () -> Boolean.toString(FancyWorldsPlugin.get().getVersionConfig().isDevelopmentBuild())));
 
         fancyAnalytics.initialize();
     }

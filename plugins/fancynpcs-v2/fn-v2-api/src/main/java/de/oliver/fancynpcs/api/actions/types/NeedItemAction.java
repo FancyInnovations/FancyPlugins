@@ -37,7 +37,7 @@ public class NeedItemAction extends NpcAction {
         boolean passesCheck = false;
         if (args.length == 1) {
             boolean hasItem = context.getPlayer().getInventory().contains(material);
-            passesCheck = invertCheck ? !hasItem : hasItem;
+            passesCheck = invertCheck != hasItem;
         } else if (args.length == 2) {
             int amount;
             try {
@@ -48,7 +48,7 @@ public class NeedItemAction extends NpcAction {
             }
 
             boolean hasItem = context.getPlayer().getInventory().contains(material, amount);
-            passesCheck = invertCheck ? !hasItem : hasItem;
+            passesCheck = invertCheck != hasItem;
         }
 
 

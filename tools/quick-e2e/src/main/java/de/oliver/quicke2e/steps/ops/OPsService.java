@@ -38,7 +38,7 @@ public class OPsService {
         try {
             Files.writeString(opsFilePath, json);
         } catch (java.io.IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

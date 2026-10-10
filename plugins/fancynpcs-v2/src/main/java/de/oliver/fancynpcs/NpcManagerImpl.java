@@ -219,7 +219,7 @@ public class NpcManagerImpl implements NpcManager {
         try {
             npcConfigRoot.save(npcConfigFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

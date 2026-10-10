@@ -63,7 +63,7 @@ public class Main {
             try {
                 context.serverProcess().waitFor();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }

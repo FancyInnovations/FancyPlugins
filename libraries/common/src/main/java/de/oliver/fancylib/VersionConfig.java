@@ -26,7 +26,7 @@ public class VersionConfig {
         try {
             config.loadFromString(new FileUtils().readResource("version.yml"));
         } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         version = config.getString("version", "undefined");

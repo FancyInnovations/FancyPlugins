@@ -30,7 +30,7 @@ public class FeatureFlagConfig {
                 new File(configFile.getParent()).mkdirs();
                 configFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 
@@ -59,7 +59,7 @@ public class FeatureFlagConfig {
         try {
             config.save(configFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

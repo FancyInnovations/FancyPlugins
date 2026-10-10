@@ -9,6 +9,7 @@ import de.oliver.quicke2e.steps.ops.OPsService;
 import de.oliver.quicke2e.steps.paper.PaperDownloadService;
 import de.oliver.quicke2e.steps.startScript.StartScriptService;
 import de.oliver.quicke2e.steps.startServer.StartServerService;
+import org.jetbrains.annotations.NotNull;
 
 public class Main {
 
@@ -23,6 +24,27 @@ public class Main {
                 "25565"
         );
 
+        Context context = createContext(config);
+
+        StartServerService startServer = new StartServerService();
+        startServer.startServer(context);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (context.serverProcess().isAlive()) {
+                context.serverProcess().destroy();
+            }
+        }));
+
+        if (context.serverProcess() != null && context.serverProcess().isAlive()) {
+            try {
+                context.serverProcess().waitFor();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static @NotNull Context createContext(Configuration config) {
         Context context = new Context(config);
 
         PaperDownloadService paper = new PaperDownloadService();
@@ -49,23 +71,7 @@ public class Main {
         copyFile.copyFile(context, "plugins/fancynpcs/build/libs", "FancyNpcs-.*\\.jar", "plugins/FancyNpcs.jar");
         copyFile.copyFile(context, "plugins/fancyholograms-v2/build/libs", "FancyHolograms-.*\\.jar", "plugins/FancyHolograms.jar");
         copyFile.copyFile(context, "plugins/fancyvisuals/build/libs", "FancyVisuals-.*\\.jar", "plugins/FancyVisuals.jar");
-
-        StartServerService startServer = new StartServerService();
-        startServer.startServer(context);
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            if (context.serverProcess().isAlive()) {
-                context.serverProcess().destroy();
-            }
-        }));
-
-        if (context.serverProcess() != null && context.serverProcess().isAlive()) {
-            try {
-                context.serverProcess().waitFor();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        return context;
     }
 
 }

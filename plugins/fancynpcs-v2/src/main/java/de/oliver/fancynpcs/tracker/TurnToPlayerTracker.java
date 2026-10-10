@@ -7,6 +7,7 @@ import de.oliver.fancynpcs.api.events.NpcStartLookingEvent;
 import de.oliver.fancynpcs.api.events.NpcStopLookingEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -85,7 +86,7 @@ public class TurnToPlayerTracker implements Runnable {
      * @param type The entity type
      * @return The base eye height in blocks
      */
-    private double getEntityEyeHeight(org.bukkit.entity.EntityType type) {
+    private double getEntityEyeHeight(EntityType type) {
         return switch (type) {
             case PLAYER -> 1.62;
             case ZOMBIE, SKELETON, STRAY, HUSK, DROWNED, WITHER_SKELETON -> 1.74;

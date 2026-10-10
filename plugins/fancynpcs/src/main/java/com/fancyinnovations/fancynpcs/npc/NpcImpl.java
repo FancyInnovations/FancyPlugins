@@ -32,7 +32,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -775,7 +777,7 @@ public class NpcImpl extends Npc {
                  TEXT_DISPLAY, INTERACTION, MINECART, CHEST_MINECART, COMMAND_BLOCK_MINECART,
                  FURNACE_MINECART, HOPPER_MINECART, SPAWNER_MINECART, TNT_MINECART,
                  LEASH_KNOT, EVOKER_FANGS -> false;
-            default -> type.getEntityClass() != null && org.bukkit.entity.LivingEntity.class.isAssignableFrom(type.getEntityClass());
+            default -> type.getEntityClass() != null && LivingEntity.class.isAssignableFrom(type.getEntityClass());
         };
     }
 
@@ -788,7 +790,7 @@ public class NpcImpl extends Npc {
     }
 
     private boolean isAgeableMob(EntityType type) {
-        return type.getEntityClass() != null && org.bukkit.entity.Ageable.class.isAssignableFrom(type.getEntityClass());
+        return type.getEntityClass() != null && Ageable.class.isAssignableFrom(type.getEntityClass());
     }
 
     private void sendBabyAttribute(FS_RealPlayer fsPlayer, boolean isBaby) {

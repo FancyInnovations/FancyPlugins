@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.oliver.quicke2e.config.Context;
 
+import java.io.IOException;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -37,7 +39,7 @@ public class OPsService {
         Path opsFilePath = context.serverEnvPath().resolve("ops.json");
         try {
             Files.writeString(opsFilePath, json);
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -45,7 +47,7 @@ public class OPsService {
     private String getUUID(String username) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(java.net.URI.create(String.format("https://api.mojang.com/users/profiles/minecraft/%s", username)))
+                .uri(URI.create(String.format("https://api.mojang.com/users/profiles/minecraft/%s", username)))
                 .build();
 
         HttpResponse<String> resp = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();

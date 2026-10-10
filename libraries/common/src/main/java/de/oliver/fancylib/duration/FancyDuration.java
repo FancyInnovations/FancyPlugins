@@ -2,6 +2,9 @@ package de.oliver.fancylib.duration;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public record FancyDuration(
         long millis
 ) {
@@ -18,7 +21,7 @@ public record FancyDuration(
         long totalMillis = 0;
 
         // Regex: number + unit
-        java.util.regex.Matcher matcher = java.util.regex.Pattern
+        Matcher matcher = Pattern
                 .compile("(\\d+)(ms|s|m|h|d)")
                 .matcher(input);
 

@@ -3,6 +3,8 @@ package de.oliver.fancysitula.api.entities;
 import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
 import de.oliver.fancysitula.api.utils.entityData.FS_DisplayData;
 import org.bukkit.entity.EntityType;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -52,35 +54,35 @@ public class FS_Display extends FS_Entity {
         this.posRotInterpolationDurationData.setValue(posRotInterpolationDuration);
     }
 
-    public org.joml.Vector3f getTranslation() {
-        return (org.joml.Vector3f) this.translationData.getValue();
+    public Vector3f getTranslation() {
+        return (Vector3f) this.translationData.getValue();
     }
 
-    public void setTranslation(org.joml.Vector3f translation) {
+    public void setTranslation(Vector3f translation) {
         this.translationData.setValue(translation);
     }
 
-    public org.joml.Vector3f getScale() {
-        return (org.joml.Vector3f) this.scaleData.getValue();
+    public Vector3f getScale() {
+        return (Vector3f) this.scaleData.getValue();
     }
 
-    public void setScale(org.joml.Vector3f scale) {
+    public void setScale(Vector3f scale) {
         this.scaleData.setValue(scale);
     }
 
-    public org.joml.Quaternionf getLeftRotation() {
-        return (org.joml.Quaternionf) this.leftRotationData.getValue();
+    public Quaternionf getLeftRotation() {
+        return (Quaternionf) this.leftRotationData.getValue();
     }
 
-    public void setLeftRotation(org.joml.Quaternionf leftRotation) {
+    public void setLeftRotation(Quaternionf leftRotation) {
         this.leftRotationData.setValue(leftRotation);
     }
 
-    public org.joml.Quaternionf getRightRotation() {
-        return (org.joml.Quaternionf) this.rightRotationData.getValue();
+    public Quaternionf getRightRotation() {
+        return (Quaternionf) this.rightRotationData.getValue();
     }
 
-    public void setRightRotation(org.joml.Quaternionf rightRotation) {
+    public void setRightRotation(Quaternionf rightRotation) {
         this.rightRotationData.setValue(rightRotation);
     }
 

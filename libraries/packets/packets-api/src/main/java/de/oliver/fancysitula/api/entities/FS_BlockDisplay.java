@@ -2,6 +2,7 @@ package de.oliver.fancysitula.api.entities;
 
 import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
 import de.oliver.fancysitula.api.utils.entityData.FS_BlockDisplayData;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 
 import java.util.List;
@@ -14,11 +15,11 @@ public class FS_BlockDisplay extends FS_Display {
         super(EntityType.BLOCK_DISPLAY);
     }
 
-    public org.bukkit.block.BlockState getBlock() {
-        return (org.bukkit.block.BlockState) this.blockData.getValue();
+    public BlockState getBlock() {
+        return (BlockState) this.blockData.getValue();
     }
 
-    public void setBlock(org.bukkit.block.BlockState block) {
+    public void setBlock(BlockState block) {
         this.blockData.setValue(block);
     }
 

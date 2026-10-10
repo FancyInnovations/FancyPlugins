@@ -271,7 +271,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.CAT_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }
@@ -299,7 +299,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.COW_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }
@@ -314,7 +314,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.CHICKEN_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }
@@ -329,7 +329,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                     @SuppressWarnings({"unchecked", "rawtypes"})
                     Registry registry = server.registryAccess().lookupOrThrow(Registries.PIG_VARIANT);
                     @SuppressWarnings("rawtypes")
-                    java.util.Optional optHolder = registry.get(loc);
+                    Optional optHolder = registry.get(loc);
                     if (optHolder.isPresent()) {
                         vanillaValue = optHolder.get();
                     }

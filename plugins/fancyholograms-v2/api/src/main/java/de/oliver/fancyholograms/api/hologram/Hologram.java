@@ -6,6 +6,7 @@ import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.data.property.Visibility;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -356,6 +357,11 @@ public abstract class Hologram {
     /**
      * Gets the text shown in the hologram. If a player is specified, placeholders in the text are replaced
      * with their corresponding values for the player.
+     * <p>
+     * If custom pre-parsed components were set via
+     * {@link TextHologramData#setTextComponents(java.util.List)}, those are joined
+     * with newlines and returned directly, bypassing MiniMessage parsing,
+     * placeholder translation and caching.
      *
      * @param player the player to get the placeholders for, or null if no placeholders should be replaced
      * @return the text shown in the hologram
@@ -363,6 +369,14 @@ public abstract class Hologram {
     public final Component getShownText(@Nullable final Player player) {
         if (!(getData() instanceof TextHologramData textData)) {
             return null;
+        }
+
+        if (textData.hasTextComponents()) {
+            final var components = textData.getTextComponents();
+            if (components.isEmpty()) {
+                return Component.empty();
+            }
+            return Component.join(JoinConfiguration.separator(Component.newline()), components);
         }
 
         final String rawText = String.join("\n", textData.getText());

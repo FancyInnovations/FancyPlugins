@@ -74,6 +74,17 @@ public class NpcManagerImpl implements NpcManager {
         }
     }
 
+    @Override
+    public void renameNpc(Npc npc, String newName) {
+        Npc existing = getNpc(newName);
+        if (existing != null && existing != npc) {
+            throw new IllegalArgumentException("An NPC with this name already exists");
+        }
+
+        npc.getData().setName(newName);
+        saveNpcs(true);
+    }
+
     @ApiStatus.Internal
     @Override
     public Npc getNpc(int entityId) {

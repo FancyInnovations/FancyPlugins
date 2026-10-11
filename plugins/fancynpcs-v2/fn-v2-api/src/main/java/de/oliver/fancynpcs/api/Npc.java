@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Npc {
+
+    /**
+     * Permission that bypasses the interaction cooldown of all NPCs.
+     */
+    public static final String BYPASS_COOLDOWN_PERMISSION = "fancynpcs.bypass.cooldown";
 
     private static final NpcAttribute INVISIBLE_ATTRIBUTE = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, "invisible");
     private static final char[] localNameChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'k', 'l', 'm', 'n', 'o', 'r'};
@@ -182,8 +188,12 @@ public abstract class Npc {
         interact(player, ActionTrigger.CUSTOM);
     }
 
+    public boolean hasInteractionCooldownBypass(@NotNull Player player) {
+        return player.hasPermission(BYPASS_COOLDOWN_PERMISSION) || player.hasPermission("fancynpcs.bypass.cooldown." + data.getName());
+    }
+
     public void interact(Player player, ActionTrigger actionTrigger) {
-        if (data.getInteractionCooldown() > 0) {
+        if (data.getInteractionCooldown() > 0 && !hasInteractionCooldownBypass(player)) {
             final long interactionCooldownMillis = (long) (data.getInteractionCooldown() * 1000);
             final long lastInteractionMillis = lastPlayerInteraction.getOrDefault(player.getUniqueId(), 0L);
             final Interval interactionCooldownLeft = Interval.between(lastInteractionMillis + interactionCooldownMillis, System.currentTimeMillis(), Unit.MILLISECONDS);

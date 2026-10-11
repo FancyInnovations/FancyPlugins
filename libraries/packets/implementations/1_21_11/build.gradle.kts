@@ -13,6 +13,7 @@ paperweight {
 
 dependencies {
     paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+    compileOnly("net.kyori:adventure-text-serializer-ansi:4.17.0")
     compileOnly(project(":libraries:packets:packets-api"))
 
     testImplementation(project(":libraries:packets"))

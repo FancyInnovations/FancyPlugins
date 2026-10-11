@@ -314,6 +314,9 @@ Changes duration between interactions (cooldown) of the NPC.
 
 - **Syntax**:  `/npc interaction_cooldown (npc) (disabled | cooldown)`
 - **Permissions**: `fancynpcs.command.npc.interaction_cooldown`
+- Players with the permission `fancynpcs.bypass.cooldown` (all NPCs) or
+  `fancynpcs.bypass.cooldown.<npc_name>` (only this NPC) don't need to wait
+  for the interaction cooldown.
 - Formerly known as `/npc interactionCooldown`.
 - Uses time duration instead of a number of seconds eg. `2min`. Supported units:
     - milliseconds: `ms`

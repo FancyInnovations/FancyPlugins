@@ -62,6 +62,7 @@ public final class LampCommandManager {
         lamp.register(NearbyCMD.INSTANCE);
         lamp.register(HelpCMD.INSTANCE);
         lamp.register(RemoveCMD.INSTANCE);
+        lamp.register(RenameCMD.INSTANCE);
         lamp.register(RotateCMD.INSTANCE);
         lamp.register(ShowInTabCMD.INSTANCE);
         lamp.register(SkinCMD.INSTANCE);

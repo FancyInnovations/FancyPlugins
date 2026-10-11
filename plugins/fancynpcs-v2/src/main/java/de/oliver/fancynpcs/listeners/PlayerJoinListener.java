@@ -27,8 +27,11 @@ public class PlayerJoinListener implements Listener {
         }
 
         // don't spawn the npc for player if he just joined
-        plugin.getVisibilityTracker().addJoinDelayPlayer(event.getPlayer().getUniqueId());
-        plugin.getScheduler().runTaskLater(null, 20L * 2, () -> plugin.getVisibilityTracker().removeJoinDelayPlayer(event.getPlayer().getUniqueId()));
+        int spawnDelayOnJoin = plugin.getFancyNpcConfig().getSpawnDelayOnJoin();
+        if (spawnDelayOnJoin > 0) {
+            plugin.getVisibilityTracker().addJoinDelayPlayer(event.getPlayer().getUniqueId());
+            plugin.getScheduler().runTaskLater(null, spawnDelayOnJoin, () -> plugin.getVisibilityTracker().removeJoinDelayPlayer(event.getPlayer().getUniqueId()));
+        }
 
         if (!plugin.getFancyNpcConfig().isMuteVersionNotification() && event.getPlayer().hasPermission("FancyNpcs.admin")) {
             plugin.getScheduler().runTaskAsynchronously(

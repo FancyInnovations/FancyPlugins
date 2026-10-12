@@ -20,7 +20,7 @@ public class FS_PigData {
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor BOOST_TIME = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.animal.pig.Pig", "DATA_BOOST_TIME");
 
     /**
-     * Pig variant (Holder<PigVariant>).
+     * Pig variant (Holder&lt;PigVariant>).
      * Value should be a String like "minecraft:temperate".
      * Added in 1.21.5.
      */

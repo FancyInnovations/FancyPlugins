@@ -8,7 +8,7 @@ import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
 public class FS_FrogData {
 
     /**
-     * Use Holder<FrogVariant> as value (requires NMS conversion)
+     * Use Holder&lt;FrogVariant> as value (requires NMS conversion).
      * Frog variant (TEMPERATE, WARM, COLD)
      */
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor VARIANT = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.animal.frog.Frog", "DATA_VARIANT_ID");

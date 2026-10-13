@@ -35,6 +35,8 @@ public interface FancyNpcsConfig {
 
     int getVisibilityDistance();
 
+    int getSpawnDelayOnJoin();
+
     int getRemoveNpcsFromPlayerlistDelay();
 
     boolean isSwingArmOnUpdate();

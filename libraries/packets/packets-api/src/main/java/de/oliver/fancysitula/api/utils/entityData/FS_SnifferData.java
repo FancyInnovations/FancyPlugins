@@ -4,7 +4,7 @@ import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket.Entit
 
 /**
  * Entity data accessors for Sniffer.
- * Sniffer was added in 1.20 (Trails & Tales).
+ * Sniffer was added in 1.20 (Trails &amp; Tales).
  */
 public class FS_SnifferData {
 

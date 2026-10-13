@@ -13,6 +13,7 @@ paperweight {
 
 dependencies {
     paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+    compileOnly("net.kyori:adventure-text-serializer-ansi:4.17.0")
 
     compileOnly(project(":plugins:fancynpcs-v2:fn-v2-api"))
     compileOnly(project(":libraries:common"))

@@ -20,6 +20,7 @@ tasks {
         relocate("org.lushplugins.chatcolorhandler", "com.fancyinnovations.fancydialogs.libs.chatcolorhandler")
 
         archiveClassifier.set("")
+        dependsOn(":libraries:packets:shadowJar")
     }
 
     publishing {

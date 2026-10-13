@@ -36,6 +36,8 @@ include(":plugins:fancyholograms-v2:api")
 include(":plugins:fancyholograms")
 include(":plugins:fancyholograms:fh-api")
 
+include(":plugins:fancyvisuals")
+
 include(":plugins:fancydialogs")
 include(":plugins:fancydialogs:fd-api")
 

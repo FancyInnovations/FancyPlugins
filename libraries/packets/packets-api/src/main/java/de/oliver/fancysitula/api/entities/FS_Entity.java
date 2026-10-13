@@ -33,13 +33,13 @@ public class FS_Entity {
 
     protected int data = 0;
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData sharedFlagsData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.SHARED_FLAGS, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData airSupplyData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.AIR_SUPPLY, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData customNameData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.CUSTOM_NAME, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData customNameVisibleData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.CUSTOM_NAME_VISIBLE, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData silentData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.SILENT, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData noGravityData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.NO_GRAVITY, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData ticksFrozenData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.TICKS_FROZEN, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData sharedFlagsData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.SHARED_FLAGS, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData airSupplyData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.AIR_SUPPLY, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData customNameData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.CUSTOM_NAME, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData customNameVisibleData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.CUSTOM_NAME_VISIBLE, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData silentData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.SILENT, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData noGravityData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.NO_GRAVITY, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData ticksFrozenData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_EntityData.TICKS_FROZEN, null);
 
     public FS_Entity(EntityType type) {
         this.type = type;

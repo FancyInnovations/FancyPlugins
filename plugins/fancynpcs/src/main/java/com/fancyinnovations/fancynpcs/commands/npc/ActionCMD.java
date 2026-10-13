@@ -19,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public enum ActionCMD {
     INSTANCE; // SINGLETON
@@ -352,7 +354,7 @@ public enum ActionCMD {
             }
 
             float totalSeconds = 0;
-            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(\\d+(?:\\.\\d+)?)([smh]?)").matcher(duration);
+            Matcher matcher = Pattern.compile("(\\d+(?:\\.\\d+)?)([smh]?)").matcher(duration);
 
             while (matcher.find()) {
                 float value = Float.parseFloat(matcher.group(1));

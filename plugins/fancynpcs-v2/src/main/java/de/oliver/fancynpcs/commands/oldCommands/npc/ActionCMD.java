@@ -330,8 +330,7 @@ public enum ActionCMD {
                 .replaceStripped("trigger", trigger.name())
                 .send(sender);
 
-        for (int i = 0; i < actions.size(); i++) {
-            NpcAction.NpcActionData action = actions.get(i);
+        for (NpcAction.NpcActionData action : actions) {
             translator.translate("npc_action_list_entry")
                     .replaceStripped("number", String.valueOf(action.order()))
                     .replaceStripped("action", action.action().getName())

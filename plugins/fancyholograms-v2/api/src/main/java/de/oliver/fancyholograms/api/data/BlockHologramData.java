@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class BlockHologramData extends DisplayHologramData {
 
-    public static Material DEFAULT_BLOCK = Material.GRASS_BLOCK;
+    public static final Material DEFAULT_BLOCK = Material.GRASS_BLOCK;
 
     private Material block = DEFAULT_BLOCK;
 

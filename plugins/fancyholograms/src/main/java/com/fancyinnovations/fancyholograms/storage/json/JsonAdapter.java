@@ -1,7 +1,7 @@
 package com.fancyinnovations.fancyholograms.storage.json;
 
 import com.fancyinnovations.fancyholograms.api.FancyHolograms;
-import com.fancyinnovations.fancyholograms.api.data.HologramData;
+import com.fancyinnovations.fancyholograms.api.data.*;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTrait;
 import com.fancyinnovations.fancyholograms.api.trait.HologramTraitRegistry;
 import com.fancyinnovations.fancyholograms.storage.json.model.*;
@@ -17,7 +17,7 @@ import java.util.Base64;
 
 public class JsonAdapter {
 
-    public static JsonHologramData hologramDataToJson(com.fancyinnovations.fancyholograms.api.data.HologramData data) {
+    public static JsonHologramData hologramDataToJson(HologramData data) {
         return new JsonHologramData(
                 data.getName(),
                 data.getType(),
@@ -39,7 +39,7 @@ public class JsonAdapter {
         );
     }
 
-    public static JsonDisplayHologramData displayHologramDataToJson(com.fancyinnovations.fancyholograms.api.data.DisplayHologramData data) {
+    public static JsonDisplayHologramData displayHologramDataToJson(DisplayHologramData data) {
         return new JsonDisplayHologramData(
                 new JsonVec3f(
                         data.getScale().x(),
@@ -62,7 +62,7 @@ public class JsonAdapter {
         );
     }
 
-    public static JsonTextHologramData textHologramDataToJson(com.fancyinnovations.fancyholograms.api.data.TextHologramData data) {
+    public static JsonTextHologramData textHologramDataToJson(TextHologramData data) {
         return new JsonTextHologramData(
                 data.getText(),
                 data.hasTextShadow(),
@@ -74,19 +74,19 @@ public class JsonAdapter {
         );
     }
 
-    public static JsonBlockHologramData blockHologramDataToJson(com.fancyinnovations.fancyholograms.api.data.BlockHologramData data) {
+    public static JsonBlockHologramData blockHologramDataToJson(BlockHologramData data) {
         return new JsonBlockHologramData(
                 data.getBlockData() != null ? data.getBlockData().getAsString() : data.getBlock().name()
         );
     }
 
-    public static JsonItemHologramData itemHologramDataToJson(com.fancyinnovations.fancyholograms.api.data.ItemHologramData data) {
+    public static JsonItemHologramData itemHologramDataToJson(ItemHologramData data) {
         return new JsonItemHologramData(
                 Base64.getEncoder().encodeToString(data.getItemStack().serializeAsBytes())
         );
     }
 
-    public static JsonDataUnion toUnion(com.fancyinnovations.fancyholograms.api.data.TextHologramData data) {
+    public static JsonDataUnion toUnion(TextHologramData data) {
         JsonHologramData hologramData = hologramDataToJson(data);
         JsonDisplayHologramData displayHologramData = displayHologramDataToJson(data);
         JsonTextHologramData textHologramData = textHologramDataToJson(data);
@@ -100,7 +100,7 @@ public class JsonAdapter {
         );
     }
 
-    public static JsonDataUnion toUnion(com.fancyinnovations.fancyholograms.api.data.ItemHologramData data) {
+    public static JsonDataUnion toUnion(ItemHologramData data) {
         JsonHologramData hologramData = hologramDataToJson(data);
         JsonDisplayHologramData displayHologramData = displayHologramDataToJson(data);
         JsonItemHologramData itemHologramData = itemHologramDataToJson(data);
@@ -114,7 +114,7 @@ public class JsonAdapter {
         );
     }
 
-    public static JsonDataUnion toUnion(com.fancyinnovations.fancyholograms.api.data.BlockHologramData data) {
+    public static JsonDataUnion toUnion(BlockHologramData data) {
         JsonHologramData hologramData = hologramDataToJson(data);
         JsonDisplayHologramData displayHologramData = displayHologramDataToJson(data);
         JsonBlockHologramData blockHologramData = blockHologramDataToJson(data);
@@ -128,7 +128,7 @@ public class JsonAdapter {
         );
     }
 
-    public static com.fancyinnovations.fancyholograms.api.data.HologramData fromJson(JsonDataUnion data) {
+    public static HologramData fromJson(JsonDataUnion data) {
         if (!data.hologram_data().world_name().equals(data.hologram_data().location().world())) {
             throw new IllegalArgumentException("World name in hologram data does not match location world");
         }
@@ -162,14 +162,14 @@ public class JsonAdapter {
 
         HologramData hologramData = switch (data.hologram_data().type()) {
             case TEXT ->
-                    new com.fancyinnovations.fancyholograms.api.data.TextHologramData(data.hologram_data().name(), loc)
+                    new TextHologramData(data.hologram_data().name(), loc)
                             .setText(data.text_data().text()) // text data
                             .setBackground(data.text_data().background_color())
                             .setTextAlignment(data.text_data().text_alignment())
                             .setTextShadow(data.text_data().text_shadow())
                             .setSeeThrough(data.text_data().see_through())
                             .setTextUpdateInterval(data.text_data().text_update_interval())
-                            .setTextOpacity(data.text_data().text_opacity() != null ? data.text_data().text_opacity().byteValue() : com.fancyinnovations.fancyholograms.api.data.TextHologramData.DEFAULT_TEXT_OPACITY)
+                            .setTextOpacity(data.text_data().text_opacity() != null ? data.text_data().text_opacity().byteValue() : TextHologramData.DEFAULT_TEXT_OPACITY)
                             .setBillboard(data.display_data().billboard()) // display data
                             .setScale(scale)
                             .setTranslation(translation)
@@ -182,7 +182,7 @@ public class JsonAdapter {
                             .setLinkedNpcName(data.hologram_data().linked_npc_name());
 
             case ITEM ->
-                    new com.fancyinnovations.fancyholograms.api.data.ItemHologramData(data.hologram_data().name(), loc)
+                    new ItemHologramData(data.hologram_data().name(), loc)
                             .setItemStack(ItemStack.deserializeBytes(Base64.getDecoder().decode(data.item_data().item()))) // item data
                             .setBillboard(data.display_data().billboard()) // display data
                             .setScale(scale)
@@ -190,20 +190,20 @@ public class JsonAdapter {
                             .setBrightness(brightness)
                             .setShadowRadius(data.display_data().shadow_radius())
                             .setShadowStrength(data.display_data().shadow_strength())
-                            .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
+                            .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : DisplayHologramData.DEFAULT_GLOWING_COLOR)
                             .setWorldName(data.hologram_data().world_name())// hologram data
                             .setVisibilityDistance(data.hologram_data().visibility_distance())
                             .setVisibility(data.hologram_data().visibility())
                             .setLinkedNpcName(data.hologram_data().linked_npc_name());
             case BLOCK -> {
-                com.fancyinnovations.fancyholograms.api.data.BlockHologramData blockHologramData = new com.fancyinnovations.fancyholograms.api.data.BlockHologramData(data.hologram_data().name(), loc);
+                BlockHologramData blockHologramData = new BlockHologramData(data.hologram_data().name(), loc);
                 String blockMatOrData = data.block_data().block_material();
                 try {
                     blockHologramData.setBlockData(Bukkit.createBlockData(blockMatOrData));
                 } catch (Exception e) {
                     Material mat = Material.getMaterial(blockMatOrData.toUpperCase());
                     if (mat == null) {
-                        mat = com.fancyinnovations.fancyholograms.api.data.BlockHologramData.DEFAULT_BLOCK;
+                        mat = BlockHologramData.DEFAULT_BLOCK;
                     }
                     blockHologramData.setBlock(mat);
                 }
@@ -214,7 +214,7 @@ public class JsonAdapter {
                         .setBrightness(brightness)
                         .setShadowRadius(data.display_data().shadow_radius())
                         .setShadowStrength(data.display_data().shadow_strength())
-                        .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : com.fancyinnovations.fancyholograms.api.data.DisplayHologramData.DEFAULT_GLOWING_COLOR)
+                        .setGlowingColor(data.display_data().glowing_color() != null ? data.display_data().glowing_color() : DisplayHologramData.DEFAULT_GLOWING_COLOR)
                         .setWorldName(data.hologram_data().world_name())// hologram data
                         .setVisibilityDistance(data.hologram_data().visibility_distance())
                         .setVisibility(data.hologram_data().visibility())

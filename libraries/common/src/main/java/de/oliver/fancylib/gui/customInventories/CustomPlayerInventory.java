@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class CustomPlayerInventory implements InventoryHolder {
 
     protected final Player player;
-    protected Inventory inventory;
+    protected final Inventory inventory;
 
     protected CustomPlayerInventory(Player player, int amountRows, Component title) {
         this.player = player;

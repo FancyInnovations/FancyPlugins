@@ -12,7 +12,7 @@ public class StartServerService {
             Process process = processBuilder.start();
             context.setServerProcess(process);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

@@ -84,7 +84,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
                 logsFile.getParentFile().mkdirs();
                 logsFile.createNewFile();
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
         JsonAppender jsonAppender = new JsonAppender(false, false, true, logsFile.getPath());

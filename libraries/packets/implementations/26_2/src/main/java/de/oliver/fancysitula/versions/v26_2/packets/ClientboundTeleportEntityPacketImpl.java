@@ -18,7 +18,8 @@ public class ClientboundTeleportEntityPacketImpl extends FS_ClientboundTeleportE
 
     @Override
     public Object createPacket() {
-        ClientboundTeleportEntityPacket packet = new ClientboundTeleportEntityPacket(
+
+        return new ClientboundTeleportEntityPacket(
                 entityId,
                 new PositionMoveRotation(
                         new Vec3(x, y, z),
@@ -29,8 +30,6 @@ public class ClientboundTeleportEntityPacketImpl extends FS_ClientboundTeleportE
                 Set.of(),
                 onGround
         );
-
-        return packet;
     }
 
     @Override

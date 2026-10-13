@@ -39,9 +39,7 @@ public class CustomClickActionPacketListener {
             return; // Ignore packets not related to FancyDialogs
         }
 
-        packet.getPayload().forEach((key, value) -> {
-            FancyDialogsPlugin.get().getFancyLogger().debug("Click action data Key: " + key + " value: " + value.toString());
-        });
+        packet.getPayload().forEach((key, value) -> FancyDialogsPlugin.get().getFancyLogger().debug("Click action data Key: " + key + " value: " + value.toString()));
 
         String dialogId = packet.getPayload().get("dialog_id");
         String buttonId = packet.getPayload().get("button_id");

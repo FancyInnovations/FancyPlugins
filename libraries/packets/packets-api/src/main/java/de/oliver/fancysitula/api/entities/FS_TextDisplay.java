@@ -9,11 +9,11 @@ import java.util.List;
 
 public class FS_TextDisplay extends FS_Display {
 
-    protected FS_ClientboundSetEntityDataPacket.EntityData textData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.TEXT, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData lineWidthData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.LINE_WIDTH, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData backgroundData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.BACKGROUND, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData textOpacityData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.TEXT_OPACITY, null);
-    protected FS_ClientboundSetEntityDataPacket.EntityData styleFlagsData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.STYLE_FLAGS, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData textData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.TEXT, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData lineWidthData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.LINE_WIDTH, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData backgroundData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.BACKGROUND, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData textOpacityData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.TEXT_OPACITY, null);
+    protected final FS_ClientboundSetEntityDataPacket.EntityData styleFlagsData = new FS_ClientboundSetEntityDataPacket.EntityData(FS_TextDisplayData.STYLE_FLAGS, null);
 
     public FS_TextDisplay() {
         super(EntityType.TEXT_DISPLAY);

@@ -11,6 +11,9 @@ import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public final class InfoCMD extends FancyContext {
 
     public static final InfoCMD INSTANCE = new InfoCMD();
@@ -85,66 +88,69 @@ public final class InfoCMD extends FancyContext {
                     .send(actor.sender());
         }
 
-        if (data instanceof TextHologramData textData) {
-            translator.translate("commands.hologram.info.text_header")
-                    .send(actor.sender());
-
-            for (String line : textData.getText()) {
-                translator.translate("commands.hologram.info.text_line")
-                        .replace("line", line)
+        switch (data) {
+            case TextHologramData textData -> {
+                translator.translate("commands.hologram.info.text_header")
                         .send(actor.sender());
+
+                for (String line : textData.getText()) {
+                    translator.translate("commands.hologram.info.text_line")
+                            .replace("line", line)
+                            .send(actor.sender());
+                }
+
+                String bgStr = textData.getBackground() != null
+                        ? "#" + Integer.toHexString(textData.getBackground().asARGB())
+                        : "default";
+                translator.translate("commands.hologram.info.background")
+                        .replace("background", bgStr)
+                        .send(actor.sender());
+
+                translator.translate("commands.hologram.info.text_alignment")
+                        .replace("alignment", textData.getTextAlignment().name())
+                        .send(actor.sender());
+
+                translator.translate("commands.hologram.info.see_through")
+                        .replace("enabled", textData.isSeeThrough() ? "enabled" : "disabled")
+                        .send(actor.sender());
+
+                translator.translate("commands.hologram.info.text_shadow")
+                        .replace("enabled", textData.hasTextShadow() ? "enabled" : "disabled")
+                        .send(actor.sender());
+
+                int opacityPercentage = Math.round((Byte.toUnsignedInt(textData.getTextOpacity()) * 100.0f) / 255.0f);
+                translator.translate("commands.hologram.info.text_opacity")
+                        .replace("opacity", String.valueOf(opacityPercentage))
+                        .send(actor.sender());
+
+                if (textData.getTextUpdateInterval() == -1) {
+                    translator.translate("commands.hologram.info.update_text_interval_disabled")
+                            .send(actor.sender());
+                } else {
+                    translator.translate("commands.hologram.info.update_text_interval")
+                            .replace("interval", String.valueOf(textData.getTextUpdateInterval()))
+                            .send(actor.sender());
+                }
             }
-
-            String bgStr = textData.getBackground() != null
-                    ? "#" + Integer.toHexString(textData.getBackground().asARGB())
-                    : "default";
-            translator.translate("commands.hologram.info.background")
-                    .replace("background", bgStr)
-                    .send(actor.sender());
-
-            translator.translate("commands.hologram.info.text_alignment")
-                    .replace("alignment", textData.getTextAlignment().name())
-                    .send(actor.sender());
-
-            translator.translate("commands.hologram.info.see_through")
-                    .replace("enabled", textData.isSeeThrough() ? "enabled" : "disabled")
-                    .send(actor.sender());
-
-            translator.translate("commands.hologram.info.text_shadow")
-                    .replace("enabled", textData.hasTextShadow() ? "enabled" : "disabled")
-                    .send(actor.sender());
-
-            int opacityPercentage = Math.round((Byte.toUnsignedInt(textData.getTextOpacity()) * 100.0f) / 255.0f);
-            translator.translate("commands.hologram.info.text_opacity")
-                    .replace("opacity", String.valueOf(opacityPercentage))
-                    .send(actor.sender());
-
-            if (textData.getTextUpdateInterval() == -1) {
-                translator.translate("commands.hologram.info.update_text_interval_disabled")
+            case BlockHologramData blockData -> {
+                translator.translate("commands.hologram.info.block")
+                        .replace("block", blockData.getBlock().name())
                         .send(actor.sender());
-            } else {
-                translator.translate("commands.hologram.info.update_text_interval")
-                        .replace("interval", String.valueOf(textData.getTextUpdateInterval()))
-                        .send(actor.sender());
+
+                Map<String, String> properties = blockData.getBlockStateProperties();
+                if (!properties.isEmpty()) {
+                    String propertiesStr = properties.entrySet().stream()
+                            .map(e -> e.getKey() + "=" + e.getValue())
+                            .collect(Collectors.joining(", "));
+                    translator.translate("commands.hologram.info.blockstate")
+                            .replace("properties", propertiesStr)
+                            .send(actor.sender());
+                }
             }
-        } else if (data instanceof BlockHologramData blockData) {
-            translator.translate("commands.hologram.info.block")
-                    .replace("block", blockData.getBlock().name())
-                    .send(actor.sender());
-
-            java.util.Map<String, String> properties = blockData.getBlockStateProperties();
-            if (!properties.isEmpty()) {
-                String propertiesStr = properties.entrySet().stream()
-                        .map(e -> e.getKey() + "=" + e.getValue())
-                        .collect(java.util.stream.Collectors.joining(", "));
-                translator.translate("commands.hologram.info.blockstate")
-                        .replace("properties", propertiesStr)
-                        .send(actor.sender());
-            }
-        } else if (data instanceof ItemHologramData itemData) {
-            translator.translate("commands.hologram.info.item")
+            case ItemHologramData itemData -> translator.translate("commands.hologram.info.item")
                     .replace("item", itemData.getItemStack().getType().name())
                     .send(actor.sender());
+            default -> throw new IllegalStateException("Unexpected value: " + data);
         }
     }
 }

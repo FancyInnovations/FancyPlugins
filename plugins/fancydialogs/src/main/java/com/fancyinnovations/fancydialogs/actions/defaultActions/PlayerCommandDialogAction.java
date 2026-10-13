@@ -23,9 +23,7 @@ public class PlayerCommandDialogAction implements DialogAction {
 
         String command = PaperColor.handler().translateRaw(data, player, Parsers::placeholder);
 
-        Bukkit.getGlobalRegionScheduler().run(FancyDialogsPlugin.get(), (t) -> {
-            player.chat("/" + command);
-        });
+        Bukkit.getGlobalRegionScheduler().run(FancyDialogsPlugin.get(), (t) -> player.chat("/" + command));
     }
 
 }

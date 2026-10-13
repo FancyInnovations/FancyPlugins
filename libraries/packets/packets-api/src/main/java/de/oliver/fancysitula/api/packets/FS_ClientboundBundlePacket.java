@@ -1,6 +1,5 @@
 package de.oliver.fancysitula.api.packets;
 
-import de.oliver.fancysitula.api.entities.FS_RealPlayer;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;

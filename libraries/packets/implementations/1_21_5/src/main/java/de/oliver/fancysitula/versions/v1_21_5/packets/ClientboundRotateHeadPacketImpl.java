@@ -23,7 +23,7 @@ public class ClientboundRotateHeadPacketImpl extends FS_ClientboundRotateHeadPac
             ReflectionUtils.setFinalField(packet, "entityId", entityId);
             ReflectionUtils.setFinalField(packet, "yHeadRot", AngelConverter.degreesToVanillaByte(headYaw));
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return packet;
     }

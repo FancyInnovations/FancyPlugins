@@ -23,7 +23,6 @@ public class JDB {
             .create();
 
     private static final String FILE_EXTENSION = ".json";
-    private final @NotNull String basePath;
     private final @NotNull File baseDirectory;
     private final JIndex index;
 
@@ -33,7 +32,6 @@ public class JDB {
      * @param basePath the base directory path where documents will be stored
      */
     public JDB(@NotNull String basePath) {
-        this.basePath = basePath;
         this.baseDirectory = new File(basePath);
 
         this.index = JIndex.load("jdb_index", basePath);

@@ -77,7 +77,7 @@ public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
                 logsFile.getParentFile().mkdirs();
                 logsFile.createNewFile();
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
         JsonAppender jsonAppender = new JsonAppender(false, false, true, logsFile.getPath());
@@ -241,9 +241,7 @@ public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
         Lamp.Builder<BukkitCommandActor> lampBuilder = BukkitLamp
                 .builder(this);
 
-        lampBuilder.parameterTypes(builder -> {
-            builder.addParameterType(Dialog.class, DialogCommandType.INSTANCE);
-        });
+        lampBuilder.parameterTypes(builder -> builder.addParameterType(Dialog.class, DialogCommandType.INSTANCE));
 
         lampBuilder.exceptionHandler(DialogCommandType.INSTANCE);
 

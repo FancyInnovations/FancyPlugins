@@ -65,7 +65,7 @@ public class FileUtils {
         try {
             connection = url.openConnection();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         connection.setUseCaches(false);
         try (InputStream inputStream = connection.getInputStream()) {
@@ -93,7 +93,7 @@ public class FileUtils {
         try {
             connection = url.openConnection();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         connection.setUseCaches(false);
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
@@ -104,7 +104,7 @@ public class FileUtils {
                 outputStream.write(bytes, 0, read);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

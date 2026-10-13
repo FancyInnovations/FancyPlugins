@@ -6,7 +6,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Is fired when all NPCs are loaded.
- *
+ * <p>
  * Will be removed, once the npc loading is coupled with the loading of worlds! Be aware of that!
  */
 @ApiStatus.Experimental()

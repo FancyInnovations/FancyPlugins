@@ -73,17 +73,15 @@ public enum NearbyCMD {
         // Using AtomicInteger counter because streams don't expose entry index.
         final AtomicInteger count = new AtomicInteger(0);
         // Iterating over each NPC referenced in the stream. Usage of forEachOrdered should presumably preserve element order.
-        stream.forEachOrdered(npc -> {
-            translator.translate("npc_nearby_entry")
-                    .replace("number", String.valueOf(count.incrementAndGet()))
-                    .replace("npc", npc.getData().getName())
-                    .replace("distance", DISTANCE_FORMAT.format(npc.getData().getLocation().distance(senderLocation)))
-                    .replace("location_x", COORDS_FORMAT.format(npc.getData().getLocation().x()))
-                    .replace("location_y", COORDS_FORMAT.format(npc.getData().getLocation().y()))
-                    .replace("location_z", COORDS_FORMAT.format(npc.getData().getLocation().z()))
-                    .replace("world", npc.getData().getLocation().getWorld().getName())
-                    .send(sender);
-        });
+        stream.forEachOrdered(npc -> translator.translate("npc_nearby_entry")
+                .replace("number", String.valueOf(count.incrementAndGet()))
+                .replace("npc", npc.getData().getName())
+                .replace("distance", DISTANCE_FORMAT.format(npc.getData().getLocation().distance(senderLocation)))
+                .replace("location_x", COORDS_FORMAT.format(npc.getData().getLocation().x()))
+                .replace("location_y", COORDS_FORMAT.format(npc.getData().getLocation().y()))
+                .replace("location_z", COORDS_FORMAT.format(npc.getData().getLocation().z()))
+                .replace("world", npc.getData().getLocation().getWorld().getName())
+                .send(sender));
         translator.translate("npc_nearby_footer")
                 .replace("count", String.valueOf(count))
                 .replace("count_formatted", "· ".repeat(3 - String.valueOf(count).length()) + count)

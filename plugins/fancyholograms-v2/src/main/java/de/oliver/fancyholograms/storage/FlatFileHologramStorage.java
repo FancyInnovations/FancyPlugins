@@ -211,7 +211,7 @@ public class FlatFileHologramStorage implements HologramStorage {
             try {
                 config.save(HOLOGRAMS_CONFIG_FILE);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             } finally {
                 lock.writeLock().unlock();
             }

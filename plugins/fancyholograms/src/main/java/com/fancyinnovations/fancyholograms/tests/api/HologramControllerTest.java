@@ -7,10 +7,7 @@ import com.fancyinnovations.fancyholograms.controller.HologramControllerImpl;
 import com.fancyinnovations.fancyholograms.tests.mocks.HologramMock;
 import de.oliver.plugintests.annotations.FPBeforeEach;
 import de.oliver.plugintests.annotations.FPTest;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
-import static de.oliver.plugintests.Expectable.expect;
 
 public class HologramControllerTest {
 

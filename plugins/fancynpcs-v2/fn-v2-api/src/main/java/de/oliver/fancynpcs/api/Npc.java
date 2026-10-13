@@ -36,7 +36,7 @@ public abstract class Npc {
     protected final FancyNpcsPlugin fancyNpcsPlugin = FancyNpcsPlugin.get();
     private final Translator translator = fancyNpcsPlugin.getTranslator();
     protected final String teamName;
-    protected NpcData data;
+    protected final NpcData data;
     protected boolean saveToFile;
 
     public Npc(NpcData data) {

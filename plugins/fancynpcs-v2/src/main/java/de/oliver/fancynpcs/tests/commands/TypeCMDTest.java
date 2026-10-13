@@ -36,8 +36,6 @@ public class TypeCMDTest {
     public void setTypeToCow(Player player) {
         expect(player.performCommand("npc type " + npcName + " COW")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().getType()).toBe(EntityType.COW);
-        });
+        delay(() -> expect(npc.getData().getType()).toBe(EntityType.COW));
     }
 }

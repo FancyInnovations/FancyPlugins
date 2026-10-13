@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class VisibilityTracker implements Runnable {
 
-    private Set<UUID> joinDelayPlayers;
+    private final Set<UUID> joinDelayPlayers;
 
     public VisibilityTracker() {
         this.joinDelayPlayers = new HashSet<>();

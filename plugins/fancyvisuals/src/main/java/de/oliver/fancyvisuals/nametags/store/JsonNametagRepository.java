@@ -18,11 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JsonNametagRepository implements NametagRepository {
 
     private static final String BASE_PATH = "plugins/FancyVisuals/data/nametags/";
-    private final JDB jdb;
     private final Map<Context, NametagStore> stores;
 
     public JsonNametagRepository() {
-        this.jdb = new JDB(BASE_PATH);
+        JDB jdb = new JDB(BASE_PATH);
         stores = new ConcurrentHashMap<>();
 
         for (Context ctx : Context.values()) {

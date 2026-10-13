@@ -25,7 +25,7 @@ public class CopyFileService {
                     realSource = first.get().toString();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 
@@ -34,7 +34,7 @@ public class CopyFileService {
         try {
             Files.copy(Path.of(realSource), target, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -43,7 +43,7 @@ public class CopyFileService {
         try {
             Files.createDirectories(path);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

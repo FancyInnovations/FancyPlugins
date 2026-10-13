@@ -121,9 +121,7 @@ public class ActionCMDTest {
 
         expect(player.performCommand("npc action " + npcName + " " + actionTrigger + " remove 1")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().getActions(actionTrigger).size()).toEqual(0);
-        });
+        delay(() -> expect(npc.getData().getActions(actionTrigger).size()).toEqual(0));
     }
 
     @FPTest(name = "Move action up")
@@ -170,9 +168,7 @@ public class ActionCMDTest {
 
         expect(player.performCommand("npc action " + npcName + " " + actionTrigger + " clear")).toBe(true);
 
-        delay(() -> {
-            expect(npc.getData().getActions(actionTrigger).size()).toEqual(0);
-        });
+        delay(() -> expect(npc.getData().getActions(actionTrigger).size()).toEqual(0));
     }
 
 }

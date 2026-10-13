@@ -62,12 +62,10 @@ public final class AttributeCMD extends FancyContext {
         translator.translate("npc_attribute_list_header")
                 .send(sender);
         // Iterating over all attributes set on this NPC and sending them to the sender.
-        npc.getData().getAttributes().forEach((attribute, value) -> {
-            translator.translate("npc_attribute_list_entry")
-                    .replace("attribute", attribute.getName())
-                    .replace("value", value)
-                    .send(sender);
-        });
+        npc.getData().getAttributes().forEach((attribute, value) -> translator.translate("npc_attribute_list_entry")
+                .replace("attribute", attribute.getName())
+                .replace("value", value)
+                .send(sender));
         translator.translate("npc_attribute_list_footer").send(sender);
     }
 

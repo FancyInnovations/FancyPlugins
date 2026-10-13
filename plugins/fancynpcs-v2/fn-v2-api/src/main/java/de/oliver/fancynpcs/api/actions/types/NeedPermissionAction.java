@@ -24,7 +24,7 @@ public class NeedPermissionAction extends NpcAction {
         String permission = invertCheck ? value.substring(1) : value;
 
         boolean hasPermission = context.getPlayer().hasPermission(permission);
-        boolean passesCheck = invertCheck ? !hasPermission : hasPermission;
+        boolean passesCheck = invertCheck != hasPermission;
 
         if (!passesCheck) {
             FancyNpcsPlugin.get().getTranslator().translate("action_missing_permissions").send(context.getPlayer());

@@ -41,7 +41,7 @@ public class NpcData {
     private float interactionCooldown;
     private float scale;
     private int visibilityDistance;
-    private Map<NpcAttribute, String> attributes;
+    private final Map<NpcAttribute, String> attributes;
     private NpcVisibility visibility;
     private boolean isDirty;
 

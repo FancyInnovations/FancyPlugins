@@ -19,7 +19,7 @@ public class ModrinthVersionFetcher implements VersionFetcher {
     public ComparableVersion fetchNewestVersion() {
         if (newestVersion != null) return newestVersion;
 
-        String jsonString = de.oliver.fancylib.versionFetcher.VersionFetcher.getDataFromUrl("https://api.modrinth.com/v2/project/" + pluginName.toLowerCase() + "/version");
+        String jsonString = VersionFetcher.getDataFromUrl("https://api.modrinth.com/v2/project/" + pluginName.toLowerCase() + "/version");
         if (jsonString == null || jsonString.isEmpty()) {
             return null;
         }

@@ -1,6 +1,5 @@
 package com.fancyinnovations.fancyholograms.commands.oldCommands;
 
-import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.tests.FHTests;
 import de.oliver.fancylib.MessageHelper;
 import org.bukkit.command.Command;
@@ -13,13 +12,9 @@ import java.util.List;
 
 public class FancyHologramsTestCMD extends Command {
 
-    @NotNull
-    private final FancyHologramsPlugin plugin;
-
-    public FancyHologramsTestCMD(@NotNull final FancyHologramsPlugin plugin) {
+    public FancyHologramsTestCMD() {
         super("FancyHologramsTest");
         setPermission("fancyholograms.admin");
-        this.plugin = plugin;
     }
 
     @Override

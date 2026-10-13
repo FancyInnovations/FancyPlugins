@@ -2,7 +2,7 @@ package de.oliver.fancyvisuals.config;
 
 public class FancyVisualsConfig {
 
-    private int amountWorkerThreads;
+    private final int amountWorkerThreads;
 
     public FancyVisualsConfig() {
         this.amountWorkerThreads = 4;

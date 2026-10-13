@@ -2,7 +2,6 @@ package de.oliver.fancylib;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.function.Supplier;
 
 public class ReflectionUtils {
 
@@ -17,7 +16,7 @@ public class ReflectionUtils {
             field.setAccessible(false);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return result;
@@ -34,7 +33,7 @@ public class ReflectionUtils {
             field.setAccessible(false);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return result;
@@ -49,7 +48,7 @@ public class ReflectionUtils {
             field.setAccessible(false);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

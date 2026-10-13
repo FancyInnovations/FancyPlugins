@@ -22,7 +22,7 @@ public class ClientboundAnimatePacketImpl extends FS_ClientboundAnimatePacket {
             ReflectionUtils.setFinalField(packet, "id", entityId);
             ReflectionUtils.setFinalField(packet, "action", animationId);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return packet;
     }

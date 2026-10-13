@@ -249,7 +249,7 @@ public class CurrencyBaseCMD implements OrphanCommand {
         ItemStack withdrawItem = currency.withdrawItem().construct(player, currency, amount);
 
         HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(withdrawItem);
-        if (leftOver.size() > 0) {
+        if (!leftOver.isEmpty()) {
             FancyEconomy.getInstance().getTranslator()
                     .translate("no-inventory-space")
                     .send(player);

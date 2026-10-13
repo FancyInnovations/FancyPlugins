@@ -7,6 +7,7 @@ import com.fancyinnovations.fancydialogs.api.data.DialogButton;
 import com.fancyinnovations.fancydialogs.api.data.DialogData;
 import com.fancyinnovations.fancydialogs.api.data.inputs.DialogInputs;
 import com.fancyinnovations.fancydialogs.api.events.DialogButtonClickedEvent;
+import com.fancyinnovations.fancyworlds.api.portals.PortalPosition;
 import com.fancyinnovations.fancyworlds.main.FancyWorldsPlugin;
 import de.oliver.fancylib.translations.message.Message;
 import de.oliver.fancylib.translations.message.SimpleMessage;
@@ -154,7 +155,7 @@ public final class WorldsDialogController implements Listener {
         return new DialogBodyData(text, 300);
     }
 
-    String position(com.fancyinnovations.fancyworlds.api.portals.PortalPosition point) {
+    String position(PortalPosition point) {
         return position(point.x(), point.y(), point.z());
     }
 

@@ -5,12 +5,13 @@ import revxrsal.commands.autocomplete.SuggestionProvider;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.node.ExecutionContext;
 
+import java.util.Collection;
 import java.util.List;
 
 public final class DisplayNameSuggestion implements SuggestionProvider<BukkitCommandActor> {
 
     @Override
-    public @NotNull java.util.Collection<String> getSuggestions(@NotNull ExecutionContext<BukkitCommandActor> context) {
+    public @NotNull Collection<String> getSuggestions(@NotNull ExecutionContext<BukkitCommandActor> context) {
         return List.of("@none");
     }
 }

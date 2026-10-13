@@ -145,6 +145,7 @@ messages:
         scale:
           not_display: "{errorColor}This command can only be executed on display holograms."
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has this scale set."
+          invalid: "{errorColor}Invalid scale value. Scale must be a positive number between 0.01 and 50."
           updated: "Updated the scale to {primaryColor}({x}, {y}, {z}){secondaryColor} for hologram {primaryColor}{hologram}{secondaryColor}."
         see_through:
           already_set: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has see-through set to {primaryColor}{enabled}{errorColor}."

@@ -23,9 +23,7 @@ import org.joml.Quaternionf;
 
 public final class HologramImpl extends Hologram {
 
-    private final long minSyncIntervalMs = FancyHologramsPlugin.get().getFHConfiguration().getHologramUpdateInterval();
     private FS_Display fsDisplay;
-    private long lastSyncTime = 0L;
 
     public HologramImpl(@NotNull final HologramData data) {
         super(data);
@@ -54,7 +52,9 @@ public final class HologramImpl extends Hologram {
 
         if (fsDisplay == null) {
             createFsDisplay();
-            return; // could not be created, nothing to show
+            if (fsDisplay == null) {
+                return; // could not be created, nothing to show
+            }
         }
 
         // this implies that the world is loaded
@@ -70,6 +70,8 @@ public final class HologramImpl extends Hologram {
                 return;
             }
         }
+
+        syncWithData();
 
         FS_RealPlayer fsPlayer = new FS_RealPlayer(player);
         FancySitula.ENTITY_FACTORY.spawnEntityFor(fsPlayer, fsDisplay);
@@ -157,13 +159,6 @@ public final class HologramImpl extends Hologram {
         if (fsDisplay == null) {
             return;
         }
-
-        final long now = System.currentTimeMillis();
-        if (now - lastSyncTime < minSyncIntervalMs && !data.hasChanges()) {
-            return;
-        }
-
-        lastSyncTime = now;
 
         // location data
         final Location location = data.getLocation();

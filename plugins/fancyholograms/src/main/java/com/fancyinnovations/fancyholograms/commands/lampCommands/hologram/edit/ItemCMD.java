@@ -7,6 +7,7 @@ import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.lampCommands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +16,8 @@ import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
+
+import java.util.UUID;
 
 public final class ItemCMD extends FancyContext {
 
@@ -55,11 +58,21 @@ public final class ItemCMD extends FancyContext {
         final var copied = itemData.copy(itemData.getName());
         copied.setItemStack(item);
 
-        if (!HologramCMD.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
+        if (!HologramCMD.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.ITEM)) {
             return;
         }
 
         itemData.setItemStack(item);
+
+        for (UUID viewerUUID : hologram.getViewers()) {
+            Player viewer = Bukkit.getPlayer(viewerUUID);
+            if (viewer == null || !viewer.isOnline()) {
+                continue;
+            }
+
+            hologram.despawnFrom(viewer);
+            hologram.spawnTo(viewer);
+        }
 
         if (config.isSaveOnChangedEnabled()) {
             plugin.getStorage().save(hologram.getData());

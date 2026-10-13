@@ -69,6 +69,20 @@ public final class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
+    public void onRespawn(@NotNull final PlayerRespawnEvent event) {
+        FancyHologramsPlugin.get().getHologramThread().schedule(() -> {
+                    for (final var hologram : this.plugin.getRegistry().getAll()) {
+                        hologram.despawnFrom(event.getPlayer());
+                        hologram.removeViewer(event.getPlayer().getUniqueId());
+                        FancyHologramsPlugin.get().getController().refreshHologram(hologram, event.getPlayer());
+                    }
+                },
+                FancyHologramsPlugin.get().getHologramConfiguration().getSpawnDelayOnJoin(),
+                TimeUnit.MILLISECONDS
+        );
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(@NotNull final PlayerTeleportEvent event) {
         FancyHologramsPlugin.get().getHologramThread().submit(() -> {
             for (final Hologram hologram : this.plugin.getRegistry().getAll()) {

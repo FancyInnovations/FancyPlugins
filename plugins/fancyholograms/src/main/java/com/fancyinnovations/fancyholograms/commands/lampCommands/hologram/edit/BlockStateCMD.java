@@ -77,7 +77,7 @@ public final class BlockStateCMD extends FancyContext {
             return;
         }
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
+        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BLOCK)) {
             return;
         }
 

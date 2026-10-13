@@ -1,1 +1,2 @@
-* Reduce memory allocation ([#332](https://github.com/FancyInnovations/FancyPlugins/pull/332))
+- Added an option to refresh holograms on player's locale change
+- Performance improvements and optimizations

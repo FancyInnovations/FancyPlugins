@@ -1,2 +1,8 @@
-* Add support for 26.3
-* Remove support for 1.21.5
+- Added world portals system (`/portal` command, portal wand, and portal teleportation)
+- Added interactive world and portal management menus (`/world menu`, `/portal menu`)
+- Added `/world info` command to display world properties and settings
+- Added world backup and restore system
+- Added support for 26.3
+- Dropped support for 1.21.5
+- Fixed world deletion, unloading, and teleportation issues
+- Fixed translation keys for dialog confirmations

@@ -1,3 +1,1 @@
-* Add support for 26.3
-* Remove support for 1.21.5
-* Fixed player_command button actions on Folia
+- Fixed missing dialog ID placeholder replacement when unregistering a dialog was cancelled

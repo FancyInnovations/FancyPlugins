@@ -1,1 +1,10 @@
-* Reduce memory allocation ([#332](https://github.com/FancyInnovations/FancyPlugins/pull/332))
+- Added permission to bypass interaction cooldown (`fancynpcs.bypass.cooldown`)
+- Added configurable spawn delay on player join (`spawn_delay_on_join`)
+- Migrated commands to Lamp framework (can be enabled via `use-lamp-commands` feature flag)
+- Fixed `IllegalArgumentException` in `execute_random_action` when there are no following actions to choose from
+- Fixed legacy formatting in team names
+- Fixed pose attribute for camels
+- Fixed horse pose attribute forcing rearing animation
+- Optimized packet sending and cleanup
+- Optimized NPC lookup by ID and data saving
+- Bumped PlotSquared dependency to 7.5.3

@@ -5,8 +5,8 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -58,7 +58,7 @@ public final class ItemCMD extends FancyContext {
         final var copied = itemData.copy(itemData.getName());
         copied.setItemStack(item);
 
-        if (!HologramCMD.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.ITEM)) {
+        if (!HologramModification.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.ITEM)) {
             return;
         }
 

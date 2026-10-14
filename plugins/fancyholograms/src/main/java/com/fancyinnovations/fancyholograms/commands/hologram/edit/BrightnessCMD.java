@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -54,7 +54,7 @@ public final class BrightnessCMD extends FancyContext {
         DisplayHologramData copied = data.copy(data.getName());
         copied.setBrightness(newBrightness);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BRIGHTNESS)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BRIGHTNESS)) {
             return;
         }
 

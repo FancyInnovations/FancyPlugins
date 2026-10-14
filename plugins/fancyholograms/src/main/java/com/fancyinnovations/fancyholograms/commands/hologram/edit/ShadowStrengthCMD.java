@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -44,7 +44,7 @@ public final class ShadowStrengthCMD extends FancyContext {
         final var copied = displayData.copy(displayData.getName());
         copied.setShadowStrength(strength);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.SHADOW_STRENGTH)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.SHADOW_STRENGTH)) {
             return;
         }
 

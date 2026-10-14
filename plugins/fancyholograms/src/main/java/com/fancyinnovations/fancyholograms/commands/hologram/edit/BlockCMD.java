@@ -5,8 +5,8 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.suggestions.BlockMaterialSuggestion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -58,7 +58,7 @@ public final class BlockCMD extends FancyContext {
             return;
         }
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BLOCK)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BLOCK)) {
             return;
         }
 

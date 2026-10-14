@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.util.Formats;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public final class CenterCMD extends FancyContext {
         DisplayHologramData copied = data.copy(data.getName());
         copied.setLocation(newLocation);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.POSITION)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.POSITION)) {
             return;
         }
 

@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -40,7 +40,7 @@ public final class VisibilityDistanceCMD extends FancyContext {
         final var copied = data.copy(data.getName());
         copied.setVisibilityDistance(distance);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.UPDATE_VISIBILITY_DISTANCE)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.UPDATE_VISIBILITY_DISTANCE)) {
             return;
         }
 

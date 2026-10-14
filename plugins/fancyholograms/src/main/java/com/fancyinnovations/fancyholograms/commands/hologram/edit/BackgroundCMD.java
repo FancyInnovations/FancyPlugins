@@ -5,8 +5,8 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.types.ColorCommandType;
 import org.bukkit.Color;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +37,7 @@ public final class BackgroundCMD extends FancyContext {
         TextHologramData copied = data.copy(data.getName());
         copied.setBackground(color);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BACKGROUND)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BACKGROUND)) {
             return;
         }
 

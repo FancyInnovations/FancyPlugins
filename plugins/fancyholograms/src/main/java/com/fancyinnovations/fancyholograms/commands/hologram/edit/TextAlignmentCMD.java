@@ -5,8 +5,8 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -44,7 +44,7 @@ public final class TextAlignmentCMD extends FancyContext {
         final var copied = textData.copy(textData.getName());
         copied.setTextAlignment(alignment);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT_ALIGNMENT)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT_ALIGNMENT)) {
             return;
         }
 

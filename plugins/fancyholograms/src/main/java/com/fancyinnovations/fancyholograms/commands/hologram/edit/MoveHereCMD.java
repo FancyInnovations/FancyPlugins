@@ -3,7 +3,7 @@ package com.fancyinnovations.fancyholograms.commands.hologram.edit;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.util.Formats;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -49,7 +49,7 @@ public final class MoveHereCMD extends FancyContext {
         );
         copied.setLocation(newLocation);
 
-        if (!HologramCMD.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.POSITION)) {
+        if (!HologramModification.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.POSITION)) {
             return;
         }
 

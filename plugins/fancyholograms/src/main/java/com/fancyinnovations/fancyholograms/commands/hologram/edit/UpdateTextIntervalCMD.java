@@ -5,8 +5,8 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import de.oliver.fancylib.duration.FancyDuration;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -35,7 +35,7 @@ public final class UpdateTextIntervalCMD extends FancyContext {
         TextHologramData copied = data.copy(data.getName());
         copied.setTextUpdateInterval((int) duration.millis());
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.UPDATE_TEXT_INTERVAL)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.UPDATE_TEXT_INTERVAL)) {
             return;
         }
 

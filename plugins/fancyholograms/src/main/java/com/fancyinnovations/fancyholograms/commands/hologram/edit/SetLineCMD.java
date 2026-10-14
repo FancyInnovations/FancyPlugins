@@ -5,8 +5,8 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.conditions.IsHologramType;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import com.fancyinnovations.fancyholograms.commands.suggestions.CurrentLineSuggestion;
 import com.fancyinnovations.fancyholograms.commands.suggestions.SwapLinesSuggestion;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +48,7 @@ public final class SetLineCMD extends FancyContext {
         final var copied = textData.copy(textData.getName());
         copied.setLine(line - 1, text);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT)) {
             return;
         }
 

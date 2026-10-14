@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -39,7 +39,7 @@ public final class RotationCMD extends FancyContext {
         copied.setLocation(loc);
 
         // Call modification event
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.ROTATION)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.ROTATION)) {
             return;
         }
 
@@ -78,7 +78,7 @@ public final class RotationCMD extends FancyContext {
         copied.setLocation(loc);
 
         // Call modification event
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.ROTATION)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.ROTATION)) {
             return;
         }
 

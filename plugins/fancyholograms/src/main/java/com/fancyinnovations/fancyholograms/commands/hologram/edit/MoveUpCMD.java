@@ -5,9 +5,9 @@ import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.api.hologram.HologramType;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.conditions.IsHologramType;
 import com.fancyinnovations.fancyholograms.commands.suggestions.MoveLineUpSuggestion;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -57,7 +57,7 @@ public final class MoveUpCMD extends FancyContext {
 
         copied.setText(newText);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TEXT)) {
             return;
         }
 

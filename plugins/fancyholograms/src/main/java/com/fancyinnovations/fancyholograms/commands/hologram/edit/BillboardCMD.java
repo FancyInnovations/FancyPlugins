@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.TextHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
@@ -32,7 +32,7 @@ public final class BillboardCMD extends FancyContext {
         TextHologramData copied = data.copy(data.getName());
         copied.setBillboard(billboard);
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.BILLBOARD)) {
             return;
         }
 

@@ -3,7 +3,7 @@ package com.fancyinnovations.fancyholograms.commands.hologram.edit;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.fancyinnovations.fancyholograms.commands.suggestions.*;
 import com.fancyinnovations.fancyholograms.util.CoordinateUtils;
 import com.fancyinnovations.fancyholograms.util.Formats;
@@ -88,7 +88,7 @@ public final class MoveToCMD extends FancyContext {
         final var copied = hologram.getData().copy(hologram.getData().getName());
         copied.setLocation(location);
 
-        if (!HologramCMD.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.POSITION)) {
+        if (!HologramModification.callModificationEvent(hologram, player, copied, HologramUpdateEvent.HologramModification.POSITION)) {
             return;
         }
 

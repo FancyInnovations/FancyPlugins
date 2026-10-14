@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import com.google.common.primitives.Floats;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,21 +54,21 @@ public final class ScaleCMD extends FancyContext {
     public void scale(
             final @NotNull BukkitCommandActor actor,
             final @NotNull Hologram hologram,
-            final @NotNull String xStr,
-            final @NotNull String yStr,
-            final @NotNull String zStr
+            final @NotNull String x,
+            final @NotNull String y,
+            final @NotNull String z
     ) {
-        Float x = parseScale(xStr);
-        Float y = parseScale(yStr);
-        Float z = parseScale(zStr);
-        if (!isValidScale(x) || !isValidScale(y) || !isValidScale(z)) {
+        Float xf = parseScale(x);
+        Float yf = parseScale(y);
+        Float zf = parseScale(z);
+        if (!isValidScale(xf) || !isValidScale(yf) || !isValidScale(zf)) {
             translator.translate("commands.hologram.edit.scale.invalid")
                     .withPrefix()
                     .send(actor.sender());
             return;
         }
 
-        scale(actor, hologram, x, y, z);
+        scale(actor, hologram, xf, yf, zf);
     }
 
     private void scale(
@@ -98,7 +98,7 @@ public final class ScaleCMD extends FancyContext {
         final var copied = displayData.copy(displayData.getName());
         copied.setScale(new Vector3f(x, y, z));
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.SCALE)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.SCALE)) {
             return;
         }
 

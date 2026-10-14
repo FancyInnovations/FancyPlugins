@@ -4,7 +4,7 @@ import com.fancyinnovations.fancyholograms.api.data.DisplayHologramData;
 import com.fancyinnovations.fancyholograms.api.events.HologramUpdateEvent;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
-import com.fancyinnovations.fancyholograms.commands.oldCommands.HologramCMD;
+import com.fancyinnovations.fancyholograms.commands.HologramModification;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import revxrsal.commands.annotation.Command;
@@ -62,7 +62,7 @@ public final class TranslateCMD extends FancyContext {
         final var copied = displayData.copy(displayData.getName());
         copied.setTranslation(new Vector3f(x, y, z));
 
-        if (!HologramCMD.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TRANSLATION)) {
+        if (!HologramModification.callModificationEvent(hologram, actor.sender(), copied, HologramUpdateEvent.HologramModification.TRANSLATION)) {
             return;
         }
 

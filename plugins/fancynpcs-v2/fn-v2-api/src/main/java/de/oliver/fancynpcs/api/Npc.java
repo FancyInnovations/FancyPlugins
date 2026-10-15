@@ -198,9 +198,10 @@ public abstract class Npc {
         if (!hasActions && (actionTrigger == ActionTrigger.LEFT_CLICK || actionTrigger == ActionTrigger.RIGHT_CLICK)) {
             hasActions = !data.getActions(ActionTrigger.ANY_CLICK).isEmpty();
         }
+        boolean hasOnClick = data.getOnClick() != null;
 
-        // Triggers without actions neither check nor trigger the interaction cooldown.
-        if (hasActions && data.getInteractionCooldown() > 0 && !hasInteractionCooldownBypass(player)) {
+        // Triggers without actions nor onClick handler neither check nor trigger the interaction cooldown.
+        if ((hasActions || hasOnClick) && data.getInteractionCooldown() > 0 && !hasInteractionCooldownBypass(player)) {
             final long interactionCooldownMillis = (long) (data.getInteractionCooldown() * 1000);
             final long lastInteractionMillis = lastPlayerInteraction.getOrDefault(player.getUniqueId(), 0L);
             final Interval interactionCooldownLeft = Interval.between(lastInteractionMillis + interactionCooldownMillis, System.currentTimeMillis(), Unit.MILLISECONDS);

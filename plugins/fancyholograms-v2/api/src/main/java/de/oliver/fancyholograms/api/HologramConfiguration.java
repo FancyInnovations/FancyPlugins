@@ -84,6 +84,15 @@ public interface HologramConfiguration {
     }
 
     /**
+     * Returns whether processed hologram text should be cached.
+     *
+     * @return {@code true} if processed hologram text should be cached, {@code false} otherwise.
+     */
+    default boolean isTextCacheEnabled() {
+        return true;
+    }
+
+    /**
      * Returns whether holograms should be refreshed on player locale change.
      *
      * @return {@code true} if holograms should be refreshed on locale change, {@code false} otherwise.

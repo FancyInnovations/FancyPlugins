@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import org.jetbrains.annotations.Nullable;
 
 public class NpcData {
 
@@ -61,7 +62,7 @@ public class NpcData {
             Map<NpcEquipmentSlot, ItemStack> equipment,
             boolean turnToPlayer,
             int turnToPlayerDistance,
-            Consumer<Player> onClick,
+            @Nullable Consumer<Player> onClick,
             Map<ActionTrigger, List<NpcAction.NpcActionData>> actions,
             float interactionCooldown,
             float scale,
@@ -109,8 +110,7 @@ public class NpcData {
         this.collidable = true;
         this.glowing = false;
         this.glowingColor = NamedTextColor.WHITE;
-        this.onClick = p -> {
-        };
+        this.onClick = null;
         this.actions = new ConcurrentHashMap<>();
         this.turnToPlayer = false;
         this.turnToPlayerDistance = -1; // Use default from config
@@ -270,11 +270,11 @@ public class NpcData {
         return this;
     }
 
-    public Consumer<Player> getOnClick() {
+    public @Nullable Consumer<Player> getOnClick() {
         return onClick;
     }
 
-    public NpcData setOnClick(Consumer<Player> onClick) {
+    public NpcData setOnClick(@Nullable Consumer<Player> onClick) {
         this.onClick = onClick;
         isDirty = true;
         return this;

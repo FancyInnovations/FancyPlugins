@@ -34,8 +34,8 @@ dependencies {
 
     compileOnly("me.clip:placeholderapi:2.11.5")
 
-    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.18")
-    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.18")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.19")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.19")
 }
 
 paper {

@@ -210,7 +210,7 @@ public class SkinManagerImpl implements SkinManager, Listener {
             }
 
             FancyNpcs.getInstance().getFancyLogger().debug("Found skin from mem cache: " + identifier);
-            return data.skinData();
+            return copy(data.skinData());
         }
 
         FancyNpcs.getInstance().getFancyLogger().debug("Trying to get skin from file cache: " + identifier);
@@ -224,11 +224,20 @@ public class SkinManagerImpl implements SkinManager, Listener {
 
             FancyNpcs.getInstance().getFancyLogger().debug("Found skin from file cache: " + identifier);
             memCache.addSkin(data.skinData());
-            return data.skinData();
+            return copy(data.skinData());
         }
 
         FancyNpcs.getInstance().getFancyLogger().debug("Skin not found in cache: " + identifier);
         return null;
+    }
+
+    private SkinData copy(SkinData skinData) {
+        return new SkinData(
+                skinData.getIdentifier(),
+                skinData.getVariant(),
+                skinData.getTextureValue(),
+                skinData.getTextureSignature()
+        );
     }
 
     public void cacheSkin(SkinData skinData) {

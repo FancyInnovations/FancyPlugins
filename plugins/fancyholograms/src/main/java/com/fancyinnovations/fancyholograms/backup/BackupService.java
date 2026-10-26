@@ -209,7 +209,7 @@ public class BackupService {
     private void runBackupTask() {
         // Check to create a new backup
         long lastBackupTimestamp = getLastBackupTimestamp();
-        long backupInterval = FancyHologramsPlugin.get().getConfig().getLong("backups.interval") * 60 * 60 * 1000; // convert hours to milliseconds
+        long backupInterval = FancyHologramsPlugin.get().getConfig().getLong("settings.backups.interval") * 60 * 60 * 1000; // convert hours to milliseconds
         if (System.currentTimeMillis() - lastBackupTimestamp >= backupInterval) {
             BackupResult result = createBackup();
             if (result == BackupResult.CREATED) {
@@ -220,7 +220,7 @@ public class BackupService {
         }
 
         // Check to delete old backups
-        long backupRetention = FancyHologramsPlugin.get().getConfig().getLong("backups.retention") * 24 * 60 * 60 * 1000; // convert days to milliseconds
+        long backupRetention = FancyHologramsPlugin.get().getConfig().getLong("settings.backups.retention") * 24 * 60 * 60 * 1000; // convert days to milliseconds
         for (File backupFile : listBackups()) {
             if (System.currentTimeMillis() - backupFile.lastModified() >= backupRetention) {
                 if (backupFile.delete()) {

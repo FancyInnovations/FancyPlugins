@@ -1,2 +1,4 @@
-* Add support for 26.3
-* Remove support for 1.21.5
+- Migrated commands to Lamp framework
+- Added file-based language and translation system
+- Added support for 26.3
+- Dropped support for 1.21.5

@@ -78,11 +78,15 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
     private int visibilityDistance;
 
     /**
+     * The delay after player join before NPCs are spawned for them. In ticks.
+     */
+    private int spawnDelayOnJoin;
+
+    /**
      * The delay in ticks to remove NPCs from the player list.
      * Increase this value if you have problems with skins not loading correctly when joining or switching worlds.
      */
     private int removeNpcsFromPlayerlistDelay;
-
 
     /**
      * Whether MPCs should swing arm on update.
@@ -151,6 +155,13 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
 
         visibilityDistance = (int) ConfigHelper.getOrDefault(config, "visibility_distance", 20);
         config.setInlineComments("visibility_distance", List.of("The distance at which NPCs are visible."));
+
+        spawnDelayOnJoin = (int) ConfigHelper.getOrDefault(config, "spawn_delay_on_join", 40);
+        config.setInlineComments("spawn_delay_on_join", List.of("The delay after player join before NPCs are spawned for them (in ticks)."));
+        if (spawnDelayOnJoin < 0) {
+            FancyNpcs.getInstance().getFancyLogger().warn("Invalid 'spawn_delay_on_join' value (" + spawnDelayOnJoin + "). It must be >= 0. Falling back to 40 Ticks.");
+            spawnDelayOnJoin = 40;
+        }
 
         mineskinApiKey = (String) ConfigHelper.getOrDefault(config, "mineskin_api_key", "");
         config.setInlineComments("mineskin_api_key", List.of("The API key for the MineSkin API. This will be used to load skins faster. You can get an API key at https://mineskin.org/account."));
@@ -255,6 +266,10 @@ public class FancyNpcsConfigImpl implements FancyNpcsConfig {
 
     public int getVisibilityDistance() {
         return visibilityDistance;
+    }
+
+    public int getSpawnDelayOnJoin() {
+        return spawnDelayOnJoin;
     }
 
     public int getRemoveNpcsFromPlayerlistDelay() {

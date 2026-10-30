@@ -94,7 +94,7 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
                 List.of(consoleAppender, jsonAppender),
                 List.of(new PluginMiddleware(this))
         );
-        this.hologramStorage = new FlatFileHologramStorage();
+        this.hologramStorage = new FlatFileHologramStorage(fancyLogger);
     }
 
     public static @NotNull FancyHolograms get() {

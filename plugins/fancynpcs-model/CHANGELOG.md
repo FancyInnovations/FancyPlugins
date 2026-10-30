@@ -1,1 +1,3 @@
-* Add support for 26.3
+- Fixed Cloud command framework package relocation
+- Bumped BetterModel dependency to 3.5.0
+- Performance improvements and optimizations

@@ -1,4 +1,0 @@
-version: $version
-commit_hash: $commit_hash
-platform: $platform
-channel: $channel

@@ -28,9 +28,6 @@ include(":plugins:fancynpcs-v2:implementation_1_21_9")
 include(":plugins:fancynpcs-v2:implementation_1_21_6")
 include(":plugins:fancynpcs-v2:implementation_1_21_5")
 
-//include(":plugins:fancynpcs")
-//include(":plugins:fancynpcs:fn-api")
-
 include(":plugins:fancynpcs-model")
 
 include(":plugins:fancyholograms-v2")
@@ -38,8 +35,6 @@ include(":plugins:fancyholograms-v2:api")
 
 include(":plugins:fancyholograms")
 include(":plugins:fancyholograms:fh-api")
-
-include(":plugins:fancyvisuals")
 
 include(":plugins:fancydialogs")
 include(":plugins:fancydialogs:fd-api")

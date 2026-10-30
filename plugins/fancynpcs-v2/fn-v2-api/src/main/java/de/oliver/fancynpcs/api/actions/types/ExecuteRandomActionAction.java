@@ -1,5 +1,6 @@
 package de.oliver.fancynpcs.api.actions.types;
 
+import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.executor.ActionExecutionContext;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,15 @@ public class ExecuteRandomActionAction extends NpcAction {
     public void execute(@NotNull ActionExecutionContext context, String value) {
         int currentIndex = context.getActionIndex();
         int actionCount = context.getActions().size();
+
+        String npcId = context.getNpc().getData().getId();
+        String trigger = context.getTrigger().name();
+
+        if (currentIndex >= actionCount) {
+            FancyNpcsPlugin.get().getFancyLogger().warn("Misplaced execute_random_action for npc '" + npcId + "' (trigger " + trigger + "): no following actions to choose from. Skipping execution. Move execute_random_action before the actions it should choose from.");
+            context.terminate();
+            return;
+        }
 
         int randomIndex = getRandomIndex(currentIndex, actionCount);
 

@@ -37,8 +37,8 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("26.4-snapshot-3")
-        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-3.build.1-alpha.jar"))
+        minecraftVersion("26.4-snapshot-4")
+        serverJar(file("/Users/oliver/Workspace/paper/paper-server/build/libs/paper-bundler-26.4-snapshot-4.build.1-alpha.jar"))
 
         downloadPlugins {
             modrinth("FancyNpcs", "2.12.1")
@@ -55,7 +55,7 @@ tasks {
     }
 
     shadowJar {
-        relocate("org.incendo", "de.oliver")
+        relocate("org.incendo.cloud", "com.fancyinnovations.fancynpcs.libs.cloud")
         archiveClassifier.set("")
         archiveBaseName.set("FancyNpcsModel")
     }

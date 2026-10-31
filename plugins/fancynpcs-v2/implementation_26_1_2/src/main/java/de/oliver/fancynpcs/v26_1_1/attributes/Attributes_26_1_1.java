@@ -37,6 +37,7 @@ public class Attributes_26_1_1 {
         attributes.addAll(SlimeAttributes.getAllAttributes());
         attributes.addAll(PigAttributes.getAllAttributes());
         attributes.addAll(CowAttributes.getAllAttributes());
+        attributes.addAll(MushroomCowAttributes.getAllAttributes());
         attributes.addAll(ChickenAttributes.getAllAttributes());
         attributes.addAll(ArmorStandAttributes.getAllAttributes());
         attributes.addAll(BeeAttributes.getAllAttributes());

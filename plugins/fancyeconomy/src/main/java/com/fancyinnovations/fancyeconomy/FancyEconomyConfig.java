@@ -29,6 +29,7 @@ public class FancyEconomyConfig {
     private String postgresqlPassword;
     private String sqliteFile;
     private String language;
+    private boolean disableVaultIntegration;
 
     private boolean useShortFormat;
     private double minWithdrawAmount;
@@ -68,6 +69,10 @@ public class FancyEconomyConfig {
          */
         language = (String) ConfigHelper.getOrDefault(config, "language", "default");
 
+        /*
+            Vault
+         */
+        disableVaultIntegration = (boolean) ConfigHelper.getOrDefault(config, "disable_vault_integration", false);
 
 
         /*
@@ -109,6 +114,10 @@ public class FancyEconomyConfig {
         }
 
         FancyEconomy.getInstance().saveConfig();
+    }
+
+    public boolean isVaultIntegrationDisabled() {
+        return disableVaultIntegration;
     }
 
     public String getLanguage() {

@@ -6,7 +6,8 @@ import com.fancyinnovations.fancyeconomy.integrations.FancyEconomyPlaceholderExp
 import com.fancyinnovations.fancyeconomy.integrations.FancyEconomyVault;
 import com.fancyinnovations.fancyeconomy.listeners.PlayerJoinListener;
 import com.fancyinnovations.fancyeconomy.utils.DistributedWorkload;
-import de.oliver.fancylib.*;
+import de.oliver.fancylib.FancyLib;
+import de.oliver.fancylib.Metrics;
 import de.oliver.fancylib.databases.Database;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import de.oliver.fancylib.serverSoftware.schedulers.BukkitScheduler;
@@ -17,16 +18,16 @@ import de.oliver.fancylib.translations.TextConfig;
 import de.oliver.fancylib.translations.Translator;
 import de.oliver.fancylib.versionFetcher.MasterVersionFetcher;
 import de.oliver.fancylib.versionFetcher.VersionFetcher;
-import revxrsal.commands.Lamp;
-import revxrsal.commands.annotation.Command;
-import revxrsal.commands.bukkit.BukkitLamp;
-import revxrsal.commands.bukkit.actor.BukkitCommandActor;
-import revxrsal.commands.orphan.Orphans;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import revxrsal.commands.Lamp;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.bukkit.BukkitLamp;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
+import revxrsal.commands.orphan.Orphans;
 
 
 public class FancyEconomy extends JavaPlugin {
@@ -36,7 +37,6 @@ public class FancyEconomy extends JavaPlugin {
     private final VersionFetcher versionFetcher;
     private final FancyEconomyConfig config;
     private Translator translator;
-    private FancyEconomyVault vaultEconomy;
     private Database database;
     private DistributedWorkload<CurrencyPlayer> saveWorkload;
     private boolean usingVault;
@@ -67,8 +67,8 @@ public class FancyEconomy extends JavaPlugin {
         config.reload();
 
         usingVault = getServer().getPluginManager().getPlugin("Vault") != null;
-        if (usingVault) {
-            vaultEconomy = new FancyEconomyVault(CurrencyRegistry.getDefaultCurrency());
+        if (usingVault && !config.isVaultIntegrationDisabled()) {
+            FancyEconomyVault vaultEconomy = new FancyEconomyVault(CurrencyRegistry.getDefaultCurrency());
             getServer().getServicesManager().register(Economy.class, vaultEconomy, instance, ServicePriority.Highest);
             getLogger().info("Registered Vault economy");
         }

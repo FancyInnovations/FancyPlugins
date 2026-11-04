@@ -63,7 +63,7 @@ public class PigAttributes {
     private static void setHasSaddle(Npc npc, String value) {
         Pig pig = ReflectionHelper.getEntity(npc);
 
-        boolean hasSaddle = Boolean.parseBoolean(value.toLowerCase());
+        boolean hasSaddle = Boolean.parseBoolean(value);
 
         if (hasSaddle) {
             pig.setItemSlot(EquipmentSlot.SADDLE, Items.SADDLE.getDefaultInstance());

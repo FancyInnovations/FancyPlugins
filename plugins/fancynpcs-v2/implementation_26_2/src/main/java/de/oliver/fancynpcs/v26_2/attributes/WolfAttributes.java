@@ -72,7 +72,7 @@ public class WolfAttributes {
     private static void setAngry(Npc npc, String value) {
         Wolf wolf = ReflectionHelper.getEntity(npc);
 
-        boolean angry = Boolean.parseBoolean(value.toLowerCase());
+        boolean angry = Boolean.parseBoolean(value);
 
         wolf.setTimeToRemainAngry(angry ? 100 : 0);
     }

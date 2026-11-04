@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PlayerAttributes {
 
@@ -31,7 +32,7 @@ public class PlayerAttributes {
     private static void setPose(Npc npc, String value) {
         Player player = ReflectionHelper.getEntity(npc);
 
-        Pose pose = Pose.valueOf(value.toUpperCase());
+        Pose pose = Pose.valueOf(value.toUpperCase(Locale.ROOT));
 
         EntityDataAccessor<Pose> DATA_POSE = (EntityDataAccessor<Pose>) ReflectionUtils.getStaticValue(Entity.class, "DATA_POSE"); // DATA_POSE
         player.getEntityData().set(DATA_POSE, pose);

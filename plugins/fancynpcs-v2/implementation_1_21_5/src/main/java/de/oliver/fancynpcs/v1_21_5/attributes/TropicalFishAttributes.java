@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class TropicalFishAttributes {
 
@@ -49,7 +50,7 @@ public class TropicalFishAttributes {
     private static void setPattern(Npc npc, String value) {
         TropicalFish tropicalFish = ReflectionHelper.getEntity(npc);
 
-        TropicalFish.Pattern pattern = TropicalFish.Pattern.valueOf(value.toUpperCase());
+        TropicalFish.Pattern pattern = TropicalFish.Pattern.valueOf(value.toUpperCase(Locale.ROOT));
         tropicalFish.setPackedVariant(pattern.getPackedId());
     }
 

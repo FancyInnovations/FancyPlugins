@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class DisplayAttributes {
 
@@ -30,7 +31,7 @@ public class DisplayAttributes {
     private static void setBillboard(Npc npc, String value) {
         Display display = ReflectionHelper.getEntity(npc);
 
-        Display.BillboardConstraints billboard = Display.BillboardConstraints.valueOf(value.toUpperCase());
+        Display.BillboardConstraints billboard = Display.BillboardConstraints.valueOf(value.toUpperCase(Locale.ROOT));
         display.setBillboardConstraints(billboard);
     }
 

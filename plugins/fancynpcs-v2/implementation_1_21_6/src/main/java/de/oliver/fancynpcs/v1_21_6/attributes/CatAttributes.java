@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CatAttributes {
 
@@ -98,7 +99,7 @@ public class CatAttributes {
         }
 
         try {
-            DyeColor color = DyeColor.valueOf(value.toUpperCase());
+            DyeColor color = DyeColor.valueOf(value.toUpperCase(Locale.ROOT));
             if (!cat.isTame()) {
                 cat.setTame(true, false);
             }

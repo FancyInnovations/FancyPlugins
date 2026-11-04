@@ -185,7 +185,7 @@ public class DisplayHologramData extends HologramData {
 
         String glowingColorStr = section.getString("glowing_color", DEFAULT_GLOWING_COLOR.name());
         try {
-            glowingColor = GlowingColor.valueOf(glowingColorStr.toUpperCase());
+            glowingColor = GlowingColor.valueOf(glowingColorStr.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             glowingColor = DEFAULT_GLOWING_COLOR;
         }

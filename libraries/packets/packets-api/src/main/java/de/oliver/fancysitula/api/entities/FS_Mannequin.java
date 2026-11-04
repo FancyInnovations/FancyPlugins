@@ -10,10 +10,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -169,7 +166,7 @@ public class FS_Mannequin extends FS_Entity {
             return;
         }
         // Normalize pose name
-        String normalizedPose = switch (pose.toUpperCase()) {
+        String normalizedPose = switch (pose.toUpperCase(Locale.ROOT)) {
             case "STANDING" -> POSE_STANDING;
             case "CROUCHING", "SNEAKING", "CROUCH", "SNEAK" -> POSE_CROUCHING;
             case "SWIMMING", "SWIM" -> POSE_SWIMMING;

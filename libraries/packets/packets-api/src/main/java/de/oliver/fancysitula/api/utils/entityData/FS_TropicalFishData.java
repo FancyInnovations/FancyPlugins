@@ -2,6 +2,8 @@ package de.oliver.fancysitula.api.utils.entityData;
 
 import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
 
+import java.util.Locale;
+
 /**
  * Entity data accessors for Tropical Fish
  */
@@ -67,7 +69,7 @@ public class FS_TropicalFishData {
      * Get pattern index from name, returns -1 for small, -2 for large (unknown)
      */
     public static int[] getPatternAndSize(String patternName) {
-        return switch (patternName.toUpperCase()) {
+        return switch (patternName.toUpperCase(Locale.ROOT)) {
             // Small fish
             case "KOB" -> new int[]{SIZE_SMALL, PATTERN_KOB};
             case "SUNSTREAK" -> new int[]{SIZE_SMALL, PATTERN_SUNSTREAK};

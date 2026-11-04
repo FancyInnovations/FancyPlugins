@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class PandaAttributes {
 
@@ -46,7 +47,7 @@ public class PandaAttributes {
     private static void setGene(Npc npc, String value) {
         Panda panda = ReflectionHelper.getEntity(npc);
 
-        Panda.Gene gene = Panda.Gene.valueOf(value.toUpperCase());
+        Panda.Gene gene = Panda.Gene.valueOf(value.toUpperCase(Locale.ROOT));
         panda.setMainGene(gene);
     }
 

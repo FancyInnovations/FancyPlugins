@@ -5,6 +5,8 @@ import de.oliver.fancynpcs.api.actions.NpcAction;
 import de.oliver.fancynpcs.api.actions.executor.ActionExecutionContext;
 import org.bukkit.Material;
 
+import java.util.Locale;
+
 public class NeedItemAction extends NpcAction {
 
     public NeedItemAction() {
@@ -28,7 +30,7 @@ public class NeedItemAction extends NpcAction {
 
         boolean invertCheck = args[0].startsWith("!");
         String item = invertCheck ? args[0].substring(1) : args[0];
-        Material material = Material.getMaterial(item.toUpperCase());
+        Material material = Material.getMaterial(item.toUpperCase(Locale.ROOT));
         if (material == null) {
             FancyNpcsPlugin.get().getFancyLogger().warn("Invalid material specified in need_item action: " + item);
             return;

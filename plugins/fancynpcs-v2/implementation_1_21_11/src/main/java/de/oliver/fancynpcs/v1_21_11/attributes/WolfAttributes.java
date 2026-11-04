@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WolfAttributes {
 
@@ -114,7 +115,7 @@ public class WolfAttributes {
         }
 
         try {
-            DyeColor color = DyeColor.valueOf(value.toUpperCase());
+            DyeColor color = DyeColor.valueOf(value.toUpperCase(Locale.ROOT));
             if (!wolf.isTame()) {
                 wolf.setTame(true, false);
             }

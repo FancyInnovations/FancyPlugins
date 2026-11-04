@@ -38,6 +38,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -115,7 +116,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_STATE")
                         && entityClassName.contains("Armadillo")) {
                     try {
-                        vanillaValue = Armadillo.ArmadilloState.valueOf(s.toUpperCase());
+                        vanillaValue = Armadillo.ArmadilloState.valueOf(s.toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
                         vanillaValue = Armadillo.ArmadilloState.IDLE;
                     }
@@ -203,7 +204,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_STATE")
                         && entityClassName.contains("Sniffer")) {
                     try {
-                        vanillaValue = Sniffer.State.valueOf(s.toUpperCase());
+                        vanillaValue = Sniffer.State.valueOf(s.toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
                         vanillaValue = Sniffer.State.IDLING;
                     }
@@ -213,7 +214,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_TYPE")
                         && entityClassName.contains("MushroomCow")) {
                     try {
-                        vanillaValue = MushroomCow.Variant.valueOf(s.toUpperCase());
+                        vanillaValue = MushroomCow.Variant.valueOf(s.toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
                         vanillaValue = MushroomCow.Variant.RED;
                     }

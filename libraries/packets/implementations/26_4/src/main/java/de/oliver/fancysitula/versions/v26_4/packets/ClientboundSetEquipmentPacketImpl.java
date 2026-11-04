@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ClientboundSetEquipmentPacketImpl extends FS_ClientboundSetEquipmentPacket {
@@ -26,7 +27,7 @@ public class ClientboundSetEquipmentPacketImpl extends FS_ClientboundSetEquipmen
         List<Pair<net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.item.ItemStack>> slots = new ArrayList<>();
 
         for (Map.Entry<FS_EquipmentSlot, ItemStack> entry : equipment.entrySet()) {
-            EquipmentSlot equipmentSlot = net.minecraft.world.entity.EquipmentSlot.byName(entry.getKey().name().toLowerCase());
+            EquipmentSlot equipmentSlot = net.minecraft.world.entity.EquipmentSlot.byName(entry.getKey().name().toLowerCase(Locale.ROOT));
             net.minecraft.world.item.ItemStack itemStack = CraftItemStack.asNMSCopy(entry.getValue());
 
             slots.add(Pair.of(equipmentSlot, itemStack));

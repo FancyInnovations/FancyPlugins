@@ -54,7 +54,7 @@ public class PandaAttributes {
     private static void setPose(Npc npc, String value) {
         Panda panda = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 setFlag(panda, 8, false); //sitting
                 panda.roll(false);

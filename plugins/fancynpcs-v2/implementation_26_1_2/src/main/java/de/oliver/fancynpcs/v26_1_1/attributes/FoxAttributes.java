@@ -45,7 +45,7 @@ public class FoxAttributes {
     private static void setPose(Npc npc, String value) {
         Fox fox = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 fox.setIsCrouching(false);
                 fox.setSleeping(false);

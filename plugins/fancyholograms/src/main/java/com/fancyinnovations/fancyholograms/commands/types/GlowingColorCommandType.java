@@ -43,7 +43,7 @@ public class GlowingColorCommandType extends BukkitExceptionHandler implements P
     @Override
     public @NotNull SuggestionProvider<@NotNull BukkitCommandActor> defaultSuggestions() {
         return (ctx) -> Arrays.stream(GlowingColor.values())
-                .map(color -> color.name().toLowerCase())
+                .map(color -> color.name().toLowerCase(Locale.ROOT))
                 .toList();
     }
 

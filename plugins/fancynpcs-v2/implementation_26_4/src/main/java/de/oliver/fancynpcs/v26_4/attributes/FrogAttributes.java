@@ -15,6 +15,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FrogAttributes {
 
@@ -43,7 +44,7 @@ public class FrogAttributes {
         Holder<FrogVariant> variant = getFrogVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.FROG_VARIANT,
-                        Identifier.parse(value.toLowerCase())
+                        Identifier.parse(value.toLowerCase(Locale.ROOT))
                 ))
                 .orElseThrow();
 

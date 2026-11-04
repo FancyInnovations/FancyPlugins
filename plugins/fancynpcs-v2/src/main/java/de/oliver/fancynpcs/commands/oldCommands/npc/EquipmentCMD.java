@@ -28,13 +28,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.StreamSupport;
 
 public enum EquipmentCMD {
     INSTANCE; // SINGLETON
 
     // Storing in a static variable to avoid re-creating the array each time suggestion is requested.
-    private static final List<String> SLOT_SUGGESTIONS = Arrays.stream(NpcEquipmentSlot.values()).map(slot -> slot.name().toLowerCase()).toList();
+    private static final List<String> SLOT_SUGGESTIONS = Arrays.stream(NpcEquipmentSlot.values()).map(slot -> slot.name().toLowerCase(Locale.ROOT)).toList();
     // Replace with Registry#stream after dropping 1.19.4 support.
     private static final List<String> MATERIAL_SUGGESTIONS = StreamSupport.stream(Registry.MATERIAL.spliterator(), false).filter(Material::isItem).map(material -> material.key().asString()).toList();
     private final Translator translator = FancyNpcs.getInstance().getTranslator();
@@ -110,7 +111,7 @@ public enum EquipmentCMD {
     // This parser does not specify a name, making it default parser for the returned type.
     @Parser(name = "", suggestions = "EquipmentCMD/slot")
     public NpcEquipmentSlot parseSlot(final CommandContext<CommandSender> context, final CommandInput input) {
-        final String value = input.readString().toLowerCase();
+        final String value = input.readString().toLowerCase(Locale.ROOT);
         final @Nullable NpcEquipmentSlot slot = NpcEquipmentSlot.parse(value);
         // Sending error message if input is not a valid NpcEquipmentSlot.
         if (slot == null)
@@ -120,7 +121,7 @@ public enum EquipmentCMD {
 
     @Parser(name = "EquipmentCMD/item", suggestions = "EquipmentCMD/item")
     public ItemStack parseItem(final CommandContext<CommandSender> context, final CommandInput input) {
-        final String value = input.readString().toLowerCase();
+        final String value = input.readString().toLowerCase(Locale.ROOT);
         // Handling '@none', which returns air (and effectively disables)
         if (value.equals("@none"))
             return new ItemStack(Material.AIR);

@@ -18,6 +18,7 @@ import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,7 +42,7 @@ public final class BlockStateCMD extends FancyContext {
         BlockHologramData data = (BlockHologramData) hologram.getData();
         Map<String, String> properties = data.getBlockStateProperties();
 
-        if (properties.isEmpty() || !properties.containsKey(property.toLowerCase())) {
+        if (properties.isEmpty() || !properties.containsKey(property.toLowerCase(Locale.ROOT))) {
             translator.translate("commands.hologram.edit.blockstate.invalid_property")
                     .withPrefix()
                     .replace("hologram", hologram.getData().getName())
@@ -52,7 +53,7 @@ public final class BlockStateCMD extends FancyContext {
             return;
         }
 
-        String matchedProp = property.toLowerCase();
+        String matchedProp = property.toLowerCase(Locale.ROOT);
         String currentVal = properties.get(matchedProp);
         if (currentVal != null && currentVal.equalsIgnoreCase(value)) {
             translator.translate("commands.hologram.edit.blockstate.already_set")

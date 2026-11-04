@@ -3,6 +3,7 @@ package de.oliver.fancylib.versionFetcher;
 import com.google.gson.Gson;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class FancySpacesVersionFetcher implements VersionFetcher {
@@ -25,7 +26,7 @@ public class FancySpacesVersionFetcher implements VersionFetcher {
     public ComparableVersion fetchNewestVersion() {
         if (newestVersion != null) return newestVersion;
 
-        String jsonString = VersionFetcher.getDataFromUrl("https://fancyspaces.net/api/v1/spaces/" + pluginName.toLowerCase() + "/versions/latest?channel=" + channel + "&platform=paper");
+        String jsonString = VersionFetcher.getDataFromUrl("https://fancyspaces.net/api/v1/spaces/" + pluginName.toLowerCase(Locale.ROOT) + "/versions/latest?channel=" + channel + "&platform=paper");
         if (jsonString == null || jsonString.isEmpty()) {
             return null;
         }

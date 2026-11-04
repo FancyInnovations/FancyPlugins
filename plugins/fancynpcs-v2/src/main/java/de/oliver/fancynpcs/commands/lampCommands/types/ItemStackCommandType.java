@@ -12,6 +12,7 @@ import revxrsal.commands.parameter.ParameterType;
 import revxrsal.commands.stream.MutableStringStream;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.stream.StreamSupport;
 
 public final class ItemStackCommandType implements ParameterType<BukkitCommandActor, ItemStack> {
@@ -23,7 +24,7 @@ public final class ItemStackCommandType implements ParameterType<BukkitCommandAc
 
     @Override
     public ItemStack parse(@NotNull MutableStringStream input, @NotNull ExecutionContext<BukkitCommandActor> context) {
-        String value = input.readString().toLowerCase();
+        String value = input.readString().toLowerCase(Locale.ROOT);
         if (value.equals("@none")) return new ItemStack(Material.AIR);
         if (value.equals("@hand") && context.actor().isPlayer()) {
             return context.actor().requirePlayer().getInventory().getItemInMainHand().clone();

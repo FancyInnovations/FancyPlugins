@@ -8,6 +8,9 @@ import revxrsal.commands.node.ExecutionContext;
 import revxrsal.commands.parameter.ParameterType;
 import revxrsal.commands.stream.MutableStringStream;
 
+import java.util.Arrays;
+import java.util.Locale;
+
 public final class EquipmentSlotCommandType implements ParameterType<BukkitCommandActor, NpcEquipmentSlot> {
 
     public static final EquipmentSlotCommandType INSTANCE = new EquipmentSlotCommandType();
@@ -17,7 +20,7 @@ public final class EquipmentSlotCommandType implements ParameterType<BukkitComma
 
     @Override
     public NpcEquipmentSlot parse(@NotNull MutableStringStream input, @NotNull ExecutionContext<BukkitCommandActor> context) {
-        String value = input.readString().toLowerCase();
+        String value = input.readString().toLowerCase(Locale.ROOT);
         NpcEquipmentSlot slot = NpcEquipmentSlot.parse(value);
 
         if (slot == null) {
@@ -28,6 +31,6 @@ public final class EquipmentSlotCommandType implements ParameterType<BukkitComma
 
     @Override
     public SuggestionProvider<BukkitCommandActor> defaultSuggestions() {
-        return context -> java.util.Arrays.stream(NpcEquipmentSlot.values()).map(slot -> slot.name().toLowerCase()).toList();
+        return context -> Arrays.stream(NpcEquipmentSlot.values()).map(slot -> slot.name().toLowerCase(Locale.ROOT)).toList();
     }
 }

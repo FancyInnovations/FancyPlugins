@@ -59,7 +59,7 @@ public class CatAttributes {
         Holder<CatVariant> variant = getCatVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.CAT_VARIANT,
-                        ResourceLocation.parse(value.toLowerCase())
+                        ResourceLocation.parse(value.toLowerCase(Locale.ROOT))
                 ))
                 .orElseThrow();
 
@@ -68,7 +68,7 @@ public class CatAttributes {
 
     private static void setPose(Npc npc, String value) {
         final Cat cat = ReflectionHelper.getEntity(npc);
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 cat.setInSittingPose(false, false);
                 cat.setLying(false);

@@ -63,7 +63,7 @@ public class WolfAttributes {
     private static void setPose(Npc npc, String value) {
         Wolf wolf = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> wolf.setInSittingPose(false, false);
             case "sitting" -> wolf.setInSittingPose(true, false);
         }
@@ -82,7 +82,7 @@ public class WolfAttributes {
 
         Registry<WolfVariant> registry = wolf.level().registryAccess().lookupOrThrow(Registries.WOLF_VARIANT);
 
-        Identifier variantLocation = Identifier.tryParse("minecraft:" + value.toLowerCase());
+        Identifier variantLocation = Identifier.tryParse("minecraft:" + value.toLowerCase(Locale.ROOT));
         if (variantLocation == null) {
             System.out.println("Invalid variant name: " + value);
             return;

@@ -45,7 +45,7 @@ public class ParrotAttributes {
     private static void setPose(Npc npc, String value) {
         Parrot parrot = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 parrot.setOrderedToSit(false);
                 parrot.setInSittingPose(false, false);

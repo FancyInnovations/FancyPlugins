@@ -15,6 +15,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ChickenAttributes {
 
@@ -43,7 +44,7 @@ public class ChickenAttributes {
         Holder<ChickenVariant> variant = getChickenVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.CHICKEN_VARIANT,
-                        Identifier.parse(value.toLowerCase())
+                        Identifier.parse(value.toLowerCase(Locale.ROOT))
                 ))
                 .orElseThrow();
 

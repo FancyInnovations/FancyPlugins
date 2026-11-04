@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.lushplugins.chatcolorhandler.common.parser.Parsers;
 import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
+import java.util.Locale;
+
 /**
  * Represents a player command action that can be executed when triggered by an NPC interaction.
  */
@@ -33,7 +35,7 @@ public class PlayerCommandAction extends NpcAction {
 
         String command = PaperColor.handler().translateRaw(value, context.getPlayer(), Parsers::placeholder);
 
-        if (command.toLowerCase().startsWith("server")) {
+        if (command.toLowerCase(Locale.ROOT).startsWith("server")) {
             String[] args = value.split(" ");
             if (args.length < 2) {
                 return;

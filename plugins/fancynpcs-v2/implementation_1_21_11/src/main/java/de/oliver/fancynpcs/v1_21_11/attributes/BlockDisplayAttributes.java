@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BlockDisplayAttributes {
 
@@ -34,7 +35,7 @@ public class BlockDisplayAttributes {
     private static void setBlock(Npc npc, String value) {
         Display.BlockDisplay display = ReflectionHelper.getEntity(npc);
 
-        Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(value.toLowerCase()));
+        Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(value.toLowerCase(Locale.ROOT)));
 
         display.setBlockState(block.defaultBlockState());
     }

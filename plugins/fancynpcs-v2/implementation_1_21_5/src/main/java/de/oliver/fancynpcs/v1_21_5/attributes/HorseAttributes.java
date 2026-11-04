@@ -66,7 +66,7 @@ public class HorseAttributes {
     private static void setPose(Npc npc, String value) {
         net.minecraft.world.entity.animal.horse.AbstractHorse horse = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 horse.setEating(false);
                 horse.setForceStanding(false);

@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HappyGhastAttributes {
 
@@ -30,7 +31,7 @@ public class HappyGhastAttributes {
     private static void setHarness(Npc npc, String value) {
         HappyGhast ghast = ReflectionHelper.getEntity(npc);
 
-        ItemStack harnessItem = switch (value.toLowerCase()) {
+        ItemStack harnessItem = switch (value.toLowerCase(Locale.ROOT)) {
             case "white" -> Items.HARNESS.white().getDefaultInstance();
             case "orange" -> Items.HARNESS.orange().getDefaultInstance();
             case "magenta" -> Items.HARNESS.magenta().getDefaultInstance();

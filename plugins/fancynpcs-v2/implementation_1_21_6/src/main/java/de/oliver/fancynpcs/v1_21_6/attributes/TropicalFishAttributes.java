@@ -57,7 +57,7 @@ public class TropicalFishAttributes {
     private static void setBaseColor(Npc npc, String value) {
         TropicalFish tropicalFish = ReflectionHelper.getEntity(npc);
 
-        DyeColor color = DyeColor.byName(value.toLowerCase(), DyeColor.WHITE);
+        DyeColor color = DyeColor.byName(value.toLowerCase(Locale.ROOT), DyeColor.WHITE);
         TropicalFish.Variant variant = new TropicalFish.Variant(tropicalFish.getPattern(), color, tropicalFish.getPatternColor());
         tropicalFish.setPackedVariant(variant.getPackedId());
     }
@@ -65,7 +65,7 @@ public class TropicalFishAttributes {
     private static void setPatternColor(Npc npc, String value) {
         TropicalFish tropicalFish = ReflectionHelper.getEntity(npc);
 
-        DyeColor color = DyeColor.byName(value.toLowerCase(), DyeColor.WHITE);
+        DyeColor color = DyeColor.byName(value.toLowerCase(Locale.ROOT), DyeColor.WHITE);
         TropicalFish.Variant variant = new TropicalFish.Variant(tropicalFish.getPattern(), tropicalFish.getBaseColor(), color);
         tropicalFish.setPackedVariant(variant.getPackedId());
     }

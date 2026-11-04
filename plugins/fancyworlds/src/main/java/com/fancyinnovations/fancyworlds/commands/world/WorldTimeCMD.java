@@ -8,6 +8,8 @@ import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.Locale;
+
 public class WorldTimeCMD extends FancyContext {
 
     public static final WorldTimeCMD INSTANCE = new WorldTimeCMD();
@@ -39,7 +41,7 @@ public class WorldTimeCMD extends FancyContext {
             return;
         }
 
-        switch (time.toLowerCase()) {
+        switch (time.toLowerCase(Locale.ROOT)) {
             case "day":
                 world.getBukkitWorld().setTime(1000);
                 break;

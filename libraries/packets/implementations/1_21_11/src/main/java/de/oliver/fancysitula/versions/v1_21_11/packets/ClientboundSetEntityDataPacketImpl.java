@@ -300,7 +300,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 // Handle Cow variant (data-driven registry - 1.21.5+)
                 if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_VARIANT_ID")
                         && entityClassName.contains("Cow") && !entityClassName.contains("Mushroom")) {
-                    String variantKey = s.startsWith("minecraft:") ? s : "minecraft:" + s.toLowerCase();
+                    String variantKey = s.startsWith("minecraft:") ? s : "minecraft:" + s.toLowerCase(Locale.ROOT);
                     Identifier loc = Identifier.parse(variantKey);
                     MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
                     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -315,7 +315,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 // Handle Chicken variant (data-driven registry - 1.21.5+)
                 if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_VARIANT_ID")
                         && entityClassName.contains("Chicken")) {
-                    String variantKey = s.startsWith("minecraft:") ? s : "minecraft:" + s.toLowerCase();
+                    String variantKey = s.startsWith("minecraft:") ? s : "minecraft:" + s.toLowerCase(Locale.ROOT);
                     Identifier loc = Identifier.parse(variantKey);
                     MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
                     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -330,7 +330,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 // Handle Pig variant (data-driven registry - 1.21.5+)
                 if (data.getValue() instanceof String s && accessorFieldName.equals("DATA_VARIANT_ID")
                         && entityClassName.contains("Pig") && !entityClassName.contains("Piglin")) {
-                    String variantKey = s.startsWith("minecraft:") ? s : "minecraft:" + s.toLowerCase();
+                    String variantKey = s.startsWith("minecraft:") ? s : "minecraft:" + s.toLowerCase(Locale.ROOT);
                     Identifier loc = Identifier.parse(variantKey);
                     MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
                     @SuppressWarnings({"unchecked", "rawtypes"})

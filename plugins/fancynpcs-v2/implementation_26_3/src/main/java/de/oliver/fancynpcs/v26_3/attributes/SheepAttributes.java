@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class SheepAttributes {
 
@@ -18,7 +19,7 @@ public class SheepAttributes {
 
         attributes.add(new NpcAttribute(
                 "wool_color",
-                Arrays.stream(DyeColor.values()).map(dyeColor -> dyeColor.name().toLowerCase()).toList(),
+                Arrays.stream(DyeColor.values()).map(dyeColor -> dyeColor.name().toLowerCase(Locale.ROOT)).toList(),
                 List.of(EntityType.SHEEP),
                 SheepAttributes::setColor
         ));
@@ -36,7 +37,7 @@ public class SheepAttributes {
     private static void setColor(Npc npc, String value) {
         Sheep sheep = ReflectionHelper.getEntity(npc);
 
-        sheep.setColor(DyeColor.byName(value.toLowerCase(), DyeColor.WHITE));
+        sheep.setColor(DyeColor.byName(value.toLowerCase(Locale.ROOT), DyeColor.WHITE));
     }
 
     private static void setSheared(Npc npc, String value) {

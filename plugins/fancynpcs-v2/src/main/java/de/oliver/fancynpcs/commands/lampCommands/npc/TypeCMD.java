@@ -12,6 +12,8 @@ import revxrsal.commands.annotation.Command;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.Locale;
+
 public final class TypeCMD extends FancyContext {
     public static final TypeCMD INSTANCE = new TypeCMD();
 
@@ -53,7 +55,7 @@ public final class TypeCMD extends FancyContext {
                     Bukkit.getOnlinePlayers().forEach(npc::checkAndUpdateVisibility);
                 });
             }
-            translator.translate("npc_type_success").withPrefix().replace("npc", npc.getData().getName()).replace("type", type.name().toLowerCase()).send(sender);
+            translator.translate("npc_type_success").withPrefix().replace("npc", npc.getData().getName()).replace("type", type.name().toLowerCase(Locale.ROOT)).send(sender);
         } else {
             translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }

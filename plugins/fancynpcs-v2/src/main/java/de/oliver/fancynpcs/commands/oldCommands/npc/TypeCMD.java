@@ -12,6 +12,8 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 public enum TypeCMD {
     INSTANCE; // SINGLETON
 
@@ -51,7 +53,7 @@ public enum TypeCMD {
                     Bukkit.getOnlinePlayers().forEach(npc::checkAndUpdateVisibility);
                 });
             }
-            translator.translate("npc_type_success").withPrefix().replace("npc", npc.getData().getName()).replace("type", type.name().toLowerCase()).send(sender);
+            translator.translate("npc_type_success").withPrefix().replace("npc", npc.getData().getName()).replace("type", type.name().toLowerCase(Locale.ROOT)).send(sender);
         } else {
             translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
         }

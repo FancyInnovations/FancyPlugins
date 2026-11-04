@@ -9,6 +9,8 @@ import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.Locale;
+
 public class WorldGamerulesCMD extends FancyContext {
 
     public static final WorldGamerulesCMD INSTANCE = new WorldGamerulesCMD();
@@ -133,7 +135,7 @@ public class WorldGamerulesCMD extends FancyContext {
 
         switch (gamerule.getType().getSimpleName()) {
             case "Boolean" -> {
-                Boolean booleanValue = switch (value.toLowerCase()) {
+                Boolean booleanValue = switch (value.toLowerCase(Locale.ROOT)) {
                     case "true", "yes" -> true;
                     case "false", "no" -> false;
                     default -> null;

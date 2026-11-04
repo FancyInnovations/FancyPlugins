@@ -32,6 +32,7 @@ import org.incendo.cloud.parser.standard.EnumParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.incendo.cloud.exception.handling.ExceptionHandler.unwrappingHandler;
@@ -141,7 +142,7 @@ public final class CloudCommandManager {
             translator.translate(translationKey)
                     .withPrefix()
                     .replaceStripped("input", exceptionContext.exception().input())
-                    .replace("enum", exceptionContext.exception().enumClass().getSimpleName().toLowerCase())
+                    .replace("enum", exceptionContext.exception().enumClass().getSimpleName().toLowerCase(Locale.ROOT))
                     .send(exceptionContext.context().sender());
         });
         // ReplyingParseException is thrown from custom argument types and is handled there.

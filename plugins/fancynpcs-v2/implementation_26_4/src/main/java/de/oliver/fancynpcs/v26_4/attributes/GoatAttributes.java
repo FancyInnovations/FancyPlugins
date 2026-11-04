@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class GoatAttributes {
 
@@ -27,7 +28,7 @@ public class GoatAttributes {
     private static void setHorns(Npc npc, String value) {
         Goat goat = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "none" -> {
                 goat.getEntityData().set(Goat.DATA_HAS_LEFT_HORN, false);
                 goat.getEntityData().set(Goat.DATA_HAS_RIGHT_HORN, false);

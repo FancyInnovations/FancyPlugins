@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CamelAttributes {
 
@@ -28,7 +29,7 @@ public class CamelAttributes {
     private static void setPose(Npc npc, String value) {
         Camel camel = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 camel.setPose(Pose.STANDING);
                 camel.setDashing(false);

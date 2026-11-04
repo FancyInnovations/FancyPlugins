@@ -12,6 +12,7 @@ import revxrsal.commands.stream.MutableStringStream;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ColorCommandType extends BukkitExceptionHandler implements ParameterType<BukkitCommandActor, Color> {
 
@@ -35,7 +36,7 @@ public class ColorCommandType extends BukkitExceptionHandler implements Paramete
 
         for (NamedTextColor named : NamedTextColor.NAMES.values()) {
             if (color.equals(Color.fromARGB(named.value() | 0xC8000000))) {
-                return named.toString().toLowerCase();
+                return named.toString().toLowerCase(Locale.ROOT);
             }
         }
         return String.format("#%08X", color.asARGB());
@@ -81,7 +82,7 @@ public class ColorCommandType extends BukkitExceptionHandler implements Paramete
         return (ctx) -> {
             List<String> suggestions = new ArrayList<>();
             for (NamedTextColor color : NamedTextColor.NAMES.values()) {
-                suggestions.add(color.toString().toLowerCase());
+                suggestions.add(color.toString().toLowerCase(Locale.ROOT));
             }
             suggestions.add(DEFAULT_SUGGESTION);
             suggestions.add(TRANSPARENT_SUGGESTION);

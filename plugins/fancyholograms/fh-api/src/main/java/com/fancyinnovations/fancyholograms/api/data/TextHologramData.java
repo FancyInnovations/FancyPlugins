@@ -182,7 +182,7 @@ public class TextHologramData extends DisplayHologramData {
         textUpdateInterval = section.getInt("update_text_interval", DEFAULT_TEXT_UPDATE_INTERVAL);
         textOpacity = (byte) section.getInt("text_opacity", DEFAULT_TEXT_OPACITY);
 
-        String textAlignmentStr = section.getString("text_alignment", DEFAULT_TEXT_ALIGNMENT.name().toLowerCase());
+        String textAlignmentStr = section.getString("text_alignment", DEFAULT_TEXT_ALIGNMENT.name().toLowerCase(Locale.ROOT));
         textAlignment = switch (textAlignmentStr.toLowerCase(Locale.ROOT)) {
             case "right" -> TextDisplay.TextAlignment.RIGHT;
             case "left" -> TextDisplay.TextAlignment.LEFT;

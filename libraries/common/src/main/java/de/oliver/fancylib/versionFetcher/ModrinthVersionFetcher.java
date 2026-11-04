@@ -3,6 +3,7 @@ package de.oliver.fancylib.versionFetcher;
 import com.google.gson.Gson;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class ModrinthVersionFetcher implements VersionFetcher {
@@ -19,7 +20,7 @@ public class ModrinthVersionFetcher implements VersionFetcher {
     public ComparableVersion fetchNewestVersion() {
         if (newestVersion != null) return newestVersion;
 
-        String jsonString = de.oliver.fancylib.versionFetcher.VersionFetcher.getDataFromUrl("https://api.modrinth.com/v2/project/" + pluginName.toLowerCase() + "/version");
+        String jsonString = VersionFetcher.getDataFromUrl("https://api.modrinth.com/v2/project/" + pluginName.toLowerCase(Locale.ROOT) + "/version");
         if (jsonString == null || jsonString.isEmpty()) {
             return null;
         }

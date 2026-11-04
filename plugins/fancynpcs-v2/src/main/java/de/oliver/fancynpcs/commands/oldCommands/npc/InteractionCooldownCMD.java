@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -62,7 +63,7 @@ public enum InteractionCooldownCMD {
         // Splitting user input between a digit and a letter.
         final String[] split = SPLIT_PATTERN.split(value);
         final @Nullable Long num = (split.length == 2) ? parseLong(split[0]) : null;
-        final @Nullable Unit unit = (split.length == 2) ? Unit.fromShortCode(split[1].toLowerCase()) : null;
+        final @Nullable Unit unit = (split.length == 2) ? Unit.fromShortCode(split[1].toLowerCase(Locale.ROOT)) : null;
         // Sending error message to the sender if input cannot be converted to a valid interval.
         if (num == null || unit == null)
             throw ReplyingParseException.replying(() -> translator.translate("command_invalid_interval").withPrefix().replaceStripped("input", value).send(context.sender()));

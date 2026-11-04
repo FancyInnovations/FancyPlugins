@@ -166,7 +166,7 @@ public class DisplayHologramData extends HologramData {
         shadowStrength = (float) section.getDouble("shadow_strength", DEFAULT_SHADOW_STRENGTH);
 
         String billboardStr = section.getString("billboard", DEFAULT_BILLBOARD.name());
-        billboard = switch (billboardStr.toLowerCase()) {
+        billboard = switch (billboardStr.toLowerCase(Locale.ROOT)) {
             case "fixed" -> Display.Billboard.FIXED;
             case "vertical" -> Display.Billboard.VERTICAL;
             case "horizontal" -> Display.Billboard.HORIZONTAL;

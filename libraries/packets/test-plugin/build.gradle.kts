@@ -36,7 +36,7 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("")
-        dependsOn(":libraries:packets:shadowJar")
+        mustRunAfter(":libraries:packets:shadowJar")
     }
 
     compileJava {

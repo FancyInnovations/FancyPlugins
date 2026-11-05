@@ -47,36 +47,49 @@ public enum NpcVisibility {
 
     /**
      * Handling of NpcVisibility.MANUAL
+     *
+     * <p>Viewers are keyed by the stable NPC id ({@link de.oliver.fancynpcs.api.NpcData#getId()}),
+     * so renaming an NPC (which only changes {@link de.oliver.fancynpcs.api.NpcData#getName()})
+     * keeps manual visibility intact.</p>
      */
     public static class ManualNpcVisibility {
         private static final HashMultimap<String, UUID> distantViewers = HashMultimap.create();
 
         public static boolean canSee(Player player, Npc npc) {
-            return npc.isShownFor(player) || distantViewers.containsEntry(npc.getData().getName(), player.getUniqueId());
+            return npc.isShownFor(player) || distantViewers.containsEntry(npc.getData().getId(), player.getUniqueId());
         }
 
         public static void addDistantViewer(Npc npc, UUID uuid) {
-            addDistantViewer(npc.getData().getName(), uuid);
+            addDistantViewer(npc.getData().getId(), uuid);
         }
 
-        public static void addDistantViewer(String npcName, UUID uuid) {
-            distantViewers.put(npcName, uuid);
+        /**
+         * @param npcId the stable NPC id (see {@link de.oliver.fancynpcs.api.NpcData#getId()}), not the mutable name
+         */
+        public static void addDistantViewer(String npcId, UUID uuid) {
+            distantViewers.put(npcId, uuid);
         }
 
         public static void removeDistantViewer(Npc npc, UUID uuid) {
-            removeDistantViewer(npc.getData().getName(), uuid);
+            removeDistantViewer(npc.getData().getId(), uuid);
         }
 
-        public static void removeDistantViewer(String npcName, UUID uuid) {
-            distantViewers.remove(npcName, uuid);
+        /**
+         * @param npcId the stable NPC id (see {@link de.oliver.fancynpcs.api.NpcData#getId()}), not the mutable name
+         */
+        public static void removeDistantViewer(String npcId, UUID uuid) {
+            distantViewers.remove(npcId, uuid);
         }
 
         public static void remove(Npc npc) {
-            remove(npc.getData().getName());
+            remove(npc.getData().getId());
         }
 
-        public static void remove(String npcName) {
-            distantViewers.removeAll(npcName);
+        /**
+         * @param npcId the stable NPC id (see {@link de.oliver.fancynpcs.api.NpcData#getId()}), not the mutable name
+         */
+        public static void remove(String npcId) {
+            distantViewers.removeAll(npcId);
         }
 
         public static void clear() {

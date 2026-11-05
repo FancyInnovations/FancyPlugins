@@ -21,6 +21,7 @@ tasks {
         archiveClassifier.set("")
 
         relocate("org.lushplugins.chatcolorhandler", "de.oliver.fancynpcs.libs.chatcolorhandler")
+        mustRunAfter(":libraries:packets:shadowJar")
     }
 
     publishing {

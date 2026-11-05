@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ArmadilloAttributes {
 
@@ -27,7 +28,7 @@ public class ArmadilloAttributes {
     private static void setPose(Npc npc, String value) {
         Armadillo armadillo = ReflectionHelper.getEntity(npc);
 
-        Armadillo.ArmadilloState state = Armadillo.ArmadilloState.valueOf(value.toUpperCase());
+        Armadillo.ArmadilloState state = Armadillo.ArmadilloState.valueOf(value.toUpperCase(Locale.ROOT));
 
         armadillo.switchToState(state);
     }

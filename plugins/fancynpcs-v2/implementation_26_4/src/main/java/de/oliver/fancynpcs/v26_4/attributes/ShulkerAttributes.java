@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class ShulkerAttributes {
 
@@ -38,14 +39,14 @@ public class ShulkerAttributes {
     private static void setColor(Npc npc, String value) {
         Shulker shulker = ReflectionHelper.getEntity(npc);
 
-        DyeColor color = DyeColor.byName(value.toLowerCase(), DyeColor.PURPLE);
+        DyeColor color = DyeColor.byName(value.toLowerCase(Locale.ROOT), DyeColor.PURPLE);
         shulker.getEntityData().set(Shulker.DATA_COLOR_ID, (byte) color.getId());
     }
 
     private static void setShield(Npc npc, String value) {
         Shulker shulker = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "closed" -> shulker.setRawPeekAmount(0);
             case "open" -> shulker.setRawPeekAmount(Byte.MAX_VALUE);
         }

@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class HorseAttributes {
 
@@ -52,21 +53,21 @@ public class HorseAttributes {
     private static void setVariant(Npc npc, String value) {
         Horse horse = ReflectionHelper.getEntity(npc);
 
-        Variant variant = Variant.valueOf(value.toUpperCase());
+        Variant variant = Variant.valueOf(value.toUpperCase(Locale.ROOT));
         horse.setVariantAndMarkings(variant, horse.getMarkings());
     }
 
     private static void setMarkings(Npc npc, String value) {
         Horse horse = ReflectionHelper.getEntity(npc);
 
-        Markings markings = Markings.valueOf(value.toUpperCase());
+        Markings markings = Markings.valueOf(value.toUpperCase(Locale.ROOT));
         horse.setVariantAndMarkings(horse.getVariant(), markings);
     }
 
     private static void setPose(Npc npc, String value) {
         AbstractHorse horse = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 horse.setEating(false);
                 horse.clearStanding();

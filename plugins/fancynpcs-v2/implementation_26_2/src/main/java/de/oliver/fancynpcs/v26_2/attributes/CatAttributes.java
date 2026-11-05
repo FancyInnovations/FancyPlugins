@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CatAttributes {
 
@@ -58,7 +59,7 @@ public class CatAttributes {
         Holder<CatVariant> variant = getCatVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.CAT_VARIANT,
-                        Identifier.parse(value.toLowerCase())
+                        Identifier.parse(value.toLowerCase(Locale.ROOT))
                 ))
                 .orElseThrow();
 
@@ -67,7 +68,7 @@ public class CatAttributes {
 
     private static void setPose(Npc npc, String value) {
         final Cat cat = ReflectionHelper.getEntity(npc);
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 cat.setInSittingPose(false, false);
                 cat.setLying(false);
@@ -98,7 +99,7 @@ public class CatAttributes {
         }
 
         try {
-            DyeColor color = DyeColor.valueOf(value.toUpperCase());
+            DyeColor color = DyeColor.valueOf(value.toUpperCase(Locale.ROOT));
             if (!cat.isTame()) {
                 cat.setTame(true, false);
             }

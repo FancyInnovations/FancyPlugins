@@ -8,6 +8,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 public class FileUtils {
 
@@ -49,7 +50,7 @@ public class FileUtils {
             return null;
         }
         for (File file : files) {
-            if (file.getName().toLowerCase().contains(name.toLowerCase())) {
+            if (file.getName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT))) {
                 return file;
             }
         }

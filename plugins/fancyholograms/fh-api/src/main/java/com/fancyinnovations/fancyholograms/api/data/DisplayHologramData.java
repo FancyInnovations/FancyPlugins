@@ -166,7 +166,7 @@ public class DisplayHologramData extends HologramData {
         shadowStrength = (float) section.getDouble("shadow_strength", DEFAULT_SHADOW_STRENGTH);
 
         String billboardStr = section.getString("billboard", DEFAULT_BILLBOARD.name());
-        billboard = switch (billboardStr.toLowerCase()) {
+        billboard = switch (billboardStr.toLowerCase(Locale.ROOT)) {
             case "fixed" -> Display.Billboard.FIXED;
             case "vertical" -> Display.Billboard.VERTICAL;
             case "horizontal" -> Display.Billboard.HORIZONTAL;
@@ -185,7 +185,7 @@ public class DisplayHologramData extends HologramData {
 
         String glowingColorStr = section.getString("glowing_color", DEFAULT_GLOWING_COLOR.name());
         try {
-            glowingColor = GlowingColor.valueOf(glowingColorStr.toUpperCase());
+            glowingColor = GlowingColor.valueOf(glowingColorStr.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             glowingColor = DEFAULT_GLOWING_COLOR;
         }

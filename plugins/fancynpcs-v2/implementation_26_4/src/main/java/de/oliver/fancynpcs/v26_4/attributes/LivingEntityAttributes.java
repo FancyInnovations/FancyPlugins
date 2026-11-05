@@ -10,6 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class LivingEntityAttributes {
 
@@ -31,7 +32,7 @@ public class LivingEntityAttributes {
     private static void setUseItem(Npc npc, String value) {
         net.minecraft.world.entity.LivingEntity livingEntity = ReflectionHelper.getEntity(npc);
 
-        switch (value.toUpperCase()) {
+        switch (value.toUpperCase(Locale.ROOT)) {
             case "NONE" -> livingEntity.stopUsingItem();
             case "MAIN_HAND" -> livingEntity.startUsingItem(InteractionHand.MAIN_HAND, true);
             case "OFF_HAND" -> livingEntity.startUsingItem(InteractionHand.OFF_HAND, true);

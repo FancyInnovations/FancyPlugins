@@ -65,7 +65,7 @@ public class FeatureFlagConfig {
 
     public FeatureFlag getFeatureFlag(String name) {
         for (FeatureFlag featureFlag : featureFlags) {
-            if (featureFlag.getName().equalsIgnoreCase(name.toLowerCase())) {
+            if (featureFlag.getName().equalsIgnoreCase(name)) {
                 return featureFlag;
             }
         }

@@ -352,7 +352,7 @@ public final class HologramManagerImpl implements HologramManager {
             if (poseAttr != null) {
                 final var pose = npc.getData().getAttributes().get(poseAttr);
                 if (pose != null) {
-                    switch (pose.toLowerCase()) {
+                    switch (pose.toLowerCase(Locale.ROOT)) {
                         case "sitting" -> location.subtract(0, 0.7 * npcScale, 0);
                         case "sleeping" -> location.subtract(0, 0.4 * npcScale, 0);
                         case "crouching" -> location.subtract(0, 0.1 * npcScale, 0);

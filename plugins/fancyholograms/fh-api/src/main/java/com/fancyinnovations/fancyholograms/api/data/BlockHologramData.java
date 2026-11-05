@@ -8,10 +8,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BlockHologramData extends DisplayHologramData {
@@ -127,7 +124,7 @@ public class BlockHologramData extends DisplayHologramData {
             blockData = Bukkit.createBlockData(blockString);
             block = blockData.getMaterial();
         } catch (Exception e) {
-            Material mat = Material.getMaterial(blockString.toUpperCase());
+            Material mat = Material.getMaterial(blockString.toUpperCase(Locale.ROOT));
             if (mat == null) {
                 mat = DEFAULT_BLOCK;
             }

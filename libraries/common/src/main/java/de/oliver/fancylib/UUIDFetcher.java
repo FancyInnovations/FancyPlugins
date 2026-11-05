@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -55,7 +56,7 @@ public class UUIDFetcher {
      * @param name The name
      */
     public static UUID getUUID(String name) {
-        name = name.toLowerCase();
+        name = name.toLowerCase(Locale.ROOT);
         if (uuidCache.containsKey(name)) {
             return uuidCache.get(name);
         }
@@ -99,7 +100,7 @@ public class UUIDFetcher {
             connection.setReadTimeout(5000);
             UUIDFetcher currentNameData = gson.fromJson(new BufferedReader(new InputStreamReader(connection.getInputStream())), UUIDFetcher.class);
 
-            uuidCache.put(currentNameData.name.toLowerCase(), uuid);
+            uuidCache.put(currentNameData.name.toLowerCase(Locale.ROOT), uuid);
             nameCache.put(uuid, currentNameData.name);
 
             return currentNameData.name;

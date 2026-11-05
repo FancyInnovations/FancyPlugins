@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class BlockHologramData extends DisplayHologramData {
@@ -38,7 +39,7 @@ public class BlockHologramData extends DisplayHologramData {
     @Override
     public boolean read(ConfigurationSection section, String name) {
         super.read(section, name);
-        block = Material.getMaterial(section.getString("block", "GRASS_BLOCK").toUpperCase());
+        block = Material.getMaterial(section.getString("block", "GRASS_BLOCK").toUpperCase(Locale.ROOT));
 
         return true;
     }

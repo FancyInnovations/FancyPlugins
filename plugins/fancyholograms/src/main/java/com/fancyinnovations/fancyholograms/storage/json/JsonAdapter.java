@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3f;
 
 import java.util.Base64;
+import java.util.Locale;
 
 public class JsonAdapter {
 
@@ -201,7 +202,7 @@ public class JsonAdapter {
                 try {
                     blockHologramData.setBlockData(Bukkit.createBlockData(blockMatOrData));
                 } catch (Exception e) {
-                    Material mat = Material.getMaterial(blockMatOrData.toUpperCase());
+                    Material mat = Material.getMaterial(blockMatOrData.toUpperCase(Locale.ROOT));
                     if (mat == null) {
                         mat = com.fancyinnovations.fancyholograms.api.data.BlockHologramData.DEFAULT_BLOCK;
                     }

@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class TropicalFishAttributes {
 
@@ -49,14 +50,14 @@ public class TropicalFishAttributes {
     private static void setPattern(Npc npc, String value) {
         TropicalFish tropicalFish = ReflectionHelper.getEntity(npc);
 
-        TropicalFish.Pattern pattern = TropicalFish.Pattern.valueOf(value.toUpperCase());
+        TropicalFish.Pattern pattern = TropicalFish.Pattern.valueOf(value.toUpperCase(Locale.ROOT));
         tropicalFish.setPackedVariant(pattern.getPackedId());
     }
 
     private static void setBaseColor(Npc npc, String value) {
         TropicalFish tropicalFish = ReflectionHelper.getEntity(npc);
 
-        DyeColor color = DyeColor.byName(value.toLowerCase(), DyeColor.WHITE);
+        DyeColor color = DyeColor.byName(value.toLowerCase(Locale.ROOT), DyeColor.WHITE);
         TropicalFish.Variant variant = new TropicalFish.Variant(tropicalFish.getPattern(), color, tropicalFish.getPatternColor());
         tropicalFish.setPackedVariant(variant.getPackedId());
     }
@@ -64,7 +65,7 @@ public class TropicalFishAttributes {
     private static void setPatternColor(Npc npc, String value) {
         TropicalFish tropicalFish = ReflectionHelper.getEntity(npc);
 
-        DyeColor color = DyeColor.byName(value.toLowerCase(), DyeColor.WHITE);
+        DyeColor color = DyeColor.byName(value.toLowerCase(Locale.ROOT), DyeColor.WHITE);
         TropicalFish.Variant variant = new TropicalFish.Variant(tropicalFish.getPattern(), tropicalFish.getBaseColor(), color);
         tropicalFish.setPackedVariant(variant.getPackedId());
     }

@@ -27,7 +27,7 @@ public class ArmorStandAttributes {
     private static void setShowArms(Npc npc, String value) {
         ArmorStand armorStand = ReflectionHelper.getEntity(npc);
 
-        boolean showArms = Boolean.parseBoolean(value.toLowerCase());
+        boolean showArms = Boolean.parseBoolean(value);
 
         armorStand.setShowArms(showArms);
     }

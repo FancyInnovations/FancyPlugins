@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class FoxAttributes {
 
@@ -37,14 +38,14 @@ public class FoxAttributes {
     private static void setType(Npc npc, String value) {
         Fox fox = ReflectionHelper.getEntity(npc);
 
-        Fox.Variant type = Fox.Variant.valueOf(value.toUpperCase());
+        Fox.Variant type = Fox.Variant.valueOf(value.toUpperCase(Locale.ROOT));
         fox.setVariant(type);
     }
 
     private static void setPose(Npc npc, String value) {
         Fox fox = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 fox.setIsCrouching(false);
                 fox.setSleeping(false);

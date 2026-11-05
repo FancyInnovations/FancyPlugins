@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class ParrotAttributes {
 
@@ -37,14 +38,14 @@ public class ParrotAttributes {
     private static void setVariant(Npc npc, String value) {
         Parrot parrot = ReflectionHelper.getEntity(npc);
 
-        Parrot.Variant variant = Parrot.Variant.valueOf(value.toUpperCase());
+        Parrot.Variant variant = Parrot.Variant.valueOf(value.toUpperCase(Locale.ROOT));
         parrot.setVariant(variant);
     }
 
     private static void setPose(Npc npc, String value) {
         Parrot parrot = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> {
                 parrot.setOrderedToSit(false);
                 parrot.setInSittingPose(false, false);

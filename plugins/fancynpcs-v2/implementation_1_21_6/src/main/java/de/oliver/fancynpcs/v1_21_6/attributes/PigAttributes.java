@@ -17,6 +17,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PigAttributes {
 
@@ -52,7 +53,7 @@ public class PigAttributes {
         Holder<PigVariant> variant = getPigVariantRegistry()
                 .get(ResourceKey.create(
                         Registries.PIG_VARIANT,
-                        ResourceLocation.parse(value.toLowerCase())
+                        ResourceLocation.parse(value.toLowerCase(Locale.ROOT))
                 ))
                 .orElseThrow();
 
@@ -62,7 +63,7 @@ public class PigAttributes {
     private static void setHasSaddle(Npc npc, String value) {
         Pig pig = ReflectionHelper.getEntity(npc);
 
-        boolean hasSaddle = Boolean.parseBoolean(value.toLowerCase());
+        boolean hasSaddle = Boolean.parseBoolean(value);
 
         if (hasSaddle) {
             pig.setItemSlot(EquipmentSlot.SADDLE, Items.SADDLE.getDefaultInstance());

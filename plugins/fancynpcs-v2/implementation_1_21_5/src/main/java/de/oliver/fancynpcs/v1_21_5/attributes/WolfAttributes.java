@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WolfAttributes {
 
@@ -62,7 +63,7 @@ public class WolfAttributes {
     private static void setPose(Npc npc, String value) {
         Wolf wolf = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "standing" -> wolf.setInSittingPose(false, false);
             case "sitting" -> wolf.setInSittingPose(true, false);
         }
@@ -71,7 +72,7 @@ public class WolfAttributes {
     private static void setAngry(Npc npc, String value) {
         Wolf wolf = ReflectionHelper.getEntity(npc);
 
-        boolean angry = Boolean.parseBoolean(value.toLowerCase());
+        boolean angry = Boolean.parseBoolean(value);
 
         wolf.setRemainingPersistentAngerTime(angry ? 100 : 0);
     }
@@ -81,7 +82,7 @@ public class WolfAttributes {
 
         Registry<WolfVariant> registry = wolf.level().registryAccess().lookupOrThrow(Registries.WOLF_VARIANT);
 
-        ResourceLocation variantLocation = ResourceLocation.tryParse("minecraft:" + value.toLowerCase());
+        ResourceLocation variantLocation = ResourceLocation.tryParse("minecraft:" + value.toLowerCase(Locale.ROOT));
         if (variantLocation == null) {
             System.out.println("Invalid variant name: " + value);
             return;
@@ -114,7 +115,7 @@ public class WolfAttributes {
         }
 
         try {
-            DyeColor color = DyeColor.valueOf(value.toUpperCase());
+            DyeColor color = DyeColor.valueOf(value.toUpperCase(Locale.ROOT));
             if (!wolf.isTame()) {
                 wolf.setTame(true, false);
             }

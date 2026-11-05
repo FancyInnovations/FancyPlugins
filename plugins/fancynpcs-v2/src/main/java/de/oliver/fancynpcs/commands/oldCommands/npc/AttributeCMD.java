@@ -18,6 +18,7 @@ import org.incendo.cloud.context.CommandInput;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 public enum AttributeCMD {
     INSTANCE; // SINGLETON
@@ -39,7 +40,7 @@ public enum AttributeCMD {
             translator.translate("npc_attribute_set")
                     .withPrefix()
                     .replace("attribute", attribute.getName())
-                    .replaceStripped("value", attributeValue.toLowerCase())
+                    .replaceStripped("value", attributeValue.toLowerCase(Locale.ROOT))
                     .send(sender);
         } else {
             translator.translate("command_npc_modification_cancelled")

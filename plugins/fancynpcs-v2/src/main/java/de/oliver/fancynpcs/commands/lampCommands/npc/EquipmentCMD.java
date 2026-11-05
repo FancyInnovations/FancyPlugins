@@ -18,12 +18,13 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.StreamSupport;
 
 public final class EquipmentCMD extends FancyContext {
     public static final EquipmentCMD INSTANCE = new EquipmentCMD();
     // Storing in a static variable to avoid re-creating the array each time suggestion is requested.
-    private static final List<String> SLOT_SUGGESTIONS = Arrays.stream(NpcEquipmentSlot.values()).map(slot -> slot.name().toLowerCase()).toList();
+    private static final List<String> SLOT_SUGGESTIONS = Arrays.stream(NpcEquipmentSlot.values()).map(slot -> slot.name().toLowerCase(Locale.ROOT)).toList();
     // Replace with Registry#stream after dropping 1.19.4 support.
     private static final List<String> MATERIAL_SUGGESTIONS = StreamSupport.stream(Registry.MATERIAL.spliterator(), false).filter(Material::isItem).map(material -> material.key().asString()).toList();
 

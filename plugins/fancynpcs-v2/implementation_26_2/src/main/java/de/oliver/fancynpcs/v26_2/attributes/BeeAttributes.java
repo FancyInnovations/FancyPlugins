@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BeeAttributes {
 
@@ -48,7 +49,7 @@ public class BeeAttributes {
     private static void setAngry(Npc npc, String value) {
         Bee bee = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "true" -> bee.setPersistentAngerEndTime(1);
             case "false" -> bee.setPersistentAngerEndTime(0);
         }
@@ -57,7 +58,7 @@ public class BeeAttributes {
     private static void setSting(Npc npc, String value) {
         Bee bee = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "true" -> bee.setHasStung(false);
             case "false" -> bee.setHasStung(true);
         }
@@ -66,7 +67,7 @@ public class BeeAttributes {
     private static void setNectar(Npc npc, String value) {
         Bee bee = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "true" -> bee.setHasNectar(true);
             case "false" -> bee.setHasNectar(false);
         }
@@ -75,7 +76,7 @@ public class BeeAttributes {
     private static void setRolling(Npc npc, String value) {
         Bee bee = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "true" -> bee.setRolling(true);
             case "false" -> bee.setRolling(false);
         }

@@ -28,6 +28,7 @@ import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -89,7 +90,7 @@ public final class NpcConvertCMD extends FancyContext {
             // glowing
             ScoreboardTrait scoreboardTrait = npc.getTraitNullable(ScoreboardTrait.class);
             if (scoreboardTrait != null && scoreboardTrait.getColor() != null) {
-                NamedTextColor color = NamedTextColor.NAMES.value(scoreboardTrait.getColor().name().toLowerCase());
+                NamedTextColor color = NamedTextColor.NAMES.value(scoreboardTrait.getColor().name().toLowerCase(Locale.ROOT));
                 if (color != null) {
                     data.setGlowing(true);
                     data.setGlowingColor(color);

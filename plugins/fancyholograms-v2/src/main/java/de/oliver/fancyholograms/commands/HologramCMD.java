@@ -138,7 +138,7 @@ public final class HologramCMD extends Command {
                 return Collections.emptyList();
             }
 
-            return this.plugin.getHologramsManager().getPersistentHolograms().stream().map(hologram -> hologram.getData().getName()).filter(input -> input.toLowerCase().startsWith(args[1].toLowerCase(Locale.ROOT))).toList();
+            return this.plugin.getHologramsManager().getPersistentHolograms().stream().map(hologram -> hologram.getData().getName()).filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[1].toLowerCase(Locale.ROOT))).toList();
         }
 
         final var hologram = this.plugin.getHologramsManager().getHologram(args[1]).orElse(null);
@@ -159,7 +159,7 @@ public final class HologramCMD extends Command {
             List<String> suggestions = new ArrayList<>(Arrays.asList("position", "moveHere", "center", "moveTo", "rotate", "rotatepitch", "billboard", "scale", "translate", "visibilityDistance", "visibility", "shadowRadius", "shadowStrength", "brightness", usingNpcs ? "linkWithNpc" : "", usingNpcs ? "unlinkWithNpc" : ""));
             suggestions.addAll(type.getCommands());
 
-            return suggestions.stream().filter(input -> input.toLowerCase().startsWith(args[2].toLowerCase(Locale.ROOT))).toList();
+            return suggestions.stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[2].toLowerCase(Locale.ROOT))).toList();
         }
 
         if (!args[0].equalsIgnoreCase("edit")) {
@@ -225,7 +225,7 @@ public final class HologramCMD extends Command {
             };
 
             if (suggestions != null) {
-                return suggestions.filter(input -> input.toLowerCase().startsWith(args[3].toLowerCase(Locale.ROOT))).toList();
+                return suggestions.filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[3].toLowerCase(Locale.ROOT))).toList();
             }
         }
 
@@ -290,7 +290,7 @@ public final class HologramCMD extends Command {
     }
 
     private boolean edit(@NotNull final CommandSender player, @NotNull final Hologram hologram, @NotNull final String[] args) {
-        final var action = args[2].toLowerCase();
+        final var action = args[2].toLowerCase(Locale.ROOT);
 
         // actions without a data
         switch (action) {

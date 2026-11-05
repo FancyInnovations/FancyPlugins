@@ -14,6 +14,8 @@ import revxrsal.commands.annotation.ParseWith;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.Locale;
+
 public final class AttributeCMD extends FancyContext {
     public static final AttributeCMD INSTANCE = new AttributeCMD();
     private final AttributeManager attributeManager = plugin.getAttributeManager();
@@ -36,7 +38,7 @@ public final class AttributeCMD extends FancyContext {
             translator.translate("npc_attribute_set")
                     .withPrefix()
                     .replace("attribute", attribute.getName())
-                    .replaceStripped("value", attributeValue.toLowerCase())
+                    .replaceStripped("value", attributeValue.toLowerCase(Locale.ROOT))
                     .send(sender);
         } else {
             translator.translate("command_npc_modification_cancelled")

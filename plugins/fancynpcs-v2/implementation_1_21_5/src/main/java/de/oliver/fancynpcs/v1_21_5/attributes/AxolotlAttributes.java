@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class AxolotlAttributes {
 
@@ -37,7 +38,7 @@ public class AxolotlAttributes {
     private static void setVariant(Npc npc, String value) {
         Axolotl axolotl = ReflectionHelper.getEntity(npc);
 
-        Axolotl.Variant variant = Axolotl.Variant.valueOf(value.toUpperCase());
+        Axolotl.Variant variant = Axolotl.Variant.valueOf(value.toUpperCase(Locale.ROOT));
         axolotl.setVariant(variant);
     }
 

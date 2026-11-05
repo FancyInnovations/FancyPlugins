@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class VexAttributes {
 
@@ -27,7 +28,7 @@ public class VexAttributes {
     private static void setCharging(Npc npc, String value) {
         Vex vex = ReflectionHelper.getEntity(npc);
 
-        switch (value.toLowerCase()) {
+        switch (value.toLowerCase(Locale.ROOT)) {
             case "true" -> vex.setIsCharging(true);
             case "false" -> vex.setIsCharging(false);
         }

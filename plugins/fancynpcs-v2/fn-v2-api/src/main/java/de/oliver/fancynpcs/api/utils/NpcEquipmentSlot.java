@@ -1,5 +1,7 @@
 package de.oliver.fancynpcs.api.utils;
 
+import java.util.Locale;
+
 public enum NpcEquipmentSlot {
     MAINHAND,
     OFFHAND,
@@ -19,7 +21,7 @@ public enum NpcEquipmentSlot {
     }
 
     public String toNmsName() {
-        return name().toLowerCase();
+        return name().toLowerCase(Locale.ROOT);
     }
 
 }

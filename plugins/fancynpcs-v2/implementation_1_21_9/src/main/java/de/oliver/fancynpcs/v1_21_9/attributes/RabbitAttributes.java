@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class RabbitAttributes {
 
@@ -30,7 +31,7 @@ public class RabbitAttributes {
     private static void setVariant(Npc npc, String value) {
         Rabbit rabbit = ReflectionHelper.getEntity(npc);
 
-        Rabbit.Variant variant = Rabbit.Variant.valueOf(value.toUpperCase());
+        Rabbit.Variant variant = Rabbit.Variant.valueOf(value.toUpperCase(Locale.ROOT));
         rabbit.setVariant(variant);
     }
 

@@ -99,7 +99,7 @@ public class FancyDialogsPlugin extends JavaPlugin implements FancyDialogs {
         fdConfig.load();
 
         if (!fdConfig.getLogLevel().equalsIgnoreCase("INFO")) {
-            fancyLogger.setCurrentLevel(LogLevel.valueOf(fdConfig.getLogLevel().toUpperCase()));
+            fancyLogger.setCurrentLevel(LogLevel.valueOf(fdConfig.getLogLevel().toUpperCase(Locale.ROOT)));
         }
 
         FDFeatureFlags.load();

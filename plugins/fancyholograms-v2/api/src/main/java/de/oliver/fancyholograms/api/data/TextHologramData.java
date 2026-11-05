@@ -138,7 +138,7 @@ public class TextHologramData extends DisplayHologramData {
         seeThrough = section.getBoolean("see_through", DEFAULT_SEE_THROUGH);
         textUpdateInterval = section.getInt("update_text_interval", DEFAULT_TEXT_UPDATE_INTERVAL);
 
-        String textAlignmentStr = section.getString("text_alignment", DEFAULT_TEXT_ALIGNMENT.name().toLowerCase());
+        String textAlignmentStr = section.getString("text_alignment", DEFAULT_TEXT_ALIGNMENT.name().toLowerCase(Locale.ROOT));
         textAlignment = switch (textAlignmentStr.toLowerCase(Locale.ROOT)) {
             case "right" -> TextDisplay.TextAlignment.RIGHT;
             case "left" -> TextDisplay.TextAlignment.LEFT;

@@ -8,6 +8,7 @@ import revxrsal.commands.node.ExecutionContext;
 import revxrsal.commands.parameter.ParameterType;
 import revxrsal.commands.stream.MutableStringStream;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public final class IntervalCommandType implements ParameterType<BukkitCommandActor, Interval> {
@@ -31,7 +32,7 @@ public final class IntervalCommandType implements ParameterType<BukkitCommandAct
         }
 
         try {
-            Unit unit = Unit.fromShortCode(split[1].toLowerCase());
+            Unit unit = Unit.fromShortCode(split[1].toLowerCase(Locale.ROOT));
             return Interval.of(Math.max(0, Long.parseLong(split[0])), unit);
         } catch (RuntimeException e) {
             throw new FancyNpcsParameterException("command_invalid_interval", value);

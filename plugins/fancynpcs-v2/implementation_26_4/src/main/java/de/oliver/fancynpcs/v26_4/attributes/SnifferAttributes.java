@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class SnifferAttributes {
 
@@ -30,7 +31,7 @@ public class SnifferAttributes {
     private static void setState(Npc npc, String value) {
         final Sniffer sniffer = ReflectionHelper.getEntity(npc);
 
-        Sniffer.State state = Sniffer.State.valueOf(value.toUpperCase());
+        Sniffer.State state = Sniffer.State.valueOf(value.toUpperCase(Locale.ROOT));
         sniffer.transitionTo(state);
     }
 }

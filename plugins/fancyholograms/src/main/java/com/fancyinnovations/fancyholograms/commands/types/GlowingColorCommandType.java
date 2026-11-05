@@ -12,6 +12,7 @@ import revxrsal.commands.parameter.ParameterType;
 import revxrsal.commands.stream.MutableStringStream;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class GlowingColorCommandType extends BukkitExceptionHandler implements ParameterType<BukkitCommandActor, GlowingColor> {
 
@@ -24,7 +25,7 @@ public class GlowingColorCommandType extends BukkitExceptionHandler implements P
     public GlowingColor parse(@NotNull MutableStringStream input, @NotNull ExecutionContext<@NotNull BukkitCommandActor> context) {
         String colorName = input.readString();
         try {
-            return GlowingColor.valueOf(colorName.toUpperCase());
+            return GlowingColor.valueOf(colorName.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             throw new InvalidGlowingColorException(colorName);
         }
@@ -42,7 +43,7 @@ public class GlowingColorCommandType extends BukkitExceptionHandler implements P
     @Override
     public @NotNull SuggestionProvider<@NotNull BukkitCommandActor> defaultSuggestions() {
         return (ctx) -> Arrays.stream(GlowingColor.values())
-                .map(color -> color.name().toLowerCase())
+                .map(color -> color.name().toLowerCase(Locale.ROOT))
                 .toList();
     }
 

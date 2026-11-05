@@ -12,6 +12,8 @@ import revxrsal.commands.bukkit.exception.SenderNotPlayerException;
 import revxrsal.commands.exception.EnumNotFoundException;
 import revxrsal.commands.exception.NoPermissionException;
 
+import java.util.Locale;
+
 public final class FancyNpcsExceptionHandler extends BukkitExceptionHandler {
 
     private final FancyNpcs plugin;
@@ -46,7 +48,7 @@ public final class FancyNpcsExceptionHandler extends BukkitExceptionHandler {
         plugin.getTranslator().translate(key)
                 .withPrefix()
                 .replaceStripped("input", exception.input())
-                .replace("enum", exception.enumType().getSimpleName().toLowerCase())
+                .replace("enum", exception.enumType().getSimpleName().toLowerCase(Locale.ROOT))
                 .send(actor.sender());
     }
 

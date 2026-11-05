@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Use Config instead of this class.
@@ -66,7 +65,7 @@ public class FeatureFlagConfig {
 
     public FeatureFlag getFeatureFlag(String name) {
         for (FeatureFlag featureFlag : featureFlags) {
-            if (featureFlag.getName().equals(name.toLowerCase(Locale.ROOT))) {
+            if (featureFlag.getName().equalsIgnoreCase(name)) {
                 return featureFlag;
             }
         }

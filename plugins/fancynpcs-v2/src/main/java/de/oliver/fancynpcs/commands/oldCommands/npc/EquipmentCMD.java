@@ -15,6 +15,7 @@ import org.bukkit.Registry;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
@@ -27,7 +28,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.StreamSupport;
 
 public enum EquipmentCMD {
@@ -105,6 +108,46 @@ public enum EquipmentCMD {
         translator.translate("npc_equipment_list_footer").send(sender);
     }
 
+    @Command("npc equipment <npc> mirror [player]")
+    @Permission("fancynpcs.command.npc.equipment.mirror")
+    public void onEquipmentMirror(
+            final @NotNull CommandSender sender,
+            final @NotNull Npc npc,
+            final @Nullable @Argument("player") Player target
+    ) {
+        final Player source;
+        if (target != null) {
+            source = target;
+        } else if (sender instanceof Player player) {
+            source = player;
+        } else {
+            translator.translate("command_player_only").withPrefix().send(sender);
+            return;
+        }
+
+        final PlayerInventory inventory = source.getInventory();
+        final Map<NpcEquipmentSlot, ItemStack> mirrored = new EnumMap<>(NpcEquipmentSlot.class);
+        mirrored.put(NpcEquipmentSlot.HEAD, cloneOrAir(inventory.getHelmet()));
+        mirrored.put(NpcEquipmentSlot.CHEST, cloneOrAir(inventory.getChestplate()));
+        mirrored.put(NpcEquipmentSlot.LEGS, cloneOrAir(inventory.getLeggings()));
+        mirrored.put(NpcEquipmentSlot.FEET, cloneOrAir(inventory.getBoots()));
+        mirrored.put(NpcEquipmentSlot.MAINHAND, inventory.getItemInMainHand().clone());
+        mirrored.put(NpcEquipmentSlot.OFFHAND, inventory.getItemInOffHand().clone());
+
+        // Calling the event and mirroring equipment if not cancelled.
+        if (new NpcModifyEvent(npc, NpcModifyEvent.NpcModification.EQUIPMENT, mirrored, sender).callEvent()) {
+            mirrored.forEach(npc.getData()::addEquipment);
+            npc.updateForAll();
+            translator.translate("npc_equipment_mirror_success")
+                    .withPrefix()
+                    .replace("npc", npc.getData().getName())
+                    .replace("player", source.getName())
+                    .send(sender);
+        } else {
+            translator.translate("command_npc_modification_cancelled").withPrefix().send(sender);
+        }
+    }
+
     /* PARSERS AND SUGGESTIONS */
 
     // This parser does not specify a name, making it default parser for the returned type.
@@ -161,6 +204,10 @@ public enum EquipmentCMD {
     }
 
     /* UTILITY METHODS */
+
+    private @NotNull ItemStack cloneOrAir(final @Nullable ItemStack item) {
+        return item == null ? new ItemStack(Material.AIR) : item.clone();
+    }
 
     // NOTE: Might need to be improved later down the line, should get work done for now.
     private @NotNull String getTranslatedSlot(final @NotNull NpcEquipmentSlot slot) {

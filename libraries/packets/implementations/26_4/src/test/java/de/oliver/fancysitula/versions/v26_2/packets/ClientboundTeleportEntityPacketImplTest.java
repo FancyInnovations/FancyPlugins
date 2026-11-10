@@ -1,6 +1,6 @@
 package de.oliver.fancysitula.versions.v26_2.packets;
 
-import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
 import org.junit.jupiter.api.Test;
 
 class ClientboundTeleportEntityPacketImplTest {
@@ -16,15 +16,15 @@ class ClientboundTeleportEntityPacketImplTest {
         boolean onGround = true;
 
         ClientboundTeleportEntityPacketImpl packet = new ClientboundTeleportEntityPacketImpl(entityId, x, y, z, yaw, pitch, onGround);
-        ClientboundTeleportEntityPacket createdPacket = (ClientboundTeleportEntityPacket) packet.createPacket();
+        ClientboundEntityPositionSyncPacket createdPacket = (ClientboundEntityPositionSyncPacket) packet.createPacket();
 
         assert createdPacket != null;
         assert createdPacket.id() == entityId;
-        assert createdPacket.change().position().x == x;
-        assert createdPacket.change().position().y == y;
-        assert createdPacket.change().position().z == z;
-        assert createdPacket.change().xRot() == pitch;
-        assert createdPacket.change().yRot() == yaw;
+        assert createdPacket.position().endPosition().x == x;
+        assert createdPacket.position().endPosition().y == y;
+        assert createdPacket.position().endPosition().z == z;
+        assert createdPacket.xRot() == pitch;
+        assert createdPacket.yRot() == yaw;
         assert createdPacket.onGround() == onGround;
     }
 }

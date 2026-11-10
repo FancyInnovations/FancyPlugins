@@ -217,18 +217,14 @@ public class Npc_26_4 extends Npc {
         npc.setXRot(pitch);
         npc.setYRot(yaw);
 
-        ClientboundTeleportEntityPacket teleportEntityPacket = new ClientboundTeleportEntityPacket(
+        ClientboundEntityPositionSyncPacket positionSyncPacket = new ClientboundEntityPositionSyncPacket(
                 npc.getId(),
-                new PositionMoveRotation(
-                        new Vec3(data.getLocation().getX(), data.getLocation().getY(), data.getLocation().getZ()),
-                        Vec3.ZERO,
-                        yaw,
-                        pitch
-                ),
-                Set.of(),
+                PositionPath.of(new Vec3(data.getLocation().getX(), data.getLocation().getY(), data.getLocation().getZ())),
+                yaw,
+                pitch,
                 false
         );
-        packets.add(teleportEntityPacket);
+        packets.add(positionSyncPacket);
 
         float angelMultiplier = 256f / 360f;
         packets.add(new ClientboundRotateHeadPacket(npc, (byte) (yaw * angelMultiplier)));

@@ -26,7 +26,7 @@ public class PacketListenerFactory {
             case v1_21_9, v1_21_10 -> {
                 return new de.oliver.fancysitula.versions.v1_21_9.utils.PacketListenerImpl(packet);
             }
-            case v1_21_6, v1_21_7, v1_21_8 -> {
+            case v1_21_7, v1_21_8 -> {
                 return new de.oliver.fancysitula.versions.v1_21_6.utils.PacketListenerImpl(packet);
             }
             default ->

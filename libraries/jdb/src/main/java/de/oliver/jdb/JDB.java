@@ -60,8 +60,9 @@ public class JDB {
 
             return null;
         }
-        BufferedReader bufferedReader = Files.newBufferedReader(documentFile.toPath());
-        return GSON.fromJson(bufferedReader, clazz);
+        try (BufferedReader bufferedReader = Files.newBufferedReader(documentFile.toPath())) {
+            return GSON.fromJson(bufferedReader, clazz);
+        }
     }
 
     /**
@@ -76,9 +77,10 @@ public class JDB {
         if (!documentFile.exists()) {
             return null;
         }
-        BufferedReader bufferedReader = Files.newBufferedReader(documentFile.toPath());
-        Map<String, Object> data = (Map<String, Object>) GSON.fromJson(bufferedReader, Map.class);
-        return new JDocument(data);
+        try (BufferedReader bufferedReader = Files.newBufferedReader(documentFile.toPath())) {
+            Map<String, Object> data = (Map<String, Object>) GSON.fromJson(bufferedReader, Map.class);
+            return new JDocument(data);
+        }
     }
 
     /**

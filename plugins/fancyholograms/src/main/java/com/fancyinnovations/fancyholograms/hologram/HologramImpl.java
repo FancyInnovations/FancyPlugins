@@ -86,11 +86,6 @@ public final class HologramImpl extends Hologram {
             return; // doesn't exist, nothing to hide
         }
 
-        if (!data.getWorldName().equals(player.getLocation().getWorld().getName())) {
-            this.viewers.remove(player.getUniqueId());
-            return;
-        }
-
         if (!new HologramDespawnEvent(this, player).callEvent()) {
             return;
         }

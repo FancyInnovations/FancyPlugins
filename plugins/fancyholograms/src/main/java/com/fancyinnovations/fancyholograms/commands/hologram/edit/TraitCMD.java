@@ -7,6 +7,7 @@ import com.fancyinnovations.fancyholograms.api.trait.HologramTraitTrait;
 import com.fancyinnovations.fancyholograms.commands.FancyContext;
 import com.fancyinnovations.fancyholograms.commands.suggestions.AttachedTraitsSuggestion;
 import com.fancyinnovations.fancyholograms.commands.suggestions.DetachedTraitsSuggestion;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -38,7 +39,20 @@ public final class TraitCMD extends FancyContext {
             return;
         }
 
-        hologram.getData().addTrait(trait.clazz());
+        try {
+            hologram.getData().addTrait(trait.clazz());
+        } catch (RuntimeException e) {
+            logger.error("Failed to attach trait " + trait.name(), ThrowableProperty.of(e));
+        }
+
+        if (!hologram.getData().getTraitTrait().isTraitAttached(trait.clazz())) {
+            translator.translate("commands.hologram.edit.trait.attach.failed")
+                    .withPrefix()
+                    .replace("hologram", hologram.getData().getName())
+                    .replace("name", trait.name())
+                    .send(actor.sender());
+            return;
+        }
 
         translator.translate("commands.hologram.edit.trait.attach.success")
                 .withPrefix()

@@ -39,7 +39,18 @@ public abstract class HologramTrait {
         this.hologram = hologram;
         this.storage = new JDB("plugins/FancyHolograms/data/traits/" + getName());
 
-        onAttach();
+        try {
+            onAttach();
+        } catch (RuntimeException | Error e) {
+            try {
+                onUnregister();
+            } catch (RuntimeException | Error cleanupError) {
+                e.addSuppressed(cleanupError);
+            }
+            this.hologram = null;
+            this.storage = null;
+            throw e;
+        }
     }
 
     /**

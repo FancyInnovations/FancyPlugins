@@ -232,7 +232,7 @@ public class ClientboundSetEntityDataPacketImpl extends FS_ClientboundSetEntityD
                 }
 
                 if (data.getValue() instanceof ItemStack i) {
-                    vanillaValue = ((CraftItemStack) i).handle.copy(); // TODO (26.3) Bukkit ItemStack to NMS ItemStack conversion
+                    vanillaValue = CraftItemStack.asNMSCopy(i);
                 }
 
                 if (data.getValue() instanceof BlockState b) {

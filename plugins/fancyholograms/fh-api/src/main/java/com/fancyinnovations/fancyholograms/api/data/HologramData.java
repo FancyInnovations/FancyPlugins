@@ -46,7 +46,8 @@ public class HologramData implements YamlData {
     public HologramData(String name, HologramType type, Location location) {
         this.name = name;
         this.type = type;
-        this.location = location;
+        this.filePath = name;
+        this.location = location == null ? null : location.clone();
         if (location != null && location.getWorld() != null) {
             this.worldName = location.getWorld().getName();
         } else {
@@ -85,6 +86,8 @@ public class HologramData implements YamlData {
             this.location = location.clone();
             if (this.location.getWorld() == null) {
                 this.worldName = null;
+            } else {
+                this.worldName = this.location.getWorld().getName();
             }
         }
 
@@ -118,6 +121,10 @@ public class HologramData implements YamlData {
             this.location = new Location(world, 0, 0, 0);
         } else {
             this.location.setWorld(world);
+        }
+
+        if (world != null) {
+            this.worldName = world.getName();
         }
 
         setHasChanges(true);
@@ -224,10 +231,11 @@ public class HologramData implements YamlData {
     public HologramData addTrait(Class<? extends HologramTrait> traitClass) {
         HologramTrait trait = null;
         try {
-            trait = traitClass.getConstructor(null).newInstance();
+            trait = traitClass.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
             FancyHolograms.get().getFancyLogger().error("Failed to instantiate trait " + traitClass.getSimpleName(), ThrowableProperty.of(e));
+            return this;
         }
 
         traitTrait.addTrait(trait);

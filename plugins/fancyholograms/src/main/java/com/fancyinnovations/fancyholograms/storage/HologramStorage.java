@@ -28,6 +28,12 @@ public interface HologramStorage {
     void delete(HologramData hologram);
 
     /**
+     * Rejects pending saves of unloaded data without deleting its stored files.
+     */
+    default void invalidate(HologramData hologram) {
+    }
+
+    /**
      * Loads all holograms from the specified path (recursive).
      *
      * @param path The relative path to the plugin/FancyHolograms/data/holograms directory.

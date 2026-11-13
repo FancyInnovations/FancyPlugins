@@ -16,27 +16,45 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 public class JsonStorage implements HologramStorage {
 
     private static final String DATA_DIR_PATH = "plugins/FancyHolograms/data/holograms";
     private static final File DATA_DIR = new File(DATA_DIR_PATH);
+    private final File dataDirectory;
     private final JDB jdb;
+    private final Set<HologramData> invalidatedHolograms = Collections.newSetFromMap(new WeakHashMap<>());
 
     public JsonStorage() {
-        this.jdb = new JDB(DATA_DIR_PATH);
+        this(DATA_DIR);
+    }
+
+    public JsonStorage(File dataDirectory) {
+        this.dataDirectory = dataDirectory;
+        this.jdb = new JDB(dataDirectory.getPath());
     }
 
     @Override
-    public void saveBatch(Collection<HologramData> holograms) {
+    public synchronized void saveBatch(Collection<HologramData> holograms) {
         for (HologramData hologram : holograms) {
             save(hologram);
         }
     }
 
     @Override
-    public void save(HologramData hologram) {
+    public synchronized void save(HologramData hologram) {
+        if (invalidatedHolograms.contains(hologram)) {
+            var registered = FancyHolograms.get().getRegistry().get(hologram.getName());
+            if (registered.isEmpty() || registered.get().getData() != hologram) {
+                return;
+            }
+            invalidatedHolograms.remove(hologram);
+        }
+
         if (hologram.getFilePath() == null || hologram.getFilePath().isEmpty()) {
             FancyHolograms.get().getFancyLogger().error("Hologram " + hologram.getName() + " has no file path set");
             return;
@@ -76,7 +94,9 @@ public class JsonStorage implements HologramStorage {
     }
 
     @Override
-    public void delete(HologramData hologram) {
+    public synchronized void delete(HologramData hologram) {
+        invalidate(hologram);
+
         if (hologram.getFilePath() == null || hologram.getFilePath().isEmpty()) {
             return;
         }
@@ -112,16 +132,40 @@ public class JsonStorage implements HologramStorage {
     }
 
     @Override
-    public Collection<HologramData> loadAll(String path) {
+    public synchronized void invalidate(HologramData hologram) {
+        invalidatedHolograms.add(hologram);
+    }
+
+    @Override
+    public synchronized Collection<HologramData> loadAll(String path) {
+        try {
+            return loadAll(path, false);
+        } catch (IOException e) {
+            FancyHolograms.get().getFancyLogger().error("Failed to load all holograms from " + path, ThrowableProperty.of(e));
+            return List.of();
+        }
+    }
+
+    public synchronized Collection<HologramData> loadAllStrict() throws IOException {
+        return loadAll("", true);
+    }
+
+    private Collection<HologramData> loadAll(String path, boolean strict) throws IOException {
         List<HologramData> holograms = new ArrayList<>();
 
-        File dir = new File(DATA_DIR, path);
+        File dir = new File(dataDirectory, path);
         if (!dir.isDirectory()) {
+            if (strict && dir.exists()) {
+                throw new IOException("Hologram path is not a directory: " + dir);
+            }
             return holograms;
         }
 
         File[] files = dir.listFiles();
         if (files == null) {
+            if (strict) {
+                throw new IOException("Could not list hologram directory: " + dir);
+            }
             return holograms;
         }
 
@@ -129,7 +173,7 @@ public class JsonStorage implements HologramStorage {
             String fileName = file.getName();
 
             if (file.isDirectory()) {
-                holograms.addAll(loadAll(path + "/" + fileName));
+                holograms.addAll(loadAll(path + "/" + fileName, strict));
                 continue;
             }
 
@@ -140,7 +184,7 @@ public class JsonStorage implements HologramStorage {
 
             // Check if the file is a JSON file
             if (fileName.endsWith(".json")) {
-                holograms.addAll(loadFile(path + "/" + fileName.substring(0, fileName.length() - 5)));
+                holograms.addAll(loadFile(path + "/" + fileName.substring(0, fileName.length() - 5), strict));
             } else {
                 FancyHolograms.get().getFancyLogger().warn("File " + fileName + " is not a valid hologram file");
             }
@@ -149,7 +193,7 @@ public class JsonStorage implements HologramStorage {
         return holograms;
     }
 
-    private Collection<HologramData> loadFile(String path) {
+    private Collection<HologramData> loadFile(String path, boolean strict) throws IOException {
         migrate1(path);
 
         List<HologramData> holograms = new ArrayList<>();
@@ -157,6 +201,9 @@ public class JsonStorage implements HologramStorage {
         try {
             JsonDataUnion[] allTextUnions = jdb.get(path, JsonDataUnion[].class);
             if (allTextUnions == null) {
+                if (strict) {
+                    throw new IOException("Hologram file is empty: " + path);
+                }
                 FancyHolograms.get().getFancyLogger().debug("File " + path + " is empty or does not exist");
                 return holograms;
             }
@@ -166,6 +213,9 @@ public class JsonStorage implements HologramStorage {
                 holograms.add(data);
             }
         } catch (IOException e) {
+            if (strict) {
+                throw e;
+            }
             FancyHolograms.get().getFancyLogger().error("Failed to load all holograms from " + path, ThrowableProperty.of(e));
         }
 
@@ -180,7 +230,7 @@ public class JsonStorage implements HologramStorage {
     private void migrate1(String path) {
         FancyHologramsPlugin.get().getFancyLogger().info("Running migration1 for '" + path + "'");
 
-        File file = new File(DATA_DIR, path + ".json");
+        File file = new File(dataDirectory, path + ".json");
         if (!file.exists()) {
             return;
         }

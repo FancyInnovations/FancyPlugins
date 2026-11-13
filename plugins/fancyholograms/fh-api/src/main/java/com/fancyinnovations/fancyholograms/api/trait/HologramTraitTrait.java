@@ -5,7 +5,9 @@ import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @HologramTraitClass(traitName = "trait_trait")
 public class HologramTraitTrait extends HologramTrait {
@@ -17,7 +19,7 @@ public class HologramTraitTrait extends HologramTrait {
     }
 
     public void addTrait(HologramTrait trait) {
-        this.traits.add(trait);
+        Objects.requireNonNull(trait, "trait");
 
         // Attach the trait to the hologram if hologram already exists
         if (hologram != null) {
@@ -25,7 +27,15 @@ public class HologramTraitTrait extends HologramTrait {
                 return;
             }
 
-            trait.attachHologram(hologram);
+            this.traits.add(trait);
+            try {
+                trait.attachHologram(hologram);
+            } catch (RuntimeException | Error e) {
+                this.traits.remove(trait);
+                throw e;
+            }
+        } else {
+            this.traits.add(trait);
         }
     }
 
@@ -80,12 +90,20 @@ public class HologramTraitTrait extends HologramTrait {
         }
 
         // Attach all traits that were added to the hologram
-        for (HologramTrait trait : traits) {
-            if (!new HologramTraitAttachedEvent(hologram, trait, false).callEvent()) {
-                continue;
-            }
+        Iterator<HologramTrait> iterator = traits.iterator();
+        while (iterator.hasNext()) {
+            HologramTrait trait = iterator.next();
+            try {
+                if (!new HologramTraitAttachedEvent(hologram, trait, false).callEvent()) {
+                    iterator.remove();
+                    continue;
+                }
 
-            trait.attachHologram(hologram);
+                trait.attachHologram(hologram);
+            } catch (RuntimeException | LinkageError e) {
+                iterator.remove();
+                logger.error("Failed to attach trait " + trait.getName() + " to hologram " + hologram.getData().getName(), ThrowableProperty.of(e));
+            }
         }
     }
 

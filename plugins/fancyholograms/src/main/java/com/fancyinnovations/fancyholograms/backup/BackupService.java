@@ -4,22 +4,34 @@ import com.fancyinnovations.fancyholograms.api.HologramRegistry;
 import com.fancyinnovations.fancyholograms.api.data.HologramData;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.storage.json.JsonStorage;
+import com.google.gson.JsonParser;
 import de.oliver.fancyanalytics.logger.properties.StringProperty;
 import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedInputStream;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public class BackupService {
@@ -29,7 +41,12 @@ public class BackupService {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
+    private final File dataFolder;
+    private final File backupFolder;
+
     public BackupService() {
+        this(DATA_FOLDER, BACKUP_FOLDER);
+
         // Schedule the backup task to run every hour
         FancyHologramsPlugin.get().getHologramThread().scheduleWithFixedDelay(
                 this::runBackupTask,
@@ -38,40 +55,58 @@ public class BackupService {
         );
     }
 
+    BackupService(File dataFolder, File backupFolder) {
+        this.dataFolder = dataFolder;
+        this.backupFolder = backupFolder;
+    }
+
     private static void zip(Path sourceDir, Path zipPath) throws IOException {
-        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zipPath))) {
-            Files.walk(sourceDir)
-                    .filter(path -> !Files.isDirectory(path))
-                    .forEach(path -> {
-                        ZipEntry zipEntry = new ZipEntry(sourceDir.relativize(path).toString());
-                        try {
-                            zos.putNextEntry(zipEntry);
-                            Files.copy(path, zos);
-                            zos.closeEntry();
-                        } catch (IOException e) {
-                            FancyHologramsPlugin.get().getFancyLogger().error(
-                                    "Failed to zip file",
-                                    StringProperty.of("file", path.toString()),
-                                    ThrowableProperty.of(e)
-                            );
-                        }
-                    });
+        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zipPath));
+             Stream<Path> paths = Files.walk(sourceDir)) {
+            for (Path path : paths.filter(Files::isRegularFile).toList()) {
+                ZipEntry zipEntry = new ZipEntry(sourceDir.relativize(path).toString().replace(File.separatorChar, '/'));
+                zos.putNextEntry(zipEntry);
+                Files.copy(path, zos);
+                zos.closeEntry();
+            }
         }
     }
 
     private static void unzip(Path zipPath, Path targetDir) throws IOException {
-        try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(zipPath))) {
-            ZipEntry zipEntry;
-            while ((zipEntry = zis.getNextEntry()) != null) {
-                Path newPath = targetDir.resolve(zipEntry.getName());
+        boolean hasData = false;
+        try (ZipFile zip = new ZipFile(zipPath.toFile())) {
+            var entries = zip.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry zipEntry = entries.nextElement();
+                Path newPath = targetDir.resolve(zipEntry.getName()).normalize();
+                if (!newPath.startsWith(targetDir) || zipEntry.getName().contains("\\")) {
+                    throw new IOException("Invalid backup entry: " + zipEntry.getName());
+                }
                 if (zipEntry.isDirectory()) {
                     Files.createDirectories(newPath);
                 } else {
                     Files.createDirectories(newPath.getParent());
-                    Files.copy(zis, newPath);
+                    CRC32 checksum = new CRC32();
+                    try (CheckedInputStream input = new CheckedInputStream(zip.getInputStream(zipEntry), checksum)) {
+                        Files.copy(input, newPath);
+                    }
+                    if (checksum.getValue() != zipEntry.getCrc() || Files.size(newPath) != zipEntry.getSize()) {
+                        throw new IOException("Corrupt backup entry: " + zipEntry.getName());
+                    }
+                    if (newPath.getFileName().toString().endsWith(".json")) {
+                        try (BufferedReader reader = Files.newBufferedReader(newPath)) {
+                            JsonParser.parseReader(reader);
+                        }
+                        Path relative = targetDir.relativize(newPath);
+                        if (relative.getNameCount() > 1 && (relative.getName(0).toString().equals("holograms") || relative.getName(0).toString().equals("traits"))) {
+                            hasData = true;
+                        }
+                    }
                 }
-                zis.closeEntry();
             }
+        }
+        if (!hasData) {
+            throw new IOException("Backup contains no hologram or trait data");
         }
     }
 
@@ -82,39 +117,56 @@ public class BackupService {
      * @return the result of the backup operation
      */
     public BackupResult createBackup() {
-        if (!DATA_FOLDER.isDirectory()) {
+        synchronized (FancyHologramsPlugin.get().getStorage()) {
+            return createBackupLocked();
+        }
+    }
+
+    private BackupResult createBackupLocked() {
+        if (!dataFolder.isDirectory()) {
             return BackupResult.NO_DATA;
         }
 
-        try (Stream<Path> paths = Files.walk(DATA_FOLDER.toPath())) {
+        try (Stream<Path> paths = Files.walk(dataFolder.toPath())) {
             if (paths.noneMatch(Files::isRegularFile)) {
                 return BackupResult.NO_DATA;
             }
         } catch (IOException | UncheckedIOException e) {
             FancyHologramsPlugin.get().getFancyLogger().error(
                     "Failed to inspect data folder before creating backup",
-                    StringProperty.of("file", DATA_FOLDER.toString()),
+                    StringProperty.of("file", dataFolder.toString()),
                     ThrowableProperty.of(e)
             );
             return BackupResult.FAILED;
         }
 
-        if (!BACKUP_FOLDER.exists()) {
-            BACKUP_FOLDER.mkdirs();
+        if (!backupFolder.exists()) {
+            backupFolder.mkdirs();
         }
 
         String date = DATE_FORMAT.format(new Date(System.currentTimeMillis()));
 
-        File backupFile = new File(BACKUP_FOLDER, "FH_" + date + ".zip");
+        File backupFile = new File(backupFolder, "FH_" + date + ".zip");
+        Path temporary = null;
         try {
-            zip(DATA_FOLDER.toPath(), backupFile.toPath());
-        } catch (IOException e) {
+            temporary = Files.createTempFile(backupFolder.toPath(), ".FH_", ".zip.tmp");
+            zip(dataFolder.toPath(), temporary);
+            Files.move(temporary, backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException | UncheckedIOException e) {
             FancyHologramsPlugin.get().getFancyLogger().error(
                     "Failed to create backup",
                     StringProperty.of("file", backupFile.toString()),
                     ThrowableProperty.of(e)
             );
             return BackupResult.FAILED;
+        } finally {
+            if (temporary != null) {
+                try {
+                    Files.deleteIfExists(temporary);
+                } catch (IOException e) {
+                    FancyHologramsPlugin.get().getFancyLogger().warn("Failed to remove temporary backup", ThrowableProperty.of(e));
+                }
+            }
         }
 
         return BackupResult.CREATED;
@@ -126,10 +178,10 @@ public class BackupService {
      * @return a list of backup files
      */
     public List<File> listBackups() {
-        if (!BACKUP_FOLDER.exists()) {
-            BACKUP_FOLDER.mkdirs();
+        if (!backupFolder.exists()) {
+            backupFolder.mkdirs();
         }
-        return List.of(BACKUP_FOLDER.listFiles((dir, name) -> name.endsWith(".zip")));
+        return List.of(backupFolder.listFiles((dir, name) -> name.endsWith(".zip")));
     }
 
     /**
@@ -139,52 +191,110 @@ public class BackupService {
      * @return true if the backup was restored successfully, false otherwise
      */
     public boolean restoreBackup(File backupFile) {
-        if (!backupFile.exists() || !backupFile.getName().endsWith(".zip")) {
+        if (!backupFile.isFile() || !backupFile.getName().endsWith(".zip")) {
             return false;
         }
 
-        // Delete all holograms
-        HologramRegistry hologramRegistry = FancyHologramsPlugin.get().getRegistry();
-        for (Hologram hologram : hologramRegistry.getAll()) {
-            hologramRegistry.unregister(hologram);
+        synchronized (FancyHologramsPlugin.get().getStorage()) {
+            return restoreBackupLocked(backupFile);
         }
+    }
 
-        // Make sure all hologram data is gone
+    private boolean restoreBackupLocked(File backupFile) {
+        HologramRegistry registry = FancyHologramsPlugin.get().getRegistry();
+        Collection<Hologram> previousHolograms = new ArrayList<>(registry.getAll());
+        Path dataPath = dataFolder.toPath().toAbsolutePath();
+        Path temporary = null;
+        Path previous = null;
+        boolean unloaded = false;
+        boolean moved = false;
+        boolean restored = false;
         try {
-            Files.walk(DATA_FOLDER.toPath())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        } catch (IOException e) {
-            FancyHologramsPlugin.get().getFancyLogger().error(
-                    "Failed to clear data folder before restoring backup",
-                    StringProperty.of("file", DATA_FOLDER.toString()),
-                    ThrowableProperty.of(e)
-            );
-            return false;
-        }
+            Files.createDirectories(dataPath.getParent());
+            temporary = Files.createTempDirectory(dataPath.getParent(), ".fh-restore-");
+            Path staged = temporary.resolve("data");
+            previous = temporary.resolve("previous");
+            Files.createDirectory(staged);
+            unzip(backupFile.toPath(), staged);
 
-        // Unzip the backup file into the data folder
-        try {
-            unzip(backupFile.toPath(), DATA_FOLDER.toPath());
-        } catch (IOException e) {
+            Collection<HologramData> data = new JsonStorage(staged.resolve("holograms").toFile()).loadAllStrict();
+            Set<String> names = new HashSet<>();
+            for (HologramData hologram : data) {
+                if (!names.add(hologram.getName())) {
+                    throw new IOException("Duplicate hologram name in backup: " + hologram.getName());
+                }
+            }
+
+            unloaded = true;
+            unloadHolograms(registry);
+            if (Files.exists(dataPath)) {
+                Files.move(dataPath, previous);
+                moved = true;
+            }
+            Files.move(staged, dataPath);
+
+            for (HologramData hologramData : data) {
+                Hologram hologram = FancyHologramsPlugin.get().getHologramFactory().apply(hologramData);
+                if (!registry.register(hologram)) {
+                    throw new IllegalStateException("Could not register restored hologram " + hologramData.getName());
+                }
+            }
+
+            restored = true;
+            return true;
+        } catch (IOException | RuntimeException e) {
             FancyHologramsPlugin.get().getFancyLogger().error(
                     "Failed to restore backup",
                     StringProperty.of("file", backupFile.toString()),
                     ThrowableProperty.of(e)
             );
+            if (unloaded) {
+                try {
+                    unloadHolograms(registry);
+                    if (moved || (temporary != null && !Files.exists(temporary.resolve("data")))) {
+                        deleteDirectory(dataPath);
+                    }
+                    if (moved) {
+                        Files.move(previous, dataPath);
+                    }
+                    for (Hologram hologram : previousHolograms) {
+                        registry.register(hologram);
+                        hologram.getData().setHasChanges(true);
+                    }
+                } catch (IOException | RuntimeException rollbackError) {
+                    FancyHologramsPlugin.get().getFancyLogger().error("Failed to restore previous hologram data", ThrowableProperty.of(rollbackError));
+                }
+            }
             return false;
+        } finally {
+            if (temporary != null && (restored || previous == null || !Files.exists(previous))) {
+                try {
+                    deleteDirectory(temporary);
+                } catch (IOException e) {
+                    FancyHologramsPlugin.get().getFancyLogger().warn("Failed to remove restore staging directory", ThrowableProperty.of(e));
+                }
+            }
         }
+    }
 
-        // Load all holograms from the storage and register them
-
-        Collection<HologramData> newHolograms = FancyHologramsPlugin.get().getStorage().loadAll();
-        hologramRegistry.clear(); // clear again to make sure no old holograms are left
-        for (HologramData data : newHolograms) {
-            Hologram hologram = FancyHologramsPlugin.get().getHologramFactory().apply(data);
-            hologramRegistry.register(hologram);
+    private void unloadHolograms(HologramRegistry registry) {
+        for (Hologram hologram : registry.getAll()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                hologram.despawnFrom(player);
+            }
         }
+        registry.clear();
+    }
 
-        return true;
+    private void deleteDirectory(Path directory) throws IOException {
+        if (!Files.exists(directory)) {
+            return;
+        }
+        try (Stream<Path> paths = Files.walk(directory)) {
+            for (Path path : paths.sorted(Comparator.reverseOrder()).toList()) {
+                Files.delete(path);
+            }
+        }
     }
 
     /**
@@ -193,8 +303,8 @@ public class BackupService {
      * @return the timestamp of the last backup file, or -1 if no backup files exist
      */
     private long getLastBackupTimestamp() {
-        if (!BACKUP_FOLDER.exists()) {
-            BACKUP_FOLDER.mkdirs();
+        if (!backupFolder.exists()) {
+            backupFolder.mkdirs();
         }
 
         return listBackups().stream()

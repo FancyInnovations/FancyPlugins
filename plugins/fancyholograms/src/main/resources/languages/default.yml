@@ -184,6 +184,7 @@ messages:
           not_found: "Could not find trait {primaryColor}{name}{secondaryColor}."
           attach:
             already_attached: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} already has trait {primaryColor}{name}{errorColor} attached."
+            failed: "{errorColor}Could not attach trait {primaryColor}{name}{errorColor} to hologram {primaryColor}{hologram}{errorColor}. Check that the trait supports this hologram type and that its required plugins are installed."
             success: "Successfully attached trait {primaryColor}{name}{secondaryColor} to hologram {primaryColor}{hologram}{secondaryColor}."
           detach:
             not_attached: "{errorColor}Hologram {primaryColor}{hologram}{errorColor} does not have trait {primaryColor}{name}{errorColor} attached."

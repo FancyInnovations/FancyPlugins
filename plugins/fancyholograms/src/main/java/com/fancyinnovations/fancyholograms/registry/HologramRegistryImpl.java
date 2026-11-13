@@ -3,9 +3,11 @@ package com.fancyinnovations.fancyholograms.registry;
 import com.fancyinnovations.fancyholograms.api.HologramRegistry;
 import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
+import com.fancyinnovations.fancyholograms.storage.HologramStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -22,30 +24,38 @@ public class HologramRegistryImpl implements HologramRegistry {
 
     @Override
     public boolean register(Hologram hologram) {
-        FancyHologramsPlugin.get().getController().refreshHologram(hologram, Bukkit.getOnlinePlayers());
+        HologramStorage storage = FancyHologramsPlugin.get().getStorage();
+        synchronized (storage) {
+            if (holograms.putIfAbsent(hologram.getData().getName(), hologram) != null) {
+                return false;
+            }
 
-        boolean registered = holograms.putIfAbsent(hologram.getData().getName(), hologram) != null;
+            hologram.getData().getTraitTrait().load();
+            hologram.getData().getTraitTrait().onRegister();
 
-        hologram.getData().getTraitTrait().load();
+            FancyHologramsPlugin.get().getController().refreshHologram(hologram, Bukkit.getOnlinePlayers());
 
-        hologram.getData().getTraitTrait().onRegister();
-
-        return registered;
+            return true;
+        }
     }
 
     @Override
     public boolean unregister(Hologram hologram) {
-        boolean removed = holograms.remove(hologram.getData().getName(), hologram);
+        HologramStorage storage = FancyHologramsPlugin.get().getStorage();
+        synchronized (storage) {
+            if (!holograms.remove(hologram.getData().getName(), hologram)) {
+                return false;
+            }
 
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            hologram.despawnFrom(onlinePlayer);
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                hologram.despawnFrom(onlinePlayer);
+            }
+
+            storage.delete(hologram.getData());
+            hologram.getData().getTraitTrait().onUnregister();
+
+            return true;
         }
-
-        FancyHologramsPlugin.get().getStorage().delete(hologram.getData());
-
-        hologram.getData().getTraitTrait().onUnregister();
-
-        return removed;
     }
 
     @Override
@@ -82,10 +92,17 @@ public class HologramRegistryImpl implements HologramRegistry {
 
     @Override
     public void clear() {
-        for (Hologram hologram : holograms.values()) {
-            hologram.getData().getTraitTrait().onUnregister();
-        }
+        HologramStorage storage = FancyHologramsPlugin.get().getStorage();
+        synchronized (storage) {
+            Collection<Hologram> unloaded = new ArrayList<>(holograms.values());
+            for (Hologram hologram : unloaded) {
+                storage.invalidate(hologram.getData());
+            }
 
-        holograms.clear();
+            holograms.clear();
+            for (Hologram hologram : unloaded) {
+                hologram.getData().getTraitTrait().onUnregister();
+            }
+        }
     }
 }

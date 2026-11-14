@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -41,7 +41,7 @@ public abstract class Hologram {
 
     protected Hologram(@NotNull final HologramData data) {
         this.data = data;
-        this.viewers = new HashSet<>();
+        this.viewers = ConcurrentHashMap.newKeySet();
 
         this.data.getTraitTrait().attachHologram(this);
 

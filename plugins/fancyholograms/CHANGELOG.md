@@ -1,335 +1,577 @@
+# FancyHolograms v3 — changes from v2
+
+FancyHolograms v3 rewrites the plugin's commands, storage, and developer API. This is an overview of the initial v3 update for users upgrading from v2.
+
+The main changes are:
+
+- Rewritten commands with configurable translations, hologram selection, and more editing options
+- JSON storage with folders for organizing holograms and automatic backups
+- Traits for interactions, multiple pages, file content, and custom behavior
+- Text opacity, block-state customization, and colored outlines for item and block holograms
+- A new API with builders, a hologram registry, a visibility controller, and extensible traits
+
+Text, item, and block holograms, MiniMessage and legacy formatting, PlaceholderAPI, MiniPlaceholders, and NPC linking remain available.
+
 ## How to update
 
-v3 is basically a complete rewrite of the plugin. 
-It is not compatible with v2 and earlier versions.
-Not everything will be migrated automatically, so you will have to do some manual work.
+### Requirements
 
-Things that will be migrated automatically:
-- All your hologram data (holograms.yml)
+- Java 25 or newer
+- Paper or Folia on a supported Minecraft version: 1.21.7 - 26.3
+- FancyNpcs if you use NPC linking or the interaction trait
 
-Things that will **not** be migrated automatically:
-- All configurations from config.yml
-- All configurations from featureFlags.yml
+Spigot is not supported. Support for development versions of Minecraft depends on the FancyHolograms build you use.
 
-The API has changed significantly, so you will have to update your code accordingly.
-Read more about the new API [here](#new-api).
+### Migration from v2
 
-## New Commands & Translations
+1. Stop the server and back up the entire `plugins/FancyHolograms/` folder and your v2 plugin jar
+2. Check that plugins using the FancyHolograms API support v3, then replace the v2 jar with the v3 jar
+3. Move your old `config.yml` and `featureFlags.yml` into your backup. Leave `holograms.yml` in `plugins/FancyHolograms/` so v3 can find it
+4. Start the server. v3 generates its configuration and converts `holograms.yml` to JSON files under `plugins/FancyHolograms/data/holograms/migrated/`. The original file is renamed to `holograms-old.yml`
+5. Reapply your configuration using the [new configuration paths](#new-configuration), update command permissions and scripts, and restart the server
+6. Check your holograms, formatting, visibility, and NPC links, and confirm that the converted data has been saved
 
-In v3, all commands have been rewritten and simplified.
+Hologram data is migrated automatically. Settings from `config.yml` and `featureFlags.yml` are **not** migrated automatically. Feature flags now belong in `config.yml`.
 
-### Framework
+The v3 API is incompatible with the v2 API. Plugins built against v2 must be updated; see [New API](#new-api).
 
-If you're using FancyNpcs, you will notice that the commands are now more consistent with the FancyNpcs commands.
-It's now using the [Lamp command framework](https://github.com/Revxrsal/Lamp), which allows for better command handling and easier command creation.
+There is no automatic conversion back to v2. To downgrade, stop the server and restore your pre-upgrade plugin folder and compatible plugin jars. A v3 data backup does not replace that pre-upgrade backup.
 
-You can find documentation about the new commands [here](https://fancyinnovations.com/docs/minecraft-plugins/fancyholograms/commands/hologram).
+## Commands and translations
+
+### Command framework and migration
+
+Commands now use the [Lamp command framework](https://github.com/Revxrsal/Lamp). Hologram commands use `/hologram`, administration commands use `/fancyholograms`, and trait configuration uses `/hologramtrait`.
+
+In the examples below, `<argument>` is required and `[argument]` is optional.
+
+Many edit commands now use underscores. Update scripts, command actions, and permission grants that use the v2 syntax.
+
+| v2 command | v3 command |
+| --- | --- |
+| `/hologram create <type> <name>` | `/hologram create <name> [--type <type>]`; defaults to `TEXT` |
+| `/hologram edit <hologram> movehere` or `position` | `/hologram edit <hologram> move_here` |
+| `/hologram edit <hologram> moveto <x> <y> <z> [yaw] [pitch]` | `/hologram edit <hologram> move_to <x> <y> <z> [yaw] [pitch]` |
+| `/hologram edit <hologram> rotate <angle>` | `/hologram edit <hologram> rotation yaw <angle>` |
+| `/hologram edit <hologram> rotatepitch <angle>` | `/hologram edit <hologram> rotation pitch <angle>` |
+| `/hologram edit <hologram> addline <text>` | `/hologram edit <hologram> add_line <text>` |
+| `/hologram edit <hologram> setline <line> <text>` | `/hologram edit <hologram> set_line <line> <text>` |
+| `/hologram edit <hologram> removeline <line>` | `/hologram edit <hologram> remove_line [line]` |
+| `/hologram edit <hologram> insertbefore <line> <text>` | `/hologram edit <hologram> add_line_before <line> <text>` |
+| `/hologram edit <hologram> insertafter <line> <text>` | `/hologram edit <hologram> add_line_after <line> <text>` |
+| `/hologram edit <hologram> textshadow <boolean>` | `/hologram edit <hologram> text_shadow <boolean>` |
+| `/hologram edit <hologram> textalignment <alignment>` | `/hologram edit <hologram> text_alignment <alignment>` |
+| `/hologram edit <hologram> seethrough <boolean>` | `/hologram edit <hologram> see_through <boolean>` |
+| `/hologram edit <hologram> visibilitydistance <distance>` | `/hologram edit <hologram> visibility_distance <distance>` |
+| `/hologram edit <hologram> updatetextinterval <interval>` | `/hologram edit <hologram> update_text_interval <duration>`, e.g. `1s` |
+| `/hologram edit <hologram> shadowradius <radius>` | `/hologram edit <hologram> shadow_radius <radius>` |
+| `/hologram edit <hologram> shadowstrength <strength>` | `/hologram edit <hologram> shadow_strength <strength>` |
+| `/hologram edit <hologram> linkwithnpc <npc>` | `/hologram edit <hologram> link_with_npc <npc>` |
+| `/hologram edit <hologram> unlinkwithnpc` | `/hologram edit <hologram> unlink_with_npc` |
+| `/fancyholograms save` | `/fancyholograms storage save` |
+| `/fancyholograms reload` | `/fancyholograms config reload` and `/fancyholograms storage load` |
+
+### Administration commands
+
+| Command | Description |
+| --- | --- |
+| `/fancyholograms version` | Shows the installed version and checks for an update. |
+| `/fancyholograms config show` | Shows settings, experimental flags, current values, and defaults. |
+| `/fancyholograms config reload` | Reloads `config.yml` and updates the log level. |
+| `/fancyholograms storage save` | Saves persistent holograms. |
+| `/fancyholograms storage load` | Unloads current holograms and loads the saved data from disk. |
+| `/fancyholograms backup list` | Lists available backups. |
+| `/fancyholograms backup create` | Creates a data backup. |
+| `/fancyholograms backup restore <file>` | Replaces the current data with a backup. |
+| `/fancyholograms backup delete <file>` | Deletes a backup. |
+
+Save any changes you want to keep before loading data from disk. Configuration reload does not reload language files or recreate scheduled tasks; restart after changing the language or scheduling settings.
+
+### Permissions
+
+v3 checks permissions per command. The old `fancyholograms.admin` permission alone does not grant all command access.
+
+Most command permissions begin with `fancyholograms.commands.`, but some use different paths. Examples:
+
+| Command or action | Permission |
+| --- | --- |
+| Create a hologram | `fancyholograms.commands.hologram.create` |
+| Select a hologram | `fancyholograms.commands.hologram.select` |
+| Change scale | `fancyholograms.commands.hologram.edit.scale` |
+| Change rotation | `fancyholograms.commands.hologram.rotation` |
+| Change glowing | `fancyholograms.commands.hologram.glowing` |
+| Move or swap text lines | `fancyholograms.hologram.edit.move_line` |
+| Attach a trait | `fancyholograms.commands.hologram.trait.attach` |
+| Reload configuration | `fancyholograms.commands.fancyholograms.config.reload` |
+| Load hologram data | `fancyholograms.commands.fancyholograms.storage.load` |
+| Restore a backup | `fancyholograms.commands.fancyholograms.backup.restore` |
+
+For holograms using `PERMISSION_REQUIRED` visibility, the viewing permission remains `fancyholograms.viewhologram.<name>`.
+
+The [v3 command source](https://github.com/FancyInnovations/FancyPlugins/tree/main/plugins/fancyholograms/src/main/java/com/fancyinnovations/fancyholograms/commands) contains the full command signatures and permission nodes.
 
 ### Translations
 
-Not only the command structure has changed, but also the responses.
-All responses are now configurable. 
-You can find the default responses in the `plugins/FancyHolograms/languages/default.yml` file.
+Plugin messages can now be customized through language files. The default messages are in `plugins/FancyHolograms/languages/default.yml`.
 
-You can create your own language files in the `plugins/FancyHolograms/languages/` folder, by copying the `default.yml` file and renaming it to your desired language code (e.g. `nl.yml`, `pl.yml`, etc.).
+Copy that file into the same folder using a filename such as `nl.yml` or `pl.yml`. Set the copy's top-level `language_name` value to a unique name, such as `nl`, edit its messages, and set `settings.language` in `config.yml` to that same name. Restart the server to load the language.
 
-Remember to set the `language` option in the `config.yml` file to your language code.
+Keep custom translations in your own language file; `default.yml` is refreshed from the plugin at startup.
 
 ### Selecting holograms
 
-One of the new features in v3 is the ability to select a hologram and perform actions on it without having to specify its name every time.
+Use `/hologram select <hologram>` to select a hologram. Creating a hologram also selects it automatically.
 
-To select a hologram, you can use the `/fancyholograms select <hologram_name>` command.
-Once a hologram is selected, you can perform actions on it without having to specify its name again.
-Simply use `.selected` as the hologram name in the command, and it will use the selected hologram.
+Use `.selected` in place of the hologram name in subsequent commands:
 
-Example:
-1. Select a hologram: `/hologram select my_hologram`
-2. Edit something: `/hologram edit .selected billboard FIXED`
+```text
+/hologram select my_hologram
+/hologram edit .selected billboard FIXED
+/hologram edit .selected set_line 1 <gold>Welcome!
+```
 
-You can also use `.nearest` to select the nearest hologram to you.
+Use `.nearest` to target the nearest hologram in your current world:
 
-`.selected` and `.nearest` can be used in any command that requires a hologram name.
+```text
+/hologram info .nearest
+```
 
-## New Storage System
+Both selectors require a player and work wherever a command accepts an existing hologram.
 
-The storage system has been completely rewritten.
-It now uses a more efficient and flexible system that allows for better performance and easier management of holograms.
+### Editing improvements
 
-The file format is now JSON instead of YAML, which allows for better compatibility with other systems and easier parsing.
+Text line numbers start at 1.
 
-### File Structure
+| Command | Description |
+| --- | --- |
+| `/hologram edit <hologram> move_line_up <line>` | Moves a text line up one position. |
+| `/hologram edit <hologram> move_line_down <line>` | Moves a text line down one position. |
+| `/hologram edit <hologram> swap_lines <line1> <line2>` | Exchanges two text lines. |
+| `/hologram edit <hologram> remove_line [line]` | Removes the specified line, or the last line if omitted. |
+| `/hologram edit <hologram> scale <factor>` | Sets the same scale on all three axes. |
+| `/hologram edit <hologram> scale <x> <y> <z>` | Sets each axis independently. |
 
-Many of you are annoyed by the fact that the hologram data was stored in a single file (`holograms.yml`).
-If you had a lot of holograms, this file could become huge and difficult to manage.
-This has been changed in v3.
+When editing a text line, tab completion suggests its current text. Uniform scaling remains available alongside per-axis scaling.
 
-The hologram data is no longer stored in a single file, but in multiple files.
-The new place for hologram data is in the `plugins/FancyHolograms/data/holograms/` folder.
-In this folder, you can create subfolders to organize your holograms.
-Every JSON file in this folder will be loaded (recursively).
-Each JSON file can contain multiple holograms, which allows for better organization and management of holograms.
+The `move_to` command supports absolute coordinates, offsets from the hologram with `~`, and offsets from the player with `~~`. Optional yaw and pitch arguments follow the coordinates.
+
+```text
+/hologram edit .selected move_to ~ ~1 ~
+/hologram edit .selected move_to ~~ ~~2 ~~
+```
+
+The first example moves the hologram up one block. The second uses the player's coordinates plus two blocks on the Y axis, within the hologram's current world.
+
+Text update intervals accept durations such as `500ms`, `1s`, or `1m`. Use `off` to disable periodic text updates:
+
+```text
+/hologram edit .selected update_text_interval 1s
+/hologram edit .selected update_text_interval off
+```
+
+## New display options
+
+### Text opacity
+
+Text holograms support configurable text opacity:
+
+```text
+/hologram edit <hologram> text_opacity <opacity>
+/hologram edit welcome text_opacity 75%
+```
+
+The command accepts percentages from 0 to 100, with or without the `%` suffix. This controls the text itself; background transparency is configured separately.
+
+The API and JSON storage represent opacity as a value from 0 to 255. See the [builder examples](#builders).
+
+### Block states
+
+Block holograms can display block-state properties, such as the facing direction of stairs or whether a lamp is lit:
+
+```text
+/hologram edit <hologram> blockstate <property> <value>
+/hologram edit lamp block REDSTONE_LAMP
+/hologram edit lamp blockstate lit true
+```
+
+Available properties and values depend on the hologram's block material. Tab completion suggests properties and their values. Full block data, including state properties, is saved with the hologram.
+
+### Glowing outlines
+
+Item and block holograms support colored glowing outlines:
+
+```text
+/hologram edit <hologram> glowing [color]
+/hologram edit reward glowing GOLD
+/hologram edit reward glowing DISABLED
+```
+
+Omitting the color toggles glowing, using white when enabling it. Text holograms do not support this option.
+
+## New storage system
+
+### File structure
+
+v3 replaces the single YAML file with JSON files under `plugins/FancyHolograms/data/holograms/`.
+
+You can organize holograms into subfolders, and each JSON file can contain multiple holograms. Files are loaded recursively; files whose names begin with `.` or `_` are skipped.
 
 Example folder structure:
 
-- `plugins/FancyHolograms/data/holograms/`
-  - `rules-hologram.json`
-  - `info-hologram.json`
-  - `spawn-holograms/`
-    - `shop-holograms.json`
-    - `quest-holograms.json`
-    - `crates/`
-      - `crate1.json`
-      - `crate2.json`
-      - `crate3.json`
-  - `event-holograms/`
-    - `event1.json`
-    - `event2.json`
-    - `event3.json`
+```text
+plugins/FancyHolograms/data/holograms/
+├── rules.json
+├── migrated/
+│   └── welcome.json
+├── spawn/
+│   ├── shops.json
+│   └── quests.json
+└── events/
+    └── summer.json
+```
 
-Looking at one JSON file, it will look like this:
+Each file contains an array of holograms. A text hologram might look like this; change the world name and coordinates to match your server:
 
 ```json
 [
-    {
-      first hologram ...
+  {
+    "hologram_data": {
+      "name": "welcome",
+      "type": "TEXT",
+      "location": {
+        "world": "world",
+        "x": 0.5,
+        "y": 65.0,
+        "z": 0.5,
+        "yaw": 0.0,
+        "pitch": 0.0
+      },
+      "world_name": "world",
+      "visibility_distance": 20,
+      "visibility": "ALL",
+      "linked_npc_name": null,
+      "traits": []
     },
-    {
-      second hologram ...
+    "display_data": {
+      "scale": { "x": 1.0, "y": 1.0, "z": 1.0 },
+      "translation": { "x": 0.0, "y": 0.0, "z": 0.0 },
+      "shadow_radius": 0.0,
+      "shadow_strength": 0.0,
+      "brightness": null,
+      "billboard": "CENTER",
+      "glowing_color": "DISABLED"
+    },
+    "text_data": {
+      "text": ["<gold>Welcome!", "Enjoy your stay."],
+      "text_shadow": true,
+      "see_through": false,
+      "text_alignment": "CENTER",
+      "text_update_interval": 1000,
+      "background_color": "#40000000",
+      "text_opacity": 255
     }
+  }
 ]
 ```
 
-With each hologram containing the following "components":
+The components are:
 
-```json
-{
-  "hologram_data": { ... },
-  "display_data": { ... },
-  "text_data": { ... },
-}
-```
+- `hologram_data`: name, type, location, world, visibility, NPC link, and attached trait names
+- `display_data`: scale, translation, billboard, brightness, shadows, and glowing
+- `text_data`: text, alignment, background, shadow, update interval, and opacity
 
-If the hologram is a block or item hologram, it will have the `block_data` or `item_data` component instead of `text_data`.
+Item and block holograms use `item_data` or `block_data` instead of `text_data`. Item data is serialized as Base64, and block data includes the material and any state properties.
 
-The `hologram_data` component contains the basic information about the hologram, such as its name, location and visibility.
-The `display_data` component contains the display settings for the hologram, such as its scale, shadow and billboard.
-The `text_data` component contains the text settings for the hologram, such as the text itself, text alignment and background color.
+Stop the server before reorganizing or manually editing files so a running save cannot overwrite your changes.
 
 ### Backups
 
-FancyHolograms v3 will automatically create a backup of your hologram data every 24h (configurable) and keeps every backup for 30 days (configurable).
-You can manage the backups with the `/fancyholograms backup <list|create|restore|delete>` commands. Backups are stored in the `plugins/FancyHolograms/backups/` folder.
+v3 creates automatic data backups at a configured interval, defaulting to 24 hours, and retains them for 30 days by default. Empty data folders are skipped.
 
-Backup intervals and retention can be configured in the `config.yml` file.
+Backups are ZIP files in `plugins/FancyHolograms/backups/`. They contain the contents of `plugins/FancyHolograms/data/`, including holograms and trait data. They do **not** include `config.yml`, language files, or plugin jars.
 
-You can manually restore a backup:
+Use the [administration commands](#administration-commands) to list, create, restore, or delete backups. Save persistent holograms with `/fancyholograms storage save` first if you want to include unsaved changes. For restore and delete, pass a filename from `backup list`, including its `.zip` extension.
+
+Restoring a backup replaces the current data folder and loaded holograms with the saved state. Create a backup first if you want to keep the current state. Archives are validated before the current data is replaced.
+
+To restore manually:
+
 1. Stop the server
-2. Delete all files in the `plugins/FancyHolograms/data` folder
-3. Unzip the backup file
-4. Copy the contents of the backup file to the `plugins/FancyHolograms/data` folder
-5. Start the server
+2. Extract the chosen backup into a separate folder and check its contents
+3. Move the current `plugins/FancyHolograms/data/` folder into a separate backup location
+4. Create a new `data/` folder and copy the extracted contents into it. The `holograms/` and `traits/` folders, when present, belong directly inside `data/`
+5. Start the server and check the restored holograms
 
-## New Configuration
+## New configuration
 
-**Disclaimer:** all configuration options do not migrate automatically. You will have to update your configuration files manually.
+Configuration remains in `plugins/FancyHolograms/config.yml`. Regular settings now use the `settings` section, and feature flags use `experimental_features`.
 
-The feature flags are now stored in the `config.yml` too. You can find them under the `experimental_features` section.
+For example:
 
-Configuration options (settings):
+```yaml
+settings:
+  language: default
+  refresh_holograms_on_locale_change: false
+  backups:
+    interval: 24
+    retention: 30
+experimental_features:
+  enable_rotation_improvement: false
+```
 
-| Option                                    | Description                                                                                                                                           | Default     |
-|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `language`                                | The language to use for the plugin.                                                                                                                   | default     |
-| `logging.level`                           | The log level for the plugin (DEBUG, INFO, WARN, ERROR).                                                                                              | INFO        |
-| `logging.version_notification`            | Whether version notifications are muted.                                                                                                              | false       |
-| `register_commands`                       | Whether the plugin should register its commands.                                                                                                      | true        |
-| `spawn_delay_on_join_ms`                  | The delay after player join before holograms are spawned, in milliseconds.                                                                            | 300 (ms)    |
-| `visibility_distance`                     | The default visibility distance for holograms.                                                                                                        | 20 (blocks) |
-| `backups.interval`                        | The interval at which backups are created (in hours).                                                                                                 | 24 (hours)  |
-| `backups.retention`                       | How long backups are kept (in days).                                                                                                                  | 30 (days)   |
-| `saving.save_on_changed`                  | Whether the plugin should save holograms when they are changed.                                                                                       | true        |
-| `saving.autosave.enabled`                 | Whether autosave is enabled.                                                                                                                          | true        |
-| `saving.autosave.interval`                | The interval at which autosave is performed in minutes.                                                                                               | 15 (mins)   |
-| `performance.hologram_update_interval_ms` | The interval at which holograms check for text updates (in milliseconds). Lower values = more responsive but higher CPU usage. Recommended: 200-500ms | 200 (ms)    |
+The tables below use full dotted paths. Reapply v2 settings using these paths; copying the old configuration unchanged does not migrate it.
 
-Configuration options (experimental features):
+### Settings
 
-| Option                                                        | Description                                                                                             | Default |
-|---------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------|
-| `experimental_features.disable_holograms_for_old_clients`     | Do not show holograms to clients with a version older than 1.19.4.                                      | false   |
-| `experimental_features.disable_holograms_for_bedrock_players` | Do not show holograms to bedrock players.                                                               | false   |
-| `experimental_features.enable_rotation_improvement`           | When enabled, hologram rotation will be done on display entities instead of the normal entity location. | false   |
-| `experimental_features.enable_folia_visibility_fix`           | When enabled, all holograms will respawn after 100ms when they should spawn.                            | false   |
+| Option | Description | Default |
+| --- | --- | --- |
+| `settings.language` | The selected language file's `language_name` value. | `default` |
+| `settings.logging.level` | Log level: `DEBUG`, `INFO`, `WARN`, or `ERROR`. | `INFO` |
+| `settings.logging.version_notification` | Mutes version notifications when `true`. | `false` |
+| `settings.register_commands` | Command registration setting; see the implementation notes below. | `true` |
+| `settings.spawn_delay_on_join_ms` | Delay after joining before holograms spawn, in milliseconds. | `300` |
+| `settings.visibility_distance` | Default hologram visibility distance, in blocks. | `20` |
+| `settings.refresh_holograms_on_locale_change` | Refreshes a player's holograms after their client language changes. | `false` |
+| `settings.backups.interval` | Interval between automatic backups, in hours. | `24` |
+| `settings.backups.retention` | Backup retention, in days. | `30` |
+| `settings.saving.save_on_changed` | Saves holograms when command edits are made. | `true` |
+| `settings.saving.autosave.enabled` | Enables the autosave task at startup. | `true` |
+| `settings.saving.autosave.interval` | Configured autosave interval, described as minutes; see the implementation notes below. | `15` |
+| `settings.performance.hologram_update_interval_ms` | Polling interval for periodic text updates, in milliseconds. Lower values increase polling frequency. | `200` |
+
+Locale refresh remains available from v2 and is now configured under `settings.refresh_holograms_on_locale_change`.
+
+The current implementation has two configuration limitations: commands are registered regardless of `settings.register_commands`, and autosave repeats every 120 seconds, using `settings.saving.autosave.interval` only as the initial delay in seconds. Restart after changing startup or scheduling settings.
+
+### Experimental features
+
+| Option | Description | Default |
+| --- | --- | --- |
+| `experimental_features.disable_holograms_for_old_clients` | Hides holograms from clients older than Minecraft 1.19.4. | `false` |
+| `experimental_features.disable_holograms_for_bedrock_players` | Hides holograms from Bedrock players. | `false` |
+| `experimental_features.enable_rotation_improvement` | Applies rotation through display entity data instead of the entity's location rotation. | `false` |
+| `experimental_features.enable_folia_visibility_fix` | Respawns holograms after 100 ms when spawning them on Folia. | `false` |
+
+The old Lamp command toggle has been removed. v3 uses the rewritten commands by default.
 
 ## Traits
 
-Traits are a new feature in v3 that allows you to extend the functionality of holograms.
-A trait is basically an extension that can be added to a hologram to add new features or functionality.
-Traits have access to the hologram's data and lifecycle, allowing them to modify the hologram's behavior or appearance.
-Each trait can have its own configuration and can be enabled or disabled individually.
+Traits extend a hologram's behavior and can store their own configuration. Attach, detach, or inspect traits with:
 
-You can add / remove traits to holograms using the `/hologram edit (hologram) traits (atttach|detach) (trait)` command.
-
-There are several built-in traits that come with FancyHolograms v3:
-
-### Interaction Trait
-
-This trait will spawn a npc (via FancyNpcs) with the type `INTERACTION` and position it around the hologram.
-Interaction entities are completely invisible but have a hitbox that can be interacted with.
-You can configure actions that will be executed when a player interacts with the interaction entity / hologram.
-You can use any action supported by FancyNpcs, such as running a command or sending a message.
-
-When the interaction trait is attached to a hologram, you have access to the following commands:
-- `/hologramtrait interaction <hologram> info`: shows information about the current interaction trait configuration
-- `/hologramtrait interaction <hologram> update_hitbox`: updates the hitbox of the interaction entity to match the hologram's size
-- `/hologramtrait interaction <hologram> add_action <action> <value>`: adds an action to the interaction trait
-- `/hologramtrait interaction <hologram> remove_action <action index>`: removes an action from the interaction trait
-- `/hologramtrait interaction <hologram> set_action <index> <action> <value>`: sets an action at a specific index in the interaction trait
-- `/hologramtrait interaction <hologram> clear_actions`: removes all actions from the interaction trait
-
-You can also manually edit the action in a file located at `plugins/FancyHolograms/data/traits/interaction_trait/<hologram name>.json`.
-
-Take a look on the [FancyNpcs wiki](https://fancyinnovations.com/docs/minecraft-plugins/fancynpcs/tutorials/action-system#actions) for more information about the available actions.
-(Custom actions registered to FancyNpcs are also available!)
-
-### Multiple Pages Trait
-
-This trait adds the ability to have multiple pages in one hologram.
-
-There are three modes to cycle through the pages:
-1. MANUAL mode: you set the page number manually (there is a command, see below)
-2. CYCLE mode: it will go to the next page every X seconds and will start at the first page after it reaches the last one
-3. RANDOM: it will show a random page every X seconds
-
-You can change the mode, delay and pages with the following commands:
-- `/hologramtrait multiple_pages <hologram> info`: shows information the current multiple pages trait configuration
-- `/hologramtrait multiple_pages <hologram> mode <mode>`: changes the mode
-- `/hologramtrait multiple_pages <hologram> delay <delay>`: changes the delay
-- `/hologramtrait multiple_pages <hologram> current_index <index>`: sets the current page index (useful for MANUAL mode)
-- `/hologramtrait multiple_pages <hologram> add_line <page> <text>`: adds a line to a page (use page index starting from 1)
-- `/hologramtrait multiple_pages <hologram> set_line <page> <line> <text>`: sets a line in a page
-- `/hologramtrait multiple_pages <hologram> remove_line <page> <line>`: removes a line from a page
-
-You can also manually edit the pages in a file located at `plugins/FancyHolograms/data/traits/multiple_pages_trait/<hologram name>.json`.
-
-### File Content Trait
-
-If this trait is attached to a hologram, it will read the content of a file and display it as the hologram's text.
-
-You can configure the file path and the update interval with the following commands:
-- `/hologramtrait file_content <hologram> info`: shows information about the current file content trait configuration
-- `/hologramtrait file_content <hologram> update`: forcefully updates the hologram's text from the file
-- `/hologramtrait file_content <hologram> file_path <file path>`: sets the file path (relative to the folder where your server jar is located)
-- `/hologramtrait file_content <hologram> refresh_interval <interval>`: sets the update interval
-
-Be careful what file you set as the file path, as it will be read by the server and displayed to all players.
-
-### Custom Component Provider Trait
-
-This trait is only meant to be used by developers.
-
-This trait allows other developers to use custom Adventure components instead of the default list of strings as hologram text.
-Example:
-```java
-hologram.getData().getTraitTrait().addTrait(new CustomComponentProviderTrait(player -> {
-    return MiniMessage.miniMessage().deserialize("<rainbow>My custom component</rainbow>");
-}));
+```text
+/hologram edit <hologram> trait attach <trait>
+/hologram edit <hologram> trait detach <trait>
+/hologram edit <hologram> trait list
 ```
+
+Use the registered trait identifier when attaching it. The configuration command group uses a shorter name:
+
+| Trait | Attach identifier | Configuration command group |
+| --- | --- | --- |
+| Interaction | `interaction_trait` | `/hologramtrait interaction` |
+| Multiple pages | `multiple_pages_trait` | `/hologramtrait multiple_pages` |
+| File content | `file_content_trait` | `/hologramtrait file_content` |
+
+For example:
+
+```text
+/hologram edit my_hologram trait attach multiple_pages_trait
+/hologramtrait multiple_pages my_hologram mode CYCLE
+/hologramtrait multiple_pages my_hologram delay 5s
+```
+
+### Interaction trait
+
+Requires FancyNpcs. This trait creates an invisible `INTERACTION` NPC with a hitbox around the hologram and runs FancyNpcs actions when a player interacts with it.
+
+Available commands:
+
+- `/hologramtrait interaction <hologram> info`: shows the current configuration.
+- `/hologramtrait interaction <hologram> update_hitbox`: recalculates the hitbox.
+- `/hologramtrait interaction <hologram> add_action <action> <value>`: appends an action.
+- `/hologramtrait interaction <hologram> remove_action <index>`: removes an action.
+- `/hologramtrait interaction <hologram> set_action <index> <action> <value>`: replaces an action.
+- `/hologramtrait interaction <hologram> clear_actions`: removes all actions.
+
+Action indices start at 1. Actions registered by other plugins with FancyNpcs are also available.
+
+The configuration is stored in `plugins/FancyHolograms/data/traits/interaction_trait/<hologram name>.json`.
+
+### Multiple pages trait
+
+For text holograms. This trait displays several pages using one of three modes:
+
+- `MANUAL`: choose the displayed page with `current_index`
+- `CYCLE`: advance through the pages in order and return to the first page after the last
+- `RANDOM`: choose a random page between updates
+
+Available commands:
+
+- `/hologramtrait multiple_pages <hologram> info`: shows the configuration.
+- `/hologramtrait multiple_pages <hologram> mode <mode>`: changes the mode.
+- `/hologramtrait multiple_pages <hologram> delay <duration>`: changes the cycle delay, e.g. `5s`.
+- `/hologramtrait multiple_pages <hologram> current_index <index>`: selects a page in manual mode.
+- `/hologramtrait multiple_pages <hologram> add_line <page> <text>`: appends a line to an existing page.
+- `/hologramtrait multiple_pages <hologram> set_line <page> <line> <text>`: replaces a line.
+- `/hologramtrait multiple_pages <hologram> remove_line <page> <line>`: removes a line.
+
+Page and line numbers in commands start at 1. Use a positive duration for the cycle delay.
+
+The configuration is stored in `plugins/FancyHolograms/data/traits/multiple_pages_trait/<hologram name>.json`. Add or remove whole pages by editing its `pages` array while the server is stopped. The stored `cycleDelay` value is in milliseconds.
+
+### File content trait
+
+For text holograms. This trait displays the contents of a file as the hologram's text.
+
+Available commands:
+
+- `/hologramtrait file_content <hologram> info`: shows the configuration
+- `/hologramtrait file_content <hologram> file_path <file_path>`: changes the file path
+- `/hologramtrait file_content <hologram> refresh_interval <duration>`: changes the refresh interval, e.g. `5s`
+- `/hologramtrait file_content <hologram> update`: reads the file immediately
+
+Relative paths are resolved from the server's working directory, usually the folder containing the server jar. The default path is `server.properties`; choose a file whose contents are intended to be visible to hologram viewers.
+
+The configuration is stored in `plugins/FancyHolograms/data/traits/file_content_trait/<hologram name>.json`. Its `refreshInterval` value is in milliseconds.
+
+### Custom component provider trait
+
+For developers, `CustomComponentProviderTrait` supplies an Adventure component per player, replacing the normal string-based text:
+
+```java
+import com.fancyinnovations.fancyholograms.api.data.property.CustomComponentProviderTrait;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+
+hologram.getData().getTraitTrait().addTrait(
+        new CustomComponentProviderTrait(viewer ->
+                MiniMessage.miniMessage().deserialize("<rainbow>My custom component</rainbow>"))
+);
+```
+
+The provider function is supplied in code and must be attached again when your integration recreates or loads the hologram; it cannot be restored from JSON.
 
 ## New API
 
-The API has been completely rewritten.
-You can now create holograms using builders, which allows for better readability and easier creation of holograms.
-With traits, you can extend the functionality of holograms and add new features.
+The API package namespace changes from `de.oliver.fancyholograms.api` to `com.fancyinnovations.fancyholograms.api`. The old manager-based integration must be updated to use the new builders, registry, controller, and trait APIs.
 
-You can view the Javadocs [here](https://fancyspaces.net/javadoc/fi/releases/de.oliver:FancyHolograms/3.0.0/index.html).
+The [v3 API source](https://github.com/FancyInnovations/FancyPlugins/tree/main/plugins/fancyholograms/fh-api/src/main/java/com/fancyinnovations/fancyholograms/api) is the reference for the interfaces and types described below.
 
-### Getting Started
+### Getting started
 
-Repository:
+For the initial v3 release, use the following Maven repository and dependency:
+
 ```kotlin
-maven {
-  name = "fancyinnovationsReleases"
-  url = uri("https://repo.fancyinnovations.com/releases")
+repositories {
+    maven {
+        name = "fancyinnovationsReleases"
+        url = uri("https://repo.fancyinnovations.com/releases")
+    }
+}
+
+dependencies {
+    compileOnly("com.fancyinnovations:FancyHolograms:3.0.0")
 }
 ```
 
-Dependency:
-```kotlin
-compileOnly("com.fancyinnovations:FancyHolograms:3.0.0")
-```
+When targeting a development build, use the matching `3.0.0-SNAPSHOT.*` version from `https://repo.fancyinnovations.com/snapshots` instead.
 
 ### Builders
 
-The new API introduces builders for creating holograms.
-There is one builder for each type of hologram: `TextHologramBuilder`, `ItemHologramBuilder` and `BlockHologramBuilder`.
+There is one builder per hologram type: `TextHologramBuilder`, `ItemHologramBuilder`, and `BlockHologramBuilder`.
 
-Example of creating a text hologram:
+Example of creating a text hologram, where `player` is an online Bukkit player:
 
 ```java
+import com.fancyinnovations.fancyholograms.api.data.builder.TextHologramBuilder;
+import com.fancyinnovations.fancyholograms.api.data.property.Visibility;
+import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import org.bukkit.Color;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.TextDisplay;
+
 Hologram hologram = TextHologramBuilder.create("Test", player.getLocation())
-                .text("Custom line")
-                .background(Color.BLACK)
-                .textAlignment(TextDisplay.TextAlignment.LEFT)
-                .textShadow(true)
-                .seeThrough(true)
-                .updateTextInterval(420)
-                .visibilityDistance(42)
-                .visibility(Visibility.ALL)
-                .persistent(false)
-                .linkedNpcName("TestNPC")
-                .trait(DebugTrait.class)
-                .billboard(Display.Billboard.FIXED)
-                .scale(3, 5, 6)
-                .translation(1, 2, 3)
-                .brightness(7, 3)
-                .shadowRadius(0.5f)
-                .shadowStrength(0.7f)
-                .interpolationDuration(100)
-                .build();
+        .text("<gold>Welcome!", "Enjoy your stay.")
+        .background(Color.BLACK)
+        .textAlignment(TextDisplay.TextAlignment.LEFT)
+        .textShadow(true)
+        .seeThrough(false)
+        .textOpacity(255)
+        .updateTextInterval(1000)
+        .visibilityDistance(32)
+        .visibility(Visibility.ALL)
+        .persistent(false)
+        .billboard(Display.Billboard.CENTER)
+        .scale(1, 1, 1)
+        .translation(0, 0.25f, 0)
+        .brightness(15, 15)
+        .shadowRadius(0.5f)
+        .shadowStrength(0.7f)
+        .interpolationDuration(5)
+        .build();
 ```
 
-You can also call `buildAndRegister()` to create and register the hologram in one go.
+`build()` creates the hologram without registering it. `buildAndRegister()` also registers it with FancyHolograms.
 
-### Registry and Controller
+Text update intervals are measured in **milliseconds**; display interpolation durations are measured in **ticks**. Text opacity uses 0–255; the byte overload also accepts `-1` for fully opaque text.
 
-The HologramManager has been replaced with a HologramRegistry and a HologramController.
-The HologramRegistry is responsible for registering and unregistering holograms.
-The HologramController is responsible for managing the hologram's visibility and updating the holograms.
+Call type-specific methods such as `textOpacity` or `blockState` before shared methods such as `visibilityDistance`, because shared methods return the base `HologramBuilder` type.
 
-You can either register your hologram using the `buildAndRegister()` method in the builder, or you can register it manually using the `HologramRegistry`:
+Block holograms can be created with state properties:
 
 ```java
+import com.fancyinnovations.fancyholograms.api.data.builder.BlockHologramBuilder;
+import org.bukkit.Material;
+
+Hologram lamp = BlockHologramBuilder.create("Lamp", player.getLocation())
+        .block(Material.REDSTONE_LAMP, "lit", "true")
+        .billboard(Display.Billboard.FIXED)
+        .buildAndRegister();
+```
+
+The builder also offers `blockData(BlockData)` for a complete Bukkit block state and `blockState(property, value)` for individual properties.
+
+### Registry and controller
+
+The old `HologramManager` is replaced by `HologramRegistry` and `HologramController`.
+
+The registry registers, finds, and unregisters holograms:
+
+```java
+import com.fancyinnovations.fancyholograms.api.FancyHolograms;
+import java.util.Optional;
+
 FancyHolograms.get().getRegistry().register(hologram);
+
+Optional<Hologram> found = FancyHolograms.get().getRegistry().get("Test");
+Hologram required = FancyHolograms.get().getRegistry().mustGet("Test");
 ```
 
-You can get a registered hologram using its name:
+`get()` returns an empty optional if the hologram is absent; `mustGet()` throws an `IllegalArgumentException`.
 
-```java
-Optional<Hologram> hologram = FancyHolograms.get().getRegistry().get("Test");
-// or
-Hologram hologram = FancyHolograms.get().getRegistry().mustGet("Test");
-```
+Persistent holograms participate in autosave and are saved during a normal server shutdown. Registration alone does not immediately save them. The text example above uses `persistent(false)` for a temporary hologram; leave persistence enabled for holograms that should survive a restart.
 
-You can manually refresh the hologram's visibility using the `HologramController`:
+The controller refreshes visibility for a player or a collection of players:
 
 ```java
 FancyHolograms.get().getController().refreshHologram(hologram, players);
 ```
 
-This will spawn the hologram for the specified players if they meet the visibility requirements or despawn it if they don't.
+A refresh spawns or despawns the hologram according to visibility conditions and distance. It is a visibility check, not a request to force a display-data update.
 
-### Traits
+To unregister and delete a hologram's saved data:
 
-Read more about the trait feature below.
+```java
+FancyHolograms.get().getRegistry().unregister(hologram);
+```
 
-You can also create your own traits by extending the `HologramTrait` class.
-View the [Javadocs](https://fancyspaces.net/javadoc/fi/releases/com.fancyinnovations:FancyHolograms/3.0.0/index.html) for more information about how the `HologramTrait` class is structured.
-You can override all the `on` methods, as well as the `load` and `save` methods.
+### Custom traits
 
-Every trait has a `storage` JDB (JSON Database) object that can be used to store data related to the trait.
-The JDB will save the data to the `plugins/FancyHolograms/data/traits/<trait name>/` folder, all paths are relative to this folder.
-You can read more about the JDB [here](https://fancyspaces.net/javadoc/fi/releases/de.oliver:JDB/1.0.4/index.html).
+Create a trait by extending `HologramTrait` and annotating it with `@HologramTraitClass(traitName = "my_trait")`. Traits restored from storage need a public no-argument constructor.
 
-You can view the source code of the built-in traits to see how they are implemented [here](https://github.com/FancyInnovations/FancyPlugins/tree/main/plugins/fancyholograms/src/main/java/com/fancyinnovations/fancyholograms/trait/builtin).
+Override lifecycle callbacks such as `onAttach`, `onSpawn`, `onDespawn`, `onUpdate`, `onModify`, `onRegister`, and `onUnregister`, plus `load` and `save` as needed. Clean up scheduled tasks or other resources in `onUnregister`.
+
+Register your trait class with `FancyHolograms.get().getTraitRegistry().register(MyTrait.class)` before holograms using it are loaded. Attach it through the builder's `trait(MyTrait.class)` method or `hologram.getData().addTrait(MyTrait.class)`.
+
+Each attached trait receives a JDB storage object rooted at `plugins/FancyHolograms/data/traits/<trait name>/`. Paths passed to that object are relative to the trait's folder.
+
+See the [built-in trait implementations](https://github.com/FancyInnovations/FancyPlugins/tree/main/plugins/fancyholograms/src/main/java/com/fancyinnovations/fancyholograms/trait/builtin) and the [JDB source](https://github.com/FancyInnovations/FancyPlugins/tree/main/libraries/jdb) for examples.

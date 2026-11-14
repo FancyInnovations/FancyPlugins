@@ -26,7 +26,7 @@ public class FS_WolfData {
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor REMAINING_ANGER_TIME = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.animal.wolf.Wolf", "DATA_REMAINING_ANGER_TIME");
 
     /**
-     * Use Holder<WolfVariant> as value (requires NMS conversion)
+     * Use Holder&lt;WolfVariant> as value (requires NMS conversion).
      * Wolf variant (PALE, SPOTTED, SNOWY, BLACK, ASHEN, RUSTY, WOODS, CHESTNUT, STRIPED)
      */
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor VARIANT = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.animal.wolf.Wolf", "DATA_VARIANT_ID");

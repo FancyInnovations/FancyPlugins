@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 public class NpcData {
 
     private final String id;
-    private final String name;
+    private String name;
     private final UUID creator;
     private String displayName;
     private SkinData skin;
@@ -130,6 +130,12 @@ public class NpcData {
 
     public String getName() {
         return name;
+    }
+
+    public NpcData setName(String name) {
+        this.name = name;
+        isDirty = true;
+        return this;
     }
 
     public UUID getCreator() {

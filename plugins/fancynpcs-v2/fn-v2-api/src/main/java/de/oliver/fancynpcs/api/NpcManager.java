@@ -11,6 +11,8 @@ public interface NpcManager {
 
     void removeNpc(Npc npc);
 
+    void renameNpc(Npc npc, String newName);
+
     @ApiStatus.Internal
     Npc getNpc(int entityId);
 

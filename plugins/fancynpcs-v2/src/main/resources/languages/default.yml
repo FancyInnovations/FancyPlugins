@@ -130,6 +130,7 @@ messages:
     npc_move_to: "Syntax: {primaryColor}/npc move_to {secondaryColor}(npc) (x) (y) (z) [world]"
     npc_nearby: "Syntax: {primaryColor}/npc nearby {secondaryColor}[filters...]"
     npc_remove: "Syntax: {primaryColor}/npc remove {secondaryColor}(npc)"
+    npc_rename: "Syntax: {primaryColor}/npc rename {secondaryColor}(npc) (new_name)"
     npc_rotate: "Syntax: {primaryColor}/npc rotate {secondaryColor}(npc) (yaw) (pitch)"
     npc_show_in_tab: "Syntax: {primaryColor}/npc show_in_tab {secondaryColor}(npc) (state)"
     npc_skin: "Syntax: {primaryColor}/npc skin {secondaryColor}(npc) (@none | @mirror | name | uuid | placeholder | url | file name) [--slim]"
@@ -185,6 +186,7 @@ messages:
     - "<hover:show_text:'{secondaryColor}Teleports NPC to specified location.'>{primaryColor}/npc move_to {secondaryColor}(npc) (x) (y) (z) [world]"
     - "<hover:show_text:'{secondaryColor}Lists all NPCs in your world. Can be filtered and sorted.'>{primaryColor}/npc nearby {secondaryColor}[--radius] [--type] [--sort]"
     - "<hover:show_text:'{secondaryColor}Removes (deletes) specified NPC.'>{primaryColor}/npc remove {secondaryColor}(npc)"
+    - "<hover:show_text:'{secondaryColor}Renames specified NPC.'>{primaryColor}/npc rename {secondaryColor}(npc) (new_name)"
     - "<hover:show_text:'{secondaryColor}Changes the rotation (yaw and pitch) of the NPC.'>{primaryColor}/npc rotate {secondaryColor}(npc) (yaw) (pitch)"
     - "<hover:show_text:'{secondaryColor}Changes the scale of the size of the NPC.'>{primaryColor}/npc scale {secondaryColor}(npc) (factor)"
     - "<hover:show_text:'{secondaryColor}Changes whether the NPC is shown in the player-list. This works only on NPCs of PLAYER type.<newline><newline>{errorColor}Re-connecting to the server might be required for changes to take effect.'>{primaryColor}/npc show_in_tab {secondaryColor}(npc) (state)"
@@ -312,6 +314,9 @@ messages:
 
   # Commands (npc remove)
   npc_remove_success: "NPC {primaryColor}{npc}{secondaryColor} has been removed."
+
+  # Commands (npc rename)
+  npc_rename_success: "NPC {primaryColor}{npc}{secondaryColor} has been renamed to {primaryColor}{new_npc}{secondaryColor}."
 
   # Commands (npc rotate)
   npc_rotate_set_success: "NPC {primaryColor}{npc}{secondaryColor} has been rotated to yaw {primaryColor}{yaw}{secondaryColor} and pitch {primaryColor}{pitch}{secondaryColor}."

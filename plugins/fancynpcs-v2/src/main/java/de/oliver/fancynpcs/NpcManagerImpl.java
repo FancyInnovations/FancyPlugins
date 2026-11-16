@@ -64,7 +64,7 @@ public class NpcManagerImpl implements NpcManager {
     @Override
     public void removeNpc(Npc npc) {
         npcs.remove(npc.getData().getId());
-
+        NpcVisibility.ManualNpcVisibility.remove(npc);
         YamlConfiguration npcConfig = YamlConfiguration.loadConfiguration(npcConfigFile);
         npcConfig.set("npcs." + npc.getData().getId(), null);
         try {
@@ -72,6 +72,22 @@ public class NpcManagerImpl implements NpcManager {
         } catch (IOException e) {
             logger.error("Could not save npc config file", ThrowableProperty.of(e));
         }
+    }
+
+    @Override
+    public void renameNpc(Npc npc, String newName) {
+        final Npc existing;
+        if (FancyNpcs.PLAYER_NPCS_FEATURE_FLAG.isEnabled()) {
+            existing = getNpc(newName, npc.getData().getCreator());
+        } else {
+            existing = getNpc(newName);
+        }
+        if (existing != null && existing != npc) {
+            throw new IllegalArgumentException("An NPC with this name already exists");
+        }
+
+        npc.getData().setName(newName);
+        saveNpcs(true);
     }
 
     @ApiStatus.Internal

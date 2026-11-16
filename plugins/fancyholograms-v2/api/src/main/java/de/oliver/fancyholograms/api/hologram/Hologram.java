@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lushplugins.chatcolorhandler.paper.PaperColor;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,7 +44,7 @@ public abstract class Hologram {
     /**
      * Set of UUIDs of players to whom the hologram is currently shown.
      */
-    protected final @NotNull Set<UUID> viewers = new HashSet<>();
+    protected final @NotNull Set<UUID> viewers = ConcurrentHashMap.newKeySet();
     private static final UUID NULL_PLAYER_KEY = new UUID(0L, 0L);
     private final Cache<UUID, Component> cachedTextPerPlayer = CacheBuilder.newBuilder()
             .expireAfterWrite(1, TimeUnit.SECONDS)
@@ -287,7 +288,7 @@ public abstract class Hologram {
 
     public boolean isWithinVisibilityDistance(@NotNull final Player player) {
         final var location = getData().getLocation();
-        if (!location.getWorld().equals(player.getWorld())) {
+        if (!location.isWorldLoaded() || !location.getWorld().equals(player.getWorld())) {
             return false;
         }
 

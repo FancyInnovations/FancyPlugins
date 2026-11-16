@@ -1,6 +1,8 @@
 package de.oliver.fancyholograms.api.data.property;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 import de.oliver.fancyholograms.api.hologram.Hologram;
 import org.bukkit.entity.Player;
 
@@ -51,7 +53,7 @@ public enum Visibility {
      * TODO: Discussion needed - Potentially condense this into one singular multimap within the enum?
      */
     public static class ManualVisibility {
-        private static final HashMultimap<String, UUID> distantViewers = HashMultimap.create();
+        private static final SetMultimap<String, UUID> distantViewers = Multimaps.synchronizedSetMultimap(HashMultimap.create());
 
         public static boolean canSee(Player player, Hologram hologram) {
             return hologram.isViewer(player) || distantViewers.containsEntry(hologram.getName(), player.getUniqueId());

@@ -8,6 +8,7 @@ import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
 import de.oliver.fancyanalytics.logger.appender.ConsoleAppender;
 import de.oliver.fancyanalytics.logger.appender.JsonAppender;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancyholograms.api.FancyHologramsPlugin;
 import de.oliver.fancyholograms.api.HologramConfiguration;
 import de.oliver.fancyholograms.api.HologramManager;
@@ -168,8 +169,14 @@ public final class FancyHolograms extends JavaPlugin implements FancyHologramsPl
 
         if (getHologramConfiguration().isAutosaveEnabled()) {
             getHologramThread().scheduleAtFixedRate(() -> {
-                if (hologramsManager != null) {
+                if (hologramsManager == null) {
+                    return;
+                }
+
+                try {
                     hologramsManager.saveHolograms();
+                } catch (Throwable throwable) {
+                    fancyLogger.error("Failed to autosave holograms", ThrowableProperty.of(throwable));
                 }
             }, getHologramConfiguration().getAutosaveInterval(), getHologramConfiguration().getAutosaveInterval() * 60L, TimeUnit.SECONDS);
         }

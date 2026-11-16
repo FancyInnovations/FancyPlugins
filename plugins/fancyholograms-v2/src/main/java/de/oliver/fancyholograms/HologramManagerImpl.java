@@ -9,6 +9,7 @@ import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.events.HologramsLoadedEvent;
 import de.oliver.fancyholograms.api.events.HologramsUnloadedEvent;
 import de.oliver.fancyholograms.api.hologram.Hologram;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -40,6 +41,11 @@ public final class HologramManagerImpl implements HologramManager {
      * A map of hologram names to their corresponding hologram instances.
      */
     private final Map<String, Hologram> holograms = new ConcurrentHashMap<>();
+    private static final long TASK_FAILURE_LOG_COOLDOWN_MS = 60_000L;
+    /**
+     * Last time a failure was logged per task/hologram key, to avoid flooding the console every tick.
+     */
+    private final Map<String, Long> taskFailureLogTimes = new ConcurrentHashMap<>();
     /**
      * Whether holograms are loaded or not
      */
@@ -213,10 +219,16 @@ public final class HologramManagerImpl implements HologramManager {
         hologramThread.submit(() -> {
             this.loadHolograms();
 
+            // A periodic task is cancelled for good once it throws, so every iteration is guarded.
             hologramThread.scheduleAtFixedRate(() -> {
+                final List<Player> players = List.copyOf(Bukkit.getOnlinePlayers());
                 for (final Hologram hologram : this.plugin.getHologramsManager().getHolograms()) {
-                    for (final Player player : Bukkit.getOnlinePlayers()) {
-                        hologram.forceUpdateShownStateFor(player);
+                    for (final Player player : players) {
+                        try {
+                            hologram.forceUpdateShownStateFor(player);
+                        } catch (Throwable throwable) {
+                            logTaskFailure("visibility:" + hologram.getName(), "Failed to update visibility of hologram " + hologram.getName() + " for " + player.getName(), throwable);
+                        }
                     }
                 }
             }, 0, this.plugin.getHologramConfiguration().getUpdateVisibilityInterval() * 50L, TimeUnit.MILLISECONDS);
@@ -232,12 +244,17 @@ public final class HologramManagerImpl implements HologramManager {
             for (final var hologram : this.getHolograms()) {
                 HologramData data = hologram.getData();
                 if (data.hasChanges()) {
-                    if (data instanceof TextHologramData) {
-                        hologram.clearTextCache();
+                    try {
+                        if (data instanceof TextHologramData) {
+                            hologram.clearTextCache();
+                        }
+
+                        hologram.forceUpdate();
+                        hologram.refreshForViewersInWorld();
+                    } catch (Throwable throwable) {
+                        logTaskFailure("update:" + hologram.getName(), "Failed to update hologram " + hologram.getName(), throwable);
                     }
 
-                    hologram.forceUpdate();
-                    hologram.refreshForViewersInWorld();
                     data.setHasChanges(false);
 
                     if (data instanceof TextHologramData) {
@@ -263,12 +280,27 @@ public final class HologramManagerImpl implements HologramManager {
                     }
 
                     if (lastUpdate == null || time > (lastUpdate + interval)) {
-                        hologram.refreshForViewersInWorld();
+                        try {
+                            hologram.refreshForViewersInWorld();
+                        } catch (Throwable throwable) {
+                            logTaskFailure("text:" + hologram.getName(), "Failed to refresh text of hologram " + hologram.getName(), throwable);
+                        }
                         updateTimes.put(textData.getName(), time);
                     }
                 }
             }
         }, 50, this.plugin.getHologramConfiguration().getHologramUpdateInterval(), TimeUnit.MILLISECONDS);
+    }
+
+    private void logTaskFailure(@NotNull final String key, @NotNull final String message, @NotNull final Throwable throwable) {
+        final long now = System.currentTimeMillis();
+        final Long lastLogged = this.taskFailureLogTimes.get(key);
+        if (lastLogged != null && now - lastLogged < TASK_FAILURE_LOG_COOLDOWN_MS) {
+            return;
+        }
+
+        this.taskFailureLogTimes.put(key, now);
+        plugin.getFancyLogger().error(message, ThrowableProperty.of(throwable));
     }
 
     /**

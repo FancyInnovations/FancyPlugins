@@ -8,6 +8,7 @@ import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
 import com.fancyinnovations.fancyholograms.main.FancyHologramsPlugin;
 import com.fancyinnovations.fancyholograms.util.FoliaSchedulerHelper;
 import com.google.common.cache.CacheBuilder;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.serverSoftware.ServerSoftware;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
@@ -21,11 +22,19 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class HologramControllerImpl implements HologramController {
+
+    private static final long TASK_FAILURE_LOG_COOLDOWN_MS = 60_000L;
+    /**
+     * Last time a failure was logged per task/hologram key, to avoid flooding the console every tick.
+     */
+    private final Map<String, Long> taskFailureLogTimes = new ConcurrentHashMap<>();
 
     private void showHologramTo(@NotNull final Hologram hologram, @NotNull final Player player) {
         boolean isVisible = hologram.isViewer(player);
@@ -107,9 +116,17 @@ public class HologramControllerImpl implements HologramController {
     }
 
     public void initRefreshTask() {
+        // A periodic task is cancelled for good once it throws, so every iteration is guarded.
         FancyHologramsPlugin.get().getHologramThread().scheduleWithFixedDelay(() -> {
+            final List<Player> players = List.copyOf(Bukkit.getOnlinePlayers());
             for (Hologram hologram : FancyHologramsPlugin.get().getRegistry().getAll()) {
-                refreshHologram(hologram, Bukkit.getOnlinePlayers());
+                for (Player player : players) {
+                    try {
+                        refreshHologram(hologram, player);
+                    } catch (Throwable throwable) {
+                        logTaskFailure("visibility:" + hologram.getData().getName(), "Failed to update visibility of hologram " + hologram.getData().getName() + " for " + player.getName(), throwable);
+                    }
+                }
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -132,11 +149,15 @@ public class HologramControllerImpl implements HologramController {
 
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                     FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
-                        if (!shouldSeeHologram(hologram, onlinePlayer)) {
-                            return;
-                        }
+                        try {
+                            if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                                return;
+                            }
 
-                        hologram.updateFor(onlinePlayer);
+                            hologram.updateFor(onlinePlayer);
+                        } catch (Throwable throwable) {
+                            logTaskFailure("update:" + hologram.getData().getName(), "Failed to update hologram " + hologram.getData().getName() + " for " + onlinePlayer.getName(), throwable);
+                        }
                     });
                 }
 
@@ -169,11 +190,15 @@ public class HologramControllerImpl implements HologramController {
                     if (lastUpdate == null || time > (lastUpdate + interval)) {
                         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                             FoliaSchedulerHelper.playerScheduler(onlinePlayer, () -> {
-                                if (!shouldSeeHologram(hologram, onlinePlayer)) {
-                                    return;
-                                }
+                                try {
+                                    if (!shouldSeeHologram(hologram, onlinePlayer)) {
+                                        return;
+                                    }
 
-                                hologram.updateFor(onlinePlayer);
+                                    hologram.updateFor(onlinePlayer);
+                                } catch (Throwable throwable) {
+                                    logTaskFailure("text:" + hologram.getData().getName(), "Failed to refresh text of hologram " + hologram.getData().getName() + " for " + onlinePlayer.getName(), throwable);
+                                }
                             });
                         }
 
@@ -182,6 +207,17 @@ public class HologramControllerImpl implements HologramController {
                 }
             }
         }, 50, hologramUpdateIntervalMs, TimeUnit.MILLISECONDS);
+    }
+
+    private void logTaskFailure(@NotNull final String key, @NotNull final String message, @NotNull final Throwable throwable) {
+        final long now = System.currentTimeMillis();
+        final Long lastLogged = this.taskFailureLogTimes.get(key);
+        if (lastLogged != null && now - lastLogged < TASK_FAILURE_LOG_COOLDOWN_MS) {
+            return;
+        }
+
+        this.taskFailureLogTimes.put(key, now);
+        FancyHologramsPlugin.get().getFancyLogger().error(message, ThrowableProperty.of(throwable));
     }
 
     /**

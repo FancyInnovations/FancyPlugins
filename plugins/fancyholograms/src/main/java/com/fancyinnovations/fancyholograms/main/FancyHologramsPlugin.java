@@ -43,6 +43,7 @@ import de.oliver.fancyanalytics.logger.LogLevel;
 import de.oliver.fancyanalytics.logger.appender.Appender;
 import de.oliver.fancyanalytics.logger.appender.ConsoleAppender;
 import de.oliver.fancyanalytics.logger.appender.JsonAppender;
+import de.oliver.fancyanalytics.logger.properties.ThrowableProperty;
 import de.oliver.fancylib.FancyLib;
 import de.oliver.fancylib.VersionConfig;
 import de.oliver.fancylib.duration.FancyDuration;
@@ -269,7 +270,13 @@ public class FancyHologramsPlugin extends JavaPlugin implements FancyHolograms {
 
         if (configuration.isAutosaveEnabled()) {
             getHologramThread().scheduleWithFixedDelay(
-                    this::savePersistentHolograms,
+                    () -> {
+                        try {
+                            savePersistentHolograms();
+                        } catch (Throwable throwable) {
+                            fancyLogger.error("Failed to autosave holograms", ThrowableProperty.of(throwable));
+                        }
+                    },
                     configuration.getAutosaveInterval(),
                     120L, TimeUnit.SECONDS
             );

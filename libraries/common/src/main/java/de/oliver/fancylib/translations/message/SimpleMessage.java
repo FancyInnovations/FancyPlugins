@@ -32,6 +32,10 @@ public class SimpleMessage extends Message {
 
     @Override
     public SimpleMessage withPrefix() {
+        if (message.isBlank()) {
+            return this;
+        }
+
         message = config.prefix() + message;
         return this;
     }

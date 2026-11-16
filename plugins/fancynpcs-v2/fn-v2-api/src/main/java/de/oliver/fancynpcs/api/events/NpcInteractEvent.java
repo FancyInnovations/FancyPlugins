@@ -23,14 +23,14 @@ public class NpcInteractEvent extends Event implements Cancellable {
     private final Npc npc;
     @Nullable
     private final List<NpcAction.NpcActionData> actions;
-    @NotNull
+    @Nullable
     private final Consumer<Player> onClick;
     @NotNull
     private final Player player;
     private final ActionTrigger actionTrigger;
     private boolean isCancelled;
 
-    public NpcInteractEvent(@NotNull Npc npc, @NotNull Consumer<Player> onClick, @NotNull List<NpcAction.NpcActionData> actions, @NotNull Player player, @NotNull ActionTrigger actionTrigger) {
+    public NpcInteractEvent(@NotNull Npc npc, @Nullable Consumer<Player> onClick, @NotNull List<NpcAction.NpcActionData> actions, @NotNull Player player, @NotNull ActionTrigger actionTrigger) {
         this.npc = npc;
         this.onClick = onClick;
         this.actions = actions;
@@ -52,7 +52,7 @@ public class NpcInteractEvent extends Event implements Cancellable {
     /**
      * @return the custom on click method that will run
      */
-    public @NotNull Consumer<Player> getOnClick() {
+    public @Nullable Consumer<Player> getOnClick() {
         return onClick;
     }
 

@@ -14,7 +14,7 @@ paperweight {
 dependencies {
     paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
     compileOnly(project(":libraries:packets:packets-api"))
-    compileOnly("net.kyori:adventure-text-serializer-ansi:4.26.1")
+    compileOnly("net.kyori:adventure-text-serializer-ansi:5.2.0")
 
     testImplementation(project(":libraries:packets"))
     testImplementation(project(":libraries:packets:packets-api"))

@@ -8,8 +8,8 @@ import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
 public class FS_HorseData {
 
     /**
-     * Use {@link Integer} as value - combined variant and marking value
-     * Formula: (marking << 8) | variant
+     * Use {@link Integer} as value - combined variant and marking value.
+     * Formula: (marking &lt;&lt; 8) | variant
      * Use createVariantData() helper method
      */
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor VARIANT = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.animal.equine.Horse", "DATA_ID_TYPE_VARIANT");

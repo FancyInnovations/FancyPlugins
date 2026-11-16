@@ -19,6 +19,7 @@ tasks {
         relocate("org.lushplugins.chatcolorhandler", "com.fancyinnovations.fancyholograms.libs.chatcolorhandler")
 
         archiveClassifier.set("")
+        mustRunAfter(":libraries:packets:shadowJar")
     }
 
     publishing {

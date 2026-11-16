@@ -8,7 +8,7 @@ import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket;
 public class FS_CatData {
 
     /**
-     * Use Holder<CatVariant> as value (requires NMS conversion)
+     * Use Holder&lt;CatVariant> as value (requires NMS conversion).
      * Cat variant (tabby, black, red, siamese, british_shorthair, calico, persian, ragdoll, white, jellie, all_black)
      */
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor VARIANT = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.animal.feline.Cat", "DATA_VARIANT_ID");

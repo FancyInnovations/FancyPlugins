@@ -9,7 +9,7 @@ import de.oliver.fancysitula.api.packets.FS_ClientboundSetEntityDataPacket.Entit
 public class FS_CowData {
 
     /**
-     * Cow variant (Holder<CowVariant>).
+     * Cow variant (Holder&lt;CowVariant>).
      * Value should be a String like "minecraft:temperate".
      * Added in 1.21.5.
      */

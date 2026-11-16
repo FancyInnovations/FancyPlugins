@@ -17,7 +17,7 @@ public class FS_TamableAnimalData {
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor FLAGS = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.TamableAnimal", "DATA_FLAGS_ID");
 
     /**
-     * Use {@link java.util.Optional}<{@link java.util.UUID}> as value
+     * Use {@link java.util.Optional}&lt;{@link java.util.UUID}> as value.
      */
     public static final FS_ClientboundSetEntityDataPacket.EntityDataAccessor OWNER_UUID = new FS_ClientboundSetEntityDataPacket.EntityDataAccessor("net.minecraft.world.entity.TamableAnimal", "DATA_OWNERUUID_ID");
 
